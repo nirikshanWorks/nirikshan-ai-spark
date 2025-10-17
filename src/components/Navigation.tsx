@@ -32,8 +32,13 @@ export const Navigation = () => {
       <div className="container mx-auto px-6">
         <div className="flex h-16 items-center justify-between">
           {/* Logo */}
-          <Link to="/" className="flex items-center space-x-2">
-            <div className="text-2xl font-bold text-gradient">Nirikshan AI Pvt. Ltd.</div>
+          <Link to="/" className="flex items-center space-x-3">
+            <img
+              src="/Nirikshan_AI_Logo_new-removebg-preview.png"
+              alt="Nirikshan AI Pvt. Ltd."
+              className="h-10 w-auto"
+            />
+            <div className="text-xl font-bold text-gradient">Nirikshan AI Pvt. Ltd.</div>
           </Link>
 
           {/* Desktop Navigation */}
