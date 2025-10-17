@@ -57,6 +57,11 @@ export const Navigation = () => {
 
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center space-x-1">
+            <Link to="/about">
+              <Button variant="ghost" className={isActive("/about") ? "bg-muted" : ""}>
+                About
+              </Button>
+            </Link>
             <NavigationMenu>
               <NavigationMenuList>
                 <NavigationMenuItem>
@@ -83,19 +88,24 @@ export const Navigation = () => {
               </NavigationMenuList>
             </NavigationMenu>
 
+            <Link to="/projects">
+              <Button variant="ghost" className={isActive("/projects") ? "bg-muted" : ""}>
+                Projects
+              </Button>
+            </Link>
             <Link to="/case-studies">
               <Button variant="ghost" className={isActive("/case-studies") ? "bg-muted" : ""}>
                 Case Studies
               </Button>
             </Link>
-            <Link to="/about">
-              <Button variant="ghost" className={isActive("/about") ? "bg-muted" : ""}>
-                About
-              </Button>
-            </Link>
             <Link to="/careers">
               <Button variant="ghost" className={isActive("/careers") ? "bg-muted" : ""}>
                 Careers
+              </Button>
+            </Link>
+            <Link to="/who-we-are">
+              <Button variant="ghost" className={isActive("/who-we-are") ? "bg-muted" : ""}>
+                Who We Are
               </Button>
             </Link>
             <Link to="/contact">
@@ -115,6 +125,13 @@ export const Navigation = () => {
         {/* Mobile Navigation */}
         {mobileMenuOpen && (
           <div className="md:hidden py-4 space-y-2">
+            <Link
+              to="/about"
+              className="block px-4 py-2 hover:bg-muted rounded-md"
+              onClick={() => setMobileMenuOpen(false)}
+            >
+              About
+            </Link>
             <div className="space-y-1">
               <button className="w-full text-left px-4 py-2 font-medium">
                 Expertise
@@ -133,6 +150,13 @@ export const Navigation = () => {
               </div>
             </div>
             <Link
+              to="/projects"
+              className="block px-4 py-2 hover:bg-muted rounded-md"
+              onClick={() => setMobileMenuOpen(false)}
+            >
+              Projects
+            </Link>
+            <Link
               to="/case-studies"
               className="block px-4 py-2 hover:bg-muted rounded-md"
               onClick={() => setMobileMenuOpen(false)}
@@ -140,18 +164,18 @@ export const Navigation = () => {
               Case Studies
             </Link>
             <Link
-              to="/about"
-              className="block px-4 py-2 hover:bg-muted rounded-md"
-              onClick={() => setMobileMenuOpen(false)}
-            >
-              About
-            </Link>
-            <Link
               to="/careers"
               className="block px-4 py-2 hover:bg-muted rounded-md"
               onClick={() => setMobileMenuOpen(false)}
             >
               Careers
+            </Link>
+            <Link
+              to="/who-we-are"
+              className="block px-4 py-2 hover:bg-muted rounded-md"
+              onClick={() => setMobileMenuOpen(false)}
+            >
+              Who We Are
             </Link>
             <Link to="/contact" onClick={() => setMobileMenuOpen(false)}>
               <Button className="w-full gradient-primary">Get in Touch</Button>

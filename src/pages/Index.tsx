@@ -3,7 +3,6 @@ import { Footer } from "@/components/Footer";
 import { HeroSection } from "@/components/HeroSection";
 import { ServiceCard } from "@/components/ServiceCard";
 import { IndustryCard } from "@/components/IndustryCard";
-import { ProjectCard } from "@/components/ProjectCard";
 import { TeamMemberCard } from "@/components/TeamMemberCard";
 import { StatsSection } from "@/components/StatsSection";
 import { Button } from "@/components/ui/button";
@@ -31,7 +30,7 @@ const heroSlides = [
     description: "Where human potential meets artificial intelligence. Join our innovative platform and unlock new possibilities. 🤖✨",
     cta: {
       text: "Discover Nirikshan AI Pvt. Ltd.",
-      link: "/about",
+      link: "/who-we-are",
     },
   },
   {
@@ -136,49 +135,6 @@ const stats = [
   { value: "1000+", label: "Network Connections" },
 ];
 
-const projects = [
-  {
-    title: "AI Inventory Management System",
-    description: "Developing a smart inventory management system for one of South Africa's leading veterinary and pet product companies.",
-    category: "AI Solution",
-    image: "https://images.unsplash.com/photo-1553413077-190dd305871c",
-    date: "December 15, 2024",
-    status: "Ongoing",
-    client: "Madapet, South Africa",
-    tags: ["AI", "Inventory", "Management"],
-  },
-  {
-    title: "Quality Control Automation",
-    description: "AI-driven quality control and automation solutions for one of the world's largest automotive component manufacturers.",
-    category: "Computer Vision",
-    image: "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158",
-    date: "January 10, 2025",
-    status: "Ongoing",
-    client: "Motherson Group, India",
-    tags: ["AI", "Quality Control", "Automation"],
-  },
-  {
-    title: "Custom CRM Development",
-    description: "Building customized Customer Relationship Management systems that streamline communication and enhance customer satisfaction.",
-    category: "Software Development",
-    image: "https://images.unsplash.com/photo-1460925895917-afdab827c52f",
-    date: "February 22, 2025",
-    status: "Ongoing",
-    client: "Multiple Clients",
-    tags: ["CRM", "Software", "Development"],
-  },
-  {
-    title: "Dorm Student Tracking System",
-    description: "Building customized Dorm Student Tracking system that streamline Dorm management and enhance student and parent experience.",
-    category: "Software Development",
-    image: "https://images.unsplash.com/photo-1523050854058-8df90110c9f1",
-    date: "June 11, 2025",
-    status: "Ongoing",
-    client: "Multiple Clients",
-    tags: ["CRM", "Software", "Development"],
-  },
-];
-
 const Index = () => {
   return (
     <div className="min-h-screen">
@@ -224,21 +180,6 @@ const Index = () => {
                 </p>
               </Card>
             </div>
-          </div>
-        </section>
-
-        {/* Projects Section */}
-        <section className="py-20 container mx-auto px-6">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl md:text-4xl font-bold mb-4">OUR PROJECTS</h2>
-            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-              Explore our portfolio of innovative AI and software solutions for businesses worldwide
-            </p>
-          </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            {projects.map((project, index) => (
-              <ProjectCard key={index} {...project} />
-            ))}
           </div>
         </section>
 
