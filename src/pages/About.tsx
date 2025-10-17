@@ -104,7 +104,7 @@ const About = () => {
             <h2 className="text-3xl md:text-4xl font-bold mb-6">Our Story</h2>
             <div className="space-y-4 text-muted-foreground leading-relaxed">
               <p>
-                Founded with a vision to democratize AI technology, Nirikshan AI Private Limited bridges the gap between artificial intelligence and real-world business solutions. We're your local AI partner, making smart technology simple, affordable, and actually useful.
+                Founded with a vision to democratize AI technology, Nirikshan AI Pvt. Ltd. bridges the gap between artificial intelligence and real-world business solutions. We're your local AI partner, making smart technology simple, affordable, and actually useful.
               </p>
               <p>
                 Our journey began when we recognized that businesses wanted to leverage AI but struggled with complexity and cost. We set out to change that by building practical solutions that deliver real value.

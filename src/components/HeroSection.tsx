@@ -43,6 +43,13 @@ export const HeroSection = ({ slides }: HeroSectionProps) => {
       {/* Content */}
       <div className="relative z-10 container mx-auto px-6 h-full flex flex-col justify-center">
         <div className="max-w-3xl">
+          <div className="mb-6">
+            <img
+              src="/Nirikshan_AI_Logo_new-removebg-preview.png"
+              alt="Nirikshan AI Pvt. Ltd. Logo"
+              className="h-16 md:h-20 w-auto"
+            />
+          </div>
           <p className="text-accent text-sm md:text-base font-medium mb-4 uppercase tracking-wider">
             {slides[activeSlide].eyebrow}
           </p>

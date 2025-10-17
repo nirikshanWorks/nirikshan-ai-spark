@@ -152,7 +152,7 @@ const Contact = () => {
                     <div>
                       <h3 className="font-semibold mb-1">Office</h3>
                       <p className="text-muted-foreground">
-                        Nirikshan AI Private Limited<br />
+                        Nirikshan AI Pvt. Ltd.<br />
                         Bangalore, Karnataka<br />
                         India
                       </p>

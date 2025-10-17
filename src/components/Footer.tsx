@@ -8,7 +8,7 @@ export const Footer = () => {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           {/* Company Info */}
           <div className="space-y-4">
-            <h3 className="text-xl font-bold text-gradient">Nirikshan AI</h3>
+            <h3 className="text-xl font-bold text-gradient">Nirikshan AI Pvt. Ltd.</h3>
             <p className="text-sm text-muted-foreground">
               Bridging AI & Enterprises with innovative technology solutions
             </p>

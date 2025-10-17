@@ -27,10 +27,10 @@ const heroSlides = [
   {
     image: heroMain,
     eyebrow: "From Ideas to Real Life Solutions",
-    title: "Welcome to Nirikshan AI",
+    title: "Welcome to Nirikshan AI Pvt. Ltd.",
     description: "Where human potential meets artificial intelligence. Join our innovative platform and unlock new possibilities. 🤖✨",
     cta: {
-      text: "Discover Nirikshan AI",
+      text: "Discover Nirikshan AI Pvt. Ltd.",
       link: "/about",
     },
   },
@@ -113,7 +113,7 @@ const teamMembers = [
     name: "Dinesh Yadav",
     role: "Founder & CEO",
     description: "Visionary leader with a passion for AI and innovative technology solutions.",
-    quote: "At Nirikshan AI, we don't just build software — we build ideas.",
+    quote: "At Nirikshan AI Pvt. Ltd., we don't just build software — we build ideas.",
   },
   {
     name: "Anshul",
@@ -250,7 +250,7 @@ const Index = () => {
           <div className="text-center mb-12">
             <h2 className="text-3xl md:text-4xl font-bold mb-4">Our Team</h2>
             <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-              Meet the talented individuals who make Nirikshan AI possible, bringing expertise in AI, software development, and business solutions.
+              Meet the talented individuals who make Nirikshan AI Pvt. Ltd. possible, bringing expertise in AI, software development, and business solutions.
             </p>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto">
