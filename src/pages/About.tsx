@@ -36,9 +36,7 @@ const About = () => {
                 <div>
                   <h2 className="text-2xl font-bold mb-3">Our Mission</h2>
                   <p className="text-muted-foreground leading-relaxed">
-                    To empower businesses with cutting-edge AI and technology solutions that drive measurable results. 
-                    We bridge the gap between complex technology and practical business value, making innovation 
-                    accessible to organizations of all sizes.
+                    We're here to bring the power of AI to everyone, not just the big players. Think of us as your local AI partner – making smart technology simple, affordable, and actually useful for businesses like yours. Whether you're running a startup, a small business, or have a great idea you want to bring to life, we're here to help turn complex AI into practical solutions that make a real difference in our community. No corporate jargon, just real solutions for real people.
                   </p>
                 </div>
               </div>
@@ -106,22 +104,16 @@ const About = () => {
             <h2 className="text-3xl md:text-4xl font-bold mb-6">Our Story</h2>
             <div className="space-y-4 text-muted-foreground leading-relaxed">
               <p>
-                Founded with a vision to democratize AI technology, Nirikshan AI Private Limited has grown from a 
-                small team of passionate engineers to a leading provider of enterprise AI solutions.
+                Founded with a vision to democratize AI technology, Nirikshan AI Private Limited bridges the gap between artificial intelligence and real-world business solutions. We're your local AI partner, making smart technology simple, affordable, and actually useful.
               </p>
               <p>
-                Our journey began when we recognized a critical gap in the market: businesses wanted to leverage 
-                AI but struggled with implementation complexity, high costs, and lack of expertise. We set out to 
-                change that.
+                Our journey began when we recognized that businesses wanted to leverage AI but struggled with complexity and cost. We set out to change that by building practical solutions that deliver real value.
               </p>
               <p>
-                Today, we serve clients across healthcare, manufacturing, retail, and finance, delivering solutions 
-                that combine cutting-edge technology with deep industry knowledge. Our team of experts brings together 
-                decades of experience in AI, machine learning, software development, and business strategy.
+                Today, we work with clients across various industries - from veterinary and pet products in South Africa to automotive manufacturing in India. Our team combines deep expertise in AI, machine learning, computer vision, and software development with a genuine commitment to understanding your business needs.
               </p>
               <p>
-                What sets us apart is our commitment to practical innovation. We don't just build technology for 
-                technology's sake – we create solutions that solve real problems and deliver measurable ROI.
+                What sets us apart is our approach: no corporate jargon, just real solutions for real people. We don't just build software - we build ideas and turn them into impactful digital solutions that make a difference.
               </p>
             </div>
           </div>
