@@ -18,10 +18,17 @@ const Contact = () => {
     message: "",
   });
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setIsSubmitting(true);
+
+    await new Promise(resolve => setTimeout(resolve, 1000));
+
     toast.success("Thank you for your message! We'll get back to you soon.");
     setFormData({ name: "", email: "", company: "", phone: "", message: "" });
+    setIsSubmitting(false);
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -47,7 +54,7 @@ const Contact = () => {
         <section className="py-20 container mx-auto px-6">
           <div className="grid lg:grid-cols-2 gap-12 max-w-6xl mx-auto">
             {/* Contact Form */}
-            <Card className="p-8">
+            <Card className="p-8 hover:shadow-lg transition-all duration-300">
               <h2 className="text-2xl font-bold mb-6">Send us a Message</h2>
               <form onSubmit={handleSubmit} className="space-y-6">
                 <div className="space-y-2">
@@ -59,6 +66,7 @@ const Contact = () => {
                     onChange={handleChange}
                     required
                     placeholder="Your full name"
+                    className="transition-all focus:ring-2 focus:ring-primary"
                   />
                 </div>
                 <div className="space-y-2">
@@ -106,9 +114,14 @@ const Contact = () => {
                     rows={6}
                   />
                 </div>
-                <Button type="submit" size="lg" className="w-full gradient-primary">
-                  Send Message
-                  <Send className="ml-2" size={16} />
+                <Button
+                  type="submit"
+                  size="lg"
+                  className="w-full gradient-primary"
+                  disabled={isSubmitting}
+                >
+                  {isSubmitting ? "Sending..." : "Send Message"}
+                  <Send className={`ml-2 ${isSubmitting ? "animate-pulse" : ""}`} size={16} />
                 </Button>
               </form>
             </Card>

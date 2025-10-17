@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Menu, X, ChevronDown } from "lucide-react";
@@ -23,20 +23,34 @@ const expertiseItems = [
 
 export const Navigation = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
   const location = useLocation();
-  
+
   const isActive = (path: string) => location.pathname === path;
 
+  useEffect(() => {
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 20);
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
   return (
-    <nav className="fixed top-0 left-0 right-0 z-50 bg-background/95 backdrop-blur-sm border-b border-border">
+    <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+      scrolled
+        ? "bg-background/98 backdrop-blur-md border-b border-border shadow-lg"
+        : "bg-background/95 backdrop-blur-sm border-b border-border"
+    }`}>
       <div className="container mx-auto px-6">
         <div className="flex h-16 items-center justify-between">
           {/* Logo */}
-          <Link to="/" className="flex items-center space-x-3">
+          <Link to="/" className="flex items-center space-x-3 group">
             <img
               src="/Nirikshan_AI_Logo_new-removebg-preview.png"
               alt="Nirikshan AI Pvt. Ltd."
-              className="h-10 w-auto"
+              className="h-10 w-auto transition-transform duration-300 group-hover:scale-105"
             />
             <div className="text-xl font-bold text-gradient">Nirikshan AI Pvt. Ltd.</div>
           </Link>

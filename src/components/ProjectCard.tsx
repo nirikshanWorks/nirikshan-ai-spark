@@ -24,15 +24,16 @@ export const ProjectCard = ({
   tags 
 }: ProjectCardProps) => {
   return (
-    <Card className="overflow-hidden group hover:shadow-lg transition-all duration-300">
+    <Card className="overflow-hidden group hover:shadow-xl transition-all duration-300 hover:-translate-y-1 cursor-pointer">
       <div className="relative h-64 overflow-hidden">
         <img
           src={image}
           alt={title}
-          className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
+          className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
         />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
         <div className="absolute top-4 left-4">
-          <Badge className="bg-primary text-primary-foreground">{category}</Badge>
+          <Badge className="bg-primary text-primary-foreground shadow-lg">{category}</Badge>
         </div>
       </div>
       <div className="p-6">

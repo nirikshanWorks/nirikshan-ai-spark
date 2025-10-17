@@ -43,21 +43,23 @@ export const HeroSection = ({ slides }: HeroSectionProps) => {
       {/* Content */}
       <div className="relative z-10 container mx-auto px-6 h-full flex flex-col justify-center">
         <div className="max-w-3xl">
-          <p className="text-accent text-sm md:text-base font-medium mb-4 uppercase tracking-wider">
+          <p className="text-accent text-sm md:text-base font-medium mb-4 uppercase tracking-wider fade-in-up">
             {slides[activeSlide].eyebrow}
           </p>
-          <h1 className="text-4xl md:text-6xl font-bold text-white mb-6 leading-tight">
+          <h1 className="text-4xl md:text-6xl font-bold text-white mb-6 leading-tight fade-in-up delay-100">
             {slides[activeSlide].title}
           </h1>
-          <p className="text-lg md:text-xl text-white/90 mb-8">
+          <p className="text-lg md:text-xl text-white/90 mb-8 fade-in-up delay-200">
             {slides[activeSlide].description}
           </p>
-          <Link to={slides[activeSlide].cta.link}>
-            <Button size="lg" className="gradient-primary group">
-              {slides[activeSlide].cta.text}
-              <ArrowRight className="ml-2 group-hover:translate-x-1 transition-transform" size={20} />
-            </Button>
-          </Link>
+          <div className="fade-in-up delay-300">
+            <Link to={slides[activeSlide].cta.link}>
+              <Button size="lg" className="gradient-primary group">
+                {slides[activeSlide].cta.text}
+                <ArrowRight className="ml-2 group-hover:translate-x-1 transition-transform" size={20} />
+              </Button>
+            </Link>
+          </div>
         </div>
 
         {/* Slide Navigation */}
