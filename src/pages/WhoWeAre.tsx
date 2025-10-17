@@ -7,7 +7,7 @@ import {
 } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useScrollAnimation } from "@/hooks/use-scroll-animation";
-import heroTeam from "@/assets/hero-team.jpg";
+import wwaTeamVideo from "@/assets/wwa-team.mp4";
 
 const teamMembers = [
   {
@@ -43,7 +43,14 @@ const WhoWeAre = () => {
       <main className="pt-16">
         {/* Hero */}
         <section className="relative h-[400px] md:h-[500px] overflow-hidden group">
-          <img src={heroTeam} alt="Our Team" className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" />
+          <video 
+            src={wwaTeamVideo} 
+            autoPlay
+            muted
+            loop
+            playsInline
+            className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" 
+          />
           <div className="absolute inset-0 hero-overlay" />
           <div className="relative z-10 container mx-auto px-6 h-full flex items-center">
             <div className="animate-fade-in-up">

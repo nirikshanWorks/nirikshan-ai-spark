@@ -4,7 +4,8 @@ import { ArrowRight } from "lucide-react";
 import { Link } from "react-router-dom";
 
 interface HeroSlide {
-  image: string;
+  image?: string;
+  video?: string;
   eyebrow: string;
   title: string;
   description: string;
@@ -23,7 +24,7 @@ export const HeroSection = ({ slides }: HeroSectionProps) => {
 
   return (
     <section className="relative h-[600px] md:h-[700px] overflow-hidden">
-      {/* Background Images */}
+      {/* Background Images/Videos */}
       {slides.map((slide, index) => (
         <div
           key={index}
@@ -31,11 +32,22 @@ export const HeroSection = ({ slides }: HeroSectionProps) => {
             index === activeSlide ? "opacity-100" : "opacity-0"
           }`}
         >
-          <img
-            src={slide.image}
-            alt={slide.title}
-            className="w-full h-full object-cover"
-          />
+          {slide.video ? (
+            <video
+              src={slide.video}
+              autoPlay
+              muted
+              loop
+              playsInline
+              className="w-full h-full object-cover"
+            />
+          ) : (
+            <img
+              src={slide.image}
+              alt={slide.title}
+              className="w-full h-full object-cover"
+            />
+          )}
           <div className="absolute inset-0 hero-overlay" />
         </div>
       ))}
