@@ -1,4 +1,4 @@
-import { Fragment, type CSSProperties } from "react";
+import { Fragment, useEffect, useMemo, useRef, useState, type CSSProperties } from "react";
 import { Navigation } from "@/components/Navigation";
 import { Footer } from "@/components/Footer";
 import { Button } from "@/components/ui/button";
@@ -6,8 +6,97 @@ import { Milestone, ArrowRight } from "lucide-react";
 import { Link } from "react-router-dom";
 import { timeline } from "./whoWeAreContent";
 
+const TRAVEL_DURATION = 4500;
+const PAUSE_DURATION = 2000;
+
 const Journey = () => {
-  const CAR_RIDE_DURATION = 32;
+  const stopPositions = useMemo(() => (
+    timeline.length > 1
+      ? timeline.map((_, idx) => idx / (timeline.length - 1))
+      : [0]
+  ), [timeline]);
+
+  const [carProgress, setCarProgress] = useState(stopPositions[0] ?? 0);
+  const [activeStop, setActiveStop] = useState(0);
+  const [isPaused, setIsPaused] = useState(true);
+  const [visitedStops, setVisitedStops] = useState(() => new Set<number>([0]));
+
+  const directionRef = useRef<1 | -1>(1);
+  const phaseRef = useRef<"pause" | "travel">("pause");
+  const currentStopRef = useRef(0);
+  const phaseStartRef = useRef<number | null>(null);
+  const travelStartRef = useRef(stopPositions[0] ?? 0);
+  const travelEndRef = useRef(stopPositions[1] ?? stopPositions[0] ?? 0);
+  const rafRef = useRef<number>();
+
+  useEffect(() => {
+    if (stopPositions.length <= 1) {
+      setCarProgress(stopPositions[0] ?? 0);
+      setActiveStop(0);
+      setIsPaused(true);
+      return;
+    }
+
+    const step = (timestamp: number) => {
+      if (phaseStartRef.current == null) {
+        phaseStartRef.current = timestamp;
+        setCarProgress(stopPositions[currentStopRef.current]);
+        setActiveStop(currentStopRef.current);
+        setIsPaused(true);
+      }
+
+      const elapsed = timestamp - (phaseStartRef.current ?? timestamp);
+
+      if (phaseRef.current === "pause") {
+        const currentPos = stopPositions[currentStopRef.current];
+        setCarProgress((prev) => (prev === currentPos ? prev : currentPos));
+        setActiveStop((prev) => (prev === currentStopRef.current ? prev : currentStopRef.current));
+        if (elapsed >= PAUSE_DURATION) {
+          let nextIndex = currentStopRef.current + directionRef.current;
+          if (nextIndex < 0 || nextIndex >= stopPositions.length) {
+            directionRef.current = (directionRef.current * -1) as 1 | -1;
+            nextIndex = currentStopRef.current + directionRef.current;
+          }
+
+          travelStartRef.current = stopPositions[currentStopRef.current];
+          travelEndRef.current = stopPositions[nextIndex];
+          phaseRef.current = "travel";
+          phaseStartRef.current = timestamp;
+          setIsPaused(false);
+        }
+      } else {
+        const ratio = Math.min(elapsed / TRAVEL_DURATION, 1);
+        const start = travelStartRef.current;
+        const end = travelEndRef.current;
+        setCarProgress(start + (end - start) * ratio);
+
+        if (ratio >= 1) {
+          currentStopRef.current = currentStopRef.current + directionRef.current;
+          phaseRef.current = "pause";
+          phaseStartRef.current = timestamp;
+          setIsPaused(true);
+          setCarProgress(travelEndRef.current);
+          setActiveStop(currentStopRef.current);
+          setVisitedStops((prev) => {
+            const next = new Set(prev);
+            next.add(currentStopRef.current);
+            return next;
+          });
+        }
+      }
+
+      rafRef.current = requestAnimationFrame(step);
+    };
+
+    rafRef.current = requestAnimationFrame(step);
+
+    return () => {
+      if (rafRef.current) cancelAnimationFrame(rafRef.current);
+      phaseStartRef.current = null;
+    };
+  }, [stopPositions]);
+
+  const carLeftPercent = 5 + carProgress * 90;
 
   return (
     <div className="relative min-h-screen overflow-hidden bg-background text-foreground">
@@ -42,8 +131,8 @@ const Journey = () => {
               <div className="absolute inset-x-0 top-1/2" style={{ transform: "translateY(-50%)" }} aria-hidden="true">
                 <div className="relative h-16">
                   <div
-                    className="timeline-car absolute left-0 top-1/2 -translate-y-1/2 w-20"
-                    style={{ left: 0, animationDuration: `${CAR_RIDE_DURATION}s` }}
+                    className="timeline-car absolute left-0 top-1/2 -translate-x-1/2 -translate-y-1/2 w-20"
+                    style={{ left: `${carLeftPercent}%` }}
                   >
                     <div className="relative h-12 w-full">
                       <div className="absolute inset-x-2 -top-4 h-4 rounded-t-xl border border-white/50 bg-sky-200/90" />
@@ -63,21 +152,41 @@ const Journey = () => {
                 const progress = totalStages > 1 ? index / (totalStages - 1) : 0;
                 const leftPercent = 5 + progress * 90;
                 const isEven = index % 2 === 0;
+                const hasVisited = visitedStops.has(index);
+                const isStageActive = hasVisited || (isPaused && activeStop === index);
+                const translateY = isStageActive ? 0 : isEven ? -32 : 32;
+                const verticalOffset = isEven ? 360 : 220;
                 const stageStyle: CSSProperties = {
                   left: `${leftPercent}%`,
-                  top: isEven ? "calc(50% - 230px)" : "calc(50% + 110px)",
-                  transform: "translateX(-50%)",
-                  animationDelay: `${progress * CAR_RIDE_DURATION}s`,
+                  top: isEven
+                    ? `calc(50% - ${verticalOffset}px)`
+                    : `calc(50% + ${verticalOffset}px)`,
+                  transform: `translate(-50%, ${translateY}px)`,
+                  opacity: isStageActive ? 1 : 0,
+                  pointerEvents: isStageActive ? "auto" : "none",
+                  zIndex: isStageActive ? 10 : 1,
                 };
                 const markerStyle: CSSProperties = {
                   left: `${leftPercent}%`,
                   transform: "translate(-50%, -50%)",
                 };
+                const isReached = activeStop > index;
 
                 return (
                   <Fragment key={event.year}>
                     <div className="absolute top-1/2" style={markerStyle} aria-hidden="true">
-                      <div className="h-5 w-5 rounded-full border-2 border-white/80 bg-primary shadow-lg shadow-primary/40" />
+                      <div
+                        className={`rounded-full border-2 transition-all duration-500 ${
+                          activeStop === index
+                            ? "h-6 w-6 border-white bg-primary shadow-lg shadow-primary/40"
+                            : isReached
+                              ? "h-4 w-4 border-white/60 bg-primary/50"
+                              : "h-3 w-3 border-white/30 bg-primary/20"
+                        }`}
+                      />
+                      <span className="absolute left-1/2 top-8 -translate-x-1/2 text-[10px] font-semibold uppercase tracking-[0.3em] text-white/70">
+                        {index + 1}
+                      </span>
                     </div>
                     <div
                       className="road-stage absolute flex w-72 lg:w-80 flex-col items-center text-center"
@@ -92,11 +201,11 @@ const Journey = () => {
                             <h3 className="text-lg font-semibold text-foreground md:text-xl">{event.title}</h3>
                             <p className="mt-3 text-sm leading-relaxed text-muted-foreground md:text-base">{event.description}</p>
                           </div>
-                          <div className="mt-4 h-28 w-[2px] bg-gradient-to-b from-primary/70 to-primary/0" />
+                          <div className="mt-4 h-48 w-[2px] bg-gradient-to-b from-primary/70 to-primary/0" />
                         </>
                       ) : (
                         <>
-                          <div className="mb-4 h-28 w-[2px] bg-gradient-to-t from-primary/70 to-primary/0" />
+                          <div className="mb-4 h-48 w-[2px] bg-gradient-to-t from-primary/70 to-primary/0" />
                           <span className="inline-flex items-center gap-2 rounded-full bg-primary/10 px-4 py-1 text-sm font-semibold uppercase tracking-widest text-primary md:text-base">
                             {event.year}
                           </span>
