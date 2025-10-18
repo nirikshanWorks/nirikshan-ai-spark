@@ -105,8 +105,8 @@ const ExpertiseServicePage = () => {
             </video>
           ) : null}
           <div
-            className="absolute inset-0 bg-gradient-to-br from-blue-200 via-violet-200 to-purple-200"
-            style={heroVideoSrc ? { opacity: 0.12 } : undefined}
+            className="absolute inset-0 bg-gradient-to-br from-blue-500 via-violet-400 to-purple-500"
+            style={heroVideoSrc ? { opacity: 0.6 } : undefined}
           />
           <div className="absolute -top-24 -left-16 w-64 h-64 bg-white/15 blur-3xl rounded-full" />
           <div className="absolute bottom-[-140px] right-[-40px] w-96 h-96 bg-white/10 blur-3xl rounded-full" />
@@ -210,38 +210,43 @@ const ExpertiseServicePage = () => {
                 <div className="flex items-center justify-center gap-2 mb-4">
                   <Workflow className="text-primary" size={32} />
                   <h2 className="text-3xl md:text-4xl font-bold">
-                    Our Methodology for Delivering {service.title} Solutions
+                    Delivery Roadmap for {service.title}
                   </h2>
                 </div>
                 <p className="text-muted-foreground max-w-2xl mx-auto">
-                  Proven process by Nirikshan AI to ensure successful implementation
+                  Follow the guided journey from discovery to scale with clearly defined milestones.
                 </p>
               </div>
-              <div className="max-w-5xl mx-auto">
+              <div className="max-w-6xl mx-auto">
                 <div className="relative">
-                  {/* Timeline line */}
-                  <div className="absolute left-8 top-0 bottom-0 w-0.5 bg-gradient-to-b from-primary via-accent to-primary hidden md:block" />
-
-                  <div className="space-y-8">
+                  <div className="hidden md:block absolute top-16 left-0 right-0 h-0.5 bg-gradient-to-r from-primary via-accent to-primary/70" />
+                  <div className="flex flex-col md:flex-row gap-6 md:gap-8 overflow-x-auto pb-4">
                     {service.methodology.map((step, index) => (
                       <div
                         key={step.phase}
-                        className="relative fade-in-up"
-                        style={{ animationDelay: `${index * 100}ms` }}
+                        className="group relative flex-1 min-w-[260px] md:min-w-0 fade-in-up"
+                        style={{ animationDelay: `${index * 80}ms` }}
                       >
-                        <Card className="p-6 md:ml-20 hover:shadow-xl transition-all duration-300 hover:-translate-y-1 cursor-pointer group">
-                          <div className="absolute -left-12 top-6 hidden md:flex items-center justify-center w-16 h-16 rounded-full bg-gradient-to-br from-primary to-accent shadow-lg group-hover:scale-110 transition-transform">
-                            <span className="text-white font-bold text-xl">{index + 1}</span>
-                          </div>
-                          <div className="md:hidden flex items-center gap-3 mb-3">
-                            <div className="flex items-center justify-center w-10 h-10 rounded-full bg-gradient-to-br from-primary to-accent">
-                              <span className="text-white font-bold">{index + 1}</span>
+                        <Card className="h-full p-6 border border-primary/10 bg-gradient-to-br from-background to-background/40 shadow-sm transition-transform duration-300 group-hover:-translate-y-1">
+                          <div className="flex items-center gap-3 mb-4">
+                            <div className="flex h-12 w-12 items-center justify-center rounded-full bg-gradient-to-br from-primary to-accent text-white font-semibold text-lg shadow-lg">
+                              {index + 1}
                             </div>
-                            <h3 className="text-xl font-bold">{step.phase}</h3>
+                            <h3 className="text-lg font-semibold leading-snug">
+                              {step.phase}
+                            </h3>
                           </div>
-                          <h3 className="text-xl font-bold mb-3 hidden md:block">{step.phase}</h3>
-                          <p className="text-muted-foreground">{step.description}</p>
+                          <p className="text-sm text-muted-foreground leading-relaxed">
+                            {step.description}
+                          </p>
+                          <div className="mt-6 flex items-center gap-2 text-xs uppercase tracking-widest text-primary/80">
+                            <span>Milestone {index + 1}</span>
+                            {index < service.methodology.length - 1 && <ArrowRight className="h-3 w-3" />}
+                          </div>
                         </Card>
+                        {index < service.methodology.length - 1 && (
+                          <div className="hidden md:block absolute top-[88px] right-[-32px] w-16 h-0.5 bg-gradient-to-r from-primary via-accent to-primary/70" />
+                        )}
                       </div>
                     ))}
                   </div>

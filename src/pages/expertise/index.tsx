@@ -51,7 +51,10 @@ const ExpertisePage = () => {
           >
             <source src="https://res.cloudinary.com/dch0uyw8e/video/upload/v1760817165/exptice_th6pn0.mp4" type="video/mp4" />
           </video>
-          <div className="absolute inset-0 bg-gradient-to-br from-blue-200 via-violet-200 to-purple-100 opacity-10" />
+          <div
+            className="absolute inset-0 bg-gradient-to-br from-blue-500 via-violet-400 to-purple-500"
+            style={{ opacity: 0.6 }}
+          />
           <div className="absolute -top-24 -left-16 w-64 h-64 bg-white/10 blur-3xl rounded-full" />
           <div className="absolute bottom-[-120px] right-[-40px] w-96 h-96 bg-purple-500/30 blur-3xl rounded-full" />
           <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,_rgba(255,255,255,0.2)_0%,_transparent_60%)] opacity-30" />

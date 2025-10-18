@@ -59,8 +59,8 @@ const ExpertiseCategoryPage = () => {
             </video>
           ) : null}
           <div
-            className="absolute inset-0 bg-gradient-to-br from-blue-200 via-violet-200 to-purple-200"
-            style={heroVideoSrc ? { opacity: 0.12 } : undefined}
+            className="absolute inset-0 bg-gradient-to-br from-blue-500 via-violet-400 to-purple-500"
+            style={heroVideoSrc ? { opacity: 0.6 } : undefined}
           />
           <div className="absolute -top-24 -left-16 w-64 h-64 bg-white/10 blur-3xl rounded-full" />
           <div className="absolute bottom-[-140px] right-[-40px] w-96 h-96 bg-purple-500/30 blur-3xl rounded-full" />
