@@ -4,11 +4,19 @@ import { ArrowRight, MessageCircle } from "lucide-react";
 
 export const CTASection = () => {
   return (
-    <section className="py-20 relative overflow-hidden">
-      <div className="absolute inset-0 bg-gradient-to-br from-primary via-primary/90 to-accent opacity-95" />
-      <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxwYXRoIGQ9Ik0zNiAxOGMwLTkuOTQgOC4wNi0xOCAxOC0xOCIgc3Ryb2tlPSIjZmZmIiBzdHJva2Utd2lkdGg9IjEiIG9wYWNpdHk9Ii4xIi8+PC9nPjwvc3ZnPg==')] opacity-20" />
-      
-      <div className="container mx-auto px-6 relative z-10">
+    <section className="relative overflow-hidden py-20">
+      <video
+        className="pointer-events-none absolute inset-0 h-full w-full object-cover"
+        src="https://res.cloudinary.com/dch0uyw8e/video/upload/v1760817368/Artificial_Intelligence_vm87tg.mp4"
+        autoPlay
+        muted
+        loop
+        playsInline
+      />
+      <div className="pointer-events-none absolute inset-0 bg-gradient-to-br from-primary/10 via-primary/20 to-accent/85" aria-hidden="true" />
+      <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxwYXRoIGQ9Ik0zNiAxOGMwLTkuOTQgOC4wNi0xOCAxOC0xOCIgc3Ryb2tlPSIjZmZmIiBzdHJva2Utd2lkdGg9IjEiIG9wYWNpdHk9Ii4xIi8+PC9nPjwvc3ZnPg==')] opacity-20" aria-hidden="true" />
+
+      <div className="container relative z-10 mx-auto px-6">
         <div className="max-w-4xl mx-auto text-center">
           <h2 className="text-4xl md:text-6xl font-bold text-white mb-6">
             Ready to Transform Your Business?
@@ -26,7 +34,7 @@ export const CTASection = () => {
               </Button>
             </Link>
             <Link to="/case-studies">
-              <Button size="lg" variant="outline" className="border-2 border-white text-white hover:bg-white/10 text-lg px-8 py-6 backdrop-blur-sm">
+              <Button size="lg" variant="outline" className="border-2 border-white text-black hover:bg-white/10 text-lg px-8 py-6 backdrop-blur-sm">
                 View Our Work
                 <MessageCircle className="ml-2" size={20} />
               </Button>

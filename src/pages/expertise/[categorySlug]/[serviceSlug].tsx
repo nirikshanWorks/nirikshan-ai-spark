@@ -30,6 +30,185 @@ import {
 } from "lucide-react";
 import { getCategoryBySlug, getServiceBySlug } from "@/pages/expertise/expertiseData";
 
+const TECHNOLOGY_LOGOS: { keywords: string[]; logo: string }[] = [
+  {
+    keywords: ["openai"],
+    logo: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/openai/openai-original.svg",
+  },
+  {
+    keywords: ["gpt"],
+    logo: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/openai/openai-original.svg",
+  },
+  {
+    keywords: ["google", "palm"],
+    logo: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/google/google-original.svg",
+  },
+  {
+    keywords: ["hugging", "face"],
+    logo: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/huggingface/huggingface-original.svg",
+  },
+  {
+    keywords: ["stable", "diffusion"],
+    logo: "https://upload.wikimedia.org/wikipedia/commons/8/80/Stable_Diffusion_logo.png",
+  },
+  {
+    keywords: ["dall"],
+    logo: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/openai/openai-original.svg",
+  },
+  {
+    keywords: ["langchain"],
+    logo: "https://raw.githubusercontent.com/langchain-ai/langchain/master/docs/static/img/langchain-h.svg",
+  },
+  {
+    keywords: ["tensorflow"],
+    logo: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/tensorflow/tensorflow-original.svg",
+  },
+  {
+    keywords: ["pytorch"],
+    logo: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/pytorch/pytorch-original.svg",
+  },
+  {
+    keywords: ["scikit"],
+    logo: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/scikitlearn/scikitlearn-original.svg",
+  },
+  {
+    keywords: ["cuda"],
+    logo: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nvidia/nvidia-original.svg",
+  },
+  {
+    keywords: ["keras"],
+    logo: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/keras/keras-original.svg",
+  },
+  {
+    keywords: ["spark"],
+    logo: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/apachespark/apachespark-original.svg",
+  },
+  {
+    keywords: ["mlflow"],
+    logo: "https://mlflow.org/docs/latest/_static/MLflow-logo-final-black.png",
+  },
+  {
+    keywords: ["kubeflow"],
+    logo: "https://www.kubeflow.org/images/logos/application.svg",
+  },
+  {
+    keywords: [".net"],
+    logo: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/dotnetcore/dotnetcore-original.svg",
+  },
+  {
+    keywords: ["c#"],
+    logo: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/csharp/csharp-original.svg",
+  },
+  {
+    keywords: ["asp.net"],
+    logo: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/dotnetcore/dotnetcore-original.svg",
+  },
+  {
+    keywords: ["entity", "framework"],
+    logo: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/dotnetcore/dotnetcore-original.svg",
+  },
+  {
+    keywords: ["blazor"],
+    logo: "https://upload.wikimedia.org/wikipedia/commons/d/d0/Blazor_Logo.png",
+  },
+  {
+    keywords: ["azure", "devops"],
+    logo: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/azuredevops/azuredevops-original.svg",
+  },
+  {
+    keywords: ["sql", "server"],
+    logo: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/microsoftsqlserver/microsoftsqlserver-plain.svg",
+  },
+  {
+    keywords: ["visual", "studio"],
+    logo: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/visualstudio/visualstudio-plain.svg",
+  },
+  {
+    keywords: ["dynamics"],
+    logo: "https://seeklogo.com/images/M/microsoft-dynamics-365-logo-7A8C3FB9D2-seeklogo.com.png",
+  },
+  {
+    keywords: ["power", "platform"],
+    logo: "https://seeklogo.com/images/M/microsoft-power-platform-logo-08B94476B5-seeklogo.com.png",
+  },
+  {
+    keywords: ["power", "bi"],
+    logo: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/powerbi/powerbi-original.svg",
+  },
+  {
+    keywords: ["power", "automate"],
+    logo: "https://upload.wikimedia.org/wikipedia/commons/9/9e/Power_Automate_icon.svg",
+  },
+  {
+    keywords: ["sharepoint"],
+    logo: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/sharepoint/sharepoint-original.svg",
+  },
+  {
+    keywords: ["teams"],
+    logo: "https://upload.wikimedia.org/wikipedia/commons/c/c9/Microsoft_Office_Teams_%282018%E2%80%93present%29.svg",
+  },
+  {
+    keywords: ["aws"],
+    logo: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/amazonwebservices/amazonwebservices-original.svg",
+  },
+  {
+    keywords: ["kubernetes"],
+    logo: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/kubernetes/kubernetes-plain.svg",
+  },
+  {
+    keywords: ["docker"],
+    logo: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/docker/docker-original.svg",
+  },
+  {
+    keywords: ["python"],
+    logo: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/python/python-original.svg",
+  },
+  {
+    keywords: ["mongodb"],
+    logo: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/mongodb/mongodb-original.svg",
+  },
+  {
+    keywords: ["postgres"],
+    logo: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/postgresql/postgresql-original.svg",
+  },
+  {
+    keywords: ["fastapi"],
+    logo: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/fastapi/fastapi-original.svg",
+  },
+  {
+    keywords: ["opencv"],
+    logo: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/opencv/opencv-original.svg",
+  },
+  {
+    keywords: ["spark", "ml"],
+    logo: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/apachespark/apachespark-original.svg",
+  },
+  {
+    keywords: ["mlops"],
+    logo: "https://mlflow.org/docs/latest/_static/MLflow-logo-final-black.png",
+  },
+  {
+    keywords: ["cloud", "ai"],
+    logo: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/googlecloud/googlecloud-original.svg",
+  },
+  {
+    keywords: ["azure"],
+    logo: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/azure/azure-original.svg",
+  },
+  {
+    keywords: ["sql"],
+    logo: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/mysql/mysql-original.svg",
+  },
+  {
+    keywords: ["git"],
+    logo: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/git/git-original.svg",
+  },
+  {
+    keywords: ["jira"],
+    logo: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/jira/jira-original.svg",
+  },
+];
+
 const getTechnologyIcon = (tech: string) => {
   const techLower = tech.toLowerCase();
   if (techLower.includes('tensorflow') || techLower.includes('pytorch') || techLower.includes('ml')) return Brain;
@@ -40,6 +219,12 @@ const getTechnologyIcon = (tech: string) => {
   if (techLower.includes('security') || techLower.includes('auth')) return Shield;
   if (techLower.includes('automation') || techLower.includes('devops')) return Zap;
   return Code2;
+};
+
+const getTechnologyLogo = (tech: string) => {
+  const normalized = tech.toLowerCase();
+  const match = TECHNOLOGY_LOGOS.find(({ keywords }) => keywords.every((keyword) => normalized.includes(keyword)));
+  return match?.logo;
 };
 
 const ExpertiseServicePage = () => {
@@ -281,6 +466,7 @@ const ExpertiseServicePage = () => {
             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 max-w-5xl mx-auto">
               {service.technologies.map((tech, index) => {
                 const Icon = getTechnologyIcon(tech);
+                const logoUrl = getTechnologyLogo(tech);
                 return (
                   <Card
                     key={tech}
@@ -289,7 +475,16 @@ const ExpertiseServicePage = () => {
                   >
                     <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-accent/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                     <div className="relative z-10">
-                      <Icon className="w-10 h-10 mx-auto mb-3 text-primary group-hover:text-accent transition-colors group-hover:scale-110 transform duration-300" />
+                      {logoUrl ? (
+                        <img
+                          src={logoUrl}
+                          alt={`${tech} logo`}
+                          className="mx-auto mb-3 h-10 w-10 object-contain transition-transform duration-300 group-hover:scale-110"
+                          loading="lazy"
+                        />
+                      ) : (
+                        <Icon className="w-10 h-10 mx-auto mb-3 text-primary group-hover:text-accent transition-colors group-hover:scale-110 transform duration-300" />
+                      )}
                       <span className="font-medium text-sm">{tech}</span>
                     </div>
                   </Card>

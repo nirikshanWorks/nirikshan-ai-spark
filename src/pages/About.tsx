@@ -16,8 +16,7 @@ import {
   Globe2,
   ShieldCheck,
   Layers,
-  BarChart3,
-  Cpu
+  BarChart3
 } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useScrollAnimation } from "@/hooks/use-scroll-animation";
@@ -55,6 +54,7 @@ const About = () => {
   const differentiatorsRef = useScrollAnimation(0.2);
   const statsRef = useScrollAnimation(0.3);
   const timelineRef = useScrollAnimation(0.2);
+  const [revealedMilestones, setRevealedMilestones] = useState(0);
 
   const differentiators = [
     {
@@ -110,6 +110,22 @@ const About = () => {
     },
   ];
 
+  useEffect(() => {
+    if (!timelineRef.isVisible) {
+      return;
+    }
+
+    if (revealedMilestones >= milestones.length) {
+      return;
+    }
+
+    const timer = setTimeout(() => {
+      setRevealedMilestones((prev) => Math.min(prev + 1, milestones.length));
+    }, 600);
+
+    return () => clearTimeout(timer);
+  }, [timelineRef.isVisible, revealedMilestones, milestones.length]);
+
   return (
     <div className="min-h-screen">
       <Navigation />
@@ -125,27 +141,6 @@ const About = () => {
             playsInline
             className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" 
           />
-          <div className="absolute inset-0 hero-overlay" />
-          <div className="hidden md:flex absolute top-10 right-12 flex-col gap-4 z-20">
-            <div className="backdrop-blur-sm bg-white/15 border border-white/20 rounded-2xl px-5 py-4 text-white shadow-xl transform transition-all duration-500 hover:-translate-y-1">
-              <div className="flex items-center gap-3">
-                <Sparkles className="h-6 w-6 text-yellow-200" />
-                <span className="text-sm uppercase tracking-widest">AI Innovation Lab</span>
-              </div>
-              <p className="mt-2 text-xs text-white/80 max-w-[200px]">
-                40+ prototypes validated annually with partners across healthcare, fintech, and manufacturing.
-              </p>
-            </div>
-            <div className="backdrop-blur-sm bg-white/15 border border-white/20 rounded-2xl px-5 py-4 text-white shadow-xl transform transition-all duration-500 hover:-translate-y-1">
-              <div className="flex items-center gap-3">
-                <Cpu className="h-6 w-6 text-cyan-200" />
-                <span className="text-sm uppercase tracking-widest">Trusted Team</span>
-              </div>
-              <p className="mt-2 text-xs text-white/80 max-w-[200px]">
-                Strategists, designers, and engineers co-creating resilient products with measurable business value.
-              </p>
-            </div>
-          </div>
           <div className="relative z-10 container mx-auto px-6 h-full flex items-center">
             <div className="animate-fade-in-up">
               <h1 className="text-4xl md:text-6xl font-bold text-white mb-4 leading-tight">About Nirikshan AI</h1>
@@ -332,21 +327,50 @@ const About = () => {
             }`}>
               <div className="absolute left-5 top-0 bottom-0 w-px bg-gradient-to-b from-primary via-accent to-primary hidden md:block" />
               <div className="space-y-10 md:space-y-12">
-                {milestones.map((milestone, idx) => (
-                  <div key={milestone.year} className="relative pl-12 md:pl-24">
-                    <div className="hidden md:flex absolute left-0 top-4 h-12 w-12 items-center justify-center rounded-full bg-gradient-to-br from-primary to-accent text-white font-semibold shadow-lg">
-                      {idx + 1}
+                {milestones.map((milestone, idx) => {
+                  if (idx >= revealedMilestones) {
+                    return null;
+                  }
+
+                  const isActive = idx === revealedMilestones - 1;
+
+                  return (
+                    <div
+                      key={milestone.year}
+                      className={`relative pl-12 md:pl-24 transition-all duration-700 ease-out ${
+                        isActive ? "scale-[1.02]" : "scale-100"
+                      }`}
+                    >
+                      <div
+                        className={`hidden md:flex absolute left-0 top-4 h-12 w-12 items-center justify-center rounded-full text-white font-semibold shadow-lg transition-all duration-500 ${
+                          isActive
+                            ? "bg-gradient-to-br from-primary to-accent"
+                            : "bg-primary/60"
+                        }`}
+                      >
+                        {idx + 1}
+                      </div>
+                      <div
+                        className={`hidden md:block absolute left-5 top-8 h-3 w-3 rounded-full shadow-lg transition-colors duration-500 ${
+                          isActive ? "bg-accent" : "bg-primary"
+                        }`}
+                      />
+                      <span className="inline-flex items-center rounded-full bg-primary/10 px-4 py-1 text-sm font-semibold text-primary mb-4">
+                        {milestone.year}
+                      </span>
+                      <div
+                        className={`rounded-3xl border bg-white/80 dark:bg-slate-900/60 p-6 shadow-sm backdrop-blur transition-all duration-500 ${
+                          isActive
+                            ? "border-primary/40 shadow-lg shadow-primary/10"
+                            : "border-primary/10"
+                        }`}
+                      >
+                        <h3 className="text-xl font-semibold text-primary mb-2">{milestone.title}</h3>
+                        <p className="text-sm text-muted-foreground leading-relaxed">{milestone.description}</p>
+                      </div>
                     </div>
-                    <div className="hidden md:block absolute left-5 top-8 h-3 w-3 rounded-full bg-primary shadow-lg" />
-                    <span className="inline-flex items-center rounded-full bg-primary/10 px-4 py-1 text-sm font-semibold text-primary mb-4">
-                      {milestone.year}
-                    </span>
-                    <div className="rounded-3xl border border-primary/10 bg-white/80 dark:bg-slate-900/60 p-6 shadow-sm backdrop-blur">
-                      <h3 className="text-xl font-semibold text-primary mb-2">{milestone.title}</h3>
-                      <p className="text-sm text-muted-foreground leading-relaxed">{milestone.description}</p>
-                    </div>
-                  </div>
-                ))}
+                  );
+                })}
               </div>
             </div>
           </div>

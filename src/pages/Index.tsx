@@ -1,3 +1,4 @@
+import { MutableRefObject, useEffect, useRef } from "react";
 import { Navigation } from "@/components/Navigation";
 import { Footer } from "@/components/Footer";
 import { HeroSection } from "@/components/HeroSection";
@@ -94,12 +95,35 @@ const services = [
 ];
 
 const industries = [
-  { title: "Healthcare", image: "https://images.unsplash.com/photo-1576091160399-112ba8d25d1d" },
-  { title: "Retail & E-commerce", image: "https://images.unsplash.com/photo-1441986300917-64674bd600d8" },
-  { title: "Manufacturing", image: "https://images.unsplash.com/photo-1565514020179-026b92b84bb6" },
-  { title: "Finance & Banking", image: "https://images.unsplash.com/photo-1563013544-824ae1b704d3" },
+  { title: "Healthcare", image: "https://res.cloudinary.com/dch0uyw8e/image/upload/v1760826868/7a2660b5-bbbe-469d-a485-6bf9049a5d16.png" },
+  { title: "Retail & E-commerce", image: "https://res.cloudinary.com/dch0uyw8e/image/upload/v1760826876/5bc25593-911c-453f-be23-024e628d8414.png" },
+  { title: "Manufacturing", image: "https://res.cloudinary.com/dch0uyw8e/image/upload/v1760826989/7e121981-e315-4970-ad0e-27f0cfa917ba.png" },
+  { title: "Finance & Banking", image: "https://res.cloudinary.com/dch0uyw8e/image/upload/v1760827050/cb1da7ea-4d76-45f2-a32b-3cf65a14c9d1.png" },
+  { title: "Agriculture", image: "https://asqi.in/wp-content/uploads/2024/11/Sustainable-Agriculture-In-India.jpg" },
+  { title: "Education", image: "https://images.unsplash.com/photo-1509062522246-3755977927d7?auto=format&fit=crop&w=900&q=80" },
 ];
 
+const partners = [
+  {
+    name: "Madapet",
+    logo: "https://res.cloudinary.com/dch0uyw8e/image/upload/v1760830199/LOGO_8_8_kkuti6.jpg",  },
+  {
+    name: "Mangosorange Agritech India Pvt Ltd",
+    logo: "https://mangosorange.co.in/assets/img/MOLogo.png",
+  },
+  {
+    name: "Motherson",
+    logo: "https://apn-portal.my.salesforce.com/servlet/servlet.ImageServer?id=0150h0000055wCcAAI&oid=00DE0000000c48tMAA",
+  },
+  {
+    name: "Ranayara Private Limited",
+    logo: "https://5.imimg.com/data5/NSDMERP/Board/2023/5/308937129/NE/QI/NP/155783236/155783236-board-1684400723760.jpg",
+  },
+  {
+    name: "YMCA University",
+    logo: "https://upload.wikimedia.org/wikipedia/en/a/ae/J.C._Bose_University_of_Science_and_Technology%2C_YMCA_logo.png",
+  },
+];
 const stats = [
   { value: "5+", label: "Team Members" },
   { value: "5+", label: "Ongoing Projects" },
@@ -108,6 +132,53 @@ const stats = [
 ];
 
 const Index = () => {
+  const industriesContainerRef = useRef<HTMLDivElement | null>(null);
+  const partnersContainerRef = useRef<HTMLDivElement | null>(null);
+  const isHoveringRef = useRef(false);
+  const isPartnersHoveringRef = useRef(false);
+
+  useEffect(() => {
+    const setupAutoScroll = (
+      containerRef: MutableRefObject<HTMLDivElement | null>,
+      hoverRef: MutableRefObject<boolean>
+    ) => {
+      const container = containerRef.current;
+      if (!container) {
+        return () => {};
+      }
+
+      let animationFrame: number;
+      const scrollSpeed = 0.6;
+
+      const loop = () => {
+        if (!hoverRef.current) {
+          container.scrollLeft += scrollSpeed;
+          const maxScroll = container.scrollWidth / 2;
+          if (container.scrollLeft >= maxScroll) {
+            container.scrollLeft = 0;
+          }
+        }
+        animationFrame = requestAnimationFrame(loop);
+      };
+
+      animationFrame = requestAnimationFrame(loop);
+
+      return () => cancelAnimationFrame(animationFrame);
+    };
+
+    const cleanups = [
+      setupAutoScroll(industriesContainerRef, isHoveringRef),
+      setupAutoScroll(partnersContainerRef, isPartnersHoveringRef),
+    ];
+
+    return () => {
+      cleanups.forEach((cleanup) => cleanup());
+    };
+  }, []);
+
+  const duplicatedIndustries = [...industries, ...industries];
+  const duplicatedPartners = [...partners, ...partners];
+
   return (
     <div className="min-h-screen">
       <Navigation />
@@ -184,6 +255,45 @@ const Index = () => {
         {/* Why Choose Us */}
         <WhyChooseUs />
 
+        {/* Our Partners */}
+        <section className="py-16 bg-background">
+          <div className="container mx-auto px-6">
+            <div className="text-center mb-10">
+              <p className="text-accent text-sm font-semibold mb-3 uppercase tracking-wider">Trusted By</p>
+              <h2 className="text-3xl md:text-4xl font-bold mb-4">Our Patners</h2>
+              <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+                Collaborating with forward-thinking organizations to drive innovation together
+              </p>
+            </div>
+            <div
+              className="overflow-hidden"
+              ref={partnersContainerRef}
+              onMouseEnter={() => {
+                isPartnersHoveringRef.current = true;
+              }}
+              onMouseLeave={() => {
+                isPartnersHoveringRef.current = false;
+              }}
+            >
+              <div className="flex gap-8 min-w-max items-center">
+                {duplicatedPartners.map((partner, index) => (
+                  <div key={`${partner.name}-${index}`} className="w-48 flex-shrink-0">
+                    <div className="h-32 w-full bg-secondary/40 border border-border rounded-xl flex items-center justify-center p-6">
+                      <img
+                        src={partner.logo}
+                        alt={partner.name}
+                        className="max-h-full max-w-full object-contain"
+                        loading="lazy"
+                      />
+                    </div>
+                    <p className="mt-4 text-center font-medium text-sm text-muted-foreground">{partner.name}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </section>
+
         {/* Process Section */}
         <ProcessSection />
 
@@ -202,16 +312,29 @@ const Index = () => {
                 Delivering tailored solutions across diverse sectors
               </p>
             </div>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-              {industries.map((industry, index) => (
-                <IndustryCard key={index} {...industry} />
-              ))}
+            <div
+              className="overflow-hidden"
+              ref={industriesContainerRef}
+              onMouseEnter={() => {
+                isHoveringRef.current = true;
+              }}
+              onMouseLeave={() => {
+                isHoveringRef.current = false;
+              }}
+            >
+              <div className="flex gap-6 min-w-max pb-2">
+                {duplicatedIndustries.map((industry, index) => (
+                  <div key={`${industry.title}-${index}`} className="w-64 flex-shrink-0">
+                    <IndustryCard {...industry} />
+                  </div>
+                ))}
+              </div>
             </div>
           </div>
         </section>
 
         {/* CTA Section */}
-        <CTASection />
+            <CTASection />
       </main>
 
       <Footer />

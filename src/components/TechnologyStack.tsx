@@ -1,18 +1,66 @@
 import { Card } from "@/components/ui/card";
 
 const technologies = [
-  { name: "TensorFlow", category: "AI/ML" },
-  { name: "PyTorch", category: "Deep Learning" },
-  { name: "React", category: "Frontend" },
-  { name: "Node.js", category: "Backend" },
-  { name: "Python", category: "Programming" },
-  { name: "Docker", category: "DevOps" },
-  { name: "AWS", category: "Cloud" },
-  { name: "PostgreSQL", category: "Database" },
-  { name: "OpenCV", category: "Computer Vision" },
-  { name: "FastAPI", category: "API" },
-  { name: "MongoDB", category: "Database" },
-  { name: "Kubernetes", category: "DevOps" },
+  {
+    name: "TensorFlow",
+    category: "AI/ML",
+    logo: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/tensorflow/tensorflow-original.svg",
+  },
+  {
+    name: "PyTorch",
+    category: "Deep Learning",
+    logo: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/pytorch/pytorch-original.svg",
+  },
+  {
+    name: "React",
+    category: "Frontend",
+    logo: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/react/react-original.svg",
+  },
+  {
+    name: "Node.js",
+    category: "Backend",
+    logo: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nodejs/nodejs-original.svg",
+  },
+  {
+    name: "Python",
+    category: "Programming",
+    logo: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/python/python-original.svg",
+  },
+  {
+    name: "Docker",
+    category: "DevOps",
+    logo: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/docker/docker-original.svg",
+  },
+  {
+    name: "AWS",
+    category: "Cloud",
+    logo: "https://www.svgrepo.com/show/448299/aws.svg",
+  },
+  {
+    name: "PostgreSQL",
+    category: "Database",
+    logo: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/postgresql/postgresql-original.svg",
+  },
+  {
+    name: "OpenCV",
+    category: "Computer Vision",
+    logo: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/opencv/opencv-original.svg",
+  },
+  {
+    name: "FastAPI",
+    category: "API",
+    logo: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/fastapi/fastapi-original.svg",
+  },
+  {
+    name: "MongoDB",
+    category: "Database",
+    logo: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/mongodb/mongodb-original.svg",
+  },
+  {
+    name: "Kubernetes",
+    category: "DevOps",
+    logo: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/kubernetes/kubernetes-plain.svg",
+  },
 ];
 
 export const TechnologyStack = () => {
@@ -28,13 +76,19 @@ export const TechnologyStack = () => {
         </div>
 
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-4 max-w-6xl mx-auto">
-          {technologies.map((tech, index) => (
-            <Card 
-              key={index} 
-              className="p-6 text-center card-hover group cursor-pointer border-2 border-border hover:border-primary/50 transition-all duration-300"
+          {technologies.map((tech) => (
+            <Card
+              key={tech.name}
+              className="flex flex-col items-center justify-center gap-3 p-6 text-center card-hover group cursor-pointer border-2 border-border hover:border-primary/50 transition-all duration-300"
             >
-              <div className="relative">
-                <h3 className="font-bold text-lg mb-1 group-hover:text-primary transition-colors">{tech.name}</h3>
+              <img
+                src={tech.logo}
+                alt={`${tech.name} logo`}
+                className="h-12 w-12 object-contain transition-transform duration-300 group-hover:scale-110"
+                loading="lazy"
+              />
+              <div>
+                <h3 className="font-bold text-lg group-hover:text-primary transition-colors">{tech.name}</h3>
                 <p className="text-xs text-muted-foreground uppercase tracking-wider">{tech.category}</p>
               </div>
             </Card>
