@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { Mail, Phone, Linkedin, Twitter, Facebook } from "lucide-react";
+import { Mail, Phone, Linkedin, Instagram } from "lucide-react";
 
 export const Footer = () => {
   return (
@@ -14,7 +14,7 @@ export const Footer = () => {
             </p>
             <div className="flex space-x-4">
               <a
-                href="https://www.linkedin.com/company/nirikshan-ai"
+                href="https://www.linkedin.com/company/nirikshan-ai/"
                 target="_blank"
                 rel="noreferrer"
                 aria-label="Visit Nirikshan AI on LinkedIn"
@@ -23,22 +23,13 @@ export const Footer = () => {
                 <Linkedin size={20} />
               </a>
               <a
-                href="https://twitter.com/nirikshan_ai"
+                href="https://www.instagram.com/nirikshan.ai/profilecard/?igsh=MXh4cWl3azdtbGQzaw%3D%3D"
                 target="_blank"
                 rel="noreferrer"
-                aria-label="Visit Nirikshan AI on X"
+                aria-label="Visit Nirikshan AI on Instagram"
                 className="text-muted-foreground hover:text-primary transition-colors"
               >
-                <Twitter size={20} />
-              </a>
-              <a
-                href="https://www.facebook.com/nirikshanai"
-                target="_blank"
-                rel="noreferrer"
-                aria-label="Visit Nirikshan AI on Facebook"
-                className="text-muted-foreground hover:text-primary transition-colors"
-              >
-                <Facebook size={20} />
+                <Instagram size={20} />
               </a>
             </div>
           </div>

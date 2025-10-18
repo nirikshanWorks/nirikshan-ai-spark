@@ -1,14 +1,58 @@
 import { Navigation } from "@/components/Navigation";
 import { Footer } from "@/components/Footer";
-import { Quote, ArrowRight } from "lucide-react";
+import { Quote, ArrowRight, Sparkles, Lightbulb, Bot, Rocket, HeartHandshake, CircuitBoard } from "lucide-react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { testimonials } from "./whoWeAreContent";
 
+const accentStyles = [
+  {
+    Icon: Sparkles,
+    gradient: "from-indigo-500/20 via-purple-500/10 to-blue-500/20",
+    accent: "text-indigo-500"
+  },
+  {
+    Icon: Lightbulb,
+    gradient: "from-amber-500/20 via-orange-400/10 to-pink-500/20",
+    accent: "text-amber-500"
+  },
+  {
+    Icon: Bot,
+    gradient: "from-emerald-500/20 via-teal-400/10 to-cyan-500/20",
+    accent: "text-emerald-500"
+  },
+  {
+    Icon: Rocket,
+    gradient: "from-purple-500/20 via-violet-500/10 to-indigo-500/20",
+    accent: "text-purple-500"
+  },
+  {
+    Icon: HeartHandshake,
+    gradient: "from-rose-500/20 via-red-400/10 to-orange-500/20",
+    accent: "text-rose-500"
+  },
+  {
+    Icon: CircuitBoard,
+    gradient: "from-blue-500/20 via-cyan-400/10 to-sky-500/20",
+    accent: "text-blue-500"
+  }
+];
+
 const Testimonials = () => (
-  <div className="min-h-screen bg-background">
-    <Navigation />
-    <main className="pt-16 pb-20">
+  <div className="relative min-h-screen overflow-hidden bg-background text-foreground">
+    <video
+      className="pointer-events-none absolute left-1/2 top-1/2 min-h-full min-w-full w-auto h-auto -translate-x-1/2 -translate-y-1/2 object-cover"
+      autoPlay
+      muted
+      loop
+      playsInline
+      src="https://res.cloudinary.com/dch0uyw8e/video/upload/v1760812022/Testimonials_zthao0.mp4"
+    />
+    <div className="absolute inset-0 bg-gradient-to-b from-background/95 via-background/80 to-background/95 backdrop-blur-sm" aria-hidden="true" />
+    <div className="relative z-10">
+      <Navigation />
+    </div>
+    <main className="relative z-10 pt-16 pb-20">
       <section className="container mx-auto px-6 py-16">
         <div className="max-w-4xl mx-auto text-center mb-14">
           <span className="text-xs md:text-sm font-semibold uppercase tracking-[0.3em] text-indigo-500 block mb-4">
@@ -20,29 +64,40 @@ const Testimonials = () => (
           </p>
         </div>
 
-        <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
-          {testimonials.map((testimonial) => (
-            <article
-              key={testimonial.name}
-              className="p-8 rounded-3xl border border-border bg-background shadow-sm hover:shadow-xl transition-all duration-300"
-            >
-              <Quote className="text-indigo-500 mb-4" size={28} />
-              <p className="text-muted-foreground mb-6 text-sm leading-relaxed">
-                “{testimonial.quote}”
-              </p>
-              <div className="flex items-center gap-4">
-                <img
-                  src={testimonial.image}
-                  alt={testimonial.name}
-                  className="w-12 h-12 rounded-full object-cover"
-                />
-                <div className="text-left">
-                  <p className="font-semibold">{testimonial.name}</p>
-                  <p className="text-xs text-muted-foreground uppercase tracking-wide">{testimonial.role}</p>
+        <div className="grid gap-8 md:grid-cols-2 xl:grid-cols-3">
+          {testimonials.map((testimonial, index) => {
+            const accent = accentStyles[index % accentStyles.length];
+            const AccentIcon = accent.Icon;
+
+            return (
+              <article
+                key={testimonial.name}
+                className="group relative rounded-3xl p-[1px] bg-gradient-to-br from-indigo-500/10 via-transparent to-purple-500/10 transition-all duration-500 hover:shadow-2xl hover:scale-[1.01]"
+              >
+                <div className={`absolute inset-0 rounded-3xl bg-gradient-to-br ${accent.gradient} opacity-0 group-hover:opacity-100 transition-opacity duration-500`} aria-hidden="true" />
+                <div className="relative h-full rounded-[calc(1.5rem-2px)] bg-background/95 backdrop-blur py-8 px-8 border border-border/60 group-hover:border-transparent transition-all duration-500">
+                  <div className="flex items-center justify-between mb-6">
+                    <AccentIcon size={26} className={`${accent.accent}`} />
+                    <Quote className="w-10 h-10 text-muted-foreground/20 group-hover:text-muted-foreground/40 transition-colors" />
+                  </div>
+                  <p className="text-muted-foreground mb-7 text-sm leading-relaxed">
+                    “{testimonial.quote}”
+                  </p>
+                  <div className="flex items-center gap-4">
+                    <img
+                      src={testimonial.image}
+                      alt={testimonial.name}
+                      className="w-12 h-12 rounded-full object-cover ring-2 ring-border/70 group-hover:ring-transparent group-hover:shadow-[0_0_0_4px_rgba(99,102,241,0.15)] transition-all"
+                    />
+                    <div className="text-left">
+                      <p className="font-semibold text-foreground">{testimonial.name}</p>
+                      <p className="text-xs text-muted-foreground uppercase tracking-wide">{testimonial.role}</p>
+                    </div>
+                  </div>
                 </div>
-              </div>
-            </article>
-          ))}
+              </article>
+            );
+          })}
         </div>
 
         <div className="mt-16 flex flex-col sm:flex-row gap-4 justify-center">
@@ -61,7 +116,9 @@ const Testimonials = () => (
         </div>
       </section>
     </main>
-    <Footer />
+    <div className="relative z-10">
+      <Footer />
+    </div>
   </div>
 );
 

@@ -253,14 +253,14 @@ const WhoWeAre = () => {
               </p>
             </div>
             <div
-              className={`grid gap-8 md:grid-cols-2 lg:grid-cols-4 transition-all duration-1000 ${
+              className={`grid gap-8 sm:grid-cols-2 lg:grid-cols-3 transition-all duration-1000 max-w-6xl mx-auto justify-items-center ${
                 leadershipRef.isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
               }`}
             >
               {leadership.map((member) => (
                 <div
                   key={member.name}
-                  className="group relative overflow-hidden rounded-3xl border border-border bg-background shadow-sm hover:shadow-2xl transition-all duration-300"
+                  className="group relative w-full max-w-sm overflow-hidden rounded-3xl border border-border bg-background shadow-sm hover:shadow-2xl transition-all duration-300"
                 >
                   <div className="relative h-56 overflow-hidden">
                     <img
@@ -351,46 +351,57 @@ const WhoWeAre = () => {
         </section>
 
         <section className="py-20">
-          <div className="container mx-auto px-6 grid gap-12 md:grid-cols-2">
-            <div className="space-y-6">
-              <h2 className="text-3xl md:text-4xl font-bold">Message from Our CEO</h2>
-              <img
-                src={dineshImage}
-                alt="Dinesh Yadav"
-                className="w-48 h-48 rounded-full object-cover shadow-xl border-4 border-indigo-100"
-              />
-              <p className="text-muted-foreground leading-relaxed">
-                “We founded Nirikshan AI with the belief that innovation thrives when curiosity meets accountability. Our lab is
-                a playground for new ideas, but every experiment is tied to the real-world impact it can create for communities and industries.”
-              </p>
-              <p className="text-muted-foreground leading-relaxed">
-                “As we scale, we hold onto our startup ethos: move fast, learn continuously, and build with empathy. Every solution we
-                ship is a testament to collaboration between visionary researchers and courageous partners.”
-              </p>
-              <p className="text-muted-foreground leading-relaxed">
-                “The future demands intelligent systems that are ethical, explainable, and designed for people. At Nirikshan AI, we are
-                committed to leading that future.”
-              </p>
+          <div className="container mx-auto px-6 space-y-16">
+            <div className="grid gap-10 lg:grid-cols-[1.2fr,0.8fr] items-center">
+              <div className="space-y-6">
+                <h2 className="text-3xl md:text-4xl font-bold">Message from Our CEO</h2>
+                <p className="text-muted-foreground leading-relaxed">
+                  “We founded Nirikshan AI with the belief that innovation thrives when curiosity meets accountability. Our lab is
+                  a playground for new ideas, but every experiment is tied to the real-world impact it can create for communities and industries.”
+                </p>
+                <p className="text-muted-foreground leading-relaxed">
+                  “As we scale, we hold onto our startup ethos: move fast, learn continuously, and build with empathy. Every solution we
+                  ship is a testament to collaboration between visionary researchers and courageous partners.”
+                </p>
+                <p className="text-muted-foreground leading-relaxed">
+                  “The future demands intelligent systems that are ethical, explainable, and designed for people. At Nirikshan AI, we are
+                  committed to leading that future.”
+                </p>
+              </div>
+              <div className="relative flex justify-center">
+                <img
+                  src="https://res.cloudinary.com/dch0uyw8e/image/upload/v1760811387/Dinbg-removebg-preview_lqirls.png"
+                  alt="Dinesh Yadav"
+                  className="w-full max-w-sm h-auto drop-shadow-2xl"
+                />
+                <div className="absolute inset-0 -z-10 rounded-full bg-gradient-to-br from-indigo-500/30 via-purple-500/30 to-blue-500/30 blur-3xl" aria-hidden="true" />
+              </div>
             </div>
-            <div className="space-y-6">
-              <h2 className="text-3xl md:text-4xl font-bold">Message from Our COO</h2>
-              <img
-                src={anshulImage}
-                alt="Anshul"
-                className="w-48 h-48 rounded-full object-cover shadow-xl border-4 border-indigo-100"
-              />
-              <p className="text-muted-foreground leading-relaxed">
-                “Operational excellence is more than executing playbooks — it is about designing environments where teams are empowered
-                to experiment, iterate, and deliver.”
-              </p>
-              <p className="text-muted-foreground leading-relaxed">
-                “We invest deeply in research collaborations, mentorship, and tooling that help our people grow. When our teams thrive,
-                the innovations they produce resonate far beyond our studio.”
-              </p>
-              <p className="text-muted-foreground leading-relaxed">
-                “I am proud of the ecosystem we continue to build — one where every project is handled with precision, and every partner
-                sees us as an extension of their own mission.”
-              </p>
+
+            <div className="grid gap-10 lg:grid-cols-[0.8fr,1.2fr] items-center">
+              <div className="relative flex justify-center order-last lg:order-first">
+                <img
+                  src="https://res.cloudinary.com/dch0uyw8e/image/upload/v1760811387/anshbg-removebg-preview_ouupmg.png"
+                  alt="Anshul"
+                  className="w-full max-w-sm h-auto drop-shadow-2xl"
+                />
+                <div className="absolute inset-0 -z-10 rounded-full bg-gradient-to-br from-purple-500/30 via-indigo-500/30 to-blue-500/30 blur-3xl" aria-hidden="true" />
+              </div>
+              <div className="space-y-6 order-first lg:order-last">
+                <h2 className="text-3xl md:text-4xl font-bold">Message from Our COO</h2>
+                <p className="text-muted-foreground leading-relaxed">
+                  “Operational excellence is more than executing playbooks — it is about designing environments where teams are empowered
+                  to experiment, iterate, and deliver.”
+                </p>
+                <p className="text-muted-foreground leading-relaxed">
+                  “We invest deeply in research collaborations, mentorship, and tooling that help our people grow. When our teams thrive,
+                  the innovations they produce resonate far beyond our studio.”
+                </p>
+                <p className="text-muted-foreground leading-relaxed">
+                  “I am proud of the ecosystem we continue to build — one where every project is handled with precision, and every partner
+                  sees us as an extension of their own mission.”
+                </p>
+              </div>
             </div>
           </div>
         </section>

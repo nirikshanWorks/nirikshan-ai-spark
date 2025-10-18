@@ -19,6 +19,27 @@ export const testimonials = [
     quote:
       "Collaborating with Nirikshan AI means partnering with people who live and breathe experimentation, rigor, and integrity.",
     image: "https://images.unsplash.com/photo-1544723795-432537f90887?auto=format&fit=crop&w=200&q=80"
+  },
+  {
+    name: "Priya Sharma",
+    role: "Head of Data Science, FinEdge",
+    quote:
+      "Their team embedded seamlessly with ours, demystifying complex models and leaving behind a culture of continuous experimentation.",
+    image: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=200&q=80"
+  },
+  {
+    name: "Michael Tan",
+    role: "CTO, Horizon Logistics",
+    quote:
+      "From ideation to ROI, Nirikshan AI managed the entire lifecycle with remarkable precision and empathy for end users.",
+    image: "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?auto=format&fit=crop&w=200&q=80"
+  },
+  {
+    name: "Elena Petrova",
+    role: "Innovation Director, EuroHealth Labs",
+    quote:
+      "Their rapid prototyping sprints turned our research backlog into validated clinical insights within weeks.",
+    image: "https://images.unsplash.com/photo-1529665253569-6d01c0eaf7b6?auto=format&fit=crop&w=200&q=80"
   }
 ];
 
