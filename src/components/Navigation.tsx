@@ -57,9 +57,9 @@ export const Navigation = () => {
   }, [mobileMenuOpen]);
 
   return (
-  <nav className="fixed top-0 left-0 right-0 z-50 bg-white/95 dark:bg-slate-950/90 backdrop-blur border-b border-border/60 shadow-sm transition-all duration-300">
-      <div className="container mx-auto px-6">
-        <div className="flex h-16 items-center justify-between">
+    <nav className="fixed top-0 left-0 right-0 z-50 bg-white dark:bg-slate-950 border-b border-border/60 shadow-sm transition-all duration-300">
+      <div className="mx-auto flex w-full max-w-7xl items-center justify-between px-4 sm:px-6">
+        <div className="flex h-16 w-full items-center justify-between">
           {/* Logo */}
           <Link to="/" className="flex items-center space-x-3 group">
             <img
