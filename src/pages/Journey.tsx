@@ -6,9 +6,20 @@ import { Link } from "react-router-dom";
 import { timeline } from "./whoWeAreContent";
 
 const Journey = () => (
-  <div className="min-h-screen bg-background">
-    <Navigation />
-    <main className="pt-16 pb-20">
+  <div className="relative min-h-screen overflow-hidden bg-background text-foreground">
+    <video
+      className="absolute inset-0 h-full w-full object-cover"
+      autoPlay
+      muted
+      loop
+      playsInline
+      src="https://res.cloudinary.com/dch0uyw8e/video/upload/v1760810261/progress_t5lviu.mp4"
+    />
+    <div className="absolute inset-0 bg-gradient-to-b from-background/95 via-background/80 to-background/95 backdrop-blur-sm" aria-hidden="true" />
+    <div className="relative z-10">
+      <Navigation />
+    </div>
+    <main className="relative z-10 pt-16 pb-20">
       <section className="container mx-auto px-6 py-16">
         <div className="max-w-4xl mx-auto text-center mb-14">
           <span className="text-xs md:text-sm font-semibold uppercase tracking-[0.3em] text-indigo-500 block mb-4">
@@ -62,7 +73,9 @@ const Journey = () => (
         </div>
       </section>
     </main>
-    <Footer />
+    <div className="relative z-10">
+      <Footer />
+    </div>
   </div>
 );
 
