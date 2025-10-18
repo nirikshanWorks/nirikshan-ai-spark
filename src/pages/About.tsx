@@ -21,7 +21,6 @@ import {
 } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useScrollAnimation } from "@/hooks/use-scroll-animation";
-import nirikshanaiVideo from "@/assets/Nirikshanai.mp4";
 import { useEffect, useState } from "react";
 
 const AnimatedCounter = ({ end, duration = 2000 }: { end: number, duration?: number }) => {
@@ -119,7 +118,7 @@ const About = () => {
         {/* Hero */}
         <section className="relative h-[400px] md:h-[500px] overflow-hidden group">
           <video 
-            src={nirikshanaiVideo}
+            src="https://res.cloudinary.com/dch0uyw8e/video/upload/v1760826173/6_wrsepd.mp4"
             autoPlay
             muted
             loop

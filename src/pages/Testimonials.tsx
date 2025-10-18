@@ -1,6 +1,6 @@
 import { Navigation } from "@/components/Navigation";
 import { Footer } from "@/components/Footer";
-import { Quote, ArrowRight, Sparkles, Lightbulb, Bot, Rocket, HeartHandshake, CircuitBoard } from "lucide-react";
+import { Quote, ArrowRight, Sparkles, Lightbulb, Bot, Rocket, HeartHandshake, CircuitBoard, Star } from "lucide-react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { testimonials } from "./whoWeAreContent";
@@ -48,11 +48,11 @@ const Testimonials = () => (
       playsInline
       src="https://res.cloudinary.com/dch0uyw8e/video/upload/v1760812022/Testimonials_zthao0.mp4"
     />
-    <div className="absolute inset-0 bg-gradient-to-b from-background/95 via-background/80 to-background/95 backdrop-blur-sm" aria-hidden="true" />
-    <div className="relative z-10">
+    <div className="pointer-events-none absolute inset-0 z-10 bg-gradient-to-b from-background/95 via-background/80 to-background/95 backdrop-blur-sm" aria-hidden="true" />
+    <div className="relative z-50 pointer-events-auto">
       <Navigation />
     </div>
-    <main className="relative z-10 pt-16 pb-20">
+    <main className="relative z-20 pt-16 pb-20">
       <section className="container mx-auto px-6 py-16">
         <div className="max-w-4xl mx-auto text-center mb-14">
           <span className="text-xs md:text-sm font-semibold uppercase tracking-[0.3em] text-indigo-500 block mb-4">
@@ -75,10 +75,15 @@ const Testimonials = () => (
                 className="group relative rounded-3xl p-[1px] bg-gradient-to-br from-indigo-500/10 via-transparent to-purple-500/10 transition-all duration-500 hover:shadow-2xl hover:scale-[1.01]"
               >
                 <div className={`absolute inset-0 rounded-3xl bg-gradient-to-br ${accent.gradient} opacity-0 group-hover:opacity-100 transition-opacity duration-500`} aria-hidden="true" />
-                <div className="relative h-full rounded-[calc(1.5rem-2px)] bg-background/95 backdrop-blur py-8 px-8 border border-border/60 group-hover:border-transparent transition-all duration-500">
-                  <div className="flex items-center justify-between mb-6">
+                <div className="relative h-full rounded-[calc(1.5rem-2px)] bg-background/95 backdrop-blur py-8 px-8 border border-violet-400/40 group-hover:border-violet-400/70 transition-all duration-500">
+                  <div className="flex items-center justify-between mb-4">
                     <AccentIcon size={26} className={`${accent.accent}`} />
                     <Quote className="w-10 h-10 text-muted-foreground/20 group-hover:text-muted-foreground/40 transition-colors" />
+                  </div>
+                  <div className="mb-5 flex items-center gap-1 text-amber-400">
+                    {Array.from({ length: 5 }).map((_, starIndex) => (
+                      <Star key={starIndex} size={16} className="fill-current" fill="currentColor" />
+                    ))}
                   </div>
                   <p className="text-muted-foreground mb-7 text-sm leading-relaxed">
                     “{testimonial.quote}”
