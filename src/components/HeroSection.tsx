@@ -39,16 +39,18 @@ export const HeroSection = ({ slides }: HeroSectionProps) => {
               muted
               loop
               playsInline
+              aria-hidden="true"
               className="w-full h-full object-cover"
             />
           ) : (
             <img
               src={slide.image}
-              alt={slide.title}
+              alt=""
+              aria-hidden="true"
               className="w-full h-full object-cover"
             />
           )}
-          <div className="absolute inset-0 hero-overlay" />
+          <div className="absolute inset-0 hero-overlay" aria-hidden="true" />
         </div>
       ))}
 
@@ -81,6 +83,9 @@ export const HeroSection = ({ slides }: HeroSectionProps) => {
               <button
                 key={index}
                 onClick={() => setActiveSlide(index)}
+                type="button"
+                aria-label={`Show hero slide: ${slide.eyebrow}`}
+                aria-pressed={index === activeSlide}
                 className={`pb-4 text-sm md:text-base transition-all ${
                   index === activeSlide
                     ? "text-white border-b-2 border-accent"

@@ -10,14 +10,12 @@ import { TechnologyStack } from "@/components/TechnologyStack";
 import { CTASection } from "@/components/CTASection";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { 
-  Brain, 
-  Eye, 
-  Code, 
-  Globe, 
-  Palette, 
-  Database, 
-  Users,
+import {
+  Brain,
+  Code,
+  Cloud,
+  Cpu,
+  Database,
   ArrowRight,
   CheckCircle2
 } from "lucide-react";
@@ -44,7 +42,7 @@ const heroSlides = [
     description: "Empowering businesses with an AI framework designed to meet their unique needs",
     cta: {
       text: "Explore AI Solutions",
-      link: "/expertise/ai-ml",
+      link: "/expertise/artificial-intelligence",
     },
   },
   {
@@ -62,45 +60,39 @@ const heroSlides = [
 const services = [
   {
     icon: Brain,
-    title: "AI & ML Solutions",
-    description: "Harness the power of artificial intelligence to automate processes and gain insights",
-    link: "/expertise/ai-ml",
-  },
-  {
-    icon: Eye,
-    title: "Computer Vision",
-    description: "Advanced image recognition and analysis for intelligent visual applications",
-    link: "/expertise/computer-vision",
-  },
-  {
-    icon: Code,
-    title: "Custom Software Development",
-    description: "Tailored software solutions built to solve your unique business challenges",
-    link: "/expertise/software-dev",
-  },
-  {
-    icon: Globe,
-    title: "Web Development",
-    description: "Modern, responsive web applications that deliver exceptional user experiences",
-    link: "/expertise/web-dev",
-  },
-  {
-    icon: Palette,
-    title: "UI/UX Design",
-    description: "Beautiful, intuitive interfaces that users love to interact with",
-    link: "/expertise/ui-ux",
+    title: "Generative AI Solutions",
+    description: "Design conversational agents and creative automation built on enterprise-ready LLM pipelines",
+    link: "/expertise/artificial-intelligence/generative-ai",
   },
   {
     icon: Database,
-    title: "Data Management",
-    description: "Efficient data solutions for storage, processing, and analytics",
-    link: "/expertise/data-management",
+    title: "Predictive Analytics",
+    description: "Forecast demand and surface insights with production-grade machine learning models",
+    link: "/expertise/artificial-intelligence/machine-learning",
   },
   {
-    icon: Users,
-    title: "CRM Software",
-    description: "Customer relationship management systems that drive growth",
-    link: "/expertise/crm",
+    icon: Code,
+    title: ".NET Modernization",
+    description: "Rebuild legacy workloads on the latest .NET stack with secure, scalable architectures",
+    link: "/expertise/microsoft-services/dotnet-development",
+  },
+  {
+    icon: Cloud,
+    title: "Azure Cloud Transformation",
+    description: "Migrate, optimize, and operate mission-critical workloads across the Azure ecosystem",
+    link: "/expertise/microsoft-services/azure-cloud",
+  },
+  {
+    icon: Cpu,
+    title: "SAP BTP Innovation",
+    description: "Extend SAP landscapes with low-code applications, automation, and AI-driven insights",
+    link: "/expertise/sap-btp",
+  },
+  {
+    icon: CheckCircle2,
+    title: "Quality Engineering",
+    description: "Automate functional, regression, and performance testing to release with confidence",
+    link: "/expertise/quality-assurance/software-testing",
   },
 ];
 
@@ -140,7 +132,7 @@ const Index = () => {
             ))}
           </div>
           <div className="text-center mt-12">
-            <Link to="/expertise/ai-ml">
+            <Link to="/expertise">
               <Button size="lg" variant="outline">
                 View All Services
                 <ArrowRight className="ml-2" size={20} />

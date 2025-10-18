@@ -185,7 +185,7 @@ const Projects = () => {
                     <ArrowRight className="ml-2" size={20} />
                   </Button>
                 </Link>
-                <Link to="/expertise/ai-ml">
+                <Link to="/expertise/artificial-intelligence">
                   <Button size="lg" variant="outline" className="hover:bg-secondary transition-all duration-300 transform hover:scale-105">
                     Explore Our Services
                   </Button>

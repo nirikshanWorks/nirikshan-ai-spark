@@ -13,13 +13,31 @@ export const Footer = () => {
               Bridging AI & Enterprises with innovative technology solutions
             </p>
             <div className="flex space-x-4">
-              <a href="#" className="text-muted-foreground hover:text-primary transition-colors">
+              <a
+                href="https://www.linkedin.com/company/nirikshan-ai"
+                target="_blank"
+                rel="noreferrer"
+                aria-label="Visit Nirikshan AI on LinkedIn"
+                className="text-muted-foreground hover:text-primary transition-colors"
+              >
                 <Linkedin size={20} />
               </a>
-              <a href="#" className="text-muted-foreground hover:text-primary transition-colors">
+              <a
+                href="https://twitter.com/nirikshan_ai"
+                target="_blank"
+                rel="noreferrer"
+                aria-label="Visit Nirikshan AI on X"
+                className="text-muted-foreground hover:text-primary transition-colors"
+              >
                 <Twitter size={20} />
               </a>
-              <a href="#" className="text-muted-foreground hover:text-primary transition-colors">
+              <a
+                href="https://www.facebook.com/nirikshanai"
+                target="_blank"
+                rel="noreferrer"
+                aria-label="Visit Nirikshan AI on Facebook"
+                className="text-muted-foreground hover:text-primary transition-colors"
+              >
                 <Facebook size={20} />
               </a>
             </div>
@@ -30,23 +48,28 @@ export const Footer = () => {
             <h4 className="font-semibold mb-4">Services</h4>
             <ul className="space-y-2 text-sm">
               <li>
-                <Link to="/expertise/ai-ml" className="text-muted-foreground hover:text-primary transition-colors">
-                  AI & ML Solutions
+                <Link to="/expertise/artificial-intelligence/generative-ai" className="text-muted-foreground hover:text-primary transition-colors">
+                  Generative AI Solutions
                 </Link>
               </li>
               <li>
-                <Link to="/expertise/computer-vision" className="text-muted-foreground hover:text-primary transition-colors">
-                  Computer Vision
+                <Link to="/expertise/artificial-intelligence/machine-learning" className="text-muted-foreground hover:text-primary transition-colors">
+                  Predictive Analytics
                 </Link>
               </li>
               <li>
-                <Link to="/expertise/software-dev" className="text-muted-foreground hover:text-primary transition-colors">
-                  Software Development
+                <Link to="/expertise/microsoft-services/dotnet-development" className="text-muted-foreground hover:text-primary transition-colors">
+                  .NET Modernization
                 </Link>
               </li>
               <li>
-                <Link to="/expertise/web-dev" className="text-muted-foreground hover:text-primary transition-colors">
-                  Web Development
+                <Link to="/expertise/microsoft-services/azure-cloud" className="text-muted-foreground hover:text-primary transition-colors">
+                  Azure Cloud Transformation
+                </Link>
+              </li>
+              <li>
+                <Link to="/expertise/quality-assurance/software-testing" className="text-muted-foreground hover:text-primary transition-colors">
+                  Quality Engineering
                 </Link>
               </li>
             </ul>
