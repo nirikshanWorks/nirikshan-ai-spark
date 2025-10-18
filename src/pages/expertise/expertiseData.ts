@@ -19,6 +19,23 @@ export const expertiseCategories = [
     slug: "artificial-intelligence",
     icon: Brain,
     description: "Transform your business with cutting-edge AI and machine learning solutions that drive innovation and efficiency.",
+    highlights: [
+      {
+        stat: "45+",
+        label: "AI Deployments",
+        description: "Enterprise-grade AI products delivered across finance, manufacturing, and retail"
+      },
+      {
+        stat: "120%",
+        label: "ROI Acceleration",
+        description: "Average improvement in decision-making speed for our AI-driven engagements"
+      },
+      {
+        stat: "30+",
+        label: "Domain Specialists",
+        description: "Certified AI engineers, data scientists, and prompt engineers on the core team"
+      }
+    ],
     services: [
       {
         title: "Generative AI",
@@ -224,6 +241,23 @@ export const expertiseCategories = [
     slug: "microsoft-services",
     icon: Cpu,
     description: "Comprehensive solutions leveraging Microsoft's enterprise ecosystem for digital transformation and business growth.",
+    highlights: [
+      {
+        stat: "250+",
+        label: ".NET Releases",
+        description: "Secure, high-performance applications shipped on modern Microsoft stacks"
+      },
+      {
+        stat: "98%",
+        label: "Migration Success",
+        description: "Legacy platforms transitioned to Azure with zero unplanned downtime"
+      },
+      {
+        stat: "20+",
+        label: "Industry Templates",
+        description: "Reusable accelerators for BFSI, healthcare, manufacturing, and retail"
+      }
+    ],
     services: [
       {
         title: ".NET Development",
@@ -496,6 +530,23 @@ export const expertiseCategories = [
     slug: "sap-btp",
     icon: Boxes,
     description: "Unlock the full potential of SAP Business Technology Platform with our comprehensive integration and development services.",
+    highlights: [
+      {
+        stat: "360°",
+        label: "Integration View",
+        description: "Unified control across SAP and non-SAP landscapes with real-time visibility"
+      },
+      {
+        stat: "50%",
+        label: "Build Speed",
+        description: "Reduction in app development time using low-code accelerators on SAP BTP"
+      },
+      {
+        stat: "99.9%",
+        label: "Data Reliability",
+        description: "Analytics pipelines maintained with enterprise-grade governance"
+      }
+    ],
     services: [
       {
         title: "SAP Integration Suite",
@@ -702,6 +753,23 @@ export const expertiseCategories = [
     slug: "quality-assurance",
     icon: CheckCircle,
     description: "Ensure software excellence with our comprehensive quality assurance and testing services.",
+    highlights: [
+      {
+        stat: "500k+",
+        label: "Test Cases Executed",
+        description: "Automation-led validation across web, mobile, and enterprise workloads"
+      },
+      {
+        stat: "65%",
+        label: "Faster Releases",
+        description: "Time saved for product teams through continuous testing pipelines"
+      },
+      {
+        stat: "24/7",
+        label: "QA Coverage",
+        description: "Global delivery teams ensuring round-the-clock quality assurance"
+      }
+    ],
     services: [
       {
         title: "Software Testing",

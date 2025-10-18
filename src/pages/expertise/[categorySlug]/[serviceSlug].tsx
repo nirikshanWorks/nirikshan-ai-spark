@@ -4,6 +4,7 @@ import { Footer } from "@/components/Footer";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import {
   ArrowRight,
   ArrowLeft,
@@ -64,17 +65,21 @@ const ExpertiseServicePage = () => {
       </div>
     );
   }
-
   return (
     <div className="min-h-screen">
       <Navigation />
 
       <main className="pt-16">
         {/* Hero Section */}
-        <section className="relative h-[400px] md:h-[500px] overflow-hidden">
-          <div className="absolute inset-0 bg-gradient-to-br from-primary to-accent" />
+        <section className="relative h-[420px] md:h-[520px] overflow-hidden">
+          <div className="absolute inset-0 bg-gradient-to-br from-primary via-blue-600 to-accent" />
+          <div className="absolute -top-24 -left-16 w-64 h-64 bg-white/15 blur-3xl rounded-full" />
+          <div className="absolute bottom-[-140px] right-[-40px] w-96 h-96 bg-white/10 blur-3xl rounded-full" />
           <div className="relative z-10 container mx-auto px-6 h-full flex items-center">
             <div className="fade-in-up">
+              <Badge className="mb-4 bg-white/20 text-white border-white/30 hover:bg-white/30">
+                {category.title}
+              </Badge>
               <Link
                 to={`/expertise/${category.slug}`}
                 className="inline-flex items-center text-white/80 hover:text-white mb-6 transition-colors"
@@ -82,17 +87,27 @@ const ExpertiseServicePage = () => {
                 <ArrowLeft className="mr-2" size={20} />
                 Back to {category.title}
               </Link>
-              <h1 className="text-4xl md:text-6xl font-bold text-white mb-4">{service.title}</h1>
+              <h1 className="text-4xl md:text-6xl font-bold text-white mb-4 leading-tight">{service.title}</h1>
               <div className="h-1 w-24 bg-white rounded-full mb-6"></div>
               <p className="text-lg md:text-xl text-white/90 max-w-2xl">
                 {service.description}
               </p>
+              <div className="mt-8 flex flex-wrap gap-4">
+                <Link to="#features" className="inline-flex items-center text-white/90 hover:text-white transition-colors">
+                  Explore capabilities
+                  <ArrowRight className="ml-2" size={18} />
+                </Link>
+                <Link to="#use-cases" className="inline-flex items-center text-white/90 hover:text-white transition-colors">
+                  Real-world use cases
+                  <ArrowRight className="ml-2" size={18} />
+                </Link>
+              </div>
             </div>
           </div>
         </section>
 
         {/* Key Features Section */}
-        <section className="py-20 bg-background">
+        <section id="features" className="py-20 bg-background">
           <div className="container mx-auto px-6">
             <div className="text-center mb-12 fade-in-up">
               <div className="flex items-center justify-center gap-2 mb-4">
@@ -231,6 +246,37 @@ const ExpertiseServicePage = () => {
                 );
               })}
             </div>
+          </div>
+        </section>
+
+        {/* Use Cases */}
+        <section id="use-cases" className="py-20 bg-background">
+          <div className="container mx-auto px-6">
+            <div className="text-center mb-10">
+              <div className="flex items-center justify-center gap-2 mb-4">
+                <Target className="text-purple-500" size={28} />
+                <h2 className="text-3xl font-bold">Use Cases</h2>
+              </div>
+              <p className="text-muted-foreground max-w-2xl mx-auto">
+                Discover how organizations leverage {service.title} to solve mission-critical challenges.
+              </p>
+            </div>
+            <Card className="p-4 md:p-6 bg-secondary/30 border-secondary/40">
+              <Accordion type="single" collapsible>
+                {service.useCases.map((useCase, index) => (
+                  <AccordionItem key={useCase} value={`use-case-${index}`}>
+                    <AccordionTrigger className="text-left text-base font-semibold text-foreground">
+                      {useCase}
+                    </AccordionTrigger>
+                    <AccordionContent className="text-muted-foreground">
+                      <p>
+                        {useCase} initiatives executed by Nirikshan AI blend strategy, experience design, and engineering excellence. Reach out to explore detailed case studies and engagement models tailored to your roadmap.
+                      </p>
+                    </AccordionContent>
+                  </AccordionItem>
+                ))}
+              </Accordion>
+            </Card>
           </div>
         </section>
 

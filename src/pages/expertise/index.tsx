@@ -2,10 +2,34 @@ import { Navigation } from "@/components/Navigation";
 import { Footer } from "@/components/Footer";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { ArrowRight } from "lucide-react";
+import { Badge } from "@/components/ui/badge";
+import { ArrowRight, Sparkles, Globe2, Users, ShieldCheck } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useScrollAnimation } from "@/hooks/use-scroll-animation";
 import { expertiseCategories } from "@/pages/expertise/expertiseData";
+
+const pageHighlights = [
+  {
+    title: "Innovation at Scale",
+    description: "150+ digital transformation projects delivered with measurable business impact",
+    icon: Sparkles,
+  },
+  {
+    title: "Global Delivery",
+    description: "Serving customers across 12+ countries with 24/7 delivery capability",
+    icon: Globe2,
+  },
+  {
+    title: "Dedicated Experts",
+    description: "Multi-disciplinary team of architects, engineers, designers, and data scientists",
+  icon: Users,
+  },
+  {
+    title: "Enterprise Grade Security",
+    description: "Robust governance, compliance, and security baked into every engagement",
+    icon: ShieldCheck,
+  },
+];
 
 const ExpertisePage = () => {
   const heroRef = useScrollAnimation(0.1);
@@ -16,17 +40,64 @@ const ExpertisePage = () => {
 
       <main className="pt-16">
         {/* Hero Section */}
-        <section className="relative h-[400px] md:h-[500px] overflow-hidden" ref={heroRef.ref}>
-          <div className="absolute inset-0 bg-gradient-to-br from-blue-600 to-purple-600" />
+        <section className="relative h-[420px] md:h-[520px] overflow-hidden" ref={heroRef.ref}>
+          <div className="absolute inset-0 bg-gradient-to-br from-blue-600 via-blue-500 to-purple-600" />
+          <div className="absolute -top-24 -left-16 w-64 h-64 bg-white/10 blur-3xl rounded-full" />
+          <div className="absolute bottom-[-120px] right-[-40px] w-96 h-96 bg-purple-500/30 blur-3xl rounded-full" />
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,_rgba(255,255,255,0.2)_0%,_transparent_60%)] opacity-30" />
           <div className="relative z-10 container mx-auto px-6 h-full flex items-center">
             <div className={`transition-all duration-1000 ${
               heroRef.isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
             }`}>
-              <h1 className="text-4xl md:text-6xl font-bold text-white mb-4">Our Expertise</h1>
+              <Badge className="mb-4 bg-white/20 text-white border-white/30 hover:bg-white/30">
+                Trusted Technology Partner
+              </Badge>
+              <h1 className="text-4xl md:text-6xl font-bold text-white mb-4 leading-tight">
+                Engineering intelligent, secure, and future-ready digital experiences
+              </h1>
               <div className="h-1 w-24 bg-white rounded-full mb-6"></div>
-              <p className="text-lg md:text-xl text-white/90 max-w-2xl">
-                Discover our comprehensive range of technology solutions and services
+              <p className="text-lg md:text-xl text-white/90 max-w-3xl">
+                Discover the breadth of Nirikshan AI’s solution portfolio spanning artificial intelligence, modern engineering, SAP ecosystems, quality transformation, and beyond.
               </p>
+              <div className="mt-8 flex flex-col sm:flex-row gap-4">
+                <Link to="/contact">
+                  <Button size="lg" className="bg-white text-primary hover:bg-white/90">
+                    Talk to an Expert
+                    <ArrowRight className="ml-2" size={20} />
+                  </Button>
+                </Link>
+                <Link to="/projects">
+                  <Button size="lg" variant="outline" className="border-white text-white hover:bg-white/10">
+                    Explore Success Stories
+                  </Button>
+                </Link>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Why Choose Us */}
+        <section className="relative -mt-24 mb-12">
+          <div className="container mx-auto px-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+              {pageHighlights.map((highlight, index) => {
+                const Icon = highlight.icon;
+                return (
+                  <Card
+                    key={highlight.title}
+                    className="p-6 backdrop-blur bg-white/70 dark:bg-slate-900/60 border border-white/40 dark:border-slate-800/60 shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1"
+                    style={{ animationDelay: `${index * 75}ms` }}
+                  >
+                    <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-blue-500 to-purple-500 flex items-center justify-center text-white mb-4">
+                      <Icon size={22} />
+                    </div>
+                    <h3 className="text-lg font-semibold mb-2">{highlight.title}</h3>
+                    <p className="text-sm text-muted-foreground leading-relaxed">
+                      {highlight.description}
+                    </p>
+                  </Card>
+                );
+              })}
             </div>
           </div>
         </section>
@@ -34,7 +105,13 @@ const ExpertisePage = () => {
         {/* Categories Grid */}
         <section className="py-20">
           <div className="container mx-auto px-6">
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <div className="max-w-3xl mb-12">
+              <h2 className="text-3xl md:text-4xl font-bold mb-4">Expertise Across the Digital Value Chain</h2>
+              <p className="text-muted-foreground">
+                From intelligent automation to experience engineering, our teams bring proven blueprints, accelerators, and frameworks that fast-track your transformation journey.
+              </p>
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-10">
               {expertiseCategories.map((category, index) => {
                 const Icon = category.icon;
                 return (
@@ -43,30 +120,51 @@ const ExpertisePage = () => {
                     to={`/expertise/${category.slug}`}
                     className="group"
                   >
-                    <Card className="p-6 h-full hover:shadow-lg transition-all duration-300 hover:scale-[1.02] bg-gradient-to-br from-background to-secondary/30">
-                      <div className="flex items-start gap-4 mb-4">
-                        <div className="w-12 h-12 rounded-lg gradient-primary flex items-center justify-center">
-                          <Icon className="text-white" size={24} />
-                        </div>
-                        <div>
-                          <h3 className="text-xl font-semibold mb-2">{category.title}</h3>
-                          <p className="text-muted-foreground">{category.description}</p>
-                        </div>
-                      </div>
-                      <div className="mt-4 space-y-2">
-                        {category.services.slice(0, 3).map((service) => (
-                          <div key={service.slug} className="flex items-center text-sm text-muted-foreground">
-                            <div className="w-1.5 h-1.5 rounded-full bg-blue-500 mr-2"></div>
-                            {service.title}
+                    <Card className="relative p-6 h-full overflow-hidden transition-all duration-300 hover:shadow-xl hover:-translate-y-2">
+                      <div className="absolute inset-0 bg-gradient-to-br from-primary/10 via-transparent to-secondary/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                      <div className="relative z-10 flex flex-col h-full">
+                        <div className="flex items-start gap-4 mb-5">
+                          <div className="w-12 h-12 rounded-lg bg-gradient-to-br from-primary to-accent flex items-center justify-center shadow-lg">
+                            <Icon className="text-white" size={24} />
                           </div>
-                        ))}
-                        {category.services.length > 3 && (
-                          <div className="text-sm text-blue-500">+ {category.services.length - 3} more services</div>
+                          <div>
+                            <h3 className="text-xl font-semibold mb-2">
+                              {category.title}
+                            </h3>
+                            <p className="text-sm text-muted-foreground leading-relaxed">
+                              {category.description}
+                            </p>
+                          </div>
+                        </div>
+                        <div className="space-y-3">
+                          <p className="text-xs uppercase tracking-widest text-primary/80 font-semibold">Signature Services</p>
+                          <div className="space-y-2">
+                            {category.services.slice(0, 3).map((service) => (
+                              <div key={service.slug} className="flex items-center text-sm text-muted-foreground">
+                                <div className="w-1.5 h-1.5 rounded-full bg-primary mr-2"></div>
+                                {service.title}
+                              </div>
+                            ))}
+                            {category.services.length > 3 && (
+                              <div className="text-sm text-primary font-medium">+ {category.services.length - 3} more services</div>
+                            )}
+                          </div>
+                        </div>
+                        {category.highlights && (
+                          <div className="mt-6 grid grid-cols-2 gap-3">
+                            {category.highlights.slice(0, 2).map((highlight) => (
+                              <div key={highlight.label} className="rounded-xl border border-border/60 bg-secondary/40 p-3">
+                                <div className="text-lg font-semibold text-primary">{highlight.stat}</div>
+                                <p className="text-xs text-muted-foreground leading-snug">{highlight.label}</p>
+                              </div>
+                            ))}
+                          </div>
                         )}
+                        <Button variant="ghost" className="w-full mt-6 justify-between text-primary">
+                          Explore {category.title}
+                          <ArrowRight className="w-4 h-4" />
+                        </Button>
                       </div>
-                      <Button variant="ghost" className="w-full mt-4 group-hover:text-primary">
-                        Learn More <ArrowRight className="ml-2 w-4 h-4" />
-                      </Button>
                     </Card>
                   </Link>
                 );

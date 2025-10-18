@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { Menu, X, ChevronDown } from "lucide-react";
+import { Menu, X } from "lucide-react";
 import {
   NavigationMenu,
   NavigationMenuContent,
@@ -13,105 +13,13 @@ import {
 
 import { expertiseCategories } from "@/pages/expertise/expertiseData";
 
-const navigationCategories = expertiseCategories.map(category => ({
+const navigationCategories = expertiseCategories.map((category) => ({
   title: category.title.toUpperCase(),
   items: category.services.map(service => ({
     title: service.title,
     href: `/expertise/${category.slug}/${service.slug}`
   }))
 }));
-
-const expertise = [
-  {
-    title: "ARTIFICIAL INTELLIGENCE",
-    items: navigationCategories[0]?.items || [],
-  },
-  {
-    title: "MICROSOFT SERVICES",
-    items: [
-      { title: ".NET Development", href: "/expertise/microsoft/dotnet" },
-      { title: "MS Dynamics", href: "/expertise/microsoft/dynamics" },
-      { title: "Legacy Application Migration to .NET", href: "/expertise/microsoft/migration" },
-      { title: "Azure Cloud", href: "/expertise/microsoft/azure" },
-    ],
-  },
-  {
-    title: "SAP BTP SOLUTIONS",
-    items: [
-      { title: "SAP Integration Suite", href: "/expertise/sap/integration" },
-      { title: "Application Development Automation", href: "/expertise/sap/automation" },
-      { title: "SAP BTP Data and Analytics", href: "/expertise/sap/analytics" },
-      { title: "AI on SAP BTP", href: "/expertise/sap/ai" },
-    ],
-  },
-  {
-    title: "MANAGED SERVICES",
-    items: [
-      { title: "Application Managed Services", href: "/expertise/managed-services" },
-    ],
-  },
-  {
-    title: "DIGITAL MARKETING",
-    items: [
-      { title: "Search Engine Optimization (SEO)", href: "/expertise/marketing/seo" },
-      { title: "Social Media Marketing", href: "/expertise/marketing/social" },
-    ],
-  },
-  {
-    title: "QUALITY ASSURANCE",
-    items: [
-      { title: "Software Testing", href: "/expertise/qa/software" },
-      { title: "Functional Testing", href: "/expertise/qa/functional" },
-      { title: "Automation Testing", href: "/expertise/qa/automation" },
-    ],
-  },
-  {
-    title: "LEGACY APPLICATION MODERNIZATION",
-    items: [
-      { title: "Application Re-Engineering", href: "/expertise/modernization/reengineering" },
-      { title: "Application Re-Architecture", href: "/expertise/modernization/rearchitecture" },
-      { title: "Legacy Cloud Migration", href: "/expertise/modernization/cloud-migration" },
-      { title: "UI/UX Modernization", href: "/expertise/modernization/ui-ux" },
-      { title: "API Integration", href: "/expertise/modernization/api" },
-      { title: "Maintenance Services", href: "/expertise/modernization/maintenance" },
-    ],
-  },
-  {
-    title: "WEB DEVELOPMENT",
-    items: [
-      { title: "Website Design", href: "/expertise/web/design" },
-      { title: "Web Application Development", href: "/expertise/web/application" },
-      { title: "Website Maintenance and Support", href: "/expertise/web/maintenance" },
-      { title: "WordPress Development", href: "/expertise/web/wordpress" },
-    ],
-  },
-  {
-    title: "MOBILE APPLICATION DEVELOPMENT",
-    items: [
-      { title: "Android Application Development", href: "/expertise/mobile/android" },
-      { title: "iOS Application Development", href: "/expertise/mobile/ios" },
-      { title: "Cross-Platform App Development", href: "/expertise/mobile/cross-platform" },
-    ],
-  },
-  {
-    title: "DIGITAL TRANSFORMATION",
-    items: [
-      { title: "Business Growth with Digital Transformation", href: "/expertise/transformation/business" },
-      { title: "Cloud-Enabled Digital Transformation", href: "/expertise/transformation/cloud" },
-      { title: "AI-Powered Digital Transformation", href: "/expertise/transformation/ai" },
-      { title: "Agile and DevOps Implementation", href: "/expertise/transformation/agile-devops" },
-    ],
-  },
-  {
-    title: "AWS SERVICES",
-    items: [
-      { title: "AWS Cloud Migration", href: "/expertise/aws/migration" },
-      { title: "AWS Lambda & Serverless", href: "/expertise/aws/serverless" },
-      { title: "AWS EC2 & Infrastructure", href: "/expertise/aws/infrastructure" },
-      { title: "AWS DevOps Solutions", href: "/expertise/aws/devops" },
-    ],
-  },
-];
 
 export const Navigation = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
