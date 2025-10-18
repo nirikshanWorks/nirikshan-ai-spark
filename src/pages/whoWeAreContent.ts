@@ -45,27 +45,33 @@ export const testimonials = [
 
 export const timeline = [
   {
-    year: "Early 2024",
-    title: "Socialhives Community Launch",
+    year: "Stage 1 — 2024",
+    title: "The Beginning",
     description:
-      "Our journey began with Socialhives, a community hosting hackathons and teaching sessions that ignited collaboration and innovation."
+      "Our journey began in 2024 with a passionate student community named Sochilhive, created to inspire innovation through hackathons, teaching sessions, and tech events for young developers."
   },
   {
-    year: "Late 2024",
-    title: "Rebranding to Nirikshan AI",
+    year: "Stage 2 — 2024",
+    title: "Establishing the Foundation",
     description:
-      "We evolved into Nirikshan AI, sharpening our focus on advancing artificial intelligence and transformative technology solutions."
+      "As the community grew, we registered Sochilhive as an MSME, formalizing our commitment to innovation and education with a structured framework."
   },
   {
-    year: "2025",
-    title: "Incorporated as Nirikshan AI Private Limited",
+    year: "Stage 3 — Late 2024",
+    title: "The Transformation",
     description:
-      "Formalized our identity as a research-driven company committed to turning pioneering ideas into measurable impact."
+      "With a broader vision, Sochilhive evolved into Nirikshan AI, shifting focus from events to developing AI-powered products, research, and real-world solutions."
   },
   {
-    year: "Today",
-    title: "Global Impact",
+    year: "Stage 4 — 2025",
+    title: "Becoming a Company",
     description:
-      "We collaborate with national and international clients, delivering cutting-edge AI solutions that redefine what is possible."
+      "Nirikshan AI transformed into Nirikshan AI Private Limited, marking our transition from a community movement to a registered technology startup."
+  },
+  {
+    year: "Stage 5 — 2025 Onwards",
+    title: "Expanding Horizons",
+    description:
+      "We now partner with national and international clients, building innovative AI solutions, driving research collaborations, and enabling organizations to embrace intelligent technology."
   }
 ];
