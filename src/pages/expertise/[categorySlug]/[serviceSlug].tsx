@@ -22,7 +22,11 @@ import {
   Smartphone,
   Globe,
   Shield,
-  Zap
+  Zap,
+  Compass,
+  MapPin,
+  Flag,
+  Rocket
 } from "lucide-react";
 import { getCategoryBySlug, getServiceBySlug } from "@/pages/expertise/expertiseData";
 
@@ -61,6 +65,8 @@ const ExpertiseServicePage = () => {
     const hash = service.slug.split("").reduce((acc, char) => acc + char.charCodeAt(0), 0);
     return heroVideoPool[hash % heroVideoPool.length];
   }, [heroVideoPool, service?.slug]);
+
+  const roadmapIcons = useMemo(() => [Compass, MapPin, Workflow, Target, Rocket, Flag], []);
 
   if (!category || !service) {
     return (
@@ -217,38 +223,42 @@ const ExpertiseServicePage = () => {
                   Follow the guided journey from discovery to scale with clearly defined milestones.
                 </p>
               </div>
-              <div className="max-w-6xl mx-auto">
+              <div className="max-w-6xl mx-auto rounded-3xl border border-primary/10 bg-gradient-to-r from-primary/5 via-accent/5 to-transparent p-6 md:p-10">
                 <div className="relative">
-                  <div className="hidden md:block absolute top-16 left-0 right-0 h-0.5 bg-gradient-to-r from-primary via-accent to-primary/70" />
-                  <div className="flex flex-col md:flex-row gap-6 md:gap-8 overflow-x-auto pb-4">
-                    {service.methodology.map((step, index) => (
-                      <div
-                        key={step.phase}
-                        className="group relative flex-1 min-w-[260px] md:min-w-0 fade-in-up"
-                        style={{ animationDelay: `${index * 80}ms` }}
-                      >
-                        <Card className="h-full p-6 border border-primary/10 bg-gradient-to-br from-background to-background/40 shadow-sm transition-transform duration-300 group-hover:-translate-y-1">
-                          <div className="flex items-center gap-3 mb-4">
-                            <div className="flex h-12 w-12 items-center justify-center rounded-full bg-gradient-to-br from-primary to-accent text-white font-semibold text-lg shadow-lg">
-                              {index + 1}
+                  <div className="hidden md:block absolute top-1/2 left-8 right-8 -translate-y-1/2 border-t border-dashed border-primary/30" />
+                  <div className="flex flex-col md:flex-row gap-6 md:gap-8 overflow-x-auto pb-6">
+                    {service.methodology.map((step, index) => {
+                      const StepIcon = roadmapIcons[index % roadmapIcons.length];
+                      return (
+                        <div
+                          key={step.phase}
+                          className="group relative flex-1 min-w-[260px] md:min-w-0"
+                        >
+                          <Card className="h-full p-6 text-center border border-primary/10 bg-background/80 shadow-sm transition-transform duration-300 group-hover:-translate-y-1">
+                            <div className="flex flex-col items-center gap-3 mb-4">
+                              <div className="flex h-16 w-16 items-center justify-center rounded-full bg-gradient-to-br from-primary/20 via-accent/20 to-primary/10 text-primary shadow-lg ring-2 ring-primary/20">
+                                <StepIcon className="h-7 w-7" />
+                              </div>
+                              <span className="rounded-full bg-primary px-4 py-1 text-xs font-semibold uppercase tracking-widest text-white shadow">
+                                Step {index + 1}
+                              </span>
                             </div>
-                            <h3 className="text-lg font-semibold leading-snug">
+                            <h3 className="text-lg font-semibold mb-3 leading-snug">
                               {step.phase}
                             </h3>
-                          </div>
-                          <p className="text-sm text-muted-foreground leading-relaxed">
-                            {step.description}
-                          </p>
-                          <div className="mt-6 flex items-center gap-2 text-xs uppercase tracking-widest text-primary/80">
-                            <span>Milestone {index + 1}</span>
-                            {index < service.methodology.length - 1 && <ArrowRight className="h-3 w-3" />}
-                          </div>
-                        </Card>
-                        {index < service.methodology.length - 1 && (
-                          <div className="hidden md:block absolute top-[88px] right-[-32px] w-16 h-0.5 bg-gradient-to-r from-primary via-accent to-primary/70" />
-                        )}
-                      </div>
-                    ))}
+                            <p className="text-sm text-muted-foreground leading-relaxed">
+                              {step.description}
+                            </p>
+                          </Card>
+                          {index < service.methodology.length - 1 && (
+                            <div className="hidden md:flex items-center absolute top-1/2 right-[-48px] h-0.5 w-24 -translate-y-1/2">
+                              <div className="flex-1 border-t border-dashed border-primary/40" />
+                              <ArrowRight className="ml-2 h-4 w-4 text-primary/70" />
+                            </div>
+                          )}
+                        </div>
+                      );
+                    })}
                   </div>
                 </div>
               </div>
