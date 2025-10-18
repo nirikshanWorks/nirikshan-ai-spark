@@ -23,9 +23,25 @@ const navigationCategories = expertiseCategories.map((category) => ({
 
 export const Navigation = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [mobileExpertiseOpen, setMobileExpertiseOpen] = useState(false);
   const location = useLocation();
 
   const isActive = (path: string) => location.pathname === path;
+
+  const toggleMobileMenu = () => {
+    setMobileMenuOpen((prev) => {
+      const next = !prev;
+      if (!next) {
+        setMobileExpertiseOpen(false);
+      }
+      return next;
+    });
+  };
+
+  const closeMobileMenu = () => {
+    setMobileMenuOpen(false);
+    setMobileExpertiseOpen(false);
+  };
 
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 bg-white dark:bg-background border-b border-border shadow-md transition-all duration-300">
@@ -113,7 +129,9 @@ export const Navigation = () => {
           {/* Mobile Menu Button */}
           <button
             className="md:hidden"
-            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+            onClick={toggleMobileMenu}
+            aria-expanded={mobileMenuOpen}
+            aria-controls="mobile-navigation"
           >
             {mobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
           </button>
@@ -121,69 +139,76 @@ export const Navigation = () => {
 
         {/* Mobile Navigation */}
         {mobileMenuOpen && (
-          <div className="md:hidden py-4 space-y-2">
+          <div id="mobile-navigation" className="md:hidden py-4 space-y-2">
             <Link
               to="/about"
               className="block px-4 py-2 hover:bg-muted rounded-md"
-              onClick={() => setMobileMenuOpen(false)}
+              onClick={closeMobileMenu}
             >
               About
             </Link>
             <div className="space-y-1">
-              <button className="w-full text-left px-4 py-2 font-medium">
+              <button
+                className="flex w-full items-center justify-between gap-2 px-4 py-2 font-medium"
+                onClick={() => setMobileExpertiseOpen((prev) => !prev)}
+                aria-expanded={mobileExpertiseOpen}
+                aria-controls="mobile-expertise"
+              >
                 Expertise
               </button>
-              <div className="pl-4 space-y-4">
-                {navigationCategories.map((category) => (
-                  <div key={category.title} className="space-y-2">
-                    <div className="text-sm font-bold tracking-wider text-transparent bg-clip-text bg-gradient-to-r from-violet-600 to-indigo-600">
-                      {category.title}
+              {mobileExpertiseOpen && (
+                <div id="mobile-expertise" className="pl-4 space-y-4">
+                  {navigationCategories.map((category) => (
+                    <div key={category.title} className="space-y-2">
+                      <div className="text-sm font-bold tracking-wider text-transparent bg-clip-text bg-gradient-to-r from-violet-600 to-indigo-600">
+                        {category.title}
+                      </div>
+                      <div className="pl-2 space-y-1">
+                        {category.items.map((item) => (
+                          <Link
+                            key={item.title}
+                            to={item.href}
+                            className="block px-4 py-1 text-sm text-muted-foreground hover:text-primary rounded-md"
+                            onClick={closeMobileMenu}
+                          >
+                            {item.title}
+                          </Link>
+                        ))}
+                      </div>
                     </div>
-                    <div className="pl-2 space-y-1">
-                      {category.items.map((item) => (
-                        <Link
-                          key={item.title}
-                          to={item.href}
-                          className="block px-4 py-1 text-sm text-muted-foreground hover:text-primary rounded-md"
-                          onClick={() => setMobileMenuOpen(false)}
-                        >
-                          {item.title}
-                        </Link>
-                      ))}
-                    </div>
-                  </div>
-                ))}
-              </div>
+                  ))}
+                </div>
+              )}
             </div>
             <Link
               to="/projects"
               className="block px-4 py-2 hover:bg-muted rounded-md"
-              onClick={() => setMobileMenuOpen(false)}
+              onClick={closeMobileMenu}
             >
               Projects
             </Link>
             <Link
               to="/case-studies"
               className="block px-4 py-2 hover:bg-muted rounded-md"
-              onClick={() => setMobileMenuOpen(false)}
+              onClick={closeMobileMenu}
             >
               Case Studies
             </Link>
             <Link
               to="/careers"
               className="block px-4 py-2 hover:bg-muted rounded-md"
-              onClick={() => setMobileMenuOpen(false)}
+              onClick={closeMobileMenu}
             >
               Careers
             </Link>
             <Link
               to="/who-we-are"
               className="block px-4 py-2 hover:bg-muted rounded-md"
-              onClick={() => setMobileMenuOpen(false)}
+              onClick={closeMobileMenu}
             >
               Who We Are
             </Link>
-            <Link to="/contact" onClick={() => setMobileMenuOpen(false)}>
+            <Link to="/contact" onClick={closeMobileMenu}>
               <Button className="w-full gradient-primary">Get in Touch</Button>
             </Link>
           </div>
