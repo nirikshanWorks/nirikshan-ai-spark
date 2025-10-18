@@ -54,9 +54,11 @@ const Contact = () => {
         <section className="py-20 container mx-auto px-6">
           <div className="grid lg:grid-cols-2 gap-12 max-w-6xl mx-auto">
             {/* Contact Form */}
-            <Card className="p-8 hover:shadow-lg transition-all duration-300">
-              <h2 className="text-2xl font-bold mb-6">Send us a Message</h2>
-              <form onSubmit={handleSubmit} className="space-y-6">
+            <Card className="p-10 card-hover border-2 border-border hover:border-primary/30 transition-all duration-500 relative overflow-hidden group">
+              <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-accent/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+              <div className="relative z-10">
+                <h2 className="text-3xl font-bold mb-8 text-gradient">Send us a Message</h2>
+                <form onSubmit={handleSubmit} className="space-y-6">
                 <div className="space-y-2">
                   <Label htmlFor="name">Name *</Label>
                   <Input
@@ -66,7 +68,7 @@ const Contact = () => {
                     onChange={handleChange}
                     required
                     placeholder="Your full name"
-                    className="transition-all focus:ring-2 focus:ring-primary"
+                    className="transition-all focus:ring-2 focus:ring-primary hover:border-primary/50"
                   />
                 </div>
                 <div className="space-y-2">
@@ -117,54 +119,53 @@ const Contact = () => {
                 <Button
                   type="submit"
                   size="lg"
-                  className="w-full gradient-primary"
+                  className="w-full gradient-primary text-white font-semibold text-lg hover:shadow-2xl"
                   disabled={isSubmitting}
                 >
                   {isSubmitting ? "Sending..." : "Send Message"}
-                  <Send className={`ml-2 ${isSubmitting ? "animate-pulse" : ""}`} size={16} />
+                  <Send className={`ml-2 ${isSubmitting ? "animate-pulse" : "group-hover:translate-x-1 transition-transform"}`} size={18} />
                 </Button>
               </form>
+              </div>
             </Card>
 
             {/* Contact Information */}
             <div className="space-y-8">
-              <div>
-                <h2 className="text-2xl font-bold mb-6">Contact Information</h2>
-                <div className="space-y-6">
-                  <div className="flex items-start space-x-4">
-                    <div className="w-12 h-12 rounded-lg gradient-primary flex items-center justify-center flex-shrink-0">
-                      <Mail className="text-white" size={20} />
+              <div className="relative">
+                <div className="absolute -inset-4 bg-gradient-to-r from-primary/10 to-accent/10 rounded-2xl blur-xl opacity-50" />
+                <div className="relative">
+                  <h2 className="text-3xl font-bold mb-8 text-gradient">Contact Information</h2>
+                  <div className="space-y-6">
+                  <div className="flex items-start space-x-4 group cursor-pointer p-4 rounded-lg hover:bg-secondary/50 transition-all duration-300">
+                    <div className="w-14 h-14 rounded-xl gradient-primary flex items-center justify-center flex-shrink-0 shadow-lg group-hover:scale-110 transition-transform duration-300">
+                      <Mail className="text-white" size={22} />
                     </div>
                     <div>
-                      <h3 className="font-semibold mb-1">Email</h3>
-                      <a href="mailto:info@nirikshanai.com" className="text-muted-foreground hover:text-primary">
-                        info@nirikshanai.com
-                      </a>
-                      <br />
-                      <a href="mailto:sales@nirikshanai.com" className="text-muted-foreground hover:text-primary">
-                        sales@nirikshanai.com
+                      <h3 className="font-bold mb-2 text-lg">Email</h3>
+                      <a href="mailto:ai.nirikshan@gmail.com" className="text-muted-foreground hover:text-primary transition-colors block group-hover:translate-x-1 transition-transform duration-300">
+                        ai.nirikshan@gmail.com
                       </a>
                     </div>
                   </div>
-                  <div className="flex items-start space-x-4">
-                    <div className="w-12 h-12 rounded-lg gradient-primary flex items-center justify-center flex-shrink-0">
-                      <Phone className="text-white" size={20} />
+                  <div className="flex items-start space-x-4 group cursor-pointer p-4 rounded-lg hover:bg-secondary/50 transition-all duration-300">
+                    <div className="w-14 h-14 rounded-xl gradient-primary flex items-center justify-center flex-shrink-0 shadow-lg group-hover:scale-110 transition-transform duration-300">
+                      <Phone className="text-white" size={22} />
                     </div>
                     <div>
-                      <h3 className="font-semibold mb-1">Phone</h3>
-                      <a href="tel:+1234567890" className="text-muted-foreground hover:text-primary">
-                        +1 (234) 567-890
+                      <h3 className="font-bold mb-2 text-lg">Phone</h3>
+                      <a href="tel:+919410992204" className="text-muted-foreground hover:text-primary transition-colors block group-hover:translate-x-1 transition-transform duration-300">
+                        +91 9410 992204
                       </a>
-                      <p className="text-sm text-muted-foreground mt-1">Mon-Fri, 9AM-6PM IST</p>
+                      <p className="text-sm text-muted-foreground mt-2">Mon-Fri, 9AM-6PM IST</p>
                     </div>
                   </div>
-                  <div className="flex items-start space-x-4">
-                    <div className="w-12 h-12 rounded-lg gradient-primary flex items-center justify-center flex-shrink-0">
-                      <MapPin className="text-white" size={20} />
+                  <div className="flex items-start space-x-4 group cursor-pointer p-4 rounded-lg hover:bg-secondary/50 transition-all duration-300">
+                    <div className="w-14 h-14 rounded-xl gradient-primary flex items-center justify-center flex-shrink-0 shadow-lg group-hover:scale-110 transition-transform duration-300">
+                      <MapPin className="text-white" size={22} />
                     </div>
                     <div>
-                      <h3 className="font-semibold mb-1">Office</h3>
-                      <p className="text-muted-foreground">
+                      <h3 className="font-bold mb-2 text-lg">Office</h3>
+                      <p className="text-muted-foreground leading-relaxed">
                         Nirikshan AI Pvt. Ltd.<br />
                         Bangalore, Karnataka<br />
                         India
@@ -172,10 +173,11 @@ const Contact = () => {
                     </div>
                   </div>
                 </div>
+                </div>
               </div>
 
-              <Card className="p-6 bg-secondary/50">
-                <h3 className="font-semibold mb-3">Business Hours</h3>
+              <Card className="p-8 bg-secondary/30 border-2 border-border hover:border-primary/30 transition-all duration-300 card-hover">
+                <h3 className="font-bold mb-4 text-lg">Business Hours</h3>
                 <div className="space-y-2 text-sm">
                   <div className="flex justify-between">
                     <span className="text-muted-foreground">Monday - Friday</span>
@@ -192,10 +194,10 @@ const Contact = () => {
                 </div>
               </Card>
 
-              <Card className="p-6 bg-primary/5 border-primary/20">
-                <h3 className="font-semibold mb-2">Looking for Support?</h3>
-                <p className="text-sm text-muted-foreground mb-4">
-                  Existing clients can reach our support team at support@nirikshanai.com for 
+              <Card className="p-8 bg-gradient-to-br from-primary/10 to-accent/10 border-2 border-primary/30 hover:border-primary/50 transition-all duration-300 card-hover">
+                <h3 className="font-bold mb-3 text-lg">Looking for Support?</h3>
+                <p className="text-muted-foreground leading-relaxed">
+                  Existing clients can reach our support team at <a href="mailto:ai.nirikshan@gmail.com" className="text-primary hover:text-accent transition-colors font-semibold">ai.nirikshan@gmail.com</a> for 
                   technical assistance and inquiries.
                 </p>
               </Card>

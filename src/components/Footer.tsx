@@ -85,14 +85,14 @@ export const Footer = () => {
             <ul className="space-y-3 text-sm">
               <li className="flex items-center space-x-2">
                 <Mail size={16} className="text-primary" />
-                <a href="mailto:info@nirikshanai.com" className="text-muted-foreground hover:text-primary transition-colors">
-                  info@nirikshanai.com
+                <a href="mailto:ai.nirikshan@gmail.com" className="text-muted-foreground hover:text-primary transition-colors">
+                  ai.nirikshan@gmail.com
                 </a>
               </li>
               <li className="flex items-center space-x-2">
                 <Phone size={16} className="text-primary" />
-                <a href="tel:+1234567890" className="text-muted-foreground hover:text-primary transition-colors">
-                  +1 (234) 567-890
+                <a href="tel:+919410992204" className="text-muted-foreground hover:text-primary transition-colors">
+                  +91 9410 992204
                 </a>
               </li>
             </ul>
