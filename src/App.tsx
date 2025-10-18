@@ -1,25 +1,27 @@
+import { Suspense, lazy } from "react";
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import ScrollToTop from "@/components/ScrollToTop";
-import Index from "./pages/Index";
-import About from "./pages/About";
-import WhoWeAre from "./pages/WhoWeAre";
-import Services from "./pages/Services";
-import ExpertisePage from "./pages/expertise/index";
-import ExpertiseCategoryPage from "./pages/expertise/[categorySlug]";
-import ExpertiseServicePage from "./pages/expertise/[categorySlug]/[serviceSlug]";
-import Projects from "./pages/Projects";
-import CaseStudies from "./pages/CaseStudies";
-import Careers from "./pages/Careers";
-import Contact from "./pages/Contact";
-import Privacy from "./pages/Privacy";
-import Terms from "./pages/Terms";
-import Testimonials from "./pages/Testimonials";
-import Journey from "./pages/Journey";
-import NotFound from "./pages/NotFound";
+
+const IndexPage = lazy(() => import("./pages/Index"));
+const AboutPage = lazy(() => import("./pages/About"));
+const WhoWeArePage = lazy(() => import("./pages/WhoWeAre"));
+const ServicesPage = lazy(() => import("./pages/Services"));
+const ExpertisePage = lazy(() => import("./pages/expertise/index"));
+const ExpertiseCategoryPage = lazy(() => import("./pages/expertise/[categorySlug]"));
+const ExpertiseServicePage = lazy(() => import("./pages/expertise/[categorySlug]/[serviceSlug]"));
+const ProjectsPage = lazy(() => import("./pages/Projects"));
+const CaseStudiesPage = lazy(() => import("./pages/CaseStudies"));
+const CareersPage = lazy(() => import("./pages/Careers"));
+const ContactPage = lazy(() => import("./pages/Contact"));
+const PrivacyPage = lazy(() => import("./pages/Privacy"));
+const TermsPage = lazy(() => import("./pages/Terms"));
+const TestimonialsPage = lazy(() => import("./pages/Testimonials"));
+const JourneyPage = lazy(() => import("./pages/Journey"));
+const NotFoundPage = lazy(() => import("./pages/NotFound"));
 
 const queryClient = new QueryClient();
 
@@ -30,29 +32,33 @@ const App = () => (
       <Sonner />
       <BrowserRouter>
         <ScrollToTop />
-        <Routes>
-          <Route path="/" element={<Index />} />
-          <Route path="/about" element={<About />} />
-          <Route path="/who-we-are" element={<WhoWeAre />} />
-          <Route path="/expertise/*" element={
-            <Routes>
-              <Route index element={<ExpertisePage />} />
-              <Route path=":categorySlug" element={<ExpertiseCategoryPage />} />
-              <Route path=":categorySlug/:serviceSlug" element={<ExpertiseServicePage />} />
-            </Routes>
-          } />
-          <Route path="/services" element={<Services />} />
-          <Route path="/projects" element={<Projects />} />
-          <Route path="/case-studies" element={<CaseStudies />} />
-          <Route path="/careers" element={<Careers />} />
-          <Route path="/contact" element={<Contact />} />
-          <Route path="/testimonials" element={<Testimonials />} />
-          <Route path="/journey" element={<Journey />} />
-          <Route path="/privacy" element={<Privacy />} />
-          <Route path="/terms" element={<Terms />} />
-          {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-          <Route path="*" element={<NotFound />} />
-        </Routes>
+        <Suspense
+          fallback={(
+            <div className="flex min-h-screen items-center justify-center bg-background text-muted-foreground">
+              <span className="animate-pulse">Loading...</span>
+            </div>
+          )}
+        >
+          <Routes>
+            <Route path="/" element={<IndexPage />} />
+            <Route path="/about" element={<AboutPage />} />
+            <Route path="/who-we-are" element={<WhoWeArePage />} />
+            <Route path="/expertise" element={<ExpertisePage />} />
+            <Route path="/expertise/:categorySlug" element={<ExpertiseCategoryPage />} />
+            <Route path="/expertise/:categorySlug/:serviceSlug" element={<ExpertiseServicePage />} />
+            <Route path="/services" element={<ServicesPage />} />
+            <Route path="/projects" element={<ProjectsPage />} />
+            <Route path="/case-studies" element={<CaseStudiesPage />} />
+            <Route path="/careers" element={<CareersPage />} />
+            <Route path="/contact" element={<ContactPage />} />
+            <Route path="/testimonials" element={<TestimonialsPage />} />
+            <Route path="/journey" element={<JourneyPage />} />
+            <Route path="/privacy" element={<PrivacyPage />} />
+            <Route path="/terms" element={<TermsPage />} />
+            {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+            <Route path="*" element={<NotFoundPage />} />
+          </Routes>
+        </Suspense>
       </BrowserRouter>
     </TooltipProvider>
   </QueryClientProvider>
