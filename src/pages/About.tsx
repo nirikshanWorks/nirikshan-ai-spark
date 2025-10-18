@@ -1,7 +1,24 @@
 import { Navigation } from "@/components/Navigation";
 import { Footer } from "@/components/Footer";
 import { Button } from "@/components/ui/button";
-import { ArrowRight, Target, Eye, Users, Award, Zap, Rocket, Briefcase, Smile, TrendingUp, Flag, Lightbulb } from "lucide-react";
+import {
+  ArrowRight,
+  Target,
+  Eye,
+  Users,
+  Award,
+  Zap,
+  Briefcase,
+  Smile,
+  TrendingUp,
+  Flag,
+  Sparkles,
+  Globe2,
+  ShieldCheck,
+  Layers,
+  BarChart3,
+  Cpu
+} from "lucide-react";
 import { Link } from "react-router-dom";
 import { useScrollAnimation } from "@/hooks/use-scroll-animation";
 import nirikshanaiVideo from "@/assets/Nirikshanai.mp4";
@@ -36,8 +53,63 @@ const AnimatedCounter = ({ end, duration = 2000 }: { end: number, duration?: num
 const About = () => {
   const missionRef = useScrollAnimation(0.2);
   const valuesRef = useScrollAnimation(0.2);
-  const storyRef = useScrollAnimation(0.2);
+  const differentiatorsRef = useScrollAnimation(0.2);
   const statsRef = useScrollAnimation(0.3);
+  const timelineRef = useScrollAnimation(0.2);
+
+  const differentiators = [
+    {
+      icon: Globe2,
+      title: "Global Mindset, Local Delivery",
+      description:
+        "Hybrid squads blend global expertise with local cultural fluency so programs land smoothly in every market we serve.",
+    },
+    {
+      icon: ShieldCheck,
+      title: "Secure by Design",
+      description:
+        "Security architects embed governance, compliance, and data privacy accelerators into every solution from day zero.",
+    },
+    {
+      icon: Layers,
+      title: "Full-Stack Innovation",
+      description:
+        "From strategy to design, engineering, and AI operations, cross-functional pods accelerate outcomes end to end.",
+    },
+    {
+      icon: BarChart3,
+      title: "Proof in Performance",
+      description:
+        "Transparent KPIs, ROI scorecards, and executive dashboards keep momentum measurable and decisions data-backed.",
+    },
+  ];
+
+  const milestones = [
+    {
+      year: "2024",
+      title: "The Beginning",
+      description:
+        "Our journey started with the Sochilhive community—organizing hackathons and teaching events that sparked creativity, collaboration, and innovation among aspiring developers.",
+    },
+    {
+      year: "Late 2024",
+      title: "Birth of Nirikshan AI",
+      description:
+        "As our vision expanded beyond events, we rebranded to Nirikshan AI and began crafting AI-powered solutions that put purposeful technology into people’s hands.",
+    },
+    {
+      year: "2025",
+      title: "Incorporation",
+      description:
+        "Nirikshan AI Private Limited was officially established, marking our evolution from a student-led initiative into a registered technology company with global ambitions.",
+    },
+    {
+      year: "2025 Onwards",
+      title: "Expanding Horizons",
+      description:
+        "We started partnering with national and international clients, delivering impactful AI solutions that bridge research, innovation, and real-world applications.",
+    },
+  ];
 
   return (
     <div className="min-h-screen">
@@ -55,6 +127,26 @@ const About = () => {
             className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" 
           />
           <div className="absolute inset-0 hero-overlay" />
+          <div className="hidden md:flex absolute top-10 right-12 flex-col gap-4 z-20">
+            <div className="backdrop-blur-sm bg-white/15 border border-white/20 rounded-2xl px-5 py-4 text-white shadow-xl transform transition-all duration-500 hover:-translate-y-1">
+              <div className="flex items-center gap-3">
+                <Sparkles className="h-6 w-6 text-yellow-200" />
+                <span className="text-sm uppercase tracking-widest">AI Innovation Lab</span>
+              </div>
+              <p className="mt-2 text-xs text-white/80 max-w-[200px]">
+                40+ prototypes validated annually with partners across healthcare, fintech, and manufacturing.
+              </p>
+            </div>
+            <div className="backdrop-blur-sm bg-white/15 border border-white/20 rounded-2xl px-5 py-4 text-white shadow-xl transform transition-all duration-500 hover:-translate-y-1">
+              <div className="flex items-center gap-3">
+                <Cpu className="h-6 w-6 text-cyan-200" />
+                <span className="text-sm uppercase tracking-widest">Trusted Team</span>
+              </div>
+              <p className="mt-2 text-xs text-white/80 max-w-[200px]">
+                Strategists, designers, and engineers co-creating resilient products with measurable business value.
+              </p>
+            </div>
+          </div>
           <div className="relative z-10 container mx-auto px-6 h-full flex items-center">
             <div className="animate-fade-in-up">
               <h1 className="text-4xl md:text-6xl font-bold text-white mb-4 leading-tight">About Nirikshan AI</h1>
@@ -163,6 +255,42 @@ const About = () => {
           </div>
         </section>
 
+        {/* Differentiators */}
+        <section className="py-20 container mx-auto px-6" ref={differentiatorsRef.ref}>
+          <div className={`max-w-3xl mx-auto text-center mb-16 transition-all duration-1000 ${
+            differentiatorsRef.isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
+          }`}>
+            <span className="inline-flex items-center gap-2 rounded-full bg-primary/10 px-4 py-2 text-sm font-semibold text-primary mb-4">
+              <Sparkles className="h-4 w-4" /> Why Partners Choose Us
+            </span>
+            <h2 className="text-3xl md:text-4xl font-bold mb-4">Experience the Nirikshan Advantage</h2>
+            <p className="text-muted-foreground">
+              Every engagement blends strategic foresight, design thinking, and engineering excellence so transformation is fast, predictable, and inspiring.
+            </p>
+          </div>
+          <div className={`grid md:grid-cols-2 gap-8 transition-all duration-1000 ${
+            differentiatorsRef.isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
+          }`}>
+            {differentiators.map((point, idx) => (
+              <div
+                key={point.title}
+                className="group relative overflow-hidden rounded-3xl border border-primary/10 bg-white/80 dark:bg-slate-900/60 shadow-lg backdrop-blur transition-transform duration-300 hover:-translate-y-2"
+              >
+                <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-accent/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                <div className="relative z-10 p-8">
+                  <point.icon className="h-10 w-10 text-primary" />
+                  <h3 className="mt-6 text-xl font-semibold">{point.title}</h3>
+                  <p className="mt-3 text-sm text-muted-foreground leading-relaxed">{point.description}</p>
+                  <div className="mt-6 flex items-center gap-2 text-xs uppercase tracking-widest text-primary/70">
+                    <span>Capability {idx + 1}</span>
+                    <ArrowRight className="h-3 w-3" />
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </section>
+
         {/* Stats Section */}
         <section className="py-20 bg-secondary/30" ref={statsRef.ref}>
           <div className="container mx-auto px-6">
@@ -189,39 +317,37 @@ const About = () => {
           </div>
         </section>
 
-        {/* Story */}
-        <section className="py-20 container mx-auto px-6" ref={storyRef.ref}>
-          <div className={`max-w-4xl mx-auto transition-all duration-1000 ${
-            storyRef.isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
-          }`}>
-            <div className="flex items-center gap-4 mb-8">
-              <Rocket className="text-blue-600 flex-shrink-0" size={32} />
-              <h2 className="text-3xl md:text-4xl font-bold">Our Story</h2>
+        {/* Milestones */}
+        <section className="py-20 bg-gradient-to-br from-primary/5 via-secondary/20 to-transparent" ref={timelineRef.ref}>
+          <div className="container mx-auto px-6">
+            <div className={`text-center mb-16 transition-all duration-1000 ${
+              timelineRef.isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
+            }`}>
+              <h2 className="text-3xl md:text-4xl font-bold mb-4">Milestones on Our Journey</h2>
+              <p className="text-muted-foreground max-w-2xl mx-auto">
+                A snapshot of how we evolved from a boutique AI studio to a transformation partner powering global enterprises.
+              </p>
             </div>
-            <div className="space-y-6 text-muted-foreground leading-relaxed">
-              <div className="group p-6 bg-gradient-to-br from-blue-50 to-purple-50 dark:from-slate-800/50 dark:to-slate-800/30 rounded-xl border border-blue-200/30 dark:border-slate-700/50 hover:border-blue-400/50 transition-all duration-300 hover:shadow-md">
-                <p className="text-base font-semibold text-foreground mb-2">The Beginning</p>
-                <p className="text-base">
-                  Founded with a clear vision to democratize AI technology, Nirikshan AI Pvt. Ltd. was born from a simple observation: powerful AI solutions existed, but they were complex, expensive, and inaccessible to most businesses. We set out to bridge that gap and become your trusted local AI partner.
-                </p>
-              </div>
-              <div className="group p-6 bg-gradient-to-br from-purple-50 to-blue-50 dark:from-slate-800/50 dark:to-slate-800/30 rounded-xl border border-purple-200/30 dark:border-slate-700/50 hover:border-purple-400/50 transition-all duration-300 hover:shadow-md">
-                <p className="text-base font-semibold text-foreground mb-2">Our Journey</p>
-                <p className="text-base">
-                  Our journey began when we recognized a critical pain point: businesses wanted to leverage AI but struggled with complexity, integration challenges, and prohibitive costs. We set out to change that narrative by building practical, scalable solutions that deliver real ROI without requiring a degree in machine learning to implement.
-                </p>
-              </div>
-              <div className="group p-6 bg-gradient-to-br from-blue-50 to-purple-50 dark:from-slate-800/50 dark:to-slate-800/30 rounded-xl border border-blue-200/30 dark:border-slate-700/50 hover:border-blue-400/50 transition-all duration-300 hover:shadow-md">
-                <p className="text-base font-semibold text-foreground mb-2">Global Impact, Local Touch</p>
-                <p className="text-base">
-                  Today, we work with clients across diverse industries—from veterinary and pet products in South Africa to automotive manufacturing in India and beyond. Our team combines deep expertise in AI, machine learning, computer vision, web technologies, and custom software development with a genuine commitment to understanding your business context and culture.
-                </p>
-              </div>
-              <div className="group p-6 bg-gradient-to-br from-purple-50 to-blue-50 dark:from-slate-800/50 dark:to-slate-800/30 rounded-xl border border-purple-200/30 dark:border-slate-700/50 hover:border-purple-400/50 transition-all duration-300 hover:shadow-md">
-                <p className="text-base font-semibold text-foreground mb-2">What Makes Us Different</p>
-                <p className="text-base">
-                  What truly sets us apart is our philosophy: no corporate jargon, no unnecessary complexity—just real solutions for real people. We don't just build software; we build partnerships. We listen, understand your challenges deeply, and collaborate with you to turn visionary ideas into impactful digital solutions that make a measurable difference in your business and community.
-                </p>
+            <div className={`relative transition-all duration-1000 ${
+              timelineRef.isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
+            }`}>
+              <div className="absolute left-5 top-0 bottom-0 w-px bg-gradient-to-b from-primary via-accent to-primary hidden md:block" />
+              <div className="space-y-10 md:space-y-12">
+                {milestones.map((milestone, idx) => (
+                  <div key={milestone.year} className="relative pl-12 md:pl-24">
+                    <div className="hidden md:flex absolute left-0 top-4 h-12 w-12 items-center justify-center rounded-full bg-gradient-to-br from-primary to-accent text-white font-semibold shadow-lg">
+                      {idx + 1}
+                    </div>
+                    <div className="hidden md:block absolute left-5 top-8 h-3 w-3 rounded-full bg-primary shadow-lg" />
+                    <span className="inline-flex items-center rounded-full bg-primary/10 px-4 py-1 text-sm font-semibold text-primary mb-4">
+                      {milestone.year}
+                    </span>
+                    <div className="rounded-3xl border border-primary/10 bg-white/80 dark:bg-slate-900/60 p-6 shadow-sm backdrop-blur">
+                      <h3 className="text-xl font-semibold text-primary mb-2">{milestone.title}</h3>
+                      <p className="text-sm text-muted-foreground leading-relaxed">{milestone.description}</p>
+                    </div>
+                  </div>
+                ))}
               </div>
             </div>
           </div>

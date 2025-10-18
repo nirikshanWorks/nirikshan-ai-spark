@@ -12,7 +12,8 @@ import {
   ShieldCheck,
   Globe2,
   Quote,
-  Milestone
+  Milestone,
+  Linkedin
 } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
@@ -55,19 +56,22 @@ const leadership = [
     name: "Dinesh Yadav",
     role: "Founder & CEO",
     bio: "Dinesh architects the strategic vision of Nirikshan AI, guiding research teams to convert ambitious ideas into deployable intelligence platforms.",
-    image: dineshImage
+    image: dineshImage,
+    linkedin: "https://www.linkedin.com/in/dinesh003"
   },
   {
     name: "Anshul",
     role: "Co-Founder & COO",
     bio: "Anshul leads operations and partnerships, ensuring our research pipelines align with industry impact and measurable outcomes.",
-    image: anshulImage
+    image: anshulImage,
+    linkedin: "https://www.linkedin.com/in/anshultech1"
   },
   {
     name: "Ashwin Hole",
     role: "Co-Founder & Head of Programs",
     bio: "Ashwin orchestrates delivery excellence, growing high-performing teams that push the boundaries of applied AI.",
-    image: ashwinImage
+    image: ashwinImage,
+    linkedin: "https://www.linkedin.com/in/ashwinhole18/"
   }
 ];
 
@@ -276,6 +280,18 @@ const WhoWeAre = () => {
                   </div>
                   <div className="p-6">
                     <p className="text-sm text-muted-foreground leading-relaxed">{member.bio}</p>
+                    {member.linkedin && (
+                      <div className="mt-4">
+                        <a
+                          href={member.linkedin}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="inline-flex items-center gap-2 text-sm font-medium text-indigo-600 hover:text-indigo-700"
+                        >
+                          <Linkedin size={16} /> Connect on LinkedIn
+                        </a>
+                      </div>
+                    )}
                   </div>
                 </div>
               ))}
@@ -367,6 +383,17 @@ const WhoWeAre = () => {
                   “The future demands intelligent systems that are ethical, explainable, and designed for people. At Nirikshan AI, we are
                   committed to leading that future.”
                 </p>
+                <div className="text-sm font-semibold text-indigo-600 uppercase tracking-widest">
+                  Dinesh Yadav · Founder & CEO
+                </div>
+                <a
+                  href="https://www.linkedin.com/in/dinesh003"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 text-sm text-indigo-600 hover:text-indigo-700"
+                >
+                  <Linkedin size={16} /> Connect on LinkedIn
+                </a>
               </div>
               <div className="relative flex justify-center">
                 <img
@@ -401,6 +428,17 @@ const WhoWeAre = () => {
                   “I am proud of the ecosystem we continue to build — one where every project is handled with precision, and every partner
                   sees us as an extension of their own mission.”
                 </p>
+                <div className="text-sm font-semibold text-indigo-600 uppercase tracking-widest">
+                  Anshul · Co-Founder & COO
+                </div>
+                <a
+                  href="https://www.linkedin.com/in/anshultech1"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 text-sm text-indigo-600 hover:text-indigo-700"
+                >
+                  <Linkedin size={16} /> Connect on LinkedIn
+                </a>
               </div>
             </div>
           </div>
