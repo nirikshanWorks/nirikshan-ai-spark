@@ -1,3 +1,4 @@
+import { useMemo } from "react";
 import { useParams, Link } from "react-router-dom";
 import { Navigation } from "@/components/Navigation";
 import { Footer } from "@/components/Footer";
@@ -42,6 +43,25 @@ const ExpertiseServicePage = () => {
   const category = getCategoryBySlug(categorySlug || "");
   const service = categorySlug && serviceSlug ? getServiceBySlug(categorySlug, serviceSlug) : null;
 
+  const heroVideoPool = useMemo(
+    () => [
+      "https://res.cloudinary.com/dch0uyw8e/video/upload/v1760818146/Generative_AI_kcnnvm.mp4",
+      "https://res.cloudinary.com/dch0uyw8e/video/upload/v1760818131/Machine_Learning_gaw6th.mp4",
+      "https://res.cloudinary.com/dch0uyw8e/video/upload/v1760818138/AI_Consulting_agr0li.mp4",
+      "https://res.cloudinary.com/dch0uyw8e/video/upload/v1760818127/NET_Development_dmu07t.mp4",
+      "https://res.cloudinary.com/dch0uyw8e/video/upload/v1760818123/MS_Dynamics_qeap6i.mp4",
+    ],
+    [],
+  );
+
+  const heroVideoSrc = useMemo(() => {
+    if (!service?.slug) {
+      return undefined;
+    }
+    const hash = service.slug.split("").reduce((acc, char) => acc + char.charCodeAt(0), 0);
+    return heroVideoPool[hash % heroVideoPool.length];
+  }, [heroVideoPool, service?.slug]);
+
   if (!category || !service) {
     return (
       <div className="min-h-screen">
@@ -72,7 +92,22 @@ const ExpertiseServicePage = () => {
       <main className="pt-16">
         {/* Hero Section */}
         <section className="relative h-[420px] md:h-[520px] overflow-hidden">
-          <div className="absolute inset-0 bg-gradient-to-br from-primary via-blue-600 to-accent" />
+          {heroVideoSrc ? (
+            <video
+              className="absolute inset-0 h-full w-full object-cover"
+              autoPlay
+              loop
+              muted
+              playsInline
+              aria-hidden="true"
+            >
+              <source src={heroVideoSrc} type="video/mp4" />
+            </video>
+          ) : null}
+          <div
+            className="absolute inset-0 bg-gradient-to-br from-blue-200 via-violet-200 to-purple-200"
+            style={heroVideoSrc ? { opacity: 0.12 } : undefined}
+          />
           <div className="absolute -top-24 -left-16 w-64 h-64 bg-white/15 blur-3xl rounded-full" />
           <div className="absolute bottom-[-140px] right-[-40px] w-96 h-96 bg-white/10 blur-3xl rounded-full" />
           <div className="relative z-10 container mx-auto px-6 h-full flex items-center">

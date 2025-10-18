@@ -41,7 +41,17 @@ const ExpertisePage = () => {
       <main className="pt-16">
         {/* Hero Section */}
         <section className="relative h-[420px] md:h-[520px] overflow-hidden" ref={heroRef.ref}>
-          <div className="absolute inset-0 bg-gradient-to-br from-blue-600 via-blue-500 to-purple-600" />
+          <video
+            className="absolute inset-0 h-full w-full object-cover"
+            autoPlay
+            loop
+            muted
+            playsInline
+            aria-hidden="true"
+          >
+            <source src="https://res.cloudinary.com/dch0uyw8e/video/upload/v1760817165/exptice_th6pn0.mp4" type="video/mp4" />
+          </video>
+          <div className="absolute inset-0 bg-gradient-to-br from-blue-200 via-violet-200 to-purple-100 opacity-10" />
           <div className="absolute -top-24 -left-16 w-64 h-64 bg-white/10 blur-3xl rounded-full" />
           <div className="absolute bottom-[-120px] right-[-40px] w-96 h-96 bg-purple-500/30 blur-3xl rounded-full" />
           <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,_rgba(255,255,255,0.2)_0%,_transparent_60%)] opacity-30" />
@@ -67,7 +77,11 @@ const ExpertisePage = () => {
                   </Button>
                 </Link>
                 <Link to="/projects">
-                  <Button size="lg" variant="outline" className="border-white text-white hover:bg-white/10">
+                  <Button
+                    size="lg"
+                    variant="outline"
+                    className="border-white bg-white text-violet-600 hover:bg-violet-100 hover:text-violet-700"
+                  >
                     Explore Success Stories
                   </Button>
                 </Link>
@@ -77,7 +91,7 @@ const ExpertisePage = () => {
         </section>
 
         {/* Why Choose Us */}
-        <section className="relative -mt-24 mb-12">
+  <section className="relative z-20 mt-12 md:mt-16 lg:mt-20 mb-12">
           <div className="container mx-auto px-6">
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
               {pageHighlights.map((highlight, index) => {

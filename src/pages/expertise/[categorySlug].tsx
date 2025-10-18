@@ -1,3 +1,4 @@
+import { useMemo } from "react";
 import { useParams, Link } from "react-router-dom";
 import { Navigation } from "@/components/Navigation";
 import { Footer } from "@/components/Footer";
@@ -13,6 +14,25 @@ const ExpertiseCategoryPage = () => {
   const category = getCategoryBySlug(categorySlug || "");
   const heroRef = useScrollAnimation(0.1);
 
+  const heroVideoPool = useMemo(
+    () => [
+      "https://res.cloudinary.com/dch0uyw8e/video/upload/v1760818146/Generative_AI_kcnnvm.mp4",
+      "https://res.cloudinary.com/dch0uyw8e/video/upload/v1760818131/Machine_Learning_gaw6th.mp4",
+      "https://res.cloudinary.com/dch0uyw8e/video/upload/v1760818138/AI_Consulting_agr0li.mp4",
+      "https://res.cloudinary.com/dch0uyw8e/video/upload/v1760818127/NET_Development_dmu07t.mp4",
+      "https://res.cloudinary.com/dch0uyw8e/video/upload/v1760818123/MS_Dynamics_qeap6i.mp4",
+    ],
+    [],
+  );
+
+  const heroVideoSrc = useMemo(() => {
+    if (category?.slug !== "artificial-intelligence") {
+      return undefined;
+    }
+    const hash = category.slug.split("").reduce((acc, char) => acc + char.charCodeAt(0), 0);
+    return heroVideoPool[hash % heroVideoPool.length];
+  }, [category?.slug, heroVideoPool]);
+
   if (!category) {
     return <div>Category not found</div>;
   }
@@ -26,7 +46,22 @@ const ExpertiseCategoryPage = () => {
       <main className="pt-16">
         {/* Hero Section */}
         <section className="relative h-[420px] md:h-[520px] overflow-hidden" ref={heroRef.ref}>
-          <div className="absolute inset-0 bg-gradient-to-br from-blue-600 via-blue-500 to-purple-600" />
+          {heroVideoSrc ? (
+            <video
+              className="absolute inset-0 h-full w-full object-cover"
+              autoPlay
+              loop
+              muted
+              playsInline
+              aria-hidden="true"
+            >
+              <source src={heroVideoSrc} type="video/mp4" />
+            </video>
+          ) : null}
+          <div
+            className="absolute inset-0 bg-gradient-to-br from-blue-200 via-violet-200 to-purple-200"
+            style={heroVideoSrc ? { opacity: 0.12 } : undefined}
+          />
           <div className="absolute -top-24 -left-16 w-64 h-64 bg-white/10 blur-3xl rounded-full" />
           <div className="absolute bottom-[-140px] right-[-40px] w-96 h-96 bg-purple-500/30 blur-3xl rounded-full" />
           <div className="relative z-10 container mx-auto px-6 h-full flex items-center">
