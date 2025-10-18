@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Menu, X } from "lucide-react";
@@ -42,6 +42,19 @@ export const Navigation = () => {
     setMobileMenuOpen(false);
     setMobileExpertiseOpen(false);
   };
+
+  useEffect(() => {
+    if (mobileMenuOpen) {
+      const originalOverflow = document.body.style.overflow;
+      document.body.style.overflow = "hidden";
+      return () => {
+        document.body.style.overflow = originalOverflow;
+      };
+    }
+
+    document.body.style.overflow = "";
+    return undefined;
+  }, [mobileMenuOpen]);
 
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 bg-background/95 dark:bg-background/90 backdrop-blur border-b border-border/60 shadow-sm transition-all duration-300">
@@ -139,17 +152,20 @@ export const Navigation = () => {
 
         {/* Mobile Navigation */}
         {mobileMenuOpen && (
-          <div id="mobile-navigation" className="md:hidden py-4 space-y-2">
+          <div
+            id="mobile-navigation"
+            className="fixed inset-x-0 top-16 bottom-0 z-40 overflow-y-auto bg-background/98 px-6 py-6 md:hidden"
+          >
             <Link
               to="/about"
-              className="block px-4 py-2 hover:bg-muted rounded-md"
+              className="block rounded-md px-4 py-2 hover:bg-muted"
               onClick={closeMobileMenu}
             >
               About
             </Link>
             <div className="space-y-1">
               <button
-                className="flex w-full items-center justify-between gap-2 px-4 py-2 font-medium"
+                className="flex w-full items-center justify-between gap-2 rounded-md px-4 py-2 font-medium hover:bg-muted"
                 onClick={() => setMobileExpertiseOpen((prev) => !prev)}
                 aria-expanded={mobileExpertiseOpen}
                 aria-controls="mobile-expertise"
