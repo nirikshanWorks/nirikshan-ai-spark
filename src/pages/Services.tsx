@@ -13,7 +13,14 @@ import {
   ArrowRight,
   Check,
   Zap,
-  TrendingUp
+  TrendingUp,
+  Cpu,
+  Cloud,
+  Smartphone,
+  BarChart3,
+  CheckCircle,
+  GitBranch,
+  Boxes
 } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useScrollAnimation } from "@/hooks/use-scroll-animation";
@@ -22,13 +29,15 @@ import heroAI from "@/assets/hero-ai.jpg";
 const servicesData = [
   {
     icon: Brain,
-    title: "AI & ML Solutions",
-    shortDesc: "Custom machine learning models and intelligent automation",
-    fullDesc: "Our AI and Machine Learning solutions transform your business through intelligent automation, predictive analytics, and data-driven decision making. We develop custom ML models that learn from your data to solve complex business problems.",
+    title: "Artificial Intelligence & Machine Learning",
+    shortDesc: "Advanced AI solutions and ML models",
+    fullDesc: "Transform your business with cutting-edge AI and machine learning solutions. From generative AI to predictive analytics, we develop intelligent systems that learn and adapt to your specific needs.",
     features: [
+      "Generative AI models and LLM implementations",
       "Custom machine learning models",
       "Predictive analytics and forecasting",
       "Natural language processing (NLP)",
+      "AI consulting and strategy",
       "Intelligent automation systems",
       "Recommendation engines",
       "Anomaly detection systems"
@@ -36,82 +45,129 @@ const servicesData = [
     benefits: [
       "Automate complex processes",
       "Gain actionable insights from data",
-      "Reduce operational costs",
+      "Reduce operational costs by 40%+",
       "Improve decision-making accuracy",
-      "Scale operations efficiently"
+      "Scale operations efficiently",
+      "Stay ahead of competition"
     ],
     useCases: [
       "Customer behavior prediction",
       "Fraud detection systems",
       "Demand forecasting",
-      "Quality assurance automation"
+      "Quality assurance automation",
+      "Natural language understanding",
+      "Conversational AI chatbots"
     ]
   },
   {
-    icon: Eye,
-    title: "Computer Vision",
-    shortDesc: "Advanced image recognition and visual intelligence",
-    fullDesc: "Harness the power of computer vision to automate visual inspection, detection, and analysis tasks. Our deep learning models can recognize patterns, objects, and anomalies in images and video streams with high accuracy.",
+    icon: Cpu,
+    title: "Microsoft Services & .NET Solutions",
+    shortDesc: "Enterprise Microsoft ecosystem services",
+    fullDesc: "Leverage Microsoft's enterprise ecosystem with our comprehensive services. From .NET development to Azure cloud solutions, MS Dynamics, and legacy application migration, we deliver enterprise-grade solutions.",
     features: [
-      "Image recognition and classification",
-      "Object detection and tracking",
-      "Facial recognition systems",
-      "Quality control automation",
-      "Visual inspection solutions",
-      "Document analysis and OCR"
+      ".NET framework development",
+      "MS Dynamics CRM implementations",
+      "MS Dynamics ERP solutions",
+      "Legacy application migration to .NET",
+      "Azure cloud infrastructure",
+      "Azure DevOps and CI/CD",
+      "Microsoft 365 integration",
+      "Enterprise security solutions"
     ],
     benefits: [
-      "Improve quality consistency",
-      "Reduce manual inspections",
-      "Enhance security systems",
-      "Faster processing times",
-      "Higher accuracy rates"
+      "Seamless enterprise integration",
+      "Improved business processes",
+      "Enhanced security and compliance",
+      "Scalable cloud infrastructure",
+      "Cost-effective solutions",
+      "Expert Microsoft partnership"
     ],
     useCases: [
-      "Manufacturing quality control",
-      "Medical image analysis",
-      "Security and surveillance",
-      "Retail inventory management"
+      "Enterprise resource planning",
+      "Customer relationship management",
+      "Legacy system modernization",
+      "Cloud migration projects",
+      "Business process automation",
+      "Enterprise application development"
+    ]
+  },
+  {
+    icon: Boxes,
+    title: "SAP BTP Solutions",
+    shortDesc: "Business Technology Platform services",
+    fullDesc: "Unlock the full potential of SAP Business Technology Platform. We provide comprehensive solutions for integration, application development, data management, and AI-powered insights on SAP BTP.",
+    features: [
+      "SAP Integration Suite implementations",
+      "Low-code/No-code application development",
+      "SAP BTP data and analytics",
+      "Application Development Automation",
+      "AI capabilities on SAP BTP",
+      "SAP Analytics Cloud",
+      "Data modeling and ETL",
+      "Custom API development"
+    ],
+    benefits: [
+      "Faster application development",
+      "Reduced integration complexity",
+      "Real-time data insights",
+      "Scalable on-demand infrastructure",
+      "Cost optimization",
+      "Future-ready platform"
+    ],
+    useCases: [
+      "Enterprise data integration",
+      "Real-time reporting dashboards",
+      "Supply chain optimization",
+      "Customer analytics platforms",
+      "Business process automation",
+      "Intelligent forecasting"
+    ]
+  },
+  {
+    icon: Cloud,
+    title: "AWS & Cloud Services",
+    shortDesc: "Amazon Web Services infrastructure",
+    fullDesc: "Harness the power of AWS cloud with our comprehensive services. We help you migrate, optimize, and innovate on the AWS platform with expert architecture and best practices.",
+    features: [
+      "AWS infrastructure design and setup",
+      "Cloud migration services",
+      "AWS cost optimization",
+      "Serverless application development",
+      "Cloud security and compliance",
+      "AWS DevOps and automation",
+      "Database migration services",
+      "Disaster recovery solutions"
+    ],
+    benefits: [
+      "Global infrastructure availability",
+      "Pay-as-you-go pricing model",
+      "High scalability and reliability",
+      "Enhanced security and compliance",
+      "Reduced operational overhead",
+      "Innovation at scale"
+    ],
+    useCases: [
+      "Web application hosting",
+      "Big data analytics",
+      "Real-time streaming applications",
+      "Enterprise data backup",
+      "IoT platform development",
+      "Mobile app backend services"
     ]
   },
   {
     icon: Code,
-    title: "Custom Software Development",
-    shortDesc: "Enterprise-grade solutions tailored to your needs",
-    fullDesc: "We build robust, scalable software applications from concept to deployment. Our team leverages modern technologies and best practices to create solutions that solve your unique business challenges.",
-    features: [
-      "Full-stack development",
-      "Enterprise applications",
-      "Mobile applications",
-      "Desktop applications",
-      "API development",
-      "System integration"
-    ],
-    benefits: [
-      "Tailored to your exact needs",
-      "Scalable architecture",
-      "High performance",
-      "Easy maintenance",
-      "Future-proof technology stack"
-    ],
-    useCases: [
-      "Business management systems",
-      "Supply chain applications",
-      "Internal tools and dashboards",
-      "Cross-platform solutions"
-    ]
-  },
-  {
-    icon: Globe,
     title: "Web Development",
-    shortDesc: "Modern, responsive web applications",
-    fullDesc: "We create high-performance web applications that deliver exceptional user experiences. Using React, Next.js, and other modern frameworks, we build progressive web apps that work seamlessly across all devices.",
+    shortDesc: "Modern responsive web applications",
+    fullDesc: "We create high-performance, responsive web applications that deliver exceptional user experiences. Using React, Next.js, and modern frameworks, we build progressive web apps for any scale.",
     features: [
-      "Responsive design",
+      "Responsive web design",
       "Progressive web apps (PWA)",
       "E-commerce platforms",
       "Content management systems",
       "Real-time applications",
+      "Single page applications (SPA)",
+      "WordPress development",
       "Performance optimization"
     ],
     benefits: [
@@ -119,94 +175,240 @@ const servicesData = [
       "Fast loading times",
       "SEO friendly",
       "Improved user engagement",
-      "Better conversion rates"
+      "Better conversion rates",
+      "Cross-browser compatibility"
     ],
     useCases: [
       "Online stores and marketplaces",
       "Business portals",
       "Social platforms",
-      "Analytics dashboards"
+      "Analytics dashboards",
+      "Content platforms",
+      "Booking systems"
     ]
   },
   {
-    icon: Palette,
-    title: "UI/UX Design",
-    shortDesc: "User-centered design that delights",
-    fullDesc: "We create beautiful, intuitive interfaces through user research, prototyping, and iterative testing. Our design process ensures that your users get an exceptional experience every time they interact with your product.",
+    icon: Smartphone,
+    title: "Mobile Application Development",
+    shortDesc: "Native and cross-platform mobile apps",
+    fullDesc: "Build powerful mobile applications for iOS, Android, or both platforms. Our expert team creates native and cross-platform solutions that provide exceptional mobile experiences.",
     features: [
-      "User research and personas",
-      "Wireframing and prototyping",
-      "Visual design",
-      "Interaction design",
-      "Usability testing",
-      "Design systems"
+      "Native Android development",
+      "Native iOS development",
+      "Cross-platform development (React Native, Flutter)",
+      "Mobile UI/UX design",
+      "App store optimization",
+      "Push notifications",
+      "Offline functionality",
+      "Mobile analytics integration"
     ],
     benefits: [
-      "Higher user satisfaction",
-      "Better engagement rates",
-      "Reduced support costs",
-      "Increased user retention",
-      "Brand consistency"
+      "Native performance",
+      "Code reusability",
+      "Faster time to market",
+      "Cost-effective development",
+      "Better user experience",
+      "Regular updates and support"
     ],
     useCases: [
-      "Mobile app design",
-      "Web platform design",
-      "Enterprise software redesign",
-      "Design system creation"
+      "Consumer apps",
+      "Enterprise mobile solutions",
+      "Location-based services",
+      "Social networking apps",
+      "E-commerce mobile apps",
+      "Healthcare applications"
+    ]
+  },
+  {
+    icon: CheckCircle,
+    title: "Quality Assurance & Testing",
+    shortDesc: "Comprehensive QA and testing services",
+    fullDesc: "Ensure your software meets the highest quality standards with our comprehensive testing services. From functional testing to automation testing, we provide thorough quality assurance across all platforms.",
+    features: [
+      "Manual software testing",
+      "Functional testing",
+      "Automation testing",
+      "Performance testing",
+      "Security testing",
+      "Regression testing",
+      "User acceptance testing",
+      "Test management and reporting"
+    ],
+    benefits: [
+      "Reduce defects and bugs",
+      "Improve software reliability",
+      "Faster release cycles",
+      "Cost-effective testing",
+      "Enhanced user satisfaction",
+      "Continuous quality improvement"
+    ],
+    useCases: [
+      "Software release validation",
+      "Regression test automation",
+      "Performance benchmarking",
+      "Security vulnerability testing",
+      "Compliance verification",
+      "Continuous integration testing"
+    ]
+  },
+  {
+    icon: GitBranch,
+    title: "Legacy Application Modernization",
+    shortDesc: "Transform legacy systems for modern era",
+    fullDesc: "Breathe new life into your legacy applications with comprehensive modernization strategies. From re-engineering to cloud migration, we help you transform outdated systems into modern, efficient solutions.",
+    features: [
+      "Application re-engineering",
+      "Application re-architecture",
+      "Legacy cloud migration",
+      "UI/UX modernization",
+      "API integration",
+      "Database modernization",
+      "Performance optimization",
+      "Maintenance services"
+    ],
+    benefits: [
+      "Extended system lifespan",
+      "Improved performance",
+      "Reduced maintenance costs",
+      "Better scalability",
+      "Modern user interface",
+      "Cloud-ready architecture"
+    ],
+    useCases: [
+      "Mainframe modernization",
+      "Desktop to web transformation",
+      "Legacy to cloud migration",
+      "Database upgrades",
+      "API-first transformation",
+      "Microservices migration"
+    ]
+  },
+  {
+    icon: BarChart3,
+    title: "Digital Marketing Services",
+    shortDesc: "Grow your online presence and reach",
+    fullDesc: "Expand your digital footprint with our comprehensive marketing services. From SEO to social media marketing, we help you reach and engage your target audience effectively.",
+    features: [
+      "Search engine optimization (SEO)",
+      "Social media marketing",
+      "Content marketing",
+      "Paid advertising campaigns",
+      "Email marketing",
+      "Marketing analytics",
+      "Brand strategy",
+      "Digital consulting"
+    ],
+    benefits: [
+      "Increased online visibility",
+      "Higher conversion rates",
+      "Better customer engagement",
+      "Measurable ROI",
+      "Cost-effective marketing",
+      "Brand awareness growth"
+    ],
+    useCases: [
+      "E-commerce visibility",
+      "Lead generation",
+      "Brand awareness campaigns",
+      "Social media engagement",
+      "Search rankings improvement",
+      "Customer retention"
+    ]
+  },
+  {
+    icon: Zap,
+    title: "Digital Transformation Services",
+    shortDesc: "End-to-end digital transformation",
+    fullDesc: "Navigate your digital transformation journey with our expert guidance. We help organizations modernize operations, embrace new technologies, and drive business growth in the digital age.",
+    features: [
+      "Digital transformation strategy",
+      "Business process automation",
+      "Cloud migration planning",
+      "AI-powered transformation",
+      "Agile and DevOps implementation",
+      "Change management",
+      "Technology assessment",
+      "Innovation workshops"
+    ],
+    benefits: [
+      "Accelerated business growth",
+      "Operational efficiency",
+      "Cost reduction",
+      "Enhanced customer experience",
+      "Employee productivity",
+      "Competitive advantage"
+    ],
+    useCases: [
+      "Enterprise digital transformation",
+      "Business process optimization",
+      "Customer experience enhancement",
+      "Operational efficiency",
+      "New product development",
+      "Market expansion"
     ]
   },
   {
     icon: Database,
-    title: "Data Management",
-    shortDesc: "Comprehensive data solutions and analytics",
-    fullDesc: "We design and implement comprehensive data solutions that turn raw data into actionable insights. From database design to analytics platforms, we help you harness the full power of your data.",
+    title: "Data Management & Analytics",
+    shortDesc: "Comprehensive data solutions",
+    fullDesc: "Turn your data into actionable insights with our comprehensive data management and analytics solutions. From database design to advanced analytics, we help you leverage your data for business growth.",
     features: [
       "Database design and optimization",
-      "ETL pipelines",
+      "ETL pipelines and data integration",
       "Data warehousing",
       "Business intelligence systems",
       "Analytics platforms",
-      "Data governance"
+      "Data governance",
+      "Big data solutions",
+      "Real-time analytics"
     ],
     benefits: [
       "Better data insights",
       "Faster query performance",
       "Scalable infrastructure",
       "Improved data quality",
-      "Regulatory compliance"
+      "Regulatory compliance",
+      "Data-driven decisions"
     ],
     useCases: [
       "Business analytics platforms",
       "Real-time dashboards",
       "Data migration projects",
-      "Big data solutions"
+      "Big data solutions",
+      "Customer analytics",
+      "Operational intelligence"
     ]
   },
   {
     icon: Users,
-    title: "CRM Software",
-    shortDesc: "Customer relationship management systems",
-    fullDesc: "Custom CRM solutions that streamline customer relationships and automate sales processes. Our platforms provide actionable insights for business growth and improved customer satisfaction.",
+    title: "CRM & Managed Services",
+    shortDesc: "Customer solutions and ongoing support",
+    fullDesc: "Streamline customer relationships and ensure smooth operations with our CRM and managed services. We provide both custom CRM solutions and continuous application management services.",
     features: [
+      "Custom CRM development",
       "Customer database management",
       "Sales pipeline automation",
       "Marketing automation",
       "Customer service tools",
-      "Reporting and analytics",
-      "Integration capabilities"
+      "Application managed services",
+      "24/7 monitoring and support",
+      "Performance optimization"
     ],
     benefits: [
       "Improved customer relationships",
       "Increased sales efficiency",
       "Better customer retention",
-      "Enhanced team collaboration",
-      "Data-driven decisions"
+      "Enhanced collaboration",
+      "Data-driven decisions",
+      "Reduced IT overhead"
     ],
     useCases: [
       "Sales force automation",
       "Customer support systems",
-      "Marketing campaign management",
-      "Client relationship tracking"
+      "Marketing automation",
+      "Application support services",
+      "System monitoring",
+      "Performance maintenance"
     ]
   }
 ];

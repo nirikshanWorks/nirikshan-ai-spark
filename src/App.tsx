@@ -6,8 +6,10 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Index from "./pages/Index";
 import About from "./pages/About";
 import WhoWeAre from "./pages/WhoWeAre";
-import Expertise from "./pages/Expertise";
 import Services from "./pages/Services";
+import ExpertisePage from "./pages/expertise/index";
+import ExpertiseCategoryPage from "./pages/expertise/[categorySlug]";
+import ExpertiseServicePage from "./pages/expertise/[categorySlug]/[serviceSlug]";
 import Projects from "./pages/Projects";
 import CaseStudies from "./pages/CaseStudies";
 import Careers from "./pages/Careers";
@@ -26,7 +28,13 @@ const App = () => (
           <Route path="/" element={<Index />} />
           <Route path="/about" element={<About />} />
           <Route path="/who-we-are" element={<WhoWeAre />} />
-          <Route path="/expertise/*" element={<Expertise />} />
+          <Route path="/expertise/*" element={
+            <Routes>
+              <Route index element={<ExpertisePage />} />
+              <Route path=":categorySlug" element={<ExpertiseCategoryPage />} />
+              <Route path=":categorySlug/:serviceSlug" element={<ExpertiseServicePage />} />
+            </Routes>
+          } />
           <Route path="/services" element={<Services />} />
           <Route path="/projects" element={<Projects />} />
           <Route path="/case-studies" element={<CaseStudies />} />
