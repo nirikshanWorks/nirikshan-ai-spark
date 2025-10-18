@@ -3,11 +3,13 @@ import { Footer } from "@/components/Footer";
 import { Button } from "@/components/ui/button";
 import { 
   ArrowRight,
-  Heart,
 } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useScrollAnimation } from "@/hooks/use-scroll-animation";
 import wwaTeamVideo from "@/assets/wwa-team.mp4";
+import dineshImage from "@/assets/team/dinesh-yadav.jpg";
+import anshulImage from "@/assets/team/anshul.jpg";
+import ashwinImage from "@/assets/team/ashwin-hole.jpg";
 
 const teamMembers = [
   {
@@ -15,21 +17,24 @@ const teamMembers = [
     role: "Founder & CEO",
     description: "Visionary leader with a passion for AI and innovative technology solutions.",
     quote: "At Nirikshan AI Pvt. Ltd., we don't just build software — we build ideas.",
-    expertise: ["Leadership", "AI Strategy", "Business Development"]
+    expertise: ["Leadership", "AI Strategy", "Business Development"],
+    image: dineshImage
   },
   {
     name: "Anshul",
     role: "Co-Founder & Operations Manager",
     description: "Strategic operations expert focused on optimizing workflows and delivering quality solutions to clients.",
     quote: "From local enterprise to worldwide, we're turning ideas into impactful digital solutions.",
-    expertise: ["Operations", "Project Management", "Quality Assurance"]
+    expertise: ["Operations", "Project Management", "Quality Assurance"],
+    image: anshulImage
   },
   {
     name: "Ashwin Hole",
     role: "Co Founder & HOP",
     description: "Visionary leader with a passion for AI and innovative technology solutions.",
     quote: "We love to innovate and create solutions that make a difference.",
-    expertise: ["Innovation", "Technology", "Team Building"]
+    expertise: ["Innovation", "Technology", "Team Building"],
+    image: ashwinImage
   },
 ];
 
@@ -85,9 +90,13 @@ const WhoWeAre = () => {
                   <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-blue-500 to-purple-500 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                   
                   <div className="p-8">
-                    {/* Icon */}
-                    <div className="w-16 h-16 rounded-full gradient-primary flex items-center justify-center mb-4 shadow-lg group-hover:scale-110 transition-transform duration-300">
-                      <Heart className="text-white" size={32} />
+                    {/* Profile Image */}
+                    <div className="w-28 h-28 rounded-full mb-6 mx-auto overflow-hidden shadow-xl ring-4 ring-primary/10 group-hover:ring-primary/30 group-hover:scale-110 transition-all duration-300">
+                      <img 
+                        src={member.image} 
+                        alt={member.name}
+                        className="w-full h-full object-cover"
+                      />
                     </div>
 
                     {/* Name and Role */}

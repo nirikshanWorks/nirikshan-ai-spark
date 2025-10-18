@@ -3,7 +3,6 @@ import { Footer } from "@/components/Footer";
 import { HeroSection } from "@/components/HeroSection";
 import { ServiceCard } from "@/components/ServiceCard";
 import { IndustryCard } from "@/components/IndustryCard";
-import { TeamMemberCard } from "@/components/TeamMemberCard";
 import { StatsSection } from "@/components/StatsSection";
 import { ProcessSection } from "@/components/ProcessSection";
 import { WhyChooseUs } from "@/components/WhyChooseUs";
@@ -112,27 +111,6 @@ const industries = [
   { title: "Finance & Banking", image: "https://images.unsplash.com/photo-1563013544-824ae1b704d3" },
 ];
 
-const teamMembers = [
-  {
-    name: "Dinesh Yadav",
-    role: "Founder & CEO",
-    description: "Visionary leader with a passion for AI and innovative technology solutions.",
-    quote: "At Nirikshan AI Pvt. Ltd., we don't just build software — we build ideas.",
-  },
-  {
-    name: "Anshul",
-    role: "Co-Founder & Operations Manager",
-    description: "Strategic operations expert focused on optimizing workflows and delivering quality solutions to clients.",
-    quote: "From local enterprise to worldwide, we're turning ideas into impactful digital solutions.",
-  },
-  {
-    name: "Ashwin Hole",
-    role: "Co Founder & HOP",
-    description: "Visionary leader with a passion for AI and innovative technology solutions.",
-    quote: "We love to innovate and create solutions that make a difference.",
-  },
-];
-
 const stats = [
   { value: "5+", label: "Team Members" },
   { value: "5+", label: "Ongoing Projects" },
@@ -225,21 +203,6 @@ const Index = () => {
 
         {/* Technology Stack */}
         <TechnologyStack />
-
-        {/* Team Section */}
-        <section className="py-20 container mx-auto px-6">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl md:text-4xl font-bold mb-4">Our Team</h2>
-            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-              Meet the talented individuals who make Nirikshan AI Pvt. Ltd. possible, bringing expertise in AI, software development, and business solutions.
-            </p>
-          </div>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto">
-            {teamMembers.map((member, index) => (
-              <TeamMemberCard key={index} {...member} />
-            ))}
-          </div>
-        </section>
 
         {/* Industries Section */}
         <section className="py-20 bg-secondary/30">
