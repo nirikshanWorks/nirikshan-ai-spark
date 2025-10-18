@@ -154,7 +154,7 @@ export const Navigation = () => {
         {mobileMenuOpen && (
           <div
             id="mobile-navigation"
-            className="fixed inset-x-0 top-16 bottom-0 z-40 overflow-y-auto bg-background/98 px-6 py-6 md:hidden"
+            className="fixed inset-x-0 top-16 bottom-0 z-40 overflow-y-auto bg-white px-6 py-6 shadow-lg md:hidden dark:bg-slate-900"
           >
             <Link
               to="/about"
