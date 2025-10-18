@@ -6,8 +6,24 @@ import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { Card } from "@/components/ui/card";
 import { Mail, Phone, MapPin, Send } from "lucide-react";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { toast } from "sonner";
+import ReCAPTCHA from "react-google-recaptcha";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+
+const COUNTRIES = [
+  "India",
+  "United States",
+  "United Kingdom",
+  "Canada",
+  "Australia",
+  "Singapore",
+  "United Arab Emirates",
+  "Germany",
+  "France",
+  "Saudi Arabia",
+  "Other",
+];
 
 const Contact = () => {
   const [formData, setFormData] = useState({
@@ -15,23 +31,47 @@ const Contact = () => {
     email: "",
     company: "",
     phone: "",
+    country: "",
+    city: "",
     message: "",
   });
 
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [recaptchaToken, setRecaptchaToken] = useState<string | null>(null);
+  const recaptchaRef = useRef<ReCAPTCHA | null>(null);
+  const siteKey = import.meta.env.VITE_RECAPTCHA_SITE_KEY;
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (!siteKey) {
+      toast.error("reCAPTCHA is not configured. Please contact the site administrator.");
+      return;
+    }
+    if (!formData.country) {
+      toast.error("Please select your country.");
+      return;
+    }
+    if (!formData.city.trim()) {
+      toast.error("Please share your city.");
+      return;
+    }
+    if (!recaptchaToken) {
+      toast.error("Please verify you are human before submitting.");
+      return;
+    }
     setIsSubmitting(true);
 
-    await new Promise(resolve => setTimeout(resolve, 1000));
+    // TODO: Replace this delay with an API call that passes recaptchaToken to your backend for verification.
+    await new Promise((resolve) => setTimeout(resolve, 1000));
 
     toast.success("Thank you for your message! We'll get back to you soon.");
-    setFormData({ name: "", email: "", company: "", phone: "", message: "" });
+    setFormData({ name: "", email: "", company: "", phone: "", country: "", city: "", message: "" });
+    recaptchaRef.current?.reset();
+    setRecaptchaToken(null);
     setIsSubmitting(false);
   };
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
@@ -59,73 +99,120 @@ const Contact = () => {
               <div className="relative z-10">
                 <h2 className="text-3xl font-bold mb-8 text-gradient">Send us a Message</h2>
                 <form onSubmit={handleSubmit} className="space-y-6">
-                <div className="space-y-2">
-                  <Label htmlFor="name">Name *</Label>
-                  <Input
-                    id="name"
-                    name="name"
-                    value={formData.name}
-                    onChange={handleChange}
-                    required
-                    placeholder="Your full name"
-                    className="transition-all focus:ring-2 focus:ring-primary hover:border-primary/50"
-                  />
-                </div>
-                <div className="space-y-2">
-                  <Label htmlFor="email">Email *</Label>
-                  <Input
-                    id="email"
-                    name="email"
-                    type="email"
-                    value={formData.email}
-                    onChange={handleChange}
-                    required
-                    placeholder="your.email@company.com"
-                  />
-                </div>
-                <div className="space-y-2">
-                  <Label htmlFor="company">Company</Label>
-                  <Input
-                    id="company"
-                    name="company"
-                    value={formData.company}
-                    onChange={handleChange}
-                    placeholder="Your company name"
-                  />
-                </div>
-                <div className="space-y-2">
-                  <Label htmlFor="phone">Phone</Label>
-                  <Input
-                    id="phone"
-                    name="phone"
-                    type="tel"
-                    value={formData.phone}
-                    onChange={handleChange}
-                    placeholder="+1 (234) 567-8900"
-                  />
-                </div>
-                <div className="space-y-2">
-                  <Label htmlFor="message">Message *</Label>
-                  <Textarea
-                    id="message"
-                    name="message"
-                    value={formData.message}
-                    onChange={handleChange}
-                    required
-                    placeholder="Tell us about your project or inquiry..."
-                    rows={6}
-                  />
-                </div>
-                <Button
-                  type="submit"
-                  size="lg"
-                  className="w-full gradient-primary text-white font-semibold text-lg hover:shadow-2xl"
-                  disabled={isSubmitting}
-                >
-                  {isSubmitting ? "Sending..." : "Send Message"}
-                  <Send className={`ml-2 ${isSubmitting ? "animate-pulse" : "group-hover:translate-x-1 transition-transform"}`} size={18} />
-                </Button>
-              </form>
+                  <div className="grid gap-6 md:grid-cols-2">
+                    <div className="space-y-2">
+                      <Label htmlFor="name">Name *</Label>
+                      <Input
+                        id="name"
+                        name="name"
+                        value={formData.name}
+                        onChange={handleChange}
+                        required
+                        placeholder="Your full name"
+                        className="transition-all focus:ring-2 focus:ring-primary hover:border-primary/50"
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <Label htmlFor="email">Email *</Label>
+                      <Input
+                        id="email"
+                        name="email"
+                        type="email"
+                        value={formData.email}
+                        onChange={handleChange}
+                        required
+                        placeholder="your.email@company.com"
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <Label htmlFor="company">Company</Label>
+                      <Input
+                        id="company"
+                        name="company"
+                        value={formData.company}
+                        onChange={handleChange}
+                        placeholder="Your company name"
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <Label htmlFor="phone">Phone</Label>
+                      <Input
+                        id="phone"
+                        name="phone"
+                        type="tel"
+                        value={formData.phone}
+                        onChange={handleChange}
+                        placeholder="+91 9410 992204"
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <Label>Country *</Label>
+                      <Select
+                        value={formData.country}
+                        onValueChange={(value) => setFormData((prev) => ({ ...prev, country: value }))}
+                      >
+                        <SelectTrigger>
+                          <SelectValue placeholder="Select your country" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          {COUNTRIES.map((country) => (
+                            <SelectItem key={country} value={country}>
+                              {country}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                    </div>
+                    <div className="space-y-2">
+                      <Label htmlFor="city">City *</Label>
+                      <Input
+                        id="city"
+                        name="city"
+                        value={formData.city}
+                        onChange={handleChange}
+                        required
+                        placeholder="e.g., Bengaluru"
+                      />
+                    </div>
+                  </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="message">Message *</Label>
+                    <Textarea
+                      id="message"
+                      name="message"
+                      value={formData.message}
+                      onChange={handleChange}
+                      required
+                      placeholder="Tell us about your project or inquiry..."
+                      rows={6}
+                    />
+                  </div>
+                  <div className="flex justify-center">
+                    {siteKey ? (
+                      <ReCAPTCHA
+                        ref={(instance) => {
+                          recaptchaRef.current = instance;
+                        }}
+                        sitekey={siteKey}
+                        onChange={(token) => setRecaptchaToken(token)}
+                        onExpired={() => setRecaptchaToken(null)}
+                      />
+                    ) : (
+                      <p className="text-sm text-destructive">
+                        reCAPTCHA key missing. Add VITE_RECAPTCHA_SITE_KEY to your environment.
+                      </p>
+                    )}
+                  </div>
+                  <Button
+                    type="submit"
+                    size="lg"
+                    className="w-full gradient-primary text-white font-semibold text-lg hover:shadow-2xl"
+                    disabled={isSubmitting || !recaptchaToken}
+                  >
+                    {isSubmitting ? "Sending..." : "Send Message"}
+                    <Send className={`ml-2 ${isSubmitting ? "animate-pulse" : "group-hover:translate-x-1 transition-transform"}`} size={18} />
+                  </Button>
+                </form>
               </div>
             </Card>
 
@@ -167,7 +254,7 @@ const Contact = () => {
                       <h3 className="font-bold mb-2 text-lg">Office</h3>
                       <p className="text-muted-foreground leading-relaxed">
                         Nirikshan AI Pvt. Ltd.<br />
-                        Bangalore, Karnataka<br />
+                        Noida, Uttar Pradesh, India<br />
                         India
                       </p>
                     </div>

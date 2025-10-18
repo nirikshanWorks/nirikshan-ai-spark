@@ -408,7 +408,7 @@ const WhoWeAre = () => {
             <div className="grid gap-10 lg:grid-cols-[0.8fr,1.2fr] items-center">
               <div className="relative flex justify-center order-last lg:order-first">
                 <img
-                  src="https://res.cloudinary.com/dch0uyw8e/image/upload/v1760811387/anshbg-removebg-preview_ouupmg.png"
+                  src="https://res.cloudinary.com/dch0uyw8e/image/upload/v1760824873/908bbff4-13cf-42d9-8891-e44b92821d41.png"
                   alt="Anshul"
                   className="w-full max-w-sm h-auto drop-shadow-2xl"
                 />

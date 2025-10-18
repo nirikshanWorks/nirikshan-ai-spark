@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { ArrowRight } from "lucide-react";
 import { Link } from "react-router-dom";
@@ -21,6 +21,49 @@ interface HeroSectionProps {
 
 export const HeroSection = ({ slides }: HeroSectionProps) => {
   const [activeSlide, setActiveSlide] = useState(0);
+  const [progress, setProgress] = useState(0);
+  const [cycleKey, setCycleKey] = useState(0);
+
+  const SLIDE_DURATION = 8000;
+
+  useEffect(() => {
+    if (slides.length <= 1) {
+      setProgress(100);
+      return undefined;
+    }
+
+    let frameId: number;
+    const start = performance.now();
+    setProgress(0);
+
+    const animate = (timestamp: number) => {
+      const elapsed = timestamp - start;
+      const nextProgress = Math.min((elapsed / SLIDE_DURATION) * 100, 100);
+      setProgress(nextProgress);
+
+      if (elapsed >= SLIDE_DURATION) {
+        setActiveSlide((prev) => (prev + 1) % slides.length);
+        return;
+      }
+
+      frameId = requestAnimationFrame(animate);
+    };
+
+    frameId = requestAnimationFrame(animate);
+
+    return () => {
+      cancelAnimationFrame(frameId);
+    };
+  }, [activeSlide, slides.length, cycleKey]);
+
+  const handleManualSlide = (index: number) => {
+    if (index === activeSlide) {
+      setCycleKey((key) => key + 1);
+    } else {
+      setActiveSlide(index);
+    }
+    setProgress(0);
+  };
 
   return (
     <section className="relative h-[600px] md:h-[700px] overflow-hidden">
@@ -82,17 +125,23 @@ export const HeroSection = ({ slides }: HeroSectionProps) => {
             {slides.map((slide, index) => (
               <button
                 key={index}
-                onClick={() => setActiveSlide(index)}
+                onClick={() => handleManualSlide(index)}
                 type="button"
                 aria-label={`Show hero slide: ${slide.eyebrow}`}
                 aria-pressed={index === activeSlide}
-                className={`pb-4 text-sm md:text-base transition-all ${
+                className={`relative pb-6 text-left text-sm md:text-base transition-all ${
                   index === activeSlide
-                    ? "text-white border-b-2 border-accent"
+                    ? "text-white"
                     : "text-white/60 hover:text-white/90"
                 }`}
               >
                 {slide.eyebrow}
+                <span className="absolute left-0 bottom-0 h-[2px] w-full overflow-hidden rounded-full bg-white/15">
+                  <span
+                    className={`block h-full origin-left ${index === activeSlide ? "bg-accent" : "bg-white/30"}`}
+                    style={{ width: `${index === activeSlide ? progress : index < activeSlide ? 100 : 0}%` }}
+                  />
+                </span>
               </button>
             ))}
           </div>

@@ -101,18 +101,18 @@ const Journey = () => {
   return (
     <div className="relative min-h-screen overflow-hidden bg-background text-foreground">
       <video
-        className="absolute inset-0 h-full w-full object-cover"
+        className="pointer-events-none absolute inset-0 z-0 h-full w-full object-cover"
         autoPlay
         muted
         loop
         playsInline
         src="https://res.cloudinary.com/dch0uyw8e/video/upload/v1760810261/progress_t5lviu.mp4"
       />
-      <div className="absolute inset-0 bg-gradient-to-b from-background/95 via-background/80 to-background/95 backdrop-blur-sm" aria-hidden="true" />
-      <div className="relative z-10">
+      <div className="pointer-events-none absolute inset-0 z-10 bg-gradient-to-b from-background/95 via-background/80 to-background/95 backdrop-blur-sm" aria-hidden="true" />
+      <div className="relative z-50 pointer-events-auto">
         <Navigation />
       </div>
-      <main className="relative z-10 pt-16 pb-20">
+      <main className="relative z-20 pt-16 pb-20">
         <section className="container mx-auto px-6 py-16">
           <div className="mb-14 mx-auto max-w-4xl text-center">
             <span className="mb-4 block text-xs font-semibold uppercase tracking-[0.3em] text-indigo-500 md:text-sm">
@@ -155,7 +155,10 @@ const Journey = () => {
                 const hasVisited = visitedStops.has(index);
                 const isStageActive = hasVisited || (isPaused && activeStop === index);
                 const translateY = isStageActive ? 0 : isEven ? -32 : 32;
-                const verticalOffset = isEven ? 360 : 220;
+                const verticalOffset = isEven ? 340 : 90;
+                const connectorHeight = isEven
+                  ? Math.max(verticalOffset - 40, 10)
+                  : Math.max(10, verticalOffset - 40);
                 const stageStyle: CSSProperties = {
                   left: `${leftPercent}%`,
                   top: isEven
@@ -201,11 +204,17 @@ const Journey = () => {
                             <h3 className="text-lg font-semibold text-foreground md:text-xl">{event.title}</h3>
                             <p className="mt-3 text-sm leading-relaxed text-muted-foreground md:text-base">{event.description}</p>
                           </div>
-                          <div className="mt-4 h-48 w-[2px] bg-gradient-to-b from-primary/70 to-primary/0" />
+                          <div
+                            className="mt-4 w-[2px] bg-gradient-to-b from-primary/70 to-primary/0"
+                            style={{ height: connectorHeight }}
+                          />
                         </>
                       ) : (
                         <>
-                          <div className="mb-4 h-48 w-[2px] bg-gradient-to-t from-primary/70 to-primary/0" />
+                          <div
+                            className="mb-4 w-[2px] bg-gradient-to-t from-primary/70 to-primary/0"
+                            style={{ height: connectorHeight }}
+                          />
                           <span className="inline-flex items-center gap-2 rounded-full bg-primary/10 px-4 py-1 text-sm font-semibold uppercase tracking-widest text-primary md:text-base">
                             {event.year}
                           </span>

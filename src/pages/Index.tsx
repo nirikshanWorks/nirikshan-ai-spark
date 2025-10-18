@@ -20,13 +20,10 @@ import {
   CheckCircle2
 } from "lucide-react";
 import { Link } from "react-router-dom";
-import heroMainVideo from "@/assets/hero-main.mp4";
-import heroAIVideo from "@/assets/hero-ai.mp4";
-import heroTeamVideo from "@/assets/hero-team.mp4";
 
 const heroSlides = [
   {
-    video: heroMainVideo,
+    video: "https://res.cloudinary.com/dch0uyw8e/video/upload/v1760826232/2_sxecvw.mp4",
     eyebrow: "From Ideas to Real Life Solutions",
     title: "Welcome to Nirikshan AI Pvt. Ltd.",
     description: "Where human potential meets artificial intelligence. Join our innovative platform and unlock new possibilities. 🤖✨",
@@ -36,7 +33,7 @@ const heroSlides = [
     },
   },
   {
-    video: heroAIVideo,
+    video: "https://res.cloudinary.com/dch0uyw8e/video/upload/v1760826230/1_tsiaq0.mp4",
     eyebrow: "Vision to Value",
     title: "Using AI to transform ideas into tangible outcomes",
     description: "Empowering businesses with an AI framework designed to meet their unique needs",
@@ -46,7 +43,7 @@ const heroSlides = [
     },
   },
   {
-    video: heroTeamVideo,
+    video: "https://res.cloudinary.com/dch0uyw8e/video/upload/v1760826234/3_lvxy1u.mp4",
     eyebrow: "Real-world Impact",
     title: "Building solutions that drive measurable results",
     description: "Delivering innovative technology that transforms operations and enhances customer satisfaction",

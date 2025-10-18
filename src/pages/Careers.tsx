@@ -4,6 +4,9 @@ import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, BellRing, Trophy, Laptop2, Sparkles, CalendarHeart, PlaneTakeoff, Users } from "lucide-react";
 import { Link } from "react-router-dom";
+import { useRef, useState, type ChangeEvent, type FormEvent } from "react";
+import { toast } from "sonner";
+import ReCAPTCHA from "react-google-recaptcha";
 
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -48,6 +51,45 @@ const benefits = [
 ];
 
 const Careers = () => {
+  const [interestForm, setInterestForm] = useState({
+    fullName: "",
+    email: "",
+    roleInterest: "",
+    experience: "",
+    attachment: "",
+  });
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [recaptchaToken, setRecaptchaToken] = useState<string | null>(null);
+  const recaptchaRef = useRef<ReCAPTCHA | null>(null);
+  const siteKey = import.meta.env.VITE_RECAPTCHA_SITE_KEY;
+
+  const handleInterestChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const { name, value } = e.target;
+    setInterestForm((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const handleInterestSubmit = async (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    if (!siteKey) {
+      toast.error("reCAPTCHA is not configured. Please contact the site administrator.");
+      return;
+    }
+    if (!recaptchaToken) {
+      toast.error("Please verify you are human before submitting.");
+      return;
+    }
+    setIsSubmitting(true);
+
+    // TODO: Replace this placeholder with an API call that sends interestForm and recaptchaToken to your server for verification.
+    await new Promise((resolve) => setTimeout(resolve, 1000));
+
+    toast.success("Thanks for sharing your interest! We'll be in touch when a matching role opens.");
+    setInterestForm({ fullName: "", email: "", roleInterest: "", experience: "", attachment: "" });
+    recaptchaRef.current?.reset();
+    setRecaptchaToken(null);
+    setIsSubmitting(false);
+  };
+
   return (
     <div className="min-h-screen">
       <Navigation />
@@ -128,33 +170,82 @@ const Careers = () => {
                   Tell us about yourself and the work you&apos;re passionate about. We&apos;ll keep your profile handy for future openings.
                 </p>
               </div>
-              <form className="grid gap-6">
+              <form className="grid gap-6" onSubmit={handleInterestSubmit}>
                 <div className="grid gap-2">
                   <label htmlFor="fullName" className="text-sm font-medium">Full Name</label>
-                  <Input id="fullName" name="fullName" placeholder="Jane Doe" required />
+                  <Input
+                    id="fullName"
+                    name="fullName"
+                    placeholder="Jane Doe"
+                    required
+                    value={interestForm.fullName}
+                    onChange={handleInterestChange}
+                  />
                 </div>
                 <div className="grid gap-2">
                   <label htmlFor="email" className="text-sm font-medium">Email</label>
-                  <Input id="email" name="email" type="email" placeholder="you@example.com" required />
+                  <Input
+                    id="email"
+                    name="email"
+                    type="email"
+                    placeholder="you@example.com"
+                    required
+                    value={interestForm.email}
+                    onChange={handleInterestChange}
+                  />
                 </div>
                 <div className="grid gap-2">
                   <label htmlFor="roleInterest" className="text-sm font-medium">Role of Interest</label>
-                  <Input id="roleInterest" name="roleInterest" placeholder="e.g., AI Researcher, Product Manager" />
+                  <Input
+                    id="roleInterest"
+                    name="roleInterest"
+                    placeholder="e.g., AI Researcher, Product Manager"
+                    value={interestForm.roleInterest}
+                    onChange={handleInterestChange}
+                  />
                 </div>
                 <div className="grid gap-2">
                   <label htmlFor="experience" className="text-sm font-medium">Brief Introduction</label>
-                  <Textarea id="experience" name="experience" rows={4} placeholder="Share your experience, interests, or portfolio links" />
+                  <Textarea
+                    id="experience"
+                    name="experience"
+                    rows={4}
+                    placeholder="Share your experience, interests, or portfolio links"
+                    value={interestForm.experience}
+                    onChange={handleInterestChange}
+                  />
                 </div>
                 <div className="grid gap-2">
                   <label htmlFor="attachment" className="text-sm font-medium">Portfolio or Resume Link</label>
-                  <Input id="attachment" name="attachment" type="url" placeholder="https://" />
+                  <Input
+                    id="attachment"
+                    name="attachment"
+                    type="url"
+                    placeholder="https://"
+                    value={interestForm.attachment}
+                    onChange={handleInterestChange}
+                  />
+                </div>
+                <div className="flex justify-center">
+                  {siteKey ? (
+                    <ReCAPTCHA
+                      ref={(instance) => {
+                        recaptchaRef.current = instance;
+                      }}
+                      sitekey={siteKey}
+                      onChange={(token) => setRecaptchaToken(token)}
+                      onExpired={() => setRecaptchaToken(null)}
+                    />
+                  ) : (
+                    <p className="text-sm text-destructive">reCAPTCHA key missing. Add VITE_RECAPTCHA_SITE_KEY to your environment.</p>
+                  )}
                 </div>
                 <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
                   <p className="text-sm text-muted-foreground">
                     By submitting, you consent to us storing your information for future hiring updates.
                   </p>
-                  <Button type="submit" className="gradient-primary">
-                    Notify Me
+                  <Button type="submit" className="gradient-primary" disabled={isSubmitting || !recaptchaToken}>
+                    {isSubmitting ? "Submitting..." : "Notify Me"}
                     <ArrowRight className="ml-2" size={18} />
                   </Button>
                 </div>
