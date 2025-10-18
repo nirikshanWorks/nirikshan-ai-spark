@@ -5,6 +5,10 @@ import { ServiceCard } from "@/components/ServiceCard";
 import { IndustryCard } from "@/components/IndustryCard";
 import { TeamMemberCard } from "@/components/TeamMemberCard";
 import { StatsSection } from "@/components/StatsSection";
+import { ProcessSection } from "@/components/ProcessSection";
+import { WhyChooseUs } from "@/components/WhyChooseUs";
+import { TechnologyStack } from "@/components/TechnologyStack";
+import { CTASection } from "@/components/CTASection";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { 
@@ -15,7 +19,8 @@ import {
   Palette, 
   Database, 
   Users,
-  ArrowRight 
+  ArrowRight,
+  CheckCircle2
 } from "lucide-react";
 import { Link } from "react-router-dom";
 import heroMainVideo from "@/assets/hero-main.mp4";
@@ -167,24 +172,59 @@ const Index = () => {
         </section>
 
         {/* Mission Section */}
-        <section className="py-20 bg-secondary/30">
+        <section className="py-20 bg-gradient-to-b from-secondary/30 to-background">
           <div className="container mx-auto px-6">
-            <div className="max-w-4xl mx-auto">
-              <div className="text-center mb-8">
-                <p className="text-accent text-sm font-medium mb-2 uppercase tracking-wider">Our Mission</p>
-                <h2 className="text-3xl md:text-4xl font-bold mb-6">Our Mission</h2>
-              </div>
-              <Card className="p-8 md:p-12">
-                <p className="text-lg leading-relaxed text-muted-foreground">
-                  We're here to bring the power of AI to everyone, not just the big players. Think of us as your local AI partner – making smart technology simple, affordable, and actually useful for businesses like yours. Whether you're running a startup, a small business, or have a great idea you want to bring to life, we're here to help turn complex AI into practical solutions that make a real difference in our community. No corporate jargon, just real solutions for real people.
+            <div className="max-w-5xl mx-auto">
+              <div className="text-center mb-12">
+                <p className="text-accent text-sm font-semibold mb-3 uppercase tracking-wider">Our Mission</p>
+                <h2 className="text-4xl md:text-5xl font-bold mb-6">Empowering Businesses Through AI</h2>
+                <p className="text-xl text-muted-foreground">
+                  Making cutting-edge technology accessible and practical for everyone
                 </p>
+              </div>
+              <Card className="p-10 md:p-14 card-hover border-2 border-border relative overflow-hidden group">
+                <div className="absolute top-0 right-0 w-64 h-64 bg-primary/5 rounded-full -mr-32 -mt-32 group-hover:scale-150 transition-transform duration-700" />
+                <div className="relative z-10">
+                  <div className="flex flex-col md:flex-row gap-8">
+                    <div className="flex-1">
+                      <p className="text-lg leading-relaxed text-muted-foreground mb-6">
+                        We're here to bring the power of AI to everyone, not just the big players. Think of us as your local AI partner – making smart technology simple, affordable, and actually useful for businesses like yours.
+                      </p>
+                      <p className="text-lg leading-relaxed text-muted-foreground">
+                        Whether you're running a startup, a small business, or have a great idea you want to bring to life, we're here to help turn complex AI into practical solutions that make a real difference in our community. No corporate jargon, just real solutions for real people.
+                      </p>
+                    </div>
+                    <div className="md:w-64 flex flex-col gap-4">
+                      {[
+                        "Simple & Accessible",
+                        "Affordable Solutions",
+                        "Real Results",
+                        "Local Partnership"
+                      ].map((item, i) => (
+                        <div key={i} className="flex items-center gap-3 p-3 rounded-lg bg-secondary/50 group-hover:bg-primary/10 transition-colors">
+                          <CheckCircle2 className="text-primary flex-shrink-0" size={20} />
+                          <span className="font-medium">{item}</span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </div>
               </Card>
             </div>
           </div>
         </section>
 
+        {/* Why Choose Us */}
+        <WhyChooseUs />
+
+        {/* Process Section */}
+        <ProcessSection />
+
         {/* Stats Section */}
         <StatsSection stats={stats} />
+
+        {/* Technology Stack */}
+        <TechnologyStack />
 
         {/* Team Section */}
         <section className="py-20 container mx-auto px-6">
@@ -219,22 +259,7 @@ const Index = () => {
         </section>
 
         {/* CTA Section */}
-        <section className="py-20 container mx-auto px-6">
-          <div className="max-w-4xl mx-auto text-center">
-            <h2 className="text-3xl md:text-4xl font-bold mb-6">
-              Work With Us
-            </h2>
-            <p className="text-lg text-muted-foreground mb-8">
-              Looking for custom AI solutions or software development for your business? Contact our team to discuss your project requirements.
-            </p>
-            <Link to="/contact">
-              <Button size="lg" className="gradient-primary">
-                Contact Our Team
-                <ArrowRight className="ml-2" size={20} />
-              </Button>
-            </Link>
-          </div>
-        </section>
+        <CTASection />
       </main>
 
       <Footer />
