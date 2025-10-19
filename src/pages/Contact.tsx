@@ -198,23 +198,45 @@ const Contact = () => {
     };
 
     try {
-      const response = await fetch(GOOGLE_SCRIPT_ENDPOINT, {
-        method: "POST",
-        // Intentionally omit custom headers so the request stays a simple POST (no preflight CORS).
-        body: JSON.stringify(payload)
-      });
+      let submissionOk = false;
+      let failureReason: string | undefined;
 
-      const rawText = await response.text();
-      let result: { success?: boolean; error?: string } = {};
       try {
-        result = rawText ? (JSON.parse(rawText) as typeof result) : {};
-      } catch {
-        // Some Google Apps Script deployments may return an empty string with no JSON body.
-        result = { success: response.ok };
+        const response = await fetch(GOOGLE_SCRIPT_ENDPOINT, {
+          method: "POST",
+          body: JSON.stringify(payload)
+        });
+
+        if (response.type === "opaque") {
+          submissionOk = true; // CORS prevented inspection, assume success when request resolves.
+        } else {
+          const rawText = await response.text();
+          let result: { success?: boolean; error?: string } = {};
+          try {
+            result = rawText ? (JSON.parse(rawText) as typeof result) : {};
+          } catch {
+            result = { success: response.ok };
+          }
+
+          submissionOk = response.ok && result?.success !== false;
+          failureReason = result?.error || (!response.ok ? response.statusText : undefined);
+        }
+      } catch (networkError) {
+        failureReason = networkError instanceof Error ? networkError.message : String(networkError);
+        try {
+          await fetch(GOOGLE_SCRIPT_ENDPOINT, {
+            method: "POST",
+            mode: "no-cors",
+            body: JSON.stringify(payload)
+          });
+          submissionOk = true;
+        } catch (fallbackError) {
+          failureReason = fallbackError instanceof Error ? fallbackError.message : String(fallbackError);
+        }
       }
 
-      if (!response.ok || result?.success === false) {
-        throw new Error(result?.error || "Submission failed");
+      if (!submissionOk) {
+        throw new Error(failureReason || "Submission failed");
       }
 
       console.info("Contact form submission payload", payload);
