@@ -2,7 +2,23 @@ import { Navigation } from "@/components/Navigation";
 import { Footer } from "@/components/Footer";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { ArrowRight, BellRing, Trophy, Laptop2, Sparkles, CalendarHeart, PlaneTakeoff, Users } from "lucide-react";
+import {
+  ArrowRight,
+  BellRing,
+  Trophy,
+  Laptop2,
+  Sparkles,
+  CalendarHeart,
+  PlaneTakeoff,
+  Users,
+  Globe2,
+  Brain,
+  Target,
+  Rocket,
+  Handshake,
+  ClipboardCheck,
+  MessageCircle
+} from "lucide-react";
 import { Link } from "react-router-dom";
 import { useRef, useState, type ChangeEvent, type FormEvent } from "react";
 import { toast } from "sonner";
@@ -10,6 +26,12 @@ import ReCAPTCHA from "react-google-recaptcha";
 
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger
+} from "@/components/ui/accordion";
 
 const benefits = [
   {
@@ -47,6 +69,100 @@ const benefits = [
     description: "Dedicated days to unplug, recharge, and sustain long-term creativity.",
     Icon: CalendarHeart,
     accent: "from-lime-500/20 via-green-500/10 to-emerald-500/20"
+  }
+];
+
+const statsHighlights = [
+  { label: "Team Members", value: "20+" },
+  { label: "Countries Represented", value: "4" },
+  { label: "Avg. Tenure", value: "3.1 yrs" }
+];
+
+const cultureHighlights = [
+  {
+    title: "Build Boldly",
+    description: "Autonomy to experiment, paired with clear ownership and measurable outcomes.",
+    Icon: Target,
+  },
+  {
+    title: "Learn Relentlessly",
+    description: "Weekly labs, pair sessions, and sponsored certifications keep us on the cutting edge.",
+    Icon: Brain,
+  },
+  {
+    title: "Stay Human",
+    description: "Async-first collaboration, mindful meetings, and wellness breaks that respect your time.",
+    Icon: Handshake,
+  }
+];
+
+const whyReasons = [
+  {
+    title: "Impactful Work",
+    description:
+      "Ship AI products that millions touch—from predictive systems for manufacturing to intelligent assistants for telecoms.",
+    Icon: Globe2,
+    accent: "from-blue-500/15 via-indigo-500/10 to-purple-500/15",
+  },
+  {
+    title: "Growth & Learning",
+    description:
+      "Pair with mentors, rotate across pods, and claim your personal development budget every quarter.",
+    Icon: Sparkles,
+    accent: "from-violet-500/15 via-purple-500/10 to-indigo-500/15",
+  },
+  {
+    title: "Great Culture",
+    description:
+      "We’re people-first: inclusive ceremonies, transparent planning, and rituals that celebrate every win.",
+    Icon: Users,
+    accent: "from-emerald-500/15 via-teal-500/10 to-green-500/15",
+  }
+];
+
+const hiringSteps = [
+  {
+    title: "Intro Conversation",
+    description: "Share your story and learn how we work.",
+    Icon: MessageCircle,
+  },
+  {
+    title: "Deep-Dive Challenge",
+    description: "Solve a real problem with guidance from our mentors.",
+    Icon: ClipboardCheck,
+  },
+  {
+    title: "Culture Connect",
+    description: "Meet your future teammates and see if our values align.",
+    Icon: Users,
+  },
+  {
+    title: "Offer & Onboarding",
+    description: "Collaborate on your growth plan and hit the ground running.",
+    Icon: Rocket,
+  }
+];
+
+const faqs = [
+  {
+    question: "Can I work remotely?",
+    answer:
+      "Yes. We operate hybrid pods across India, South Africa, and the Middle East. Choose remote, in-office, or a mix that fits your life.",
+  },
+  {
+    question: "Do you sponsor learning?",
+    answer:
+      "Every teammate gets an annual learning wallet for conferences, courses, and tech subscriptions—no approvals needed for purchases under ₹25k.",
+  },
+  {
+    question: "How often do you hire interns?",
+    answer:
+      "We host two internship cohorts each year. Share your interest via the form and we will notify you ahead of the next opening.",
+  },
+  {
+    question: "What tools power collaboration?",
+    answer:
+      "We pair daily in Linear and Notion, prototype in Figma, and run discussions on Slack with async-friendly rituals.",
   }
 ];
 
@@ -96,13 +212,62 @@ const Careers = () => {
       
       <main className="pt-16">
         {/* Hero */}
-        <section className="py-20 bg-secondary/30">
-          <div className="container mx-auto px-6 text-center">
-            <h1 className="text-4xl md:text-6xl font-bold mb-6">Join Our Team</h1>
-            <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-              Build the future of AI-powered business solutions with passionate engineers, designers, 
-              and innovators from around the world.
-            </p>
+        <section className="relative overflow-hidden">
+          <div className="absolute inset-0">
+            <video
+              src="https://res.cloudinary.com/dch0uyw8e/video/upload/v1760826230/1_tsiaq0.mp4"
+              autoPlay
+              muted
+              loop
+              playsInline
+              className="h-full w-full object-cover"
+            />
+          </div>
+          <div className="absolute inset-0 bg-gradient-to-br from-slate-950/85 via-slate-900/70 to-slate-900/80" />
+          <div className="absolute inset-0 pointer-events-none">
+            <div className="absolute top-10 left-10 h-24 w-24 rounded-2xl border border-white/15 rotate-12" />
+            <div className="absolute bottom-12 right-16 h-28 w-28 rounded-full border border-white/10" />
+            <div className="absolute top-1/2 left-1/3 h-12 w-12 -translate-y-1/2 rounded-full bg-white/10 blur-2xl" />
+          </div>
+          <div className="relative z-10">
+            <div className="container mx-auto px-6 py-20 md:py-28 flex flex-col items-center text-center gap-10">
+              <div className="max-w-3xl mx-auto">
+                <span className="inline-flex items-center gap-2 rounded-full bg-white/10 px-4 py-1 text-xs font-semibold uppercase tracking-[0.2em] text-white/80 mb-5">
+                  Careers at Nirikshan AI
+                </span>
+                <h1 className="text-4xl md:text-6xl font-bold text-white mb-6 leading-tight">
+                  Build AI Experiences that Transform Industries
+                </h1>
+                <p className="text-base sm:text-lg text-white/80 max-w-2xl mx-auto">
+                  Join product thinkers, researchers, and engineers crafting human-centered AI. We ship fast, learn constantly, and care deeply about the people we build for.
+                </p>
+                <div className="mt-8 flex flex-col sm:flex-row gap-4 justify-center">
+                  <Link to="/projects">
+                    <Button size="lg" variant="outline" className="bg-white/5 text-white border-white/20 hover:bg-white/15">
+                      Browse Our Work
+                      <ArrowRight className="ml-2" size={20} />
+                    </Button>
+                  </Link>
+                  <a href="#talent-form">
+                    <Button size="lg" className="gradient-primary hover:shadow-lg hover:shadow-blue-500/40">
+                      Join the Talent Network
+                      <ArrowRight className="ml-2" size={20} />
+                    </Button>
+                  </a>
+                </div>
+              </div>
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-6 w-full max-w-3xl">
+                {statsHighlights.map((item) => (
+                  <div
+                    key={item.label}
+                    className="rounded-2xl border border-white/10 bg-white/5 px-6 py-4 text-white text-center backdrop-blur-md"
+                  >
+                    <p className="text-sm text-white/70 mb-1">{item.label}</p>
+                    <p className="text-2xl font-semibold">{item.value}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
           </div>
         </section>
 

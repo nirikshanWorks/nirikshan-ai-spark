@@ -1,7 +1,5 @@
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { ArrowRight } from "lucide-react";
-import { Link } from "react-router-dom";
 
 interface CaseStudyCardProps {
   title: string;
@@ -38,10 +36,6 @@ export const CaseStudyCard = ({ title, description, category, image, metrics }: 
             ))}
           </div>
         )}
-        <Link to="/case-studies" className="inline-flex items-center text-primary hover:text-accent transition-colors">
-          <span className="font-medium">Read case study</span>
-          <ArrowRight className="ml-2" size={16} />
-        </Link>
       </div>
     </Card>
   );

@@ -2,9 +2,8 @@ import { Navigation } from "@/components/Navigation";
 import { Footer } from "@/components/Footer";
 import { ProjectCard } from "@/components/ProjectCard";
 import { Button } from "@/components/ui/button";
-import { ArrowRight, Filter } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import { Link } from "react-router-dom";
-import { useState } from "react";
 import { useScrollAnimation } from "@/hooks/use-scroll-animation";
 
 const projects = [
@@ -12,7 +11,7 @@ const projects = [
     title: "AI Inventory Management System",
     description: "Developing a smart inventory management system for one of South Africa's leading pet Bottles product companies.",
     category: "AI Solution",
-    image: "https://res.cloudinary.com/dch0uyw8e/image/upload/v1760795655/12e3dde7-bc13-486f-af71-fa585cf8a57c.png",
+    image: "https://d3lkc3n5th01x7.cloudfront.net/wp-content/uploads/2023/09/05030019/AI-in-inventory-management.svg",
     date: "December 15, 2024",
     status: "Ongoing",
     client: "Madapet, South Africa",
@@ -22,7 +21,7 @@ const projects = [
     title: "Quality Control Automation",
     description: "AI-driven quality control and automation solutions for one of the world's largest automotive component manufacturers.",
     category: "Computer Vision",
-    image: "https://res.cloudinary.com/dch0uyw8e/image/upload/v1760795913/Gemini_Generated_Image_ys6oz3ys6oz3ys6o_qk9jag.png",
+    image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRIRG1qRCwp_bsnMXyoYzljPWM1sMaTy56UIQ&s",
     date: "January 10, 2025",
     status: "Ongoing",
     client: "Motherson Group, India",
@@ -42,27 +41,61 @@ const projects = [
     title: "Hostel Student Tracking System",
     description: "Building customized Hostel Student Tracking system that streamline Hostel management and enhance student and parent experience.",
     category: "Software Development",
-    image: "https://res.cloudinary.com/dch0uyw8e/image/upload/v1760796015/941ffcc7-5bc0-4448-b651-df0720eb136f.png",
+    image: "https://res.cloudinary.com/dch0uyw8e/image/upload/v1760831949/ecfed79c-bc46-4cc8-a0e1-c88a9b71d385.png",
     date: "June 11, 2025",
     status: "Ongoing",
     client: "Multiple Clients",
     tags: ["CRM", "Software", "Development"],
   },
+  {
+    title: "Class Test Proctor",
+    description: "An AI-powered online exam monitoring tool using OpenCV and Python to detect cheating with 95% accuracy. Features real-time student tracking, automated grading, and scheduling, cutting manual effort by 40%.",
+    category: "AI Solution",
+    image: "https://cdn-media-assets.socratease.co/autoproctor/marketing/landing-page/hero-section/ap-hero.svg",
+    date: "March 04, 2025",
+    status: "Ongoing",
+    client: "Universities and Educational Institutions",
+    tags: ["AI", "Proctoring", "Education"],
+  },
+  {
+    title: "Hackathon Evaluation System",
+    description: "A real-time hackathon management platform enabling multi-judge scoring, automated result calculation, and live leaderboards. Built with React.js, Supabase, and Docker, it reduced evaluation time by 50% and streamlined team registration and event coordination.",
+    category: "Software Development",
+    image: "https://blog.learnyst.com/hubfs/Imported_Blog_Media/Digital-evaluation-1-1.jpg",
+    date: "April 18, 2025",
+    status: "Completed",
+    client: "Dev Bhoomi Uttarakhand University",
+    tags: ["Automation", "Hackathon", "Analytics"],
+  },
+  {
+    title: "PG-HOTEL Website",
+    description: "Responsive web portal connecting PG operators with students, featuring availability search, bookings, and digital payments.",
+    category: "Website Development",
+    image: "https://res.cloudinary.com/dch0uyw8e/image/upload/v1760831341/b0a3ac2c-022b-41d7-8734-fe5e411bc0d8.png",
+    date: "May 27, 2025",
+    status: "Completed",
+    client: "Ashiyana PG",
+    tags: ["Web", "Booking", "Hospitality"],
+  },
 ];
 
-const categories = ["All", "AI Solution", "Computer Vision", "Software Development"];
+const uniqueCategories = new Set(projects.map((project) => project.category));
+const totalDomains = uniqueCategories.size;
+const ongoingProjectsCount = projects.filter((project) => project.status.toLowerCase() === "ongoing").length;
+const uniqueTagCount = new Set(projects.flatMap((project) => project.tags)).size;
+
+const heroHighlights = [
+  { label: "Active Engagements", value: `${ongoingProjectsCount}+` },
+  { label: "Solution Domains", value: totalDomains.toString() },
+  { label: "Specialist Skills", value: uniqueTagCount.toString() },
+];
 
 const Projects = () => {
-  const [activeCategory, setActiveCategory] = useState("All");
   const projectsRef = useScrollAnimation(0.2);
-  const filterRef = useScrollAnimation(0.1);
-
-  const filteredProjects = activeCategory === "All"
-    ? projects
-    : projects.filter(project => project.category === activeCategory);
+  const filteredProjects = projects;
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50/30 to-purple-50 dark:from-slate-950 dark:via-slate-900/50 dark:to-slate-900 relative overflow-hidden">
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50/30 to-purple-50 dark:from-slate-950 dark:via-slate-900/50 dark:to-slate-900 relative overflow-x-hidden">
       {/* Animated Background Elements */}
       <div className="fixed inset-0 pointer-events-none overflow-hidden">
         {/* Gradient Blob 1 */}
@@ -79,56 +112,77 @@ const Projects = () => {
 
         <main className="pt-16">
           {/* Hero Section */}
-          <section className="py-20 md:py-32 bg-gradient-to-br from-blue-100/40 via-purple-100/20 to-blue-50/40 dark:from-blue-950/20 dark:via-purple-950/10 dark:to-slate-900/50 backdrop-blur-sm border-b border-blue-200/20 dark:border-blue-900/20">
-            <div className="container mx-auto px-6 text-center relative">
-              {/* Decorative Elements */}
-              <div className="absolute inset-0 overflow-hidden pointer-events-none">
-                <div className="absolute top-10 left-10 w-20 h-20 border border-blue-200/30 dark:border-blue-800/30 rounded-lg rotate-45"></div>
-                <div className="absolute bottom-10 right-10 w-32 h-32 border border-purple-200/20 dark:border-purple-800/20 rounded-full"></div>
-              </div>
-
-              <div className="relative">
-                <h1 className="text-4xl md:text-6xl font-bold mb-6 text-transparent bg-clip-text bg-gradient-to-r from-blue-600 via-purple-600 to-blue-600 dark:from-blue-400 dark:via-purple-400 dark:to-blue-400">
-                  Our Projects
-                </h1>
-                <div className="h-1 w-24 bg-gradient-to-r from-blue-500 to-purple-500 mx-auto rounded-full mb-6 shadow-lg"></div>
-                <p className="text-lg text-muted-foreground max-w-3xl mx-auto">
-                  Explore our portfolio of innovative AI and software solutions transforming businesses across industries worldwide
-                </p>
-              </div>
+          <section className="relative overflow-hidden">
+            <div className="absolute inset-0">
+              <video
+                src="https://res.cloudinary.com/dch0uyw8e/video/upload/v1760826232/2_sxecvw.mp4"
+                autoPlay
+                muted
+                loop
+                playsInline
+                className="h-full w-full object-cover"
+              />
             </div>
-          </section>
-
-          {/* Filter Section */}
-          <section className="py-12 container mx-auto px-6 relative" ref={filterRef.ref}>
-            <div className={`flex flex-wrap justify-center gap-3 transition-all duration-1000 ${
-              filterRef.isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-5"
-            }`}>
-              <div className="flex items-center gap-2 mr-4">
-                <Filter size={20} className="text-blue-600 dark:text-blue-400" />
-                <span className="font-semibold">Filter by:</span>
+            <div className="absolute inset-0 bg-gradient-to-br from-slate-950/90 via-slate-900/70 to-slate-900/80" />
+            <div className="absolute inset-0 pointer-events-none">
+              <div className="absolute top-8 left-8 h-20 w-20 rounded-2xl border border-white/15 rotate-12" />
+              <div className="absolute bottom-8 right-12 h-24 w-24 rounded-full border border-white/10" />
+              <div className="absolute top-1/2 left-1/3 h-12 w-12 -translate-y-1/2 rounded-full bg-white/10 blur-2xl" />
+            </div>
+            <div className="relative z-10">
+              <div className="container mx-auto px-6 py-20 md:py-28 flex flex-col items-center text-center gap-10">
+                <div className="max-w-3xl mx-auto animate-fade-in-up">
+                  <span className="inline-flex items-center gap-2 rounded-full bg-white/10 px-4 py-1 text-xs font-semibold uppercase tracking-[0.2em] text-white/80 mb-5">
+                    Curated Transformation Stories
+                  </span>
+                  <h1 className="text-4xl md:text-6xl font-bold text-white mb-6 leading-tight">
+                    Engineering Practical Impact, One Build at a Time
+                  </h1>
+                  <p className="text-base sm:text-lg text-white/80 max-w-2xl mx-auto">
+                    Discover how AI, cloud, and full-stack engineering come together to unlock measurable outcomes across industries.
+                  </p>
+                  <div className="mt-8 flex flex-col sm:flex-row gap-4 justify-center">
+                    <Link to="/contact">
+                      <Button size="lg" className="gradient-primary hover:shadow-lg hover:shadow-blue-500/50 transition-all duration-300 transform hover:scale-105">
+                        Start a Project
+                        <ArrowRight className="ml-2" size={20} />
+                      </Button>
+                    </Link>
+                    <Link to="/case-studies">
+                      <Button
+                        size="lg"
+                        variant="outline"
+                        className="bg-white/5 text-white border-white/20 hover:bg-white/10 hover:text-white"
+                      >
+                        See Case Studies
+                      </Button>
+                    </Link>
+                  </div>
+                </div>
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-6 w-full max-w-3xl">
+                  {heroHighlights.map((item) => (
+                    <div
+                      key={item.label}
+                      className="rounded-2xl border border-white/10 bg-white/5 px-6 py-4 text-white text-center sm:text-left backdrop-blur-md"
+                    >
+                      <p className="text-sm text-white/70 mb-1">{item.label}</p>
+                      <p className="text-2xl font-semibold">{item.value}</p>
+                    </div>
+                  ))}
+                </div>
               </div>
-              {categories.map((category) => (
-                <button
-                  key={category}
-                  onClick={() => setActiveCategory(category)}
-                  className={`px-6 py-2 rounded-full font-medium transition-all duration-300 ${
-                    activeCategory === category
-                      ? "gradient-primary text-white shadow-lg hover:shadow-xl hover:-translate-y-1"
-                      : "bg-white dark:bg-slate-800/50 hover:bg-blue-50 dark:hover:bg-slate-700/50 text-foreground border border-blue-200/50 dark:border-blue-900/50 hover:border-blue-400/50 dark:hover:border-blue-700/50"
-                  }`}
-                >
-                  {category}
-                </button>
-              ))}
             </div>
           </section>
 
         {/* Projects Grid */}
         <section className="py-20 container mx-auto px-6 relative" ref={projectsRef.ref}>
-          <div className={`transition-all duration-1000 ${
-            projectsRef.isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
-          }`}>
+          <div
+            className={`transition-all duration-1000 ${
+              projectsRef.isVisible
+                ? "opacity-100 translate-y-0"
+                : "opacity-100 translate-y-0 sm:opacity-0 sm:translate-y-10"
+            }`}
+          >
             {filteredProjects.length > 0 ? (
               <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                 {filteredProjects.map((project, index) => (
