@@ -98,7 +98,7 @@ const TIMELINE_OPTIONS = [
   "Researching for later"
 ];
 
-const GOOGLE_SCRIPT_ENDPOINT = "AKfycbyDf6OpDrJll7IZ_b1_w9HFWbGToNs29fqCYP7Pws-Y9kwVfNEMIuCznisc9qUDqNE";
+const GOOGLE_SCRIPT_ENDPOINT = "https://script.google.com/macros/s/AKfycbyDf6OpDrJll7IZ_b1_w9HFWbGToNs29fqCYP7Pws-Y9kwVfNEMIuCznisc9qUDqNE/exec";
 const FALLBACK_RECAPTCHA_SITE_KEY = "6Lc1Ee8rAAAAAMDv9xtvK72UdB1JORiBAJXVyIek";
 
 const CONNECT_OPTIONS = [
