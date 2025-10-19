@@ -313,7 +313,7 @@ const ExpertiseServicePage = () => {
                 <ArrowLeft className="mr-2" size={20} />
                 Back to {category.title}
               </Link>
-              <h1 className="text-4xl md:text-6xl font-bold text-white mb-4 leading-tight">{service.title}</h1>
+              <h1 className="text-4xl md:text-6xl font-display font-bold text-white mb-4 leading-tight">{service.title}</h1>
               <div className="h-1 w-24 bg-white rounded-full mb-6"></div>
               <p className="text-lg md:text-xl text-white/90 max-w-2xl">
                 {service.description}
@@ -338,7 +338,7 @@ const ExpertiseServicePage = () => {
             <div className="text-center mb-12 fade-in-up">
               <div className="flex items-center justify-center gap-2 mb-4">
                 <Sparkles className="text-primary" size={32} />
-                <h2 className="text-3xl md:text-4xl font-bold">Key Features</h2>
+                <h2 className="text-3xl md:text-4xl font-display font-bold">Key Features</h2>
               </div>
               <p className="text-muted-foreground max-w-2xl mx-auto">
                 Comprehensive capabilities designed to deliver exceptional results
@@ -348,12 +348,14 @@ const ExpertiseServicePage = () => {
               {service.features.map((feature, index) => (
                 <Card
                   key={feature}
-                  className="p-6 hover:shadow-xl transition-all duration-300 hover:-translate-y-1 cursor-pointer group fade-in-up"
+                  className="p-6 hover:shadow-2xl transition-all duration-500 hover:-translate-y-2 cursor-pointer group fade-in-up bg-gradient-to-br from-background to-secondary/20 border-2 border-transparent hover:border-primary/20"
                   style={{ animationDelay: `${index * 50}ms` }}
                 >
                   <div className="flex items-start gap-3">
-                    <CheckCircle className="text-green-500 flex-shrink-0 mt-1 group-hover:scale-110 transition-transform" size={20} />
-                    <span className="text-foreground">{feature}</span>
+                    <div className="flex-shrink-0 w-8 h-8 rounded-lg bg-gradient-to-br from-green-500 to-emerald-500 flex items-center justify-center group-hover:scale-110 group-hover:rotate-12 transition-all duration-500 shadow-md">
+                      <CheckCircle className="text-white" size={18} />
+                    </div>
+                    <span className="text-foreground font-medium group-hover:text-primary transition-colors duration-300">{feature}</span>
                   </div>
                 </Card>
               ))}
@@ -367,7 +369,7 @@ const ExpertiseServicePage = () => {
             <div className="text-center mb-12 fade-in-up">
               <div className="flex items-center justify-center gap-2 mb-4">
                 <TrendingUp className="text-accent" size={32} />
-                <h2 className="text-3xl md:text-4xl font-bold">Benefits You Get</h2>
+                <h2 className="text-3xl md:text-4xl font-display font-bold">Benefits You Get</h2>
               </div>
               <p className="text-muted-foreground max-w-2xl mx-auto">
                 Real value delivered through our {service.title} solutions
@@ -377,15 +379,16 @@ const ExpertiseServicePage = () => {
               {service.benefits.map((benefit, index) => (
                 <Card
                   key={benefit}
-                  className="p-6 text-center hover:shadow-xl transition-all duration-300 hover:-translate-y-1 cursor-pointer bg-card relative overflow-hidden group fade-in-up"
+                  className="p-6 text-center hover:shadow-2xl transition-all duration-500 hover:-translate-y-2 hover:scale-105 cursor-pointer bg-card relative overflow-hidden group fade-in-up border-2 border-transparent hover:border-primary/30"
                   style={{ animationDelay: `${index * 50}ms` }}
                 >
-                  <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-accent/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                  <div className="absolute inset-0 bg-gradient-to-br from-primary/10 via-accent/10 to-primary/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                  <div className="absolute top-0 right-0 w-20 h-20 bg-gradient-to-br from-primary/20 to-transparent rounded-bl-full opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
                   <div className="relative z-10">
-                    <div className="w-12 h-12 rounded-full bg-gradient-to-br from-primary to-accent mx-auto mb-4 flex items-center justify-center group-hover:scale-110 transition-transform">
-                      <CheckCircle className="text-white" size={24} />
+                    <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-primary to-accent mx-auto mb-4 flex items-center justify-center group-hover:scale-125 group-hover:rotate-6 transition-all duration-500 shadow-lg">
+                      <CheckCircle className="text-white" size={28} />
                     </div>
-                    <p className="font-medium">{benefit}</p>
+                    <p className="font-semibold text-base group-hover:text-primary transition-colors duration-300">{benefit}</p>
                   </div>
                 </Card>
               ))}
@@ -400,7 +403,7 @@ const ExpertiseServicePage = () => {
               <div className="text-center mb-12 fade-in-up">
                 <div className="flex items-center justify-center gap-2 mb-4">
                   <Workflow className="text-primary" size={32} />
-                  <h2 className="text-3xl md:text-4xl font-bold">
+                  <h2 className="text-3xl md:text-4xl font-display font-bold">
                     Delivery Roadmap for {service.title}
                   </h2>
                 </div>
@@ -457,7 +460,7 @@ const ExpertiseServicePage = () => {
             <div className="text-center mb-12 fade-in-up">
               <div className="flex items-center justify-center gap-2 mb-4">
                 <Code2 className="text-primary" size={32} />
-                <h2 className="text-3xl md:text-4xl font-bold">Technologies We Use</h2>
+                <h2 className="text-3xl md:text-4xl font-display font-bold">Technologies We Use</h2>
               </div>
               <p className="text-muted-foreground max-w-2xl mx-auto">
                 Cutting-edge tools and platforms for optimal results
@@ -470,22 +473,22 @@ const ExpertiseServicePage = () => {
                 return (
                   <Card
                     key={tech}
-                    className="p-6 text-center hover:shadow-xl transition-all duration-300 hover:-translate-y-2 cursor-pointer group relative overflow-hidden fade-in-up"
+                    className="p-6 text-center hover:shadow-2xl transition-all duration-500 hover:-translate-y-3 hover:scale-105 cursor-pointer group relative overflow-hidden fade-in-up border-2 border-transparent hover:border-primary/30"
                     style={{ animationDelay: `${index * 30}ms` }}
                   >
-                    <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-accent/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                    <div className="absolute inset-0 bg-gradient-to-br from-primary/10 via-accent/10 to-primary/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
                     <div className="relative z-10">
                       {logoUrl ? (
                         <img
                           src={logoUrl}
                           alt={`${tech} logo`}
-                          className="mx-auto mb-3 h-10 w-10 object-contain transition-transform duration-300 group-hover:scale-110"
+                          className="mx-auto mb-3 h-12 w-12 object-contain transition-transform duration-500 group-hover:scale-125 group-hover:rotate-6"
                           loading="lazy"
                         />
                       ) : (
-                        <Icon className="w-10 h-10 mx-auto mb-3 text-primary group-hover:text-accent transition-colors group-hover:scale-110 transform duration-300" />
+                        <Icon className="w-12 h-12 mx-auto mb-3 text-primary group-hover:text-accent transition-all group-hover:scale-125 group-hover:rotate-6 transform duration-500" />
                       )}
-                      <span className="font-medium text-sm">{tech}</span>
+                      <span className="font-semibold text-sm group-hover:text-primary transition-colors duration-300">{tech}</span>
                     </div>
                   </Card>
                 );
@@ -500,7 +503,7 @@ const ExpertiseServicePage = () => {
             <div className="text-center mb-10">
               <div className="flex items-center justify-center gap-2 mb-4">
                 <Target className="text-purple-500" size={28} />
-                <h2 className="text-3xl font-bold">Use Cases</h2>
+                <h2 className="text-3xl font-display font-bold">Use Cases</h2>
               </div>
               <p className="text-muted-foreground max-w-2xl mx-auto">
                 Discover how organizations leverage {service.title} to solve mission-critical challenges.
@@ -529,8 +532,8 @@ const ExpertiseServicePage = () => {
         <section className="py-20 bg-gradient-to-br from-primary to-accent">
           <div className="container mx-auto px-6">
             <div className="max-w-4xl mx-auto text-center fade-in-up">
-              <Lightbulb className="w-16 h-16 text-white mx-auto mb-6" />
-              <h2 className="text-3xl md:text-4xl font-bold text-white mb-6">
+              <Lightbulb className="w-16 h-16 text-white mx-auto mb-6 animate-pulse" />
+              <h2 className="text-3xl md:text-4xl font-display font-bold text-white mb-6">
                 Ready to Transform Your Business?
               </h2>
               <p className="text-lg text-white/90 mb-8 max-w-2xl mx-auto">

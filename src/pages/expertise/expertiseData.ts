@@ -236,6 +236,72 @@ export const expertiseCategories = [
           "Maximized ROI",
           "Sustainable AI adoption"
         ]
+      },
+      {
+        title: "AI Agent Development",
+        slug: "ai-agent-development",
+        description: "Build intelligent autonomous agents that can perform complex tasks, make decisions, and interact naturally with users and systems.",
+        features: [
+          "Multi-agent systems architecture",
+          "Goal-oriented agent design",
+          "Natural language understanding",
+          "Autonomous decision-making",
+          "Tool integration and API usage",
+          "Memory and context management",
+          "Multi-modal agent capabilities",
+          "Agent orchestration and workflows"
+        ],
+        technologies: [
+          "LangChain",
+          "AutoGPT",
+          "OpenAI Assistants API",
+          "LlamaIndex",
+          "Semantic Kernel",
+          "Crew AI",
+          "LangGraph",
+          "Vector Databases"
+        ],
+        methodology: [
+          {
+            phase: "Agent Requirements Analysis",
+            description: "Define agent capabilities, tasks, tools needed, and interaction patterns required for your use case"
+          },
+          {
+            phase: "Architecture & Design",
+            description: "Design agent architecture, select appropriate frameworks, and plan tool integration strategy"
+          },
+          {
+            phase: "Agent Development",
+            description: "Build agent logic, implement tool-use capabilities, and integrate with LLMs and external APIs"
+          },
+          {
+            phase: "Testing & Refinement",
+            description: "Test agent behavior, refine prompts and logic, ensure reliable autonomous operation"
+          },
+          {
+            phase: "Deployment & Monitoring",
+            description: "Deploy agents to production, implement monitoring, and continuously improve performance"
+          }
+        ],
+        useCases: [
+          "Intelligent customer service agents",
+          "Research and data analysis agents",
+          "Task automation assistants",
+          "Code review and generation agents",
+          "Personal productivity assistants",
+          "Content moderation agents",
+          "Sales and lead qualification",
+          "Complex workflow orchestration"
+        ],
+        benefits: [
+          "Autonomous task completion",
+          "24/7 intelligent assistance",
+          "Complex reasoning capabilities",
+          "Multi-step problem solving",
+          "Reduced manual intervention",
+          "Scalable intelligence",
+          "Natural user interaction"
+        ]
       }
     ]
   },
