@@ -33,7 +33,7 @@ import { getCategoryBySlug, getServiceBySlug } from "@/pages/expertise/expertise
 const TECHNOLOGY_LOGOS: { keywords: string[]; logo: string }[] = [
   {
     keywords: ["openai"],
-    logo: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/openai/openai-original.svg",
+    logo: "https://www.svgrepo.com/show/306500/openai.svg",
   },
   {
     keywords: ["gpt"],
@@ -45,19 +45,19 @@ const TECHNOLOGY_LOGOS: { keywords: string[]; logo: string }[] = [
   },
   {
     keywords: ["hugging", "face"],
-    logo: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/huggingface/huggingface-original.svg",
+    logo: "https://huggingface.co/datasets/huggingface/brand-assets/resolve/main/hf-logo.svg",
   },
   {
     keywords: ["stable", "diffusion"],
-    logo: "https://upload.wikimedia.org/wikipedia/commons/8/80/Stable_Diffusion_logo.png",
+    logo: "https://vectorseek.com/wp-content/uploads/2025/10/Stable-Diffusion-Logo-PNG-SVG-Vector.png",
   },
   {
     keywords: ["dall"],
-    logo: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/openai/openai-original.svg",
+    logo: "https://img.evbuc.com/https%3A%2F%2Fcdn.evbuc.com%2Fimages%2F936204593%2F2575765214351%2F1%2Foriginal.20250115-103506?crop=focalpoint&fit=crop&w=600&auto=format%2Ccompress&q=75&sharp=10&fp-x=0.5&fp-y=0.5&s=12881c1558050df435480d5d3732e4ae",
   },
   {
     keywords: ["langchain"],
-    logo: "https://raw.githubusercontent.com/langchain-ai/langchain/master/docs/static/img/langchain-h.svg",
+    logo: "https://brandlogos.net/wp-content/uploads/2025/03/langchain-logo_brandlogos.net_9zgaw-512x512.png",
   },
   {
     keywords: ["tensorflow"],
@@ -73,7 +73,7 @@ const TECHNOLOGY_LOGOS: { keywords: string[]; logo: string }[] = [
   },
   {
     keywords: ["cuda"],
-    logo: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nvidia/nvidia-original.svg",
+    logo: "https://goonline.io/assets/svg/technologies/cuda.svg",
   },
   {
     keywords: ["keras"],
@@ -85,11 +85,11 @@ const TECHNOLOGY_LOGOS: { keywords: string[]; logo: string }[] = [
   },
   {
     keywords: ["mlflow"],
-    logo: "https://mlflow.org/docs/latest/_static/MLflow-logo-final-black.png",
+    logo: "https://mlflow.org/docs/2.12.2/_static/MLflow-logo-final-black.png",
   },
   {
     keywords: ["kubeflow"],
-    logo: "https://www.kubeflow.org/images/logos/application.svg",
+    logo: "https://image.pngaaa.com/258/4991258-middle.png",
   },
   {
     keywords: [".net"],
@@ -109,7 +109,7 @@ const TECHNOLOGY_LOGOS: { keywords: string[]; logo: string }[] = [
   },
   {
     keywords: ["blazor"],
-    logo: "https://upload.wikimedia.org/wikipedia/commons/d/d0/Blazor_Logo.png",
+    logo: "https://w7.pngwing.com/pngs/854/971/png-transparent-blazor-hd-logo-thumbnail.png",
   },
   {
     keywords: ["azure", "devops"],
@@ -125,15 +125,15 @@ const TECHNOLOGY_LOGOS: { keywords: string[]; logo: string }[] = [
   },
   {
     keywords: ["dynamics"],
-    logo: "https://seeklogo.com/images/M/microsoft-dynamics-365-logo-7A8C3FB9D2-seeklogo.com.png",
+    logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/7/7e/Microsoft_Dynamics_365_Logo_%282021%E2%80%93present%29.svg/2560px-Microsoft_Dynamics_365_Logo_%282021%E2%80%93present%29.svg.png",
   },
   {
     keywords: ["power", "platform"],
-    logo: "https://seeklogo.com/images/M/microsoft-power-platform-logo-08B94476B5-seeklogo.com.png",
+    logo: "https://www.vhv.rs/dpng/d/523-5239250_microsoft-power-platform-logo-hd-png-download.png",
   },
   {
     keywords: ["power", "bi"],
-    logo: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/powerbi/powerbi-original.svg",
+    logo: "https://images.seeklogo.com/logo-png/40/1/power-bi-microsoft-logo-png_seeklogo-400711.png",
   },
   {
     keywords: ["power", "automate"],
