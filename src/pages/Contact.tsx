@@ -200,15 +200,20 @@ const Contact = () => {
     try {
       const response = await fetch(GOOGLE_SCRIPT_ENDPOINT, {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
+        // Intentionally omit custom headers so the request stays a simple POST (no preflight CORS).
         body: JSON.stringify(payload)
       });
 
-      const result = await response.json().catch(() => ({ success: false }));
+      const rawText = await response.text();
+      let result: { success?: boolean; error?: string } = {};
+      try {
+        result = rawText ? (JSON.parse(rawText) as typeof result) : {};
+      } catch {
+        // Some Google Apps Script deployments may return an empty string with no JSON body.
+        result = { success: response.ok };
+      }
 
-      if (!response.ok || !result?.success) {
+      if (!response.ok || result?.success === false) {
         throw new Error(result?.error || "Submission failed");
       }
 
