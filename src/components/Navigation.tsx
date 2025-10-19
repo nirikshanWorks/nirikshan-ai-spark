@@ -92,7 +92,7 @@ export const Navigation = () => {
                   <NavigationMenuTrigger className="bg-transparent">
                     Expertise
                   </NavigationMenuTrigger>
-                  <NavigationMenuContent className="md:w-screen md:max-w-none md:px-0">
+                  <NavigationMenuContent className="md:w-screen md:max-w-none md:px-0 md:max-h-[75vh] md:overflow-y-auto">
                     <div className="w-full px-4 py-6 md:px-10 lg:px-20 space-y-6">
                       <div className="flex flex-col items-start justify-between gap-4 rounded-xl border border-border/60 bg-gradient-to-r from-white via-muted/30 to-white p-6 shadow-sm dark:from-slate-950 dark:via-slate-900/80 dark:to-slate-950 md:flex-row md:items-center">
                         <div className="space-y-2">
