@@ -85,10 +85,10 @@ const ENGAGEMENT_OPTIONS = [
 
 const BUDGET_OPTIONS = [
   "Exploring ideas",
-  "Under $25K",
-  "$25K - $75K",
-  "$75K - $150K",
-  "$150K+"
+  "Under ₹25K",
+  "₹25K - ₹75K",
+  "₹75K - ₹150K",
+  "₹150K+"
 ];
 
 const TIMELINE_OPTIONS = [
@@ -98,7 +98,7 @@ const TIMELINE_OPTIONS = [
   "Researching for later"
 ];
 
-const GOOGLE_SCRIPT_ENDPOINT = "https://script.google.com/macros/s/AKfycbyDf6OpDrJll7IZ_b1_w9HFWbGToNs29fqCYP7Pws-Y9kwVfNEMIuCznisc9qUDqNE/exec";
+const GOOGLE_SCRIPT_ENDPOINT = "https://script.google.com/macros/s/AKfycbxvLCnMMwHGlLz7d2XUGe38NXMxQIhJ7Ok1L6YcmNKIUTirJsvaSOusP6fRRc5UT6E/exec";
 const FALLBACK_RECAPTCHA_SITE_KEY = "6Lc1Ee8rAAAAAMDv9xtvK72UdB1JORiBAJXVyIek";
 
 const CONNECT_OPTIONS = [
