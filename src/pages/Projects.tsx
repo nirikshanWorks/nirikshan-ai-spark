@@ -2,6 +2,7 @@ import { Navigation } from "@/components/Navigation";
 import { Footer } from "@/components/Footer";
 import { ProjectCard } from "@/components/ProjectCard";
 import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
 import { ArrowRight } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useScrollAnimation } from "@/hooks/use-scroll-animation";
@@ -135,7 +136,7 @@ const Projects = () => {
                   <span className="inline-flex items-center gap-2 rounded-full bg-white/10 px-4 py-1 text-xs font-semibold uppercase tracking-[0.2em] text-white/80 mb-5">
                     Curated Transformation Stories
                   </span>
-                  <h1 className="text-4xl md:text-6xl font-bold text-white mb-6 leading-tight">
+                  <h1 className="text-4xl md:text-6xl font-display font-bold text-white mb-6 leading-tight">
                     Engineering Practical Impact, One Build at a Time
                   </h1>
                   <p className="text-base sm:text-lg text-white/80 max-w-2xl mx-auto">
@@ -176,6 +177,26 @@ const Projects = () => {
 
         {/* Projects Grid */}
         <section className="py-20 container mx-auto px-6 relative" ref={projectsRef.ref}>
+          <div className="text-center mb-12">
+            <h2 className="text-4xl md:text-5xl font-display font-bold text-foreground mb-4">
+              Our Portfolio
+            </h2>
+            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+              Transforming ideas into impactful solutions across diverse industries
+            </p>
+            <div className="mt-6 flex flex-wrap justify-center gap-3">
+              {Array.from(uniqueCategories).map((cat) => (
+                <Badge
+                  key={cat}
+                  variant="outline"
+                  className="px-4 py-2 text-sm font-medium border-primary/30 hover:bg-primary/10 transition-colors cursor-pointer"
+                >
+                  {cat}
+                </Badge>
+              ))}
+            </div>
+          </div>
+
           <div
             className={`transition-all duration-1000 ${
               projectsRef.isVisible
@@ -226,7 +247,7 @@ const Projects = () => {
         <section className="py-20 bg-gradient-to-br from-blue-50/50 via-purple-50/30 to-blue-50/50 dark:from-blue-950/20 dark:via-purple-950/10 dark:to-slate-900/50 backdrop-blur-sm">
           <div className="container mx-auto px-6">
             <div className="max-w-3xl mx-auto text-center">
-              <h2 className="text-3xl md:text-4xl font-bold mb-6 text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-purple-600 dark:from-blue-400 dark:to-purple-400">
+              <h2 className="text-3xl md:text-4xl font-display font-bold mb-6 text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-purple-600 dark:from-blue-400 dark:to-purple-400">
                 Interested in a Project?
               </h2>
               <p className="text-lg text-muted-foreground mb-8">

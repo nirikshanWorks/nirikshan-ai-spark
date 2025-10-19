@@ -14,7 +14,8 @@ export default {
     },
     extend: {
       fontFamily: {
-        sans: ['Barlow Condensed', 'system-ui', 'sans-serif'],
+        sans: ['Alegreya', 'serif'],
+        display: ['Slabo 27px', 'serif'],
       },
       colors: {
         border: "hsl(var(--border))",

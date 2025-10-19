@@ -80,7 +80,7 @@ export const ProjectCard = ({
       {/* Content Container */}
       <div className="p-6 bg-gradient-to-b from-background to-secondary/10 space-y-5 relative z-10">
         <div>
-          <h3 className="text-2xl font-bold text-foreground leading-snug line-clamp-2">
+          <h3 className="text-2xl font-display font-bold text-foreground leading-snug line-clamp-2">
             {title}
           </h3>
           <div className="mt-2 h-1 w-14 bg-gradient-to-r from-blue-600 to-purple-600 rounded-full" />
