@@ -98,6 +98,9 @@ const TIMELINE_OPTIONS = [
   "Researching for later"
 ];
 
+const GOOGLE_SCRIPT_ENDPOINT = "https://script.google.com/macros/s/AKfycbz9aETn0lKNsIPSB4sMw7UYO4Zr2D-V8vykNHC6G-oSxm2ATB1Ba3pezaHdT09fYsg/exec";
+const FALLBACK_RECAPTCHA_SITE_KEY = "6Lc1Ee8rAAAAAMDv9xtvK72UdB1JORiBAJXVyIek";
+
 const CONNECT_OPTIONS = [
   {
     value: "discovery",
@@ -167,7 +170,7 @@ const Contact = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [recaptchaToken, setRecaptchaToken] = useState<string | null>(null);
   const recaptchaRef = useRef<ReCAPTCHA | null>(null);
-  const siteKey = import.meta.env.VITE_RECAPTCHA_SITE_KEY;
+  const siteKey = import.meta.env.VITE_RECAPTCHA_SITE_KEY || FALLBACK_RECAPTCHA_SITE_KEY;
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -195,17 +198,32 @@ const Contact = () => {
     };
 
     try {
-      // TODO: Replace this delay with an API call that passes payload to your backend for verification and processing.
-      await new Promise((resolve) => setTimeout(resolve, 1000));
+      const response = await fetch(GOOGLE_SCRIPT_ENDPOINT, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(payload)
+      });
 
-      console.log("Contact form submission", payload);
+      const result = await response.json().catch(() => ({ success: false }));
+
+      if (!response.ok || !result?.success) {
+        throw new Error(result?.error || "Submission failed");
+      }
+
+      console.info("Contact form submission payload", payload);
       toast.success("Thank you for your message! We'll get back to you soon.");
       setFormData({ ...FORM_INITIAL_STATE });
       recaptchaRef.current?.reset();
       setRecaptchaToken(null);
     } catch (error) {
       console.error("Contact form submission failed", error);
-      toast.error("Something went wrong. Please try again or reach us directly at ai.nirikshan@gmail.com.");
+      toast.error(
+        error instanceof Error && error.message
+          ? error.message
+          : "Something went wrong. Please try again or reach us directly at ai.nirikshan@gmail.com."
+      );
     } finally {
       setIsSubmitting(false);
     }
