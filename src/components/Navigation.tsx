@@ -26,6 +26,8 @@ const navigationCategories = expertiseCategories.map((category) => ({
 export const Navigation = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [mobileExpertiseOpen, setMobileExpertiseOpen] = useState(false);
+  const [desktopMenuValue, setDesktopMenuValue] = useState<string | undefined>(undefined);
+  const desktopMenuOpen = Boolean(desktopMenuValue);
   const location = useLocation();
 
   const isActive = (path: string) => location.pathname === path;
@@ -46,7 +48,7 @@ export const Navigation = () => {
   };
 
   useEffect(() => {
-    if (mobileMenuOpen) {
+    if (mobileMenuOpen || desktopMenuOpen) {
       const originalOverflow = document.body.style.overflow;
       document.body.style.overflow = "hidden";
       return () => {
@@ -56,7 +58,11 @@ export const Navigation = () => {
 
     document.body.style.overflow = "";
     return undefined;
-  }, [mobileMenuOpen]);
+  }, [mobileMenuOpen, desktopMenuOpen]);
+
+  useEffect(() => {
+    setDesktopMenuValue(undefined);
+  }, [location.pathname]);
 
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 bg-white dark:bg-slate-950 border-b border-border/60 shadow-sm transition-all duration-300">
@@ -80,22 +86,45 @@ export const Navigation = () => {
                 About
               </Button>
             </Link>
-            <NavigationMenu>
+            <NavigationMenu value={desktopMenuValue} onValueChange={setDesktopMenuValue}>
               <NavigationMenuList>
-                <NavigationMenuItem>
+                <NavigationMenuItem value="expertise">
                   <NavigationMenuTrigger className="bg-transparent">
                     Expertise
                   </NavigationMenuTrigger>
-                  <NavigationMenuContent>
-                    <div className="w-screen max-w-6xl p-6">
-                      <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-6">
+                  <NavigationMenuContent className="md:w-screen md:max-w-none md:px-0">
+                    <div className="w-full px-4 py-6 md:px-10 lg:px-20 space-y-6">
+                      <div className="flex flex-col items-start justify-between gap-4 rounded-xl border border-border/60 bg-gradient-to-r from-white via-muted/30 to-white p-6 shadow-sm dark:from-slate-950 dark:via-slate-900/80 dark:to-slate-950 md:flex-row md:items-center">
+                        <div className="space-y-2">
+                          <span className="text-xs font-semibold uppercase tracking-[0.25em] text-muted-foreground">
+                            Explore Our Expertise
+                          </span>
+                          <h3 className="text-2xl font-semibold text-foreground">
+                            Tailored solutions across industries and capabilities.
+                          </h3>
+                          <p className="max-w-2xl text-sm text-muted-foreground">
+                            Navigate through our specialised services to discover how we architect products, platforms, and intelligence that accelerate your digital transformation journey.
+                          </p>
+                        </div>
+                        <Link to="/expertise" className="shrink-0">
+                          <Button variant="outline" className="border-primary text-primary hover:bg-primary hover:text-primary-foreground">
+                            View all expertise
+                          </Button>
+                        </Link>
+                      </div>
+
+                      <div className="grid grid-cols-1 gap-6 md:grid-cols-3 lg:grid-cols-4">
                         {navigationCategories.map((category) => (
-                          <div key={category.title} className="space-y-3">
+                          <div
+                            key={category.title}
+                            className="group space-y-3 rounded-xl border border-border/60 bg-muted/40 p-5 shadow-sm backdrop-blur transition hover:border-primary/60 hover:shadow-md dark:bg-slate-900/70"
+                          >
                             <Link
                               to={`/expertise/${category.slug}`}
-                              className="font-bold text-sm tracking-wider text-transparent bg-clip-text bg-gradient-to-r from-violet-600 to-indigo-600 hover:opacity-80 transition-opacity"
+                              className="flex items-center gap-2 font-bold text-sm tracking-wider text-transparent bg-clip-text bg-gradient-to-r from-violet-600 to-indigo-600 transition-opacity group-hover:opacity-80"
                             >
                               {category.title}
+                              <span className="h-px flex-1 bg-gradient-to-r from-violet-500/60 via-indigo-500/40 to-transparent" />
                             </Link>
                             <ul className="space-y-2">
                               {category.items.map((item) => (
@@ -103,7 +132,7 @@ export const Navigation = () => {
                                   <NavigationMenuLink asChild>
                                     <Link
                                       to={item.href}
-                                      className="block text-sm text-muted-foreground hover:text-primary transition-colors duration-200 py-1"
+                                      className="block rounded-md px-2 py-1 text-sm text-muted-foreground transition-colors duration-200 hover:bg-primary/10 hover:text-primary"
                                     >
                                       {item.title}
                                     </Link>
