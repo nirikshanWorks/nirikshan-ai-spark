@@ -303,16 +303,20 @@ const ExpertiseServicePage = () => {
           <div className="absolute bottom-[-140px] right-[-40px] w-96 h-96 bg-white/10 blur-3xl rounded-full" />
           <div className="relative z-10 container mx-auto px-6 h-full flex items-center">
             <div className="fade-in-up">
-              <Badge className="mb-4 bg-white/20 text-white border-white/30 hover:bg-white/30">
-                {category.title}
-              </Badge>
-              <Link
-                to={`/expertise/${category.slug}`}
-                className="inline-flex items-center text-white/80 hover:text-white mb-6 transition-colors"
-              >
-                <ArrowLeft className="mr-2" size={20} />
-                Back to {category.title}
-              </Link>
+              <div className="flex flex-wrap items-center gap-3 mb-6">
+                <Link to={`/expertise/${category.slug}`}>
+                  <Badge className="bg-white/20 text-white border-white/30 hover:bg-white/30 cursor-pointer">
+                    {category.title}
+                  </Badge>
+                </Link>
+                <Link
+                  to={`/expertise/${category.slug}`}
+                  className="inline-flex items-center text-white/80 hover:text-white transition-colors rounded-full border border-white/30 px-3 py-1.5 backdrop-blur-sm"
+                >
+                  <ArrowLeft className="mr-2" size={18} />
+                  Back to {category.title}
+                </Link>
+              </div>
               <h1 className="text-4xl md:text-6xl font-display font-bold text-white mb-4 leading-tight">{service.title}</h1>
               <div className="h-1 w-24 bg-white rounded-full mb-6"></div>
               <p className="text-lg md:text-xl text-white/90 max-w-2xl">
@@ -529,25 +533,37 @@ const ExpertiseServicePage = () => {
         </section>
 
         {/* CTA Section */}
-        <section className="py-20 bg-gradient-to-br from-primary to-accent">
-          <div className="container mx-auto px-6">
+        <section className="relative py-20 overflow-hidden">
+          <div className="absolute inset-0">
+            <video
+              className="h-full w-full object-cover"
+              autoPlay
+              loop
+              muted
+              playsInline
+            >
+              <source src="https://res.cloudinary.com/dch0uyw8e/video/upload/v1760818146/Generative_AI_kcnnvm.mp4" type="video/mp4" />
+            </video>
+          </div>
+          <div className="absolute inset-0 bg-gradient-to-br from-primary/90 via-accent/45 to-primary/30" />
+          <div className="relative container mx-auto px-6">
             <div className="max-w-4xl mx-auto text-center fade-in-up">
               <Lightbulb className="w-16 h-16 text-white mx-auto mb-6 animate-pulse" />
-              <h2 className="text-3xl md:text-4xl font-display font-bold text-white mb-6">
+              <h2 className="text-3xl md:text-4xl font-display font-bold text-black mb-6">
                 Ready to Transform Your Business?
               </h2>
-              <p className="text-lg text-white/90 mb-8 max-w-2xl mx-auto">
+              <p className="text-lg text-white/100 mb-8 max-w-2xl mx-auto">
                 Let's discuss how our {service.title} solutions can help you achieve your goals and drive innovation.
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
                 <Link to="/contact">
-                  <Button size="lg" className="bg-white text-primary hover:bg-white/90 group">
+                  <Button size="lg" className="bg-white text-black hover:bg-white/90 group">
                     Get Started Today
                     <ArrowRight className="ml-2 group-hover:translate-x-1 transition-transform" size={20} />
                   </Button>
                 </Link>
                 <Link to="/case-studies">
-                  <Button size="lg" variant="outline" className="border-white text-white hover:bg-white/10">
+                  <Button size="lg" variant="outline" className="border-white text-black hover:bg-white/10">
                     View Success Stories
                   </Button>
                 </Link>

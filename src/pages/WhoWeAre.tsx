@@ -130,7 +130,7 @@ const WhoWeAre = () => {
                   </Button>
                 </Link>
                 <Link to="#our-story">
-                  <Button size="lg" variant="outline" className="border-white/60 text-white hover:bg-white/10">
+                  <Button size="lg" variant="outline" className="border-white/60 text-black hover:bg-white/10">
                     Explore Our Journey
                   </Button>
                 </Link>

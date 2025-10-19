@@ -16,10 +16,11 @@ import { expertiseCategories } from "@/pages/expertise/expertiseData";
 
 const navigationCategories = expertiseCategories.map((category) => ({
   title: category.title.toUpperCase(),
-  items: category.services.map(service => ({
+  slug: category.slug,
+  items: category.services.map((service) => ({
     title: service.title,
-    href: `/expertise/${category.slug}/${service.slug}`
-  }))
+    href: `/expertise/${category.slug}/${service.slug}`,
+  })),
 }));
 
 export const Navigation = () => {
@@ -90,9 +91,12 @@ export const Navigation = () => {
                       <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-6">
                         {navigationCategories.map((category) => (
                           <div key={category.title} className="space-y-3">
-                            <h3 className="font-bold text-sm tracking-wider text-transparent bg-clip-text bg-gradient-to-r from-violet-600 to-indigo-600">
+                            <Link
+                              to={`/expertise/${category.slug}`}
+                              className="font-bold text-sm tracking-wider text-transparent bg-clip-text bg-gradient-to-r from-violet-600 to-indigo-600 hover:opacity-80 transition-opacity"
+                            >
                               {category.title}
-                            </h3>
+                            </Link>
                             <ul className="space-y-2">
                               {category.items.map((item) => (
                                 <li key={item.title}>
@@ -180,9 +184,13 @@ export const Navigation = () => {
                 <div id="mobile-expertise" className="pl-4 space-y-4">
                   {navigationCategories.map((category) => (
                     <div key={category.title} className="space-y-2">
-                      <div className="text-sm font-bold tracking-wider text-transparent bg-clip-text bg-gradient-to-r from-violet-600 to-indigo-600">
+                      <Link
+                        to={`/expertise/${category.slug}`}
+                        className="block text-sm font-bold tracking-wider text-transparent bg-clip-text bg-gradient-to-r from-violet-600 to-indigo-600 hover:opacity-80 transition-opacity"
+                        onClick={closeMobileMenu}
+                      >
                         {category.title}
-                      </div>
+                      </Link>
                       <div className="pl-2 space-y-1">
                         {category.items.map((item) => (
                           <Link
