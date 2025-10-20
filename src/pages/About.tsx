@@ -145,7 +145,7 @@ const About = () => {
             <div className="animate-fade-in-up">
               <h1 className="text-4xl md:text-6xl font-bold text-white mb-4 leading-tight">About Nirikshan AI</h1>
               <p className="text-lg md:text-xl text-white/90 max-w-2xl font-light">
-                Transforming businesses through intelligent AI solutions and innovative technology partnerships
+                At Nirikshan AI, we specialize in OpenCV, Generative AI, and Agentic AI — crafting intelligent systems that combine vision, reasoning, and autonomy. With expertise across Microsoft, SAP, and Cloud ecosystems, we deliver full-stack intelligent transformation for enterprises worldwide.
               </p>
               <div className="mt-8 h-1 w-24 bg-gradient-to-r from-blue-400 to-purple-500 rounded-full"></div>
             </div>

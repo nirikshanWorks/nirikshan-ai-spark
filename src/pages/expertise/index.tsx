@@ -12,22 +12,22 @@ import { expertiseCategories } from "@/pages/expertise/expertiseData";
 const pageHighlights = [
   {
     title: "Innovation at Scale",
-    description: "150+ digital transformation projects delivered with measurable business impact",
+    description: "150+ AI-led transformations engineered with measurable business impact",
     icon: Sparkles,
   },
   {
     title: "Global Delivery",
-    description: "Serving customers across 12+ countries with 24/7 delivery capability",
+    description: "Serving customers across 12+ countries with 24/7 AI operations",
     icon: Globe2,
   },
   {
     title: "Dedicated Experts",
-    description: "Multi-disciplinary team of architects, engineers, designers, and data scientists",
-  icon: Users,
+    description: "Full-stack team of AI architects, engineers, designers, and data scientists",
+    icon: Users,
   },
   {
     title: "Enterprise Grade Security",
-    description: "Robust governance, compliance, and security baked into every engagement",
+    description: "Robust governance, compliance, and responsible AI embedded in every engagement",
     icon: ShieldCheck,
   },
 ];
@@ -83,14 +83,14 @@ const ExpertisePage = () => {
               heroRef.isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
             }`}>
               <Badge className="mb-4 bg-white/20 text-white border-white/30 hover:bg-white/30">
-                Trusted Technology Partner
+                AI-First Delivery Partner
               </Badge>
               <h1 className="text-4xl md:text-6xl font-bold text-white mb-4 leading-tight">
-                Engineering intelligent, secure, and future-ready digital experiences
+                Engineering OpenCV, Generative, and Agentic AI Experiences
               </h1>
               <div className="h-1 w-24 bg-white rounded-full mb-6"></div>
               <p className="text-lg md:text-xl text-white/90 max-w-3xl">
-                Discover the breadth of Nirikshan AI’s solution portfolio spanning artificial intelligence, modern engineering, SAP ecosystems, quality transformation, and beyond.
+                Discover how our computer vision teams, generative experience architects, and autonomous agent engineers deliver AI-first products across Microsoft, SAP, cloud, and quality transformation portfolios.
               </p>
               <div className="mt-8 flex flex-col sm:flex-row gap-4">
                 <Link to="/contact">
@@ -105,7 +105,16 @@ const ExpertisePage = () => {
                     variant="outline"
                     className="border-white bg-white text-violet-600 hover:bg-violet-100 hover:text-violet-700"
                   >
-                    Explore Success Stories
+                    Explore AI Success Stories
+                  </Button>
+                </Link>
+                <Link to="#ai-expertise">
+                  <Button
+                    size="lg"
+                    variant="ghost"
+                    className="text-white hover:text-white hover:bg-white/20"
+                  >
+                    Learn About Our Core AI
                   </Button>
                 </Link>
               </div>
@@ -140,7 +149,7 @@ const ExpertisePage = () => {
         </section>
 
         {/* Categories Grid */}
-        <section className="py-20">
+  <section className="py-20" id="ai-expertise">
           <div className="container mx-auto px-6">
             <div className="max-w-3xl mb-12">
               <h2 className="text-3xl md:text-4xl font-bold mb-4">Expertise Across the Digital Value Chain</h2>
