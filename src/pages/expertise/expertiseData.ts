@@ -107,6 +107,72 @@ export const expertiseCategories = [
         ]
       },
       {
+        title: "OpenCV & Computer Vision",
+        slug: "computer-vision",
+        description: "Build intelligent visual systems that see, understand, and act on visual data — from real-time object detection to advanced image processing and automation.",
+        features: [
+          "Real-time object detection and tracking",
+          "Image classification and segmentation",
+          "Facial recognition systems",
+          "Optical character recognition (OCR)",
+          "Video analytics and processing",
+          "3D reconstruction and depth estimation",
+          "Motion detection and analysis",
+          "Quality inspection automation"
+        ],
+        technologies: [
+          "OpenCV 4.x",
+          "YOLO (v8/v9)",
+          "TensorFlow Object Detection API",
+          "MediaPipe",
+          "PyTorch Vision",
+          "scikit-image",
+          "PIL/Pillow",
+          "CUDA for GPU acceleration"
+        ],
+        methodology: [
+          {
+            phase: "Vision Requirements Analysis",
+            description: "Define visual recognition needs, identify key objects/patterns, and assess data requirements for optimal model training"
+          },
+          {
+            phase: "Data Collection & Annotation",
+            description: "Gather diverse image/video datasets, perform high-quality annotation, and prepare training data with proper labeling"
+          },
+          {
+            phase: "Model Development & Training",
+            description: "Design custom CNN architectures, train detection models, and optimize for real-time performance"
+          },
+          {
+            phase: "Integration & Optimization",
+            description: "Integrate with cameras/sensors, optimize for edge devices, and ensure low-latency real-time processing"
+          },
+          {
+            phase: "Deployment & Monitoring",
+            description: "Deploy to production environments, implement monitoring dashboards, and continuously improve accuracy"
+          }
+        ],
+        useCases: [
+          "Autonomous vehicle vision systems",
+          "Industrial quality control",
+          "Security and surveillance",
+          "Medical image analysis",
+          "Retail customer analytics",
+          "Agricultural crop monitoring",
+          "Smart city infrastructure",
+          "Augmented reality applications"
+        ],
+        benefits: [
+          "Automated visual inspection",
+          "24/7 surveillance and monitoring",
+          "Enhanced security systems",
+          "Reduced human error",
+          "Real-time decision making",
+          "Cost-effective quality control",
+          "Scalable visual intelligence"
+        ]
+      },
+      {
         title: "Machine Learning",
         slug: "machine-learning",
         description: "Build intelligent systems that learn and adapt from data to solve complex business problems and drive decision-making.",

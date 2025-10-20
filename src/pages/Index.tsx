@@ -11,6 +11,7 @@ import { TechnologyStack } from "@/components/TechnologyStack";
 import { CTASection } from "@/components/CTASection";
 import { AIExpertiseSection } from "@/components/AIExpertiseSection";
 import { TAMSection } from "@/components/TAMSection";
+import { AIParticles } from "@/components/AIParticles";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -190,10 +191,11 @@ const Index = () => {
   const duplicatedPartners = [...partners, ...partners];
 
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen relative">
+      <AIParticles />
       <Navigation />
       
-      <main className="pt-16">
+      <main className="pt-16 relative overflow-hidden">
         <HeroSection slides={heroSlides} />
 
         {/* AI Core Expertise Section */}

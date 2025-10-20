@@ -2,6 +2,7 @@ import { Eye, Sparkles, Bot, ArrowRight } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
+import { NeuralNetwork } from "./NeuralNetwork";
 
 export const AIExpertiseSection = () => {
   const expertise = [
@@ -53,6 +54,15 @@ export const AIExpertiseSection = () => {
           <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
             We specialize in three cutting-edge AI domains that are reshaping industries and unlocking unprecedented possibilities
           </p>
+        </div>
+
+        {/* Neural Network Visualization */}
+        <div className="mb-16 rounded-2xl border-2 border-primary/20 bg-gradient-to-br from-background to-primary/5 p-6 overflow-hidden">
+          <div className="text-center mb-4">
+            <h3 className="text-2xl font-bold font-display">AI Neural Network Visualization</h3>
+            <p className="text-muted-foreground">Watch our AI models process information in real-time</p>
+          </div>
+          <NeuralNetwork />
         </div>
 
         <div className="grid md:grid-cols-3 gap-8 mb-12">

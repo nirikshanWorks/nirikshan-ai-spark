@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { ArrowRight } from "lucide-react";
 import { Link } from "react-router-dom";
+import { ComputerVisionGrid } from "./ComputerVisionGrid";
+import { GenerativeTextEffect } from "./GenerativeTextEffect";
 
 interface HeroSlide {
   image?: string;
@@ -67,6 +69,11 @@ export const HeroSection = ({ slides }: HeroSectionProps) => {
 
   return (
     <section className="relative h-[600px] md:h-[700px] overflow-hidden">
+      {/* Computer Vision Grid Overlay */}
+      <div className="absolute inset-0 z-[5] pointer-events-none opacity-20">
+        <ComputerVisionGrid />
+      </div>
+
       {/* Background Images/Videos */}
       {slides.map((slide, index) => (
         <div
@@ -106,7 +113,18 @@ export const HeroSection = ({ slides }: HeroSectionProps) => {
           <h1 className="text-4xl md:text-6xl font-bold text-white mb-6 leading-tight fade-in-up delay-100">
             {slides[activeSlide].title}
           </h1>
-          <p className="text-lg md:text-xl text-white/90 mb-8 fade-in-up delay-200">
+          <div className="text-lg md:text-xl text-white/90 mb-8 fade-in-up delay-200">
+            <GenerativeTextEffect 
+              texts={[
+                "Building Intelligent Vision Systems",
+                "Creating Autonomous AI Agents",
+                "Powering Generative AI Solutions",
+                "Transforming Industries with AI"
+              ]}
+              className="font-semibold text-accent"
+            />
+          </div>
+          <p className="text-lg md:text-xl text-white/90 mb-8 fade-in-up delay-300">
             {slides[activeSlide].description}
           </p>
           <div className="fade-in-up delay-300">
