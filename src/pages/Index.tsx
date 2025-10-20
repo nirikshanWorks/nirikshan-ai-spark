@@ -9,8 +9,11 @@ import { ProcessSection } from "@/components/ProcessSection";
 import { WhyChooseUs } from "@/components/WhyChooseUs";
 import { TechnologyStack } from "@/components/TechnologyStack";
 import { CTASection } from "@/components/CTASection";
+import { AIExpertiseSection } from "@/components/AIExpertiseSection";
+import { TAMSection } from "@/components/TAMSection";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
 import {
   Brain,
   Code,
@@ -18,38 +21,39 @@ import {
   Cpu,
   Database,
   ArrowRight,
-  CheckCircle2
+  CheckCircle2,
+  Sparkles
 } from "lucide-react";
 import { Link } from "react-router-dom";
 
 const heroSlides = [
   {
     video: "https://res.cloudinary.com/dch0uyw8e/video/upload/v1760826232/2_sxecvw.mp4",
-    eyebrow: "From Ideas to Real Life Solutions",
-    title: "Welcome to Nirikshan AI Pvt. Ltd.",
-    description: "Where human potential meets artificial intelligence. Join our innovative platform and unlock new possibilities. 🤖✨",
+    eyebrow: "AI-First Innovation",
+    title: "Empowering Vision and Intelligence — From OpenCV to Agentic AI",
+    description: "Empowering Insight with Intelligence. Leading the revolution in Computer Vision, Generative AI, and Autonomous Systems.",
     cta: {
-      text: "Discover Nirikshan AI Pvt. Ltd.",
-      link: "/who-we-are",
+      text: "Explore Our AI Expertise",
+      link: "#ai-expertise",
     },
   },
   {
     video: "https://res.cloudinary.com/dch0uyw8e/video/upload/v1760826230/1_tsiaq0.mp4",
-    eyebrow: "Vision to Value",
-    title: "Using AI to transform ideas into tangible outcomes",
-    description: "Empowering businesses with an AI framework designed to meet their unique needs",
+    eyebrow: "Vision to Reality",
+    title: "Building Intelligent Systems That See, Think, and Act",
+    description: "From real-time object detection to autonomous AI agents — we're crafting the future of intelligent automation",
     cta: {
-      text: "Explore AI Solutions",
+      text: "Discover AI Solutions",
       link: "/expertise/artificial-intelligence",
     },
   },
   {
     video: "https://res.cloudinary.com/dch0uyw8e/video/upload/v1760826234/3_lvxy1u.mp4",
-    eyebrow: "Real-world Impact",
-    title: "Building solutions that drive measurable results",
-    description: "Delivering innovative technology that transforms operations and enhances customer satisfaction",
+    eyebrow: "Leading the AI Revolution",
+    title: "Where Computer Vision Meets Generative Intelligence",
+    description: "Creating AI that imagines, writes, designs, and innovates beyond human limitations",
     cta: {
-      text: "View Success Stories",
+      text: "View Our Impact",
       link: "/case-studies",
     },
   },
@@ -61,36 +65,42 @@ const services = [
     title: "Generative AI Solutions",
     description: "Design conversational agents and creative automation built on enterprise-ready LLM pipelines",
     link: "/expertise/artificial-intelligence/generative-ai",
+    aiPowered: true,
   },
   {
     icon: Database,
     title: "Predictive Analytics",
     description: "Forecast demand and surface insights with production-grade machine learning models",
     link: "/expertise/artificial-intelligence/machine-learning",
+    aiPowered: true,
   },
   {
     icon: Code,
     title: ".NET Modernization",
-    description: "Rebuild legacy workloads on the latest .NET stack with secure, scalable architectures",
+    description: "Rebuild legacy workloads on the latest .NET stack with AI-enhanced secure architectures",
     link: "/expertise/microsoft-services/dotnet-development",
+    aiPowered: true,
   },
   {
     icon: Cloud,
     title: "Azure Cloud Transformation",
-    description: "Migrate, optimize, and operate mission-critical workloads across the Azure ecosystem",
+    description: "Migrate and optimize workloads with intelligent monitoring and automation",
     link: "/expertise/microsoft-services/azure-cloud",
+    aiPowered: true,
   },
   {
     icon: Cpu,
     title: "SAP BTP Innovation",
-    description: "Extend SAP landscapes with low-code applications, automation, and AI-driven insights",
+    description: "Extend SAP landscapes with low-code applications and AI-driven intelligent insights",
     link: "/expertise/sap-btp",
+    aiPowered: true,
   },
   {
     icon: CheckCircle2,
     title: "Quality Engineering",
-    description: "Automate functional, regression, and performance testing to release with confidence",
+    description: "AI-powered test automation for functional, regression, and performance validation",
     link: "/expertise/quality-assurance/software-testing",
+    aiPowered: true,
   },
 ];
 
@@ -186,12 +196,22 @@ const Index = () => {
       <main className="pt-16">
         <HeroSection slides={heroSlides} />
 
+        {/* AI Core Expertise Section */}
+        <AIExpertiseSection />
+
+        {/* TAM Section */}
+        <TAMSection />
+
         {/* Services Section */}
         <section className="py-20 container mx-auto px-6">
           <div className="text-center mb-12">
-            <h2 className="text-3xl md:text-4xl font-bold mb-4">Key Offerings</h2>
+            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 text-primary font-semibold mb-4">
+              <Sparkles className="w-4 h-4" />
+              <span className="text-sm uppercase tracking-wider">Technology Expertise & Implementation</span>
+            </div>
+            <h2 className="text-3xl md:text-4xl font-bold font-display mb-4">Full-Stack Intelligent Solutions</h2>
             <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-              Comprehensive technology solutions to transform your business
+              Comprehensive technology services enhanced with AI-driven automation and intelligence
             </p>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">

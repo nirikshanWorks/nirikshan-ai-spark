@@ -9,8 +9,8 @@ export const Footer = () => {
           {/* Company Info */}
           <div className="space-y-4">
             <h3 className="text-xl font-bold text-gradient">Nirikshan AI Pvt. Ltd.</h3>
-            <p className="text-sm text-muted-foreground">
-              Bridging AI & Enterprises with innovative technology solutions
+            <p className="text-sm text-muted-foreground leading-relaxed">
+              At Nirikshan AI, we specialize in <span className="font-semibold text-foreground">OpenCV, Generative AI, and Agentic AI</span> — crafting intelligent systems that combine vision, reasoning, and autonomy. With expertise across Microsoft, SAP, and Cloud ecosystems, we deliver full-stack intelligent transformation for enterprises worldwide.
             </p>
             <div className="flex space-x-4">
               <a

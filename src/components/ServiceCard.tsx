@@ -1,5 +1,6 @@
 import { LucideIcon } from "lucide-react";
 import { Card } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
 import { ArrowRight } from "lucide-react";
 import { Link } from "react-router-dom";
 
@@ -8,12 +9,20 @@ interface ServiceCardProps {
   title: string;
   description: string;
   link: string;
+  aiPowered?: boolean;
 }
 
-export const ServiceCard = ({ icon: Icon, title, description, link }: ServiceCardProps) => {
+export const ServiceCard = ({ icon: Icon, title, description, link, aiPowered }: ServiceCardProps) => {
   return (
     <Link to={link}>
       <Card className="p-8 h-full card-hover border-2 border-border group cursor-pointer relative overflow-hidden bg-card">
+        {aiPowered && (
+          <div className="absolute top-4 right-4 z-20">
+            <Badge variant="secondary" className="bg-primary/10 text-primary border-primary/20 text-xs font-semibold">
+              AI-Powered
+            </Badge>
+          </div>
+        )}
         <div className="absolute inset-0 bg-gradient-to-br from-primary/10 to-accent/10 opacity-0 group-hover:opacity-100 transition-all duration-500" />
         <div className="absolute top-0 right-0 w-32 h-32 bg-primary/5 rounded-full -mr-16 -mt-16 group-hover:scale-150 transition-transform duration-500" />
         <div className="relative z-10">
