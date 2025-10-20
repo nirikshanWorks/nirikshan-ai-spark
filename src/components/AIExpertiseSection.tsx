@@ -33,7 +33,7 @@ export const AIExpertiseSection = () => {
   ];
 
   return (
-  <section id="ai-expertise" className="py-24 relative overflow-hidden scroll-mt-40">
+  <section id="ai-expertise" className="py-24 relative overflow-hidden scroll-mt-40 bg-background">
       {/* Animated Background */}
       <div className="absolute inset-0 bg-gradient-to-b from-primary/5 via-secondary/10 to-background">
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(120,119,198,0.1),transparent_50%)]"></div>
@@ -59,8 +59,8 @@ export const AIExpertiseSection = () => {
         {/* Neural Network Visualization */}
         <div className="mb-16 rounded-2xl border-2 border-primary/20 bg-gradient-to-br from-background to-primary/5 p-6 overflow-hidden">
           <div className="text-center mb-4">
-            <h3 className="text-2xl font-bold font-display">AI Neural Network Visualization</h3>
-            <p className="text-muted-foreground">Watch our AI models process information in real-time</p>
+            <h3 className="text-2xl font-bold font-display">AI Decision Flow Insight</h3>
+            <p className="text-muted-foreground">Follow how data signals move from raw capture to actionable outcomes across our platform</p>
           </div>
           <NeuralNetwork />
         </div>

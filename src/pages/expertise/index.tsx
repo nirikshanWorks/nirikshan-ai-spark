@@ -1,3 +1,4 @@
+import { useEffect, useRef } from "react";
 import { Navigation } from "@/components/Navigation";
 import { Footer } from "@/components/Footer";
 import { Card } from "@/components/ui/card";
@@ -33,6 +34,26 @@ const pageHighlights = [
 
 const ExpertisePage = () => {
   const heroRef = useScrollAnimation(0.1);
+  const videoRef = useRef<HTMLVideoElement>(null);
+
+  useEffect(() => {
+    const video = videoRef.current;
+    if (!video) return;
+
+    if (heroRef.isVisible) {
+      const playVideo = () => {
+        const playPromise = video.play();
+        if (playPromise) {
+          playPromise.catch(() => {
+            /* ignore autoplay restrictions */
+          });
+        }
+      };
+      playVideo();
+    } else {
+      video.pause();
+    }
+  }, [heroRef.isVisible]);
 
   return (
     <div className="min-h-screen">
@@ -42,11 +63,13 @@ const ExpertisePage = () => {
         {/* Hero Section */}
         <section className="relative h-[420px] md:h-[520px] overflow-hidden" ref={heroRef.ref}>
           <video
+            ref={videoRef}
             className="absolute inset-0 h-full w-full object-cover"
             autoPlay
             loop
             muted
             playsInline
+            preload="metadata"
             aria-hidden="true"
           >
             <source src="https://res.cloudinary.com/dch0uyw8e/video/upload/v1760817165/exptice_th6pn0.mp4" type="video/mp4" />
@@ -55,9 +78,6 @@ const ExpertisePage = () => {
             className="absolute inset-0 bg-gradient-to-br from-blue-500 via-violet-400 to-purple-500"
             style={{ opacity: 0.6 }}
           />
-          <div className="absolute -top-24 -left-16 w-64 h-64 bg-white/10 blur-3xl rounded-full" />
-          <div className="absolute bottom-[-120px] right-[-40px] w-96 h-96 bg-purple-500/30 blur-3xl rounded-full" />
-          <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,_rgba(255,255,255,0.2)_0%,_transparent_60%)] opacity-30" />
           <div className="relative z-10 container mx-auto px-6 h-full flex items-center">
             <div className={`transition-all duration-1000 ${
               heroRef.isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
@@ -102,7 +122,7 @@ const ExpertisePage = () => {
                 return (
                   <Card
                     key={highlight.title}
-                    className="p-6 backdrop-blur bg-white/70 dark:bg-slate-900/60 border border-white/40 dark:border-slate-800/60 shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1"
+                    className="p-6 bg-white/90 dark:bg-slate-900/70 border border-white/40 dark:border-slate-800/60 shadow-md hover:shadow-lg transition-all duration-300 hover:-translate-y-1"
                     style={{ animationDelay: `${index * 75}ms` }}
                   >
                     <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-blue-500 to-purple-500 flex items-center justify-center text-white mb-4">
