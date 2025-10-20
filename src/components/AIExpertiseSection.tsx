@@ -33,7 +33,7 @@ export const AIExpertiseSection = () => {
   ];
 
   return (
-    <section id="ai-expertise" className="py-24 relative overflow-hidden">
+  <section id="ai-expertise" className="py-24 relative overflow-hidden scroll-mt-40">
       {/* Animated Background */}
       <div className="absolute inset-0 bg-gradient-to-b from-primary/5 via-secondary/10 to-background">
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(120,119,198,0.1),transparent_50%)]"></div>
