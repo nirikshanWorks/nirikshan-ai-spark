@@ -1,4 +1,4 @@
-import { Fragment, useEffect, useMemo, useRef, useState, type CSSProperties } from "react";
+import { Fragment, useEffect, useRef, useState, type CSSProperties } from "react";
 import { Navigation } from "@/components/Navigation";
 import { Footer } from "@/components/Footer";
 import { Button } from "@/components/ui/button";
@@ -8,15 +8,12 @@ import { timeline } from "./whoWeAreContent";
 
 const TRAVEL_DURATION = 4500;
 const PAUSE_DURATION = 2000;
+const STOP_POSITIONS = timeline.length > 1
+  ? timeline.map((_, idx) => idx / (timeline.length - 1))
+  : [0];
 
 const Journey = () => {
-  const stopPositions = useMemo(() => (
-    timeline.length > 1
-      ? timeline.map((_, idx) => idx / (timeline.length - 1))
-      : [0]
-  ), [timeline]);
-
-  const [carProgress, setCarProgress] = useState(stopPositions[0] ?? 0);
+  const [carProgress, setCarProgress] = useState(STOP_POSITIONS[0] ?? 0);
   const [activeStop, setActiveStop] = useState(0);
   const [isPaused, setIsPaused] = useState(true);
   const [visitedStops, setVisitedStops] = useState(() => new Set<number>([0]));
@@ -25,13 +22,13 @@ const Journey = () => {
   const phaseRef = useRef<"pause" | "travel">("pause");
   const currentStopRef = useRef(0);
   const phaseStartRef = useRef<number | null>(null);
-  const travelStartRef = useRef(stopPositions[0] ?? 0);
-  const travelEndRef = useRef(stopPositions[1] ?? stopPositions[0] ?? 0);
+  const travelStartRef = useRef(STOP_POSITIONS[0] ?? 0);
+  const travelEndRef = useRef(STOP_POSITIONS[1] ?? STOP_POSITIONS[0] ?? 0);
   const rafRef = useRef<number>();
 
   useEffect(() => {
-    if (stopPositions.length <= 1) {
-      setCarProgress(stopPositions[0] ?? 0);
+    if (STOP_POSITIONS.length <= 1) {
+      setCarProgress(STOP_POSITIONS[0] ?? 0);
       setActiveStop(0);
       setIsPaused(true);
       return;
@@ -40,7 +37,7 @@ const Journey = () => {
     const step = (timestamp: number) => {
       if (phaseStartRef.current == null) {
         phaseStartRef.current = timestamp;
-        setCarProgress(stopPositions[currentStopRef.current]);
+        setCarProgress(STOP_POSITIONS[currentStopRef.current]);
         setActiveStop(currentStopRef.current);
         setIsPaused(true);
       }
@@ -48,18 +45,18 @@ const Journey = () => {
       const elapsed = timestamp - (phaseStartRef.current ?? timestamp);
 
       if (phaseRef.current === "pause") {
-        const currentPos = stopPositions[currentStopRef.current];
+        const currentPos = STOP_POSITIONS[currentStopRef.current];
         setCarProgress((prev) => (prev === currentPos ? prev : currentPos));
         setActiveStop((prev) => (prev === currentStopRef.current ? prev : currentStopRef.current));
         if (elapsed >= PAUSE_DURATION) {
           let nextIndex = currentStopRef.current + directionRef.current;
-          if (nextIndex < 0 || nextIndex >= stopPositions.length) {
+          if (nextIndex < 0 || nextIndex >= STOP_POSITIONS.length) {
             directionRef.current = (directionRef.current * -1) as 1 | -1;
             nextIndex = currentStopRef.current + directionRef.current;
           }
 
-          travelStartRef.current = stopPositions[currentStopRef.current];
-          travelEndRef.current = stopPositions[nextIndex];
+          travelStartRef.current = STOP_POSITIONS[currentStopRef.current];
+          travelEndRef.current = STOP_POSITIONS[nextIndex];
           phaseRef.current = "travel";
           phaseStartRef.current = timestamp;
           setIsPaused(false);
@@ -94,7 +91,7 @@ const Journey = () => {
       if (rafRef.current) cancelAnimationFrame(rafRef.current);
       phaseStartRef.current = null;
     };
-  }, [stopPositions]);
+  }, []);
 
   const carLeftPercent = 5 + carProgress * 90;
 
