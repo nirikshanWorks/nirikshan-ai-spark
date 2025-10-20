@@ -32,9 +32,13 @@ const heroSlides = [
     video: "https://res.cloudinary.com/dch0uyw8e/video/upload/v1760826232/2_sxecvw.mp4",
     eyebrow: "AI-First Innovation",
     title: "Empowering Vision and Intelligence — From OpenCV to Agentic AI",
-    description: "Empowering Insight with Intelligence. Leading the revolution in Computer Vision, Generative AI, and Autonomous Systems.",
+    description: "We design AI-native solutions that blend computer vision, generative creativity, and autonomous agents to unlock measurable enterprise value.",
     cta: {
       text: "Explore Our AI Expertise",
+      link: "#ai-expertise",
+    },
+    secondaryCta: {
+      text: "Learn More",
       link: "#ai-expertise",
     },
   },
@@ -42,20 +46,28 @@ const heroSlides = [
     video: "https://res.cloudinary.com/dch0uyw8e/video/upload/v1760826230/1_tsiaq0.mp4",
     eyebrow: "Vision to Reality",
     title: "Building Intelligent Systems That See, Think, and Act",
-    description: "From real-time object detection to autonomous AI agents — we're crafting the future of intelligent automation",
+    description: "Our OpenCV engineers orchestrate perception pipelines while generative copilots and agentic workflows automate decision-making in real time.",
     cta: {
       text: "Discover AI Solutions",
       link: "/expertise/artificial-intelligence",
+    },
+    secondaryCta: {
+      text: "View AI Case Studies",
+      link: "/case-studies",
     },
   },
   {
     video: "https://res.cloudinary.com/dch0uyw8e/video/upload/v1760826234/3_lvxy1u.mp4",
     eyebrow: "Leading the AI Revolution",
     title: "Where Computer Vision Meets Generative Intelligence",
-    description: "Creating AI that imagines, writes, designs, and innovates beyond human limitations",
+    description: "We pair domain data with agentic AI to craft intelligent experiences, from smart inspections to hyper-personalized content delivery.",
     cta: {
       text: "View Our Impact",
       link: "/case-studies",
+    },
+    secondaryCta: {
+      text: "Talk to an AI Architect",
+      link: "/contact",
     },
   },
 ];
@@ -209,11 +221,11 @@ const Index = () => {
           <div className="text-center mb-12">
             <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 text-primary font-semibold mb-4">
               <Sparkles className="w-4 h-4" />
-              <span className="text-sm uppercase tracking-wider">Technology Expertise & Implementation</span>
+              <span className="text-sm uppercase tracking-wider">Technology Expertise & Implementation Capabilities</span>
             </div>
             <h2 className="text-3xl md:text-4xl font-bold font-display mb-4">Full-Stack Intelligent Solutions</h2>
             <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-              Comprehensive technology services enhanced with AI-driven automation and intelligence
+              Modern engineering services co-piloted by OpenCV, generative, and agentic AI frameworks to accelerate delivery and unlock new value chains.
             </p>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">

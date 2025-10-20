@@ -15,6 +15,10 @@ interface HeroSlide {
     text: string;
     link: string;
   };
+  secondaryCta?: {
+    text: string;
+    link: string;
+  };
 }
 
 interface HeroSectionProps {
@@ -113,13 +117,16 @@ export const HeroSection = ({ slides }: HeroSectionProps) => {
           <h1 className="text-4xl md:text-6xl font-bold text-white mb-6 leading-tight fade-in-up delay-100">
             {slides[activeSlide].title}
           </h1>
-          <div className="text-lg md:text-xl text-white/90 mb-8 fade-in-up delay-200">
+          <p className="text-base md:text-lg text-white/80 mb-4 font-semibold tracking-[0.2em] uppercase fade-in-up delay-150">
+            Empowering Insight with Intelligence
+          </p>
+          <div className="text-lg md:text-xl text-white/90 mb-6 fade-in-up delay-200">
             <GenerativeTextEffect 
               texts={[
-                "Building Intelligent Vision Systems",
-                "Creating Autonomous AI Agents",
-                "Powering Generative AI Solutions",
-                "Transforming Industries with AI"
+                "OpenCV & Computer Vision Engineering",
+                "Generative AI Experience Platforms",
+                "Agentic AI Systems with Real Autonomy",
+                "End-to-End AI Innovation for Enterprises"
               ]}
               className="font-semibold text-accent"
             />
@@ -127,13 +134,20 @@ export const HeroSection = ({ slides }: HeroSectionProps) => {
           <p className="text-lg md:text-xl text-white/90 mb-8 fade-in-up delay-300">
             {slides[activeSlide].description}
           </p>
-          <div className="fade-in-up delay-300">
+          <div className="fade-in-up delay-300 flex flex-col sm:flex-row sm:items-center gap-4">
             <Link to={slides[activeSlide].cta.link}>
               <Button size="lg" className="gradient-primary group">
                 {slides[activeSlide].cta.text}
                 <ArrowRight className="ml-2 group-hover:translate-x-1 transition-transform" size={20} />
               </Button>
             </Link>
+            {slides[activeSlide].secondaryCta ? (
+              <Link to={slides[activeSlide].secondaryCta.link}>
+                <Button size="lg" variant="outline" className="border-white/70 text-white hover:bg-white/10">
+                  {slides[activeSlide].secondaryCta.text}
+                </Button>
+              </Link>
+            ) : null}
           </div>
         </div>
 

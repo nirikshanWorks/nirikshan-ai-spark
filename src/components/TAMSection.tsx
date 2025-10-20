@@ -52,6 +52,7 @@ export const TAMSection = () => {
       icon: DollarSign,
       value: 200,
       suffix: "B+",
+      prefix: "$",
       label: "AI & Computer Vision Market",
       description: "Global TAM in 2025",
       gradient: "from-blue-600 to-cyan-500",
@@ -60,6 +61,7 @@ export const TAMSection = () => {
       icon: TrendingUp,
       value: 38,
       suffix: "%",
+      prefix: "",
       label: "Annual Growth Rate",
       description: "CAGR through 2030",
       gradient: "from-purple-600 to-pink-500",
@@ -68,6 +70,7 @@ export const TAMSection = () => {
       icon: Zap,
       value: 97,
       suffix: "%",
+      prefix: "",
       label: "Enterprise Adoption",
       description: "Planning AI integration",
       gradient: "from-emerald-600 to-teal-500",
@@ -76,6 +79,7 @@ export const TAMSection = () => {
       icon: Globe,
       value: 15,
       suffix: "T+",
+      prefix: "$",
       label: "Global AI Economy",
       description: "By 2030",
       gradient: "from-orange-600 to-red-500",
@@ -124,7 +128,7 @@ export const TAMSection = () => {
                 </div>
                 
                 <div className="text-4xl font-bold font-display mb-2 text-transparent bg-clip-text bg-gradient-to-r from-primary to-accent">
-                  <AnimatedCounter end={stat.value} suffix={stat.suffix} prefix="$" />
+                  <AnimatedCounter end={stat.value} suffix={stat.suffix} prefix={stat.prefix ?? ""} />
                 </div>
                 
                 <h3 className="text-lg font-semibold mb-1">{stat.label}</h3>

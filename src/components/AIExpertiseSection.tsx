@@ -46,13 +46,10 @@ export const AIExpertiseSection = () => {
             <span className="text-sm uppercase tracking-wider">Our Core AI Expertise</span>
           </div>
           <h2 className="text-4xl md:text-5xl font-bold font-display mb-6">
-            Pioneering the Future of{" "}
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600">
-              Artificial Intelligence
-            </span>
+            Architecting Intelligent Systems Across Vision, Creation, and Autonomy
           </h2>
           <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-            We specialize in three cutting-edge AI domains that are reshaping industries and unlocking unprecedented possibilities
+            From OpenCV-powered perception to generative design and agentic orchestration, we orchestrate AI capabilities that sense, interpret, and act with measurable business impact.
           </p>
         </div>
 
@@ -60,9 +57,21 @@ export const AIExpertiseSection = () => {
         <div className="mb-16 rounded-2xl border-2 border-primary/20 bg-gradient-to-br from-background to-primary/5 p-6 overflow-hidden">
           <div className="text-center mb-4">
             <h3 className="text-2xl font-bold font-display">AI Decision Flow Insight</h3>
-            <p className="text-muted-foreground">Follow how data signals move from raw capture to actionable outcomes across our platform</p>
+            <p className="text-muted-foreground">Follow how data signals move from raw capture to actionable outcomes across our platform.</p>
           </div>
           <NeuralNetwork />
+          <div className="mt-6 flex flex-col sm:flex-row justify-center gap-3 text-sm">
+            <Link to="/expertise/artificial-intelligence/computer-vision">
+              <Button variant="outline" size="sm" className="border-primary/40 text-primary hover:bg-primary/10">
+                Explore Computer Vision Demo
+              </Button>
+            </Link>
+            <Link to="/expertise/artificial-intelligence/generative-ai">
+              <Button size="sm" className="gradient-primary">
+                Try Generative AI Showcase
+              </Button>
+            </Link>
+          </div>
         </div>
 
         <div className="grid md:grid-cols-3 gap-8 mb-12">
