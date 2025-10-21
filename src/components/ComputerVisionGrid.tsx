@@ -8,7 +8,7 @@ export const ComputerVisionGrid = () => {
     const canvas = canvasRef.current;
     if (!canvas) return;
 
-    const ctx = canvas.getContext("2d");
+    const ctx = canvas.getContext("2d", { alpha: true });
     if (!ctx) return;
 
     const resizeCanvas = () => {
@@ -22,8 +22,9 @@ export const ComputerVisionGrid = () => {
     const gridSize = 40;
     let scanLine = 0;
     let scanDirection = 1;
+    let frameCount = 0;
+    let animationId: number;
 
-    // Simulate object detections
     const simulateDetections = () => {
       const newDetections = [
         { x: canvas.width * 0.3, y: canvas.height * 0.4, label: "Object Detected" },
@@ -36,47 +37,47 @@ export const ComputerVisionGrid = () => {
     simulateDetections();
 
     const animate = () => {
+      frameCount++;
+
+      if (frameCount % 2 !== 0) {
+        animationId = requestAnimationFrame(animate);
+        return;
+      }
+
       ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-      // Draw grid
-      ctx.strokeStyle = "rgba(120, 119, 198, 0.2)";
+      ctx.strokeStyle = "rgba(120, 119, 198, 0.15)";
       ctx.lineWidth = 1;
 
+      ctx.beginPath();
       for (let x = 0; x < canvas.width; x += gridSize) {
-        ctx.beginPath();
         ctx.moveTo(x, 0);
         ctx.lineTo(x, canvas.height);
-        ctx.stroke();
       }
-
       for (let y = 0; y < canvas.height; y += gridSize) {
-        ctx.beginPath();
         ctx.moveTo(0, y);
         ctx.lineTo(canvas.width, y);
-        ctx.stroke();
       }
+      ctx.stroke();
 
-      // Draw scanning line
-      ctx.strokeStyle = "rgba(120, 119, 198, 0.8)";
+      ctx.strokeStyle = "rgba(120, 119, 198, 0.6)";
       ctx.lineWidth = 2;
       ctx.beginPath();
       ctx.moveTo(0, scanLine);
       ctx.lineTo(canvas.width, scanLine);
       ctx.stroke();
 
-      // Update scan line
-      scanLine += scanDirection * 3;
+      scanLine += scanDirection * 2;
       if (scanLine >= canvas.height || scanLine <= 0) {
         scanDirection *= -1;
       }
 
-      // Draw detection boxes
+      const time = Date.now() * 0.001;
+      const pulse = Math.sin(time) * 0.2 + 0.6;
+
       detections.forEach((detection) => {
         const boxSize = 80;
-        const time = Date.now() * 0.002;
-        const pulse = Math.sin(time) * 0.3 + 0.7;
 
-        // Detection box
         ctx.strokeStyle = `rgba(120, 119, 198, ${pulse})`;
         ctx.lineWidth = 2;
         ctx.strokeRect(
@@ -86,53 +87,32 @@ export const ComputerVisionGrid = () => {
           boxSize
         );
 
-        // Corner markers
         const cornerSize = 10;
         ctx.lineWidth = 3;
-        
-        // Top-left
+
         ctx.beginPath();
         ctx.moveTo(detection.x - boxSize / 2, detection.y - boxSize / 2 + cornerSize);
         ctx.lineTo(detection.x - boxSize / 2, detection.y - boxSize / 2);
         ctx.lineTo(detection.x - boxSize / 2 + cornerSize, detection.y - boxSize / 2);
-        ctx.stroke();
-
-        // Top-right
-        ctx.beginPath();
         ctx.moveTo(detection.x + boxSize / 2 - cornerSize, detection.y - boxSize / 2);
         ctx.lineTo(detection.x + boxSize / 2, detection.y - boxSize / 2);
         ctx.lineTo(detection.x + boxSize / 2, detection.y - boxSize / 2 + cornerSize);
-        ctx.stroke();
-
-        // Bottom-left
-        ctx.beginPath();
         ctx.moveTo(detection.x - boxSize / 2, detection.y + boxSize / 2 - cornerSize);
         ctx.lineTo(detection.x - boxSize / 2, detection.y + boxSize / 2);
         ctx.lineTo(detection.x - boxSize / 2 + cornerSize, detection.y + boxSize / 2);
-        ctx.stroke();
-
-        // Bottom-right
-        ctx.beginPath();
         ctx.moveTo(detection.x + boxSize / 2 - cornerSize, detection.y + boxSize / 2);
         ctx.lineTo(detection.x + boxSize / 2, detection.y + boxSize / 2);
         ctx.lineTo(detection.x + boxSize / 2, detection.y + boxSize / 2 - cornerSize);
         ctx.stroke();
-
-        // Crosshair at center
-        ctx.beginPath();
-        ctx.moveTo(detection.x - 5, detection.y);
-        ctx.lineTo(detection.x + 5, detection.y);
-        ctx.moveTo(detection.x, detection.y - 5);
-        ctx.lineTo(detection.x, detection.y + 5);
-        ctx.stroke();
       });
 
-      requestAnimationFrame(animate);
+      animationId = requestAnimationFrame(animate);
     };
 
     animate();
 
     return () => {
+      cancelAnimationFrame(animationId);
       window.removeEventListener("resize", resizeCanvas);
     };
   }, [detections]);
