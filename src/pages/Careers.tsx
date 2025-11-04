@@ -20,7 +20,7 @@ import {
   MessageCircle
 } from "lucide-react";
 import { Link } from "react-router-dom";
-import { useRef, useState, type ChangeEvent, type FormEvent } from "react";
+import { useRef, useState, useEffect, type ChangeEvent, type FormEvent } from "react";
 import { toast } from "sonner";
 import ReCAPTCHA from "react-google-recaptcha";
 
@@ -178,15 +178,50 @@ const Careers = () => {
   const [recaptchaToken, setRecaptchaToken] = useState<string | null>(null);
   const recaptchaRef = useRef<ReCAPTCHA | null>(null);
   // Read reCAPTCHA site key from environment with fallbacks.
-  // Vite exposes env vars prefixed with VITE_ via import.meta.env at build time.
-  // Also support runtime injection via a global `window.__ENV` object (useful for Docker/hosts).
-  const siteKey: string | undefined =
-    (import.meta.env && (import.meta.env.VITE_RECAPTCHA_SITE_KEY as string | undefined)) ||
-    // support alternate naming if someone used RECAPTCHA_SITE_KEY without VITE_ prefix
-    (import.meta.env && (import.meta.env.RECAPTCHA_SITE_KEY as string | undefined)) ||
-    // runtime window injection (e.g. server/template sets window.__ENV = { VITE_RECAPTCHA_SITE_KEY: '...' })
-    ((typeof window !== 'undefined' && (window as any).__ENV && (window as any).__ENV.VITE_RECAPTCHA_SITE_KEY)) ||
-    undefined;
+  // Priority:
+  // 1. Vite build-time env (import.meta.env.VITE_RECAPTCHA_SITE_KEY)
+  // 2. Runtime injection via window.__ENV (served by /env.js)
+  // 3. Dynamically load /env.js at runtime (useful when serving via the Node server without rebuilding)
+  const [siteKey, setSiteKey] = useState<string | undefined>(() => {
+    // build-time env (Vite)
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore - import.meta may be undefined in some test environments
+    const buildKey = (import.meta && (import.meta.env as any)?.VITE_RECAPTCHA_SITE_KEY) as string | undefined;
+    if (buildKey) return buildKey;
+    // runtime-injected key
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const runtime = (typeof window !== 'undefined' && (window as any).__ENV && (window as any).__ENV.VITE_RECAPTCHA_SITE_KEY) as string | undefined;
+    if (runtime) return runtime;
+    return undefined;
+  });
+
+  useEffect(() => {
+    if (siteKey) return;
+
+    // If no key yet, attempt to dynamically load /env.js which the Node server exposes.
+    // This allows injecting keys at runtime without rebuilding the client bundle.
+    const src = '/env.js';
+    // Avoid adding multiple script tags
+    if (document.querySelector(`script[data-env-loader][src="${src}"]`)) return;
+
+    const script = document.createElement('script');
+    script.setAttribute('data-env-loader', '1');
+    script.src = src;
+    script.async = true;
+    script.onload = () => {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const runtimeKey = (window as any).__ENV && (window as any).__ENV.VITE_RECAPTCHA_SITE_KEY;
+      if (runtimeKey) setSiteKey(runtimeKey as string);
+    };
+    script.onerror = () => {
+      // No-op: env script not available (dev server or static hosting without Node env injection)
+    };
+    document.head.appendChild(script);
+
+    return () => {
+      // keep the script for possible reuse; do not remove on unmount
+    };
+  }, [siteKey]);
 
   const handleInterestChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
