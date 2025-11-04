@@ -7,7 +7,7 @@ export const NeuralNetwork = () => {
     const canvas = canvasRef.current;
     if (!canvas) return;
 
-    const ctx = canvas.getContext("2d");
+    const ctx = canvas.getContext("2d", { alpha: true, willReadFrequently: false });
     if (!ctx) return;
 
     const resizeCanvas = () => {
@@ -77,8 +77,10 @@ export const NeuralNetwork = () => {
     ];
 
     const layerSpacing = canvas.width / (layers.length + 1);
-    
+
     let time = 0;
+    let frameCount = 0;
+    let animationId: number;
 
     const getNodePositions = () => {
       const positions: { x: number; y: number }[][] = [];
@@ -100,8 +102,15 @@ export const NeuralNetwork = () => {
     };
 
     const animate = () => {
+      frameCount++;
+
+      if (frameCount % 2 !== 0) {
+        animationId = requestAnimationFrame(animate);
+        return;
+      }
+
       ctx.clearRect(0, 0, canvas.width, canvas.height);
-      
+
       const positions = getNodePositions();
       time += 0.02;
       const isDarkMode = document.documentElement.classList.contains("dark");
@@ -204,12 +213,13 @@ export const NeuralNetwork = () => {
         });
       });
 
-      requestAnimationFrame(animate);
+      animationId = requestAnimationFrame(animate);
     };
 
     animate();
 
     return () => {
+      cancelAnimationFrame(animationId);
       window.removeEventListener("resize", resizeCanvas);
       canvas.removeEventListener("mousemove", updateMousePosition);
       canvas.removeEventListener("mouseleave", clearMousePosition);

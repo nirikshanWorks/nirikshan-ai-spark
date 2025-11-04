@@ -95,6 +95,8 @@ export const HeroSection = ({ slides }: HeroSectionProps) => {
               playsInline
               aria-hidden="true"
               className="w-full h-full object-cover"
+              preload={index === 0 ? "auto" : "none"}
+              loading="lazy"
             />
           ) : (
             <img
@@ -102,6 +104,7 @@ export const HeroSection = ({ slides }: HeroSectionProps) => {
               alt=""
               aria-hidden="true"
               className="w-full h-full object-cover"
+              loading={index === 0 ? "eager" : "lazy"}
             />
           )}
           <div className="absolute inset-0 hero-overlay" aria-hidden="true" />
