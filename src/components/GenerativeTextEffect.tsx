@@ -22,7 +22,7 @@ export const GenerativeTextEffect = ({ texts, className = "" }: GenerativeTextEf
           setCharIndex(charIndex + 1);
         } else {
           // Wait before deleting
-          setTimeout(() => setIsDeleting(true), 2000);
+          setTimeout(() => setIsDeleting(true), 1500);
         }
       } else {
         // Deleting
@@ -34,7 +34,7 @@ export const GenerativeTextEffect = ({ texts, className = "" }: GenerativeTextEf
           setCurrentTextIndex((currentTextIndex + 1) % texts.length);
         }
       }
-    }, isDeleting ? 50 : 100);
+    }, isDeleting ? 30 : 60);
 
     return () => clearTimeout(timeout);
   }, [charIndex, isDeleting, currentTextIndex, texts]);

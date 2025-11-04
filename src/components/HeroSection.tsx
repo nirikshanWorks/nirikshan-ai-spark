@@ -96,7 +96,6 @@ export const HeroSection = ({ slides }: HeroSectionProps) => {
               aria-hidden="true"
               className="w-full h-full object-cover"
               preload={index === 0 ? "auto" : "none"}
-              loading="lazy"
             />
           ) : (
             <img
