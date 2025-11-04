@@ -48,7 +48,7 @@ const Terms = () => (
           <header>
             <h1 className="text-4xl md:text-5xl font-bold mb-6">Terms of Service</h1>
             <p className="text-lg text-muted-foreground">
-              Effective date: 18 October 2025. Please read these terms carefully before using our website or engaging our services.
+              Effective date: 24 April 2025. Please read these terms carefully before using our website or engaging our services.
             </p>
           </header>
 
