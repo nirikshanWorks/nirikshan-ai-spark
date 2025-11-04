@@ -28,6 +28,8 @@
 
   <body>
     <div id="root"></div>
+    <!-- Runtime env injection (optional). In production the Node server serves /env.js to set window.__ENV -->
+    <script src="/env.js"></script>
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>

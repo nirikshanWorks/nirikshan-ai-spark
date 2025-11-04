@@ -43,6 +43,18 @@ app.get("/sitemap.xml", (req, res) => {
   res.send(xml);
 });
 
+// runtime env injection for client-side access without rebuilding
+// Serves a tiny JS file that assigns `window.__ENV` from process.env
+app.get('/env.js', (req, res) => {
+  const env = {
+    VITE_RECAPTCHA_SITE_KEY: process.env.VITE_RECAPTCHA_SITE_KEY || ''
+  };
+  res.type('application/javascript');
+  // avoid caching so operators can change envs between deploys
+  res.set('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate');
+  res.send(`window.__ENV = ${JSON.stringify(env)};`);
+});
+
 // fallback to index.html for client-side routing
 app.get('*', (req, res) => {
   const indexHtml = path.join(staticPath, 'index.html');

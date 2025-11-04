@@ -217,3 +217,30 @@ This project is part of Nirikshan AI Spark. All rights reserved.
 ---
 
 **Last Updated**: October 2025
+
+## 🔐 reCAPTCHA & Runtime Environment
+
+Local development with Vite reads environment variables prefixed with `VITE_` from a top-level `.env` file. For example, add your reCAPTCHA site key to `.env`:
+
+```
+VITE_RECAPTCHA_SITE_KEY=your-recaptcha-site-key-here
+```
+
+In production, if you'd like to inject secrets at deploy/runtime without rebuilding, the included Node server exposes a small endpoint at `/env.js` that sets `window.__ENV`. The client code (for example `src/pages/Careers.tsx`) already checks `window.__ENV` as a fallback if `import.meta.env` is not present.
+
+To enable this on the server, set the environment variable `VITE_RECAPTCHA_SITE_KEY` in the process environment used by the server. The server will then serve `/env.js` which the client can fetch by including the script in `index.html` or by letting the app request it on boot.
+
+Example (server environment):
+
+```
+export VITE_RECAPTCHA_SITE_KEY=your-production-key
+node server/index.js
+```
+
+If you prefer the client to load `/env.js` automatically, add the following tag to `index.html` (before your main bundle):
+
+```html
+<script src="/env.js"></script>
+```
+
+This will make `window.__ENV.VITE_RECAPTCHA_SITE_KEY` available at runtime.
