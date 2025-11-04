@@ -152,6 +152,9 @@ const About = () => {
           </div>
         </section>
 
+    {/* SEO meta update for About */}
+    <script dangerouslySetInnerHTML={{__html: `document.title = "About — Nirikshan AI | OpenCV, Generative & Agentic AI"; const md=document.querySelector('meta[name=\"description\"]'); if(md){md.setAttribute('content','At Nirikshan AI we specialize in OpenCV, Generative AI, and Agentic AI — crafting intelligent systems that combine vision, reasoning, and autonomy.');}`}} />
+
         {/* Mission & Vision */}
         <section className="py-20 container mx-auto px-6" ref={missionRef.ref}>
           <div className={`grid md:grid-cols-2 gap-12 transition-all duration-1000 ${

@@ -55,6 +55,14 @@ const ExpertisePage = () => {
     }
   }, [heroRef.isVisible]);
 
+  useEffect(() => {
+    document.title = "Expertise — Nirikshan AI | OpenCV • Generative • Agentic AI";
+    const metaDesc = document.querySelector('meta[name="description"]');
+    if (metaDesc) {
+      metaDesc.setAttribute('content', 'Explore Nirikshan AI’s core capabilities in OpenCV & Computer Vision, Generative AI, and Agentic AI. Learn how we apply AI across industries.');
+    }
+  }, []);
+
   return (
     <div className="min-h-screen">
       <Navigation />

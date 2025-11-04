@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+Sitemap: https://nirikshanai.in/sitemap.xml
+# If you host on a subpath or staging, adjust the sitemap URL accordingly.

@@ -198,6 +198,14 @@ const Index = () => {
       cleanups.forEach((cleanup) => cleanup());
     };
   }, []);
+  
+    useEffect(() => {
+      document.title = "Nirikshan AI | AI & Machine Learning Solutions for Business Innovation";
+      const metaDesc = document.querySelector('meta[name="description"]');
+      if (metaDesc) {
+        metaDesc.setAttribute('content', 'Nirikshan AI Private Limited delivers advanced Generative AI, Computer Vision, and Agentic AI solutions to accelerate business innovation.');
+      }
+    }, []);
 
   const duplicatedIndustries = [...industries, ...industries];
   const duplicatedPartners = [...partners, ...partners];
