@@ -177,7 +177,16 @@ const Careers = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [recaptchaToken, setRecaptchaToken] = useState<string | null>(null);
   const recaptchaRef = useRef<ReCAPTCHA | null>(null);
-  const siteKey = import.meta.env.VITE_RECAPTCHA_SITE_KEY;
+  // Read reCAPTCHA site key from environment with fallbacks.
+  // Vite exposes env vars prefixed with VITE_ via import.meta.env at build time.
+  // Also support runtime injection via a global `window.__ENV` object (useful for Docker/hosts).
+  const siteKey: string | undefined =
+    (import.meta.env && (import.meta.env.VITE_RECAPTCHA_SITE_KEY as string | undefined)) ||
+    // support alternate naming if someone used RECAPTCHA_SITE_KEY without VITE_ prefix
+    (import.meta.env && (import.meta.env.RECAPTCHA_SITE_KEY as string | undefined)) ||
+    // runtime window injection (e.g. server/template sets window.__ENV = { VITE_RECAPTCHA_SITE_KEY: '...' })
+    ((typeof window !== 'undefined' && (window as any).__ENV && (window as any).__ENV.VITE_RECAPTCHA_SITE_KEY)) ||
+    undefined;
 
   const handleInterestChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
