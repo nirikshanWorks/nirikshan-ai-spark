@@ -136,20 +136,13 @@ export const HeroSection = ({ slides }: HeroSectionProps) => {
           <p className="text-lg md:text-xl text-white/90 mb-8 fade-in-up delay-300">
             {slides[activeSlide].description}
           </p>
-          <div className="fade-in-up delay-300 flex flex-col sm:flex-row sm:items-center gap-4">
+          <div className="fade-in-up delay-300">
             <Link to={slides[activeSlide].cta.link}>
               <Button size="lg" className="gradient-primary group">
                 {slides[activeSlide].cta.text}
                 <ArrowRight className="ml-2 group-hover:translate-x-1 transition-transform" size={20} />
               </Button>
             </Link>
-            {slides[activeSlide].secondaryCta ? (
-              <Link to={slides[activeSlide].secondaryCta.link}>
-                <Button size="lg" variant="outline" className="border-white/70 text-white hover:bg-white/10">
-                  {slides[activeSlide].secondaryCta.text}
-                </Button>
-              </Link>
-            ) : null}
           </div>
         </div>
 
