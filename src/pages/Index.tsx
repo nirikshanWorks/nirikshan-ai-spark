@@ -215,7 +215,7 @@ const Index = () => {
       <AIParticles />
       <Navigation />
       
-      <main className="pt-16 relative overflow-hidden">
+  <main className="relative overflow-hidden">
         <HeroSection slides={heroSlides} />
 
         {/* AI Core Expertise Section */}
@@ -302,7 +302,7 @@ const Index = () => {
           <div className="container mx-auto px-6">
             <div className="text-center mb-10">
               <p className="text-accent text-sm font-semibold mb-3 uppercase tracking-wider">Trusted By</p>
-              <h2 className="text-3xl md:text-4xl font-bold mb-4">Our Patners</h2>
+              <h2 className="text-3xl md:text-4xl font-bold mb-4">Our Clients</h2>
               <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
                 Collaborating with forward-thinking organizations to drive innovation together
               </p>

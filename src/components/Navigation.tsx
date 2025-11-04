@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useLayoutEffect, useState, useRef } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Menu, X } from "lucide-react";
@@ -28,6 +28,8 @@ export const Navigation = () => {
   const [mobileExpertiseOpen, setMobileExpertiseOpen] = useState(false);
   const [desktopMenuValue, setDesktopMenuValue] = useState<string | undefined>(undefined);
   const desktopMenuOpen = Boolean(desktopMenuValue);
+  const navRef = useRef<HTMLElement | null>(null);
+  const [headerHeight, setHeaderHeight] = useState(0);
   const location = useLocation();
 
   const isActive = (path: string) => location.pathname === path;
@@ -60,12 +62,35 @@ export const Navigation = () => {
     return undefined;
   }, [mobileMenuOpen, desktopMenuOpen]);
 
+  // measure header height synchronously to avoid visual jump
+  useLayoutEffect(() => {
+    const update = () => {
+      const h = navRef.current?.getBoundingClientRect().height ?? 0;
+      setHeaderHeight(h);
+    };
+    // measure on mount
+    update();
+    // also re-measure when fonts/layout change
+    window.addEventListener('resize', update);
+    // observe mutations that may change header size (e.g. theme toggle)
+    let observer: MutationObserver | null = null;
+    if (navRef.current && 'MutationObserver' in window) {
+      observer = new MutationObserver(update);
+      observer.observe(navRef.current, { childList: true, subtree: true, attributes: true });
+    }
+    return () => {
+      window.removeEventListener('resize', update);
+      if (observer) observer.disconnect();
+    };
+  }, []);
+
   useEffect(() => {
     setDesktopMenuValue(undefined);
   }, [location.pathname]);
 
   return (
-    <nav className="fixed top-0 left-0 right-0 z-50 bg-white dark:bg-slate-950 border-b border-border/60 shadow-sm transition-all duration-300">
+    <>
+      <nav ref={navRef} className="fixed top-0 left-0 right-0 z-50 bg-white dark:bg-slate-950 border-b border-border/60 shadow-sm transition-all duration-300">
       <div className="mx-auto flex w-full max-w-7xl items-center justify-between px-4 sm:px-6">
         <div className="flex h-16 w-full items-center justify-between">
           {/* Logo */}
@@ -271,6 +296,9 @@ export const Navigation = () => {
           </div>
         )}
       </div>
-    </nav>
+      </nav>
+      {/* spacer to push page content below the fixed header to avoid overlap */}
+      <div aria-hidden="true" style={{ height: headerHeight }} />
+    </>
   );
 };

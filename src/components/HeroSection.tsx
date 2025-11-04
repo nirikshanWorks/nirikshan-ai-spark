@@ -1,7 +1,4 @@
 import { useEffect, useState } from "react";
-import { Button } from "@/components/ui/button";
-import { ArrowRight } from "lucide-react";
-import { Link } from "react-router-dom";
 import { ComputerVisionGrid } from "./ComputerVisionGrid";
 import { GenerativeTextEffect } from "./GenerativeTextEffect";
 
@@ -72,14 +69,15 @@ export const HeroSection = ({ slides }: HeroSectionProps) => {
   };
 
   return (
-    <section className="relative h-[600px] md:h-[700px] overflow-hidden">
+    // reduced mobile height and made responsive to avoid content overlapping the fixed header on small screens
+    <section className="relative h-[520px] sm:h-[600px] md:h-[700px] overflow-hidden">
       {/* Computer Vision Grid Overlay */}
       <div className="absolute inset-0 z-[5] pointer-events-none opacity-20">
         <ComputerVisionGrid />
       </div>
 
       {/* Background Images/Videos */}
-      {slides.map((slide, index) => (
+  {slides.map((slide, index) => (
         <div
           key={index}
           className={`absolute inset-0 transition-opacity duration-700 ${
@@ -106,23 +104,23 @@ export const HeroSection = ({ slides }: HeroSectionProps) => {
               loading={index === 0 ? "eager" : "lazy"}
             />
           )}
-          <div className="absolute inset-0 hero-overlay" aria-hidden="true" />
+          <div className="absolute inset-0 hero-overlay bg-gradient-to-b from-black/40 via-black/20 to-transparent md:from-transparent md:via-transparent" aria-hidden="true" />
         </div>
       ))}
 
       {/* Content */}
-      <div className="relative z-10 container mx-auto px-6 h-full flex flex-col justify-center">
-        <div className="max-w-3xl">
-          <p className="text-accent text-sm md:text-base font-medium mb-4 uppercase tracking-wider fade-in-up">
+  <div className="relative z-10 container mx-auto px-6 h-full flex flex-col justify-center pt-0">
+          <div className="max-w-full sm:max-w-3xl">
+          <p className="text-accent text-sm sm:text-base md:text-lg font-semibold mb-3 uppercase tracking-wider fade-in-up">
             {slides[activeSlide].eyebrow}
           </p>
-          <h1 className="text-4xl md:text-6xl font-bold text-white mb-6 leading-tight fade-in-up delay-100">
+          <h1 className="text-3xl sm:text-4xl md:text-6xl font-bold text-white mb-4 sm:mb-6 leading-tight fade-in-up delay-100">
             {slides[activeSlide].title}
           </h1>
-          <p className="text-base md:text-lg text-white/80 mb-4 font-semibold tracking-[0.2em] uppercase fade-in-up delay-150">
+          <p className="text-sm sm:text-base md:text-lg text-white/80 mb-3 sm:mb-4 font-semibold tracking-[0.2em] uppercase fade-in-up delay-150">
             Empowering Insight with Intelligence
           </p>
-          <div className="text-lg md:text-xl text-white/90 mb-6 fade-in-up delay-200">
+          <div className="text-base sm:text-lg md:text-xl text-white/90 mb-6 fade-in-up delay-200">
             <GenerativeTextEffect 
               texts={[
                 "OpenCV & Computer Vision Engineering",
@@ -133,22 +131,15 @@ export const HeroSection = ({ slides }: HeroSectionProps) => {
               className="font-semibold text-accent"
             />
           </div>
-          <p className="text-lg md:text-xl text-white/90 mb-8 fade-in-up delay-300">
+          <p className="text-base sm:text-lg md:text-xl text-white/90 mb-6 sm:mb-8 fade-in-up delay-300">
             {slides[activeSlide].description}
           </p>
-          <div className="fade-in-up delay-300">
-            <Link to={slides[activeSlide].cta.link}>
-              <Button size="lg" className="gradient-primary group">
-                {slides[activeSlide].cta.text}
-                <ArrowRight className="ml-2 group-hover:translate-x-1 transition-transform" size={20} />
-              </Button>
-            </Link>
-          </div>
+          {/* primary CTA buttons removed for a cleaner mobile-first experience */}
         </div>
 
         {/* Slide Navigation */}
-        <div className="absolute bottom-8 left-6 right-6 md:left-auto md:right-auto md:bottom-12">
-          <div className="flex space-x-6 border-b border-white/20">
+        <div className="absolute bottom-4 left-4 right-4 sm:left-auto sm:right-auto sm:bottom-12">
+          <div className="flex flex-row gap-4 overflow-x-auto pb-3 border-b border-white/20">
             {slides.map((slide, index) => (
               <button
                 key={index}
@@ -156,7 +147,7 @@ export const HeroSection = ({ slides }: HeroSectionProps) => {
                 type="button"
                 aria-label={`Show hero slide: ${slide.eyebrow}`}
                 aria-pressed={index === activeSlide}
-                className={`relative pb-6 text-left text-sm md:text-base transition-all ${
+                className={`relative text-left text-sm sm:text-base md:text-lg transition-all whitespace-nowrap inline-block ${
                   index === activeSlide
                     ? "text-white"
                     : "text-white/60 hover:text-white/90"

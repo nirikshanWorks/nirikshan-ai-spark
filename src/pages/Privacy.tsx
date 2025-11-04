@@ -53,7 +53,7 @@ const Privacy = () => (
         <div className="max-w-4xl mx-auto">
           <h1 className="text-4xl md:text-5xl font-bold mb-6">Privacy Policy</h1>
           <p className="text-lg text-muted-foreground mb-12">
-            Last updated: 18 October 2025. We respect your privacy and are committed to protecting the
+            Last updated: 24 April 2025. We respect your privacy and are committed to protecting the
             personal information you share with Nirikshan AI Private Limited.
           </p>
 
