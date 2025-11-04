@@ -20,9 +20,8 @@ import {
   MessageCircle
 } from "lucide-react";
 import { Link } from "react-router-dom";
-import { useRef, useState, useEffect, type ChangeEvent, type FormEvent } from "react";
+import { useState, type ChangeEvent, type FormEvent } from "react";
 import { toast } from "sonner";
-import ReCAPTCHA from "react-google-recaptcha";
 
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -175,53 +174,6 @@ const Careers = () => {
     attachment: "",
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [recaptchaToken, setRecaptchaToken] = useState<string | null>(null);
-  const recaptchaRef = useRef<ReCAPTCHA | null>(null);
-  // Read reCAPTCHA site key from environment with fallbacks.
-  // Priority:
-  // 1. Vite build-time env (import.meta.env.VITE_RECAPTCHA_SITE_KEY)
-  // 2. Runtime injection via window.__ENV (served by /env.js)
-  // 3. Dynamically load /env.js at runtime (useful when serving via the Node server without rebuilding)
-  const [siteKey, setSiteKey] = useState<string | undefined>(() => {
-    // build-time env (Vite)
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore - import.meta may be undefined in some test environments
-    const buildKey = (import.meta && (import.meta.env as any)?.VITE_RECAPTCHA_SITE_KEY) as string | undefined;
-    if (buildKey) return buildKey;
-    // runtime-injected key
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const runtime = (typeof window !== 'undefined' && (window as any).__ENV && (window as any).__ENV.VITE_RECAPTCHA_SITE_KEY) as string | undefined;
-    if (runtime) return runtime;
-    return undefined;
-  });
-
-  useEffect(() => {
-    if (siteKey) return;
-
-    // If no key yet, attempt to dynamically load /env.js which the Node server exposes.
-    // This allows injecting keys at runtime without rebuilding the client bundle.
-    const src = '/env.js';
-    // Avoid adding multiple script tags
-    if (document.querySelector(`script[data-env-loader][src="${src}"]`)) return;
-
-    const script = document.createElement('script');
-    script.setAttribute('data-env-loader', '1');
-    script.src = src;
-    script.async = true;
-    script.onload = () => {
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      const runtimeKey = (window as any).__ENV && (window as any).__ENV.VITE_RECAPTCHA_SITE_KEY;
-      if (runtimeKey) setSiteKey(runtimeKey as string);
-    };
-    script.onerror = () => {
-      // No-op: env script not available (dev server or static hosting without Node env injection)
-    };
-    document.head.appendChild(script);
-
-    return () => {
-      // keep the script for possible reuse; do not remove on unmount
-    };
-  }, [siteKey]);
 
   const handleInterestChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
@@ -230,14 +182,7 @@ const Careers = () => {
 
   const handleInterestSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (!siteKey) {
-      toast.error("reCAPTCHA is not configured. Please contact the site administrator.");
-      return;
-    }
-    if (!recaptchaToken) {
-      toast.error("Please verify you are human before submitting.");
-      return;
-    }
+    // No reCAPTCHA required for this submission path
     setIsSubmitting(true);
 
     // TODO: Replace this placeholder with an API call that sends interestForm and recaptchaToken to your server for verification.
@@ -245,8 +190,7 @@ const Careers = () => {
 
     toast.success("Thanks for sharing your interest! We'll be in touch when a matching role opens.");
     setInterestForm({ fullName: "", email: "", roleInterest: "", experience: "", attachment: "" });
-    recaptchaRef.current?.reset();
-    setRecaptchaToken(null);
+    // recaptcha removed: nothing to reset
     setIsSubmitting(false);
   };
 
@@ -435,25 +379,12 @@ const Careers = () => {
                     onChange={handleInterestChange}
                   />
                 </div>
-                <div className="flex justify-center">
-                  {siteKey ? (
-                    <ReCAPTCHA
-                      ref={(instance) => {
-                        recaptchaRef.current = instance;
-                      }}
-                      sitekey={siteKey}
-                      onChange={(token) => setRecaptchaToken(token)}
-                      onExpired={() => setRecaptchaToken(null)}
-                    />
-                  ) : (
-                    <p className="text-sm text-destructive">reCAPTCHA key missing. Add VITE_RECAPTCHA_SITE_KEY to your environment.</p>
-                  )}
-                </div>
+                {/* reCAPTCHA removed — form submits without captcha */}
                 <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
                   <p className="text-sm text-muted-foreground">
                     By submitting, you consent to us storing your information for future hiring updates.
                   </p>
-                  <Button type="submit" className="gradient-primary" disabled={isSubmitting || !recaptchaToken}>
+                  <Button type="submit" className="gradient-primary" disabled={isSubmitting}>
                     {isSubmitting ? "Submitting..." : "Notify Me"}
                     <ArrowRight className="ml-2" size={18} />
                   </Button>
