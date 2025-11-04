@@ -24,17 +24,14 @@ export const ComputerVisionGrid = () => {
     let scanDirection = 1;
     let frameCount = 0;
     let animationId: number;
-
-    const simulateDetections = () => {
-      const newDetections = [
-        { x: canvas.width * 0.3, y: canvas.height * 0.4, label: "Object Detected" },
-        { x: canvas.width * 0.7, y: canvas.height * 0.6, label: "Feature Found" },
-        { x: canvas.width * 0.5, y: canvas.height * 0.3, label: "Pattern Match" },
-      ];
-      setDetections(newDetections);
-    };
-
-    simulateDetections();
+    
+    // Initialize detections once
+    const staticDetections = [
+      { x: canvas.width * 0.3, y: canvas.height * 0.4, label: "Object Detected" },
+      { x: canvas.width * 0.7, y: canvas.height * 0.6, label: "Feature Found" },
+      { x: canvas.width * 0.5, y: canvas.height * 0.3, label: "Pattern Match" },
+    ];
+    setDetections(staticDetections);
 
     const animate = () => {
       frameCount++;
@@ -115,7 +112,7 @@ export const ComputerVisionGrid = () => {
       cancelAnimationFrame(animationId);
       window.removeEventListener("resize", resizeCanvas);
     };
-  }, [detections]);
+  }, []); // Empty dependency array - only run once on mount
 
   return (
     <canvas
