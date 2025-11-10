@@ -12,6 +12,7 @@ import { CTASection } from "@/components/CTASection";
 import { AIExpertiseSection } from "@/components/AIExpertiseSection";
 import { TAMSection } from "@/components/TAMSection";
 import { AIParticles } from "@/components/AIParticles";
+import { Chatbot } from "@/components/Chatbot/Chatbot";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -380,6 +381,7 @@ const Index = () => {
       </main>
 
       <Footer />
+      <Chatbot />
     </div>
   );
 };

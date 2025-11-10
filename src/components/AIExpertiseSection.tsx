@@ -1,10 +1,19 @@
-import { Eye, Sparkles, Bot, ArrowRight } from "lucide-react";
+import { Eye, Sparkles, Bot, ArrowRight, ChevronDown } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import { NeuralNetwork } from "./NeuralNetwork";
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
+import { useState } from "react";
 
 export const AIExpertiseSection = () => {
+  const [expandedItem, setExpandedItem] = useState<string>("item-0");
+  
   const expertise = [
     {
       icon: Eye,
@@ -74,16 +83,14 @@ export const AIExpertiseSection = () => {
           </div>
         </div>
 
-        <div className="grid md:grid-cols-3 gap-8 mb-12">
+        {/* Mobile: Grid View */}
+        <div className="md:hidden grid gap-8 mb-12">
           {expertise.map((item, index) => (
             <Card 
               key={index} 
               className="group relative overflow-hidden border-2 hover:border-primary/50 transition-all duration-500 hover:-translate-y-2 hover:shadow-2xl bg-gradient-to-br from-background to-secondary/30"
             >
-              {/* Gradient Overlay */}
               <div className={`absolute inset-0 bg-gradient-to-br ${item.gradient} opacity-0 group-hover:opacity-5 transition-opacity duration-500`}></div>
-              
-              {/* Glow Effect */}
               <div className="absolute -inset-1 bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 rounded-lg opacity-0 group-hover:opacity-20 blur-xl transition-opacity duration-500"></div>
               
               <div className="relative z-10 p-8">
@@ -117,6 +124,70 @@ export const AIExpertiseSection = () => {
               </div>
             </Card>
           ))}
+        </div>
+
+        {/* Desktop: Accordion View */}
+        <div className="hidden md:block mb-12">
+          <Accordion 
+            type="single" 
+            value={expandedItem} 
+            onValueChange={setExpandedItem}
+            className="space-y-6"
+          >
+            {expertise.map((item, index) => (
+              <AccordionItem 
+                key={index} 
+                value={`item-${index}`}
+                className="border-2 rounded-2xl overflow-hidden bg-gradient-to-br from-background to-secondary/30 data-[state=open]:border-primary/50 transition-all duration-300 data-[state=open]:shadow-2xl"
+              >
+                <AccordionTrigger className="px-8 py-6 hover:no-underline group">
+                  <div className="flex items-center gap-6 w-full text-left">
+                    <div className={`w-16 h-16 rounded-2xl bg-gradient-to-br ${item.gradient} flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform duration-300 shadow-lg`}>
+                      <item.icon className="w-8 h-8 text-white" />
+                    </div>
+                    <div className="flex-1">
+                      <h3 className="text-2xl font-bold font-display mb-2 group-hover:text-transparent group-hover:bg-clip-text group-hover:bg-gradient-to-r group-hover:from-primary group-hover:to-accent transition-all duration-300">
+                        {item.title}
+                      </h3>
+                      <p className="text-muted-foreground text-sm">
+                        {item.description}
+                      </p>
+                    </div>
+                  </div>
+                </AccordionTrigger>
+                <AccordionContent className="px-8 pb-6">
+                  <div className={`absolute inset-0 bg-gradient-to-br ${item.gradient} opacity-5 pointer-events-none`}></div>
+                  <div className="relative z-10 grid md:grid-cols-2 gap-8 pt-4">
+                    <div>
+                      <h4 className="text-lg font-semibold mb-4">Key Capabilities</h4>
+                      <ul className="space-y-3">
+                        {item.features.map((feature, idx) => (
+                          <li key={idx} className="flex items-center text-muted-foreground">
+                            <div className="w-2 h-2 rounded-full bg-primary mr-3 flex-shrink-0"></div>
+                            <span className="text-base">{feature}</span>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                    <div className="flex flex-col justify-between">
+                      <div className="mb-6">
+                        <h4 className="text-lg font-semibold mb-3">Ready to Explore?</h4>
+                        <p className="text-muted-foreground text-sm">
+                          Discover how our {item.title.toLowerCase()} solutions can transform your business operations and unlock new possibilities.
+                        </p>
+                      </div>
+                      <Link to={item.link}>
+                        <Button className="w-full gradient-primary group">
+                          Learn More About {item.title}
+                          <ArrowRight className="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                        </Button>
+                      </Link>
+                    </div>
+                  </div>
+                </AccordionContent>
+              </AccordionItem>
+            ))}
+          </Accordion>
         </div>
       </div>
     </section>
