@@ -5,6 +5,7 @@ import { Input } from "@/components/ui/input";
 import { ChatMessage } from "./ChatMessage";
 import { QuickReply } from "./QuickReply";
 import { TypingIndicator } from "./TypingIndicator";
+import { ChatbotParticles } from "./ChatbotParticles";
 import { chatbotResponses, getResponse } from "./chatbotResponses";
 
 interface Message {
@@ -40,6 +41,18 @@ export const Chatbot = () => {
       }, 500);
     }
   }, [isOpen, messages.length]);
+
+  // Freeze background scrolling when chatbot is open
+  useEffect(() => {
+    if (isOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+    }
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [isOpen]);
 
   const handleSendMessage = (text: string) => {
     if (!text.trim()) return;
@@ -78,9 +91,14 @@ export const Chatbot = () => {
 
       {/* Chat Window */}
       {isOpen && (
-        <div className="fixed bottom-6 right-6 w-[380px] h-[600px] bg-background border border-border rounded-2xl shadow-2xl flex flex-col z-50 fade-in scale-in">
+        <div className="fixed bottom-6 right-6 w-[380px] h-[600px] bg-background border border-border rounded-2xl shadow-2xl flex flex-col z-50 fade-in scale-in overflow-hidden">
+          {/* Particle Background */}
+          <div className="absolute inset-0 pointer-events-none">
+            <ChatbotParticles />
+          </div>
+
           {/* Header */}
-          <div className="gradient-primary text-white p-4 rounded-t-2xl flex items-center justify-between">
+          <div className="gradient-primary text-white p-4 rounded-t-2xl flex items-center justify-between relative z-10">
             <div className="flex items-center gap-3">
               <div className="w-10 h-10 rounded-full bg-white/20 flex items-center justify-center backdrop-blur-sm">
                 <MessageCircle size={20} />
@@ -101,7 +119,7 @@ export const Chatbot = () => {
           </div>
 
           {/* Messages */}
-          <div className="flex-1 overflow-y-auto p-4 bg-muted/30">
+          <div className="flex-1 overflow-y-auto p-4 bg-muted/30 relative z-10">
             {messages.map((msg, index) => (
               <ChatMessage
                 key={index}
@@ -119,7 +137,7 @@ export const Chatbot = () => {
           </div>
 
           {/* Input */}
-          <div className="p-4 border-t border-border bg-background rounded-b-2xl">
+          <div className="p-4 border-t border-border bg-background rounded-b-2xl relative z-10">
             <form
               onSubmit={(e) => {
                 e.preventDefault();

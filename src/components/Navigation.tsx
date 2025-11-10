@@ -117,7 +117,7 @@ export const Navigation = () => {
                   <NavigationMenuTrigger className="bg-transparent">
                     Expertise
                   </NavigationMenuTrigger>
-                  <NavigationMenuContent className="md:w-screen md:max-w-none md:px-0 md:max-h-[75vh] md:overflow-y-auto">
+                  <NavigationMenuContent className="md:w-screen md:max-w-none md:px-0 md:max-h-[75vh] md:overflow-y-auto animate-in slide-in-from-top-4 fade-in duration-300">
                     <div className="w-full px-4 py-6 md:px-10 lg:px-20 space-y-6">
                       <div className="flex flex-col items-start justify-between gap-4 rounded-xl border border-border/60 bg-gradient-to-r from-white via-muted/30 to-white p-6 shadow-sm dark:from-slate-950 dark:via-slate-900/80 dark:to-slate-950 md:flex-row md:items-center">
                         <div className="space-y-2">
@@ -139,10 +139,11 @@ export const Navigation = () => {
                       </div>
 
                       <div className="grid grid-cols-1 gap-6 md:grid-cols-3 lg:grid-cols-4">
-                        {navigationCategories.map((category) => (
+                        {navigationCategories.map((category, index) => (
                           <div
                             key={category.title}
-                            className="group space-y-3 rounded-xl border border-border/60 bg-muted/40 p-5 shadow-sm backdrop-blur transition hover:border-primary/60 hover:shadow-md dark:bg-slate-900/70"
+                            className="group space-y-3 rounded-xl border border-border/60 bg-muted/40 p-5 shadow-sm backdrop-blur transition-all duration-300 hover:border-primary/60 hover:shadow-md hover:-translate-y-1 dark:bg-slate-900/70 animate-in fade-in slide-in-from-bottom-2"
+                            style={{ animationDelay: `${index * 50}ms` }}
                           >
                             <Link
                               to={`/expertise/${category.slug}`}
