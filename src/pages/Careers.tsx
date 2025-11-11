@@ -182,16 +182,31 @@ const Careers = () => {
 
   const handleInterestSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    // No reCAPTCHA required for this submission path
     setIsSubmitting(true);
 
-    // TODO: Replace this placeholder with an API call that sends interestForm and recaptchaToken to your server for verification.
-    await new Promise((resolve) => setTimeout(resolve, 1000));
+    try {
+      const resp = await fetch('/api/talent', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(interestForm),
+      });
 
-    toast.success("Thanks for sharing your interest! We'll be in touch when a matching role opens.");
-    setInterestForm({ fullName: "", email: "", roleInterest: "", experience: "", attachment: "" });
-    // recaptcha removed: nothing to reset
-    setIsSubmitting(false);
+      const data = await resp.json().catch(() => ({}));
+      if (!resp.ok) {
+        const err = (data && data.error) || 'Failed to submit. Please try again later.';
+        toast.error(err);
+        setIsSubmitting(false);
+        return;
+      }
+
+      toast.success("Thanks for sharing your interest! We'll be in touch when a matching role opens.");
+      setInterestForm({ fullName: "", email: "", roleInterest: "", experience: "", attachment: "" });
+    } catch (err) {
+      console.error('submit error', err);
+      toast.error('Failed to submit. Please try again later.');
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (

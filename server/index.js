@@ -5,6 +5,9 @@ const fs = require("fs");
 const app = express();
 const port = process.env.PORT || 4000;
 
+// parse JSON bodies for API endpoints
+app.use(express.json());
+
 // Serve static build
 const staticPath = path.join(__dirname, "..", "dist");
 if (fs.existsSync(staticPath)) {
@@ -41,6 +44,51 @@ app.get("/sitemap.xml", (req, res) => {
   const xml = `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${urls}\n</urlset>`;
   res.type('application/xml');
   res.send(xml);
+});
+
+// API: accept talent submissions from the Careers page
+app.post('/api/talent', async (req, res) => {
+  try {
+    const { fullName, email, roleInterest, experience, attachment } = req.body || {};
+    if (!fullName || !email) {
+      return res.status(400).json({ ok: false, error: 'fullName and email are required' });
+    }
+
+    const dataDir = path.join(__dirname, '..', 'data');
+    const filePath = path.join(dataDir, 'talent.json');
+    await fs.promises.mkdir(dataDir, { recursive: true });
+
+    let current = [];
+    if (fs.existsSync(filePath)) {
+      try {
+        const txt = await fs.promises.readFile(filePath, 'utf8');
+        current = txt ? JSON.parse(txt) : [];
+      } catch (err) {
+        // if parsing fails, start fresh array
+        current = [];
+      }
+    }
+
+    const entry = {
+      id: Date.now(),
+      fullName,
+      email,
+      roleInterest: roleInterest || null,
+      experience: experience || null,
+      attachment: attachment || null,
+      receivedAt: new Date().toISOString(),
+      userAgent: req.get('User-Agent') || null,
+      ip: req.ip || req.connection?.remoteAddress || null,
+    };
+
+    current.push(entry);
+    await fs.promises.writeFile(filePath, JSON.stringify(current, null, 2), 'utf8');
+
+    return res.json({ ok: true });
+  } catch (err) {
+    console.error('Failed to save talent submission', err);
+    return res.status(500).json({ ok: false, error: 'internal error' });
+  }
 });
 
 // runtime env injection for client-side access without rebuilding
