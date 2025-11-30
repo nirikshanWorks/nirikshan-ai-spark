@@ -22,6 +22,7 @@ import {
 import { Link } from "react-router-dom";
 import { useState, type ChangeEvent, type FormEvent } from "react";
 import { toast } from "sonner";
+import { supabase } from "@/integrations/supabase/client";
 
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -31,6 +32,13 @@ import {
   AccordionItem,
   AccordionTrigger
 } from "@/components/ui/accordion";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 const benefits = [
   {
@@ -147,7 +155,7 @@ const jobOpenings = [
     code: "NAI-AI-INT-01",
     title: "AI Engineer",
     type: "Internship",
-    location: "On-site / Hybrid",
+    location: "Remote / Work from Home",
     duration: "3–6 Months",
     stipend: "Performance-based",
     overview: "You'll work on real AI/ML projects — not dummy assignments. Expect hands-on tasks in Computer Vision, Generative AI, Agentic Systems, and Image/Video Recognition. If your fundamentals are weak or you can't learn fast, this role will expose that.",
@@ -175,7 +183,7 @@ const jobOpenings = [
     code: "NAI-SALES-INT-02",
     title: "Sales Executive",
     type: "Internship",
-    location: "On-site",
+    location: "Remote / Work from Home",
     duration: "3–6 Months",
     stipend: "Incentive + Commission",
     overview: "You'll handle lead generation, client communication, and product pitching. If your English is weak or you hesitate in conversations, this role will expose that immediately. We need confident, proactive communicators.",
@@ -201,7 +209,7 @@ const jobOpenings = [
     code: "NAI-DM-INT-03",
     title: "Digital Marketing",
     type: "Internship",
-    location: "On-site / Hybrid",
+    location: "Remote / Work from Home",
     duration: "3–6 Months",
     stipend: "Performance-based",
     overview: "This role demands creativity and execution. You'll manage social media, content creation, and branding activities. If you can't produce consistent outputs, the role won't suit you.",
@@ -250,44 +258,117 @@ const faqs = [
 ];
 
 const Careers = () => {
-  const [interestForm, setInterestForm] = useState({
-    fullName: "",
+  const [applicationForm, setApplicationForm] = useState({
+    name: "",
     email: "",
-    roleInterest: "",
-    experience: "",
-    attachment: "",
+    phoneNumber: "",
+    linkedinProfile: "",
+    githubProfile: "",
+    portfolioLink: "",
+    jobAppliedFor: "",
   });
+  const [resumeFile, setResumeFile] = useState<File | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const handleInterestChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+  const handleFormChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    setInterestForm((prev) => ({ ...prev, [name]: value }));
+    setApplicationForm((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleInterestSubmit = async (e: FormEvent<HTMLFormElement>) => {
+  const handleSelectChange = (value: string) => {
+    setApplicationForm((prev) => ({ ...prev, jobAppliedFor: value }));
+  };
+
+  const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files[0]) {
+      const file = e.target.files[0];
+      // Validate file type (PDF only)
+      if (file.type !== 'application/pdf') {
+        toast.error('Please upload a PDF file');
+        return;
+      }
+      // Validate file size (max 5MB)
+      if (file.size > 5 * 1024 * 1024) {
+        toast.error('File size must be less than 5MB');
+        return;
+      }
+      setResumeFile(file);
+    }
+  };
+
+  const handleApplicationSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setIsSubmitting(true);
 
     try {
-      const resp = await fetch('/api/talent', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(interestForm),
-      });
-
-      const data = await resp.json().catch(() => ({}));
-      if (!resp.ok) {
-        const err = (data && data.error) || 'Failed to submit. Please try again later.';
-        toast.error(err);
+      // Validate required fields
+      if (!applicationForm.name || !applicationForm.email || !applicationForm.phoneNumber || 
+          !applicationForm.linkedinProfile || !applicationForm.githubProfile || 
+          !applicationForm.jobAppliedFor || !resumeFile) {
+        toast.error('Please fill in all required fields');
         setIsSubmitting(false);
         return;
       }
 
-      toast.success("Thanks for sharing your interest! We'll be in touch when a matching role opens.");
-      setInterestForm({ fullName: "", email: "", roleInterest: "", experience: "", attachment: "" });
+      // Upload resume to storage
+      const fileExt = resumeFile.name.split('.').pop();
+      const fileName = `${Date.now()}_${Math.random().toString(36).substring(7)}.${fileExt}`;
+      const filePath = `${fileName}`;
+
+      const { error: uploadError } = await supabase.storage
+        .from('resumes')
+        .upload(filePath, resumeFile);
+
+      if (uploadError) {
+        console.error('Upload error:', uploadError);
+        toast.error('Failed to upload resume. Please try again.');
+        setIsSubmitting(false);
+        return;
+      }
+
+      // Get the public URL for the uploaded file
+      const { data: { publicUrl } } = supabase.storage
+        .from('resumes')
+        .getPublicUrl(filePath);
+
+      // Save application to database
+      const { error: dbError } = await supabase
+        .from('job_applications')
+        .insert({
+          name: applicationForm.name,
+          email: applicationForm.email,
+          phone_number: applicationForm.phoneNumber,
+          linkedin_profile: applicationForm.linkedinProfile,
+          github_profile: applicationForm.githubProfile,
+          portfolio_link: applicationForm.portfolioLink || null,
+          job_applied_for: applicationForm.jobAppliedFor,
+          resume_url: publicUrl,
+        });
+
+      if (dbError) {
+        console.error('Database error:', dbError);
+        toast.error('Failed to submit application. Please try again.');
+        setIsSubmitting(false);
+        return;
+      }
+
+      toast.success("Application submitted successfully! We'll be in touch soon.");
+      setApplicationForm({
+        name: "",
+        email: "",
+        phoneNumber: "",
+        linkedinProfile: "",
+        githubProfile: "",
+        portfolioLink: "",
+        jobAppliedFor: "",
+      });
+      setResumeFile(null);
+      // Reset file input
+      const fileInput = document.querySelector('input[type="file"]') as HTMLInputElement;
+      if (fileInput) fileInput.value = '';
     } catch (err) {
-      console.error('submit error', err);
-      toast.error('Failed to submit. Please try again later.');
+      console.error('Submit error:', err);
+      toast.error('Failed to submit application. Please try again.');
     } finally {
       setIsSubmitting(false);
     }
@@ -520,7 +601,7 @@ const Careers = () => {
           </div>
         </section>
 
-        {/* Talent Pool Form */}
+        {/* Application Form */}
         <section id="talent-form" className="py-20">
           <div className="container mx-auto px-6">
             <div className="max-w-3xl mx-auto bg-background/90 backdrop-blur rounded-3xl border border-border shadow-sm p-8 md:p-12">
@@ -530,69 +611,143 @@ const Careers = () => {
                   Tell us about yourself and the role you&apos;re interested in. We&apos;ll review your application and get back to you soon.
                 </p>
               </div>
-              <form className="grid gap-6" onSubmit={handleInterestSubmit}>
+              <form className="grid gap-6" onSubmit={handleApplicationSubmit}>
                 <div className="grid gap-2">
-                  <label htmlFor="fullName" className="text-sm font-medium">Full Name</label>
+                  <label htmlFor="name" className="text-sm font-medium">
+                    Full Name <span className="text-destructive">*</span>
+                  </label>
                   <Input
-                    id="fullName"
-                    name="fullName"
+                    id="name"
+                    name="name"
                     placeholder="Jane Doe"
                     required
-                    value={interestForm.fullName}
-                    onChange={handleInterestChange}
+                    value={applicationForm.name}
+                    onChange={handleFormChange}
                   />
                 </div>
+
                 <div className="grid gap-2">
-                  <label htmlFor="email" className="text-sm font-medium">Email</label>
+                  <label htmlFor="email" className="text-sm font-medium">
+                    Email <span className="text-destructive">*</span>
+                  </label>
                   <Input
                     id="email"
                     name="email"
                     type="email"
                     placeholder="you@example.com"
                     required
-                    value={interestForm.email}
-                    onChange={handleInterestChange}
+                    value={applicationForm.email}
+                    onChange={handleFormChange}
                   />
                 </div>
+
                 <div className="grid gap-2">
-                  <label htmlFor="roleInterest" className="text-sm font-medium">Role of Interest</label>
+                  <label htmlFor="phoneNumber" className="text-sm font-medium">
+                    Phone Number <span className="text-destructive">*</span>
+                  </label>
                   <Input
-                    id="roleInterest"
-                    name="roleInterest"
-                    placeholder="e.g., AI Researcher, Product Manager"
-                    value={interestForm.roleInterest}
-                    onChange={handleInterestChange}
+                    id="phoneNumber"
+                    name="phoneNumber"
+                    type="tel"
+                    placeholder="+91 98765 43210"
+                    required
+                    value={applicationForm.phoneNumber}
+                    onChange={handleFormChange}
                   />
                 </div>
+
                 <div className="grid gap-2">
-                  <label htmlFor="experience" className="text-sm font-medium">Brief Introduction</label>
-                  <Textarea
-                    id="experience"
-                    name="experience"
-                    rows={4}
-                    placeholder="Share your experience, interests, or portfolio links"
-                    value={interestForm.experience}
-                    onChange={handleInterestChange}
-                  />
-                </div>
-                <div className="grid gap-2">
-                  <label htmlFor="attachment" className="text-sm font-medium">Portfolio or Resume Link</label>
+                  <label htmlFor="linkedinProfile" className="text-sm font-medium">
+                    LinkedIn Profile <span className="text-destructive">*</span>
+                  </label>
                   <Input
-                    id="attachment"
-                    name="attachment"
+                    id="linkedinProfile"
+                    name="linkedinProfile"
                     type="url"
-                    placeholder="https://"
-                    value={interestForm.attachment}
-                    onChange={handleInterestChange}
+                    placeholder="https://linkedin.com/in/yourprofile"
+                    required
+                    value={applicationForm.linkedinProfile}
+                    onChange={handleFormChange}
                   />
                 </div>
-                {/* reCAPTCHA removed — form submits without captcha */}
-                <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+
+                <div className="grid gap-2">
+                  <label htmlFor="githubProfile" className="text-sm font-medium">
+                    GitHub Profile <span className="text-destructive">*</span>
+                  </label>
+                  <Input
+                    id="githubProfile"
+                    name="githubProfile"
+                    type="url"
+                    placeholder="https://github.com/yourprofile"
+                    required
+                    value={applicationForm.githubProfile}
+                    onChange={handleFormChange}
+                  />
+                </div>
+
+                <div className="grid gap-2">
+                  <label htmlFor="portfolioLink" className="text-sm font-medium">
+                    Portfolio Link
+                  </label>
+                  <Input
+                    id="portfolioLink"
+                    name="portfolioLink"
+                    type="url"
+                    placeholder="https://yourportfolio.com (optional)"
+                    value={applicationForm.portfolioLink}
+                    onChange={handleFormChange}
+                  />
+                </div>
+
+                <div className="grid gap-2">
+                  <label htmlFor="jobAppliedFor" className="text-sm font-medium">
+                    Job Applied For <span className="text-destructive">*</span>
+                  </label>
+                  <Select 
+                    value={applicationForm.jobAppliedFor} 
+                    onValueChange={handleSelectChange}
+                    required
+                  >
+                    <SelectTrigger>
+                      <SelectValue placeholder="Select a position" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {jobOpenings.map((job) => (
+                        <SelectItem key={job.code} value={job.code}>
+                          {job.title} ({job.code})
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+
+                <div className="grid gap-2">
+                  <label htmlFor="resume" className="text-sm font-medium">
+                    Upload Resume (PDF only, max 5MB) <span className="text-destructive">*</span>
+                  </label>
+                  <Input
+                    id="resume"
+                    name="resume"
+                    type="file"
+                    accept=".pdf"
+                    required
+                    onChange={handleFileChange}
+                    className="cursor-pointer"
+                  />
+                  {resumeFile && (
+                    <p className="text-xs text-muted-foreground">
+                      Selected: {resumeFile.name} ({(resumeFile.size / 1024).toFixed(2)} KB)
+                    </p>
+                  )}
+                </div>
+
+                <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 pt-4">
                   <p className="text-sm text-muted-foreground">
-                    By submitting, you consent to us storing your information for future hiring updates.
+                    By submitting, you consent to us storing your information for hiring purposes.
                   </p>
                   <Button type="submit" className="gradient-primary" disabled={isSubmitting}>
-                    {isSubmitting ? "Submitting..." : "Notify Me"}
+                    {isSubmitting ? "Submitting..." : "Submit Application"}
                     <ArrowRight className="ml-2" size={18} />
                   </Button>
                 </div>
