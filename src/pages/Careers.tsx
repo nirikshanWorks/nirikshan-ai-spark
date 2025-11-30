@@ -142,6 +142,90 @@ const hiringSteps = [
   }
 ];
 
+const jobOpenings = [
+  {
+    code: "NAI-AI-INT-01",
+    title: "AI Engineer",
+    type: "Internship",
+    location: "On-site / Hybrid",
+    duration: "3–6 Months",
+    stipend: "Performance-based",
+    overview: "You'll work on real AI/ML projects — not dummy assignments. Expect hands-on tasks in Computer Vision, Generative AI, Agentic Systems, and Image/Video Recognition. If your fundamentals are weak or you can't learn fast, this role will expose that.",
+    responsibilities: [
+      "Build and optimize AI/ML models for production use",
+      "Work with OpenCV for image/video processing",
+      "Implement Generative AI pipelines (LLMs, diffusion models, transformers)",
+      "Experiment with Agentic AI workflows",
+      "Prepare datasets, train models, and test accuracy",
+      "Assist senior engineers with deployments & documentation"
+    ],
+    required: [
+      "Basic understanding of Python",
+      "Familiarity with ML concepts (train/test, CNNs, embeddings)",
+      "Curiosity to explore OpenCV, LLMs, and Computer Vision",
+      "Ability to research and implement without spoon-feeding"
+    ],
+    goodToHave: [
+      "Knowledge of TensorFlow / PyTorch",
+      "Experience with GPU workflows",
+      "Personal AI/ML projects"
+    ]
+  },
+  {
+    code: "NAI-SALES-INT-02",
+    title: "Sales Executive",
+    type: "Internship",
+    location: "On-site",
+    duration: "3–6 Months",
+    stipend: "Incentive + Commission",
+    overview: "You'll handle lead generation, client communication, and product pitching. If your English is weak or you hesitate in conversations, this role will expose that immediately. We need confident, proactive communicators.",
+    responsibilities: [
+      "Generate leads using online/offline channels",
+      "Talk to prospects, understand needs, and pitch our solutions",
+      "Maintain CRM records",
+      "Assist in meetings, demos, and follow-ups",
+      "Support sales campaigns with proper coordination"
+    ],
+    required: [
+      "Strong English communication (spoken + written)",
+      "Confidence in client handling",
+      "Ability to learn product details quickly",
+      "Team coordination mindset"
+    ],
+    goodToHave: [
+      "Prior experience in sales calls or telemarketing",
+      "Basic understanding of B2B/tech sales"
+    ]
+  },
+  {
+    code: "NAI-DM-INT-03",
+    title: "Digital Marketing",
+    type: "Internship",
+    location: "On-site / Hybrid",
+    duration: "3–6 Months",
+    stipend: "Performance-based",
+    overview: "This role demands creativity and execution. You'll manage social media, content creation, and branding activities. If you can't produce consistent outputs, the role won't suit you.",
+    responsibilities: [
+      "Manage Instagram, LinkedIn, and other platforms",
+      "Create content (posts, reels, captions, scripts)",
+      "Assist with branding, campaigns, and analytics",
+      "Research competitors and trends",
+      "Help grow the digital presence of Nirikshan AI"
+    ],
+    required: [
+      "Basic content writing",
+      "Understanding of how social media algorithms work",
+      "Creativity + consistency",
+      "Ability to execute independently"
+    ],
+    goodToHave: [
+      "Experience with Canva / Photoshop",
+      "Video editing basic skills",
+      "Knowledge of SEO"
+    ]
+  }
+];
+
 const faqs = [
   {
     question: "Can I work remotely?",
@@ -312,30 +396,138 @@ const Careers = () => {
           <div className="container mx-auto px-6">
             <div className="text-center mb-12">
               <h2 className="text-3xl md:text-4xl font-bold mb-4">Open Positions</h2>
-              <p className="text-lg text-muted-foreground">
-                We don&apos;t have open roles right now—stay tuned for future opportunities.
+              <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+                Join our team and work on cutting-edge AI projects. We're looking for passionate individuals ready to make an impact.
               </p>
             </div>
-            <Card className="max-w-3xl mx-auto p-8 text-center bg-background/80 backdrop-blur border-dashed border-2 border-border">
-              <div className="flex flex-col items-center gap-4">
-                <BellRing className="text-indigo-500" size={40} />
-                <h3 className="text-2xl font-semibold">No openings at the moment</h3>
-                <p className="text-muted-foreground max-w-xl">
-                  We&apos;re not hiring right now, but new opportunities are on the horizon. Keep an eye on this page for updates or share your interests below—our team will reach out when a role matches your profile.
-                </p>
+            
+            {jobOpenings.length > 0 ? (
+              <div className="max-w-5xl mx-auto space-y-6">
+                {jobOpenings.map((job) => (
+                  <Card key={job.code} className="p-6 md:p-8 bg-background/90 backdrop-blur border-border hover:border-primary/50 transition-colors">
+                    <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-4 mb-6">
+                      <div>
+                        <div className="flex items-center gap-3 mb-2">
+                          <h3 className="text-2xl font-bold">{job.title}</h3>
+                          <span className="inline-flex items-center rounded-full bg-primary/10 px-3 py-1 text-xs font-medium text-primary">
+                            {job.type}
+                          </span>
+                        </div>
+                        <p className="text-sm text-muted-foreground">Job Code: {job.code}</p>
+                      </div>
+                      <div className="flex flex-wrap gap-3 text-sm">
+                        <div className="flex items-center gap-1.5 text-muted-foreground">
+                          <Globe2 size={16} />
+                          <span>{job.location}</span>
+                        </div>
+                        <div className="flex items-center gap-1.5 text-muted-foreground">
+                          <CalendarHeart size={16} />
+                          <span>{job.duration}</span>
+                        </div>
+                        <div className="flex items-center gap-1.5 text-muted-foreground">
+                          <Trophy size={16} />
+                          <span>{job.stipend}</span>
+                        </div>
+                      </div>
+                    </div>
+
+                    <Accordion type="single" collapsible className="w-full">
+                      <AccordionItem value="details" className="border-none">
+                        <AccordionTrigger className="text-left hover:no-underline py-3">
+                          <span className="text-base font-medium">View Full Details</span>
+                        </AccordionTrigger>
+                        <AccordionContent className="space-y-6 pt-4">
+                          <div>
+                            <h4 className="font-semibold mb-2 flex items-center gap-2">
+                              <Target size={18} className="text-primary" />
+                              Role Overview
+                            </h4>
+                            <p className="text-muted-foreground leading-relaxed">{job.overview}</p>
+                          </div>
+
+                          <div>
+                            <h4 className="font-semibold mb-3 flex items-center gap-2">
+                              <ClipboardCheck size={18} className="text-primary" />
+                              Key Responsibilities
+                            </h4>
+                            <ul className="space-y-2">
+                              {job.responsibilities.map((resp, idx) => (
+                                <li key={idx} className="flex items-start gap-2 text-muted-foreground">
+                                  <span className="mt-1.5 h-1.5 w-1.5 rounded-full bg-primary flex-shrink-0" />
+                                  <span>{resp}</span>
+                                </li>
+                              ))}
+                            </ul>
+                          </div>
+
+                          <div className="grid md:grid-cols-2 gap-6">
+                            <div>
+                              <h4 className="font-semibold mb-3 flex items-center gap-2">
+                                <Rocket size={18} className="text-primary" />
+                                Required Skills
+                              </h4>
+                              <ul className="space-y-2">
+                                {job.required.map((skill, idx) => (
+                                  <li key={idx} className="flex items-start gap-2 text-muted-foreground text-sm">
+                                    <span className="mt-1.5 h-1.5 w-1.5 rounded-full bg-primary flex-shrink-0" />
+                                    <span>{skill}</span>
+                                  </li>
+                                ))}
+                              </ul>
+                            </div>
+
+                            <div>
+                              <h4 className="font-semibold mb-3 flex items-center gap-2">
+                                <Sparkles size={18} className="text-primary" />
+                                Good to Have
+                              </h4>
+                              <ul className="space-y-2">
+                                {job.goodToHave.map((skill, idx) => (
+                                  <li key={idx} className="flex items-start gap-2 text-muted-foreground text-sm">
+                                    <span className="mt-1.5 h-1.5 w-1.5 rounded-full bg-muted flex-shrink-0" />
+                                    <span>{skill}</span>
+                                  </li>
+                                ))}
+                              </ul>
+                            </div>
+                          </div>
+
+                          <div className="pt-4 border-t border-border">
+                            <a href="#talent-form">
+                              <Button className="gradient-primary w-full md:w-auto">
+                                Apply Now
+                                <ArrowRight className="ml-2" size={18} />
+                              </Button>
+                            </a>
+                          </div>
+                        </AccordionContent>
+                      </AccordionItem>
+                    </Accordion>
+                  </Card>
+                ))}
               </div>
-            </Card>
+            ) : (
+              <Card className="max-w-3xl mx-auto p-8 text-center bg-background/80 backdrop-blur border-dashed border-2 border-border">
+                <div className="flex flex-col items-center gap-4">
+                  <BellRing className="text-indigo-500" size={40} />
+                  <h3 className="text-2xl font-semibold">No openings at the moment</h3>
+                  <p className="text-muted-foreground max-w-xl">
+                    We&apos;re not hiring right now, but new opportunities are on the horizon. Keep an eye on this page for updates or share your interests below—our team will reach out when a role matches your profile.
+                  </p>
+                </div>
+              </Card>
+            )}
           </div>
         </section>
 
         {/* Talent Pool Form */}
-        <section className="py-20">
+        <section id="talent-form" className="py-20">
           <div className="container mx-auto px-6">
             <div className="max-w-3xl mx-auto bg-background/90 backdrop-blur rounded-3xl border border-border shadow-sm p-8 md:p-12">
               <div className="text-center mb-10">
-                <h2 className="text-3xl md:text-4xl font-bold mb-4">Share Your Interest</h2>
+                <h2 className="text-3xl md:text-4xl font-bold mb-4">Apply Now</h2>
                 <p className="text-muted-foreground">
-                  Tell us about yourself and the work you&apos;re passionate about. We&apos;ll keep your profile handy for future openings.
+                  Tell us about yourself and the role you&apos;re interested in. We&apos;ll review your application and get back to you soon.
                 </p>
               </div>
               <form className="grid gap-6" onSubmit={handleInterestSubmit}>
