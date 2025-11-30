@@ -22,7 +22,7 @@ import {
 import { Link } from "react-router-dom";
 import { useState, type ChangeEvent, type FormEvent } from "react";
 import { toast } from "sonner";
-import { supabase } from "@/integrations/supabase/client";
+import { createClient } from "@supabase/supabase-js";
 
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -39,6 +39,11 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+
+const supabaseUrl = "https://ggoqrdvlvapmcgonufds.supabase.co";
+const supabaseAnonKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imdnb3FyZHZsdmFwbWNnb251ZmRzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjQ0NDM1NTEsImV4cCI6MjA4MDAxOTU1MX0.5e0PnzXKad0Ydb4tXF0KIjzpHXFKEGWkuzImDwDEIwY";
+
+const supabase = createClient(supabaseUrl, supabaseAnonKey);
 
 const benefits = [
   {
