@@ -6,6 +6,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { ThemeProvider } from "next-themes";
 import ScrollToTop from "@/components/ScrollToTop";
+import { AuthProvider } from "@/hooks/useAuth";
 
 const Index = lazy(() => import("./pages/Index"));
 const About = lazy(() => import("./pages/About"));
@@ -23,6 +24,7 @@ const Terms = lazy(() => import("./pages/Terms"));
 const Testimonials = lazy(() => import("./pages/Testimonials"));
 const Journey = lazy(() => import("./pages/Journey"));
 const Applications = lazy(() => import("./pages/Applications"));
+const Auth = lazy(() => import("./pages/Auth"));
 const NotFound = lazy(() => import("./pages/NotFound"));
 
 const queryClient = new QueryClient();
@@ -40,28 +42,31 @@ const App = () => (
         <Toaster />
         <Sonner />
         <BrowserRouter>
-          <ScrollToTop />
-          <Suspense fallback={<PageLoader />}>
-            <Routes>
-              <Route path="/" element={<Index />} />
-              <Route path="/about" element={<About />} />
-              <Route path="/who-we-are" element={<WhoWeAre />} />
-              <Route path="/expertise" element={<ExpertisePage />} />
-              <Route path="/expertise/:categorySlug" element={<ExpertiseCategoryPage />} />
-              <Route path="/expertise/:categorySlug/:serviceSlug" element={<ExpertiseServicePage />} />
-              <Route path="/services" element={<Services />} />
-              <Route path="/projects" element={<Projects />} />
-              <Route path="/case-studies" element={<CaseStudies />} />
-              <Route path="/careers" element={<Careers />} />
-              <Route path="/contact" element={<Contact />} />
-              <Route path="/testimonials" element={<Testimonials />} />
-              <Route path="/journey" element={<Journey />} />
-              <Route path="/applications" element={<Applications />} />
-              <Route path="/privacy" element={<Privacy />} />
-              <Route path="/terms" element={<Terms />} />
-              <Route path="*" element={<NotFound />} />
-            </Routes>
-          </Suspense>
+          <AuthProvider>
+            <ScrollToTop />
+            <Suspense fallback={<PageLoader />}>
+              <Routes>
+                <Route path="/" element={<Index />} />
+                <Route path="/about" element={<About />} />
+                <Route path="/who-we-are" element={<WhoWeAre />} />
+                <Route path="/expertise" element={<ExpertisePage />} />
+                <Route path="/expertise/:categorySlug" element={<ExpertiseCategoryPage />} />
+                <Route path="/expertise/:categorySlug/:serviceSlug" element={<ExpertiseServicePage />} />
+                <Route path="/services" element={<Services />} />
+                <Route path="/projects" element={<Projects />} />
+                <Route path="/case-studies" element={<CaseStudies />} />
+                <Route path="/careers" element={<Careers />} />
+                <Route path="/contact" element={<Contact />} />
+                <Route path="/testimonials" element={<Testimonials />} />
+                <Route path="/journey" element={<Journey />} />
+                <Route path="/auth" element={<Auth />} />
+                <Route path="/applications" element={<Applications />} />
+                <Route path="/privacy" element={<Privacy />} />
+                <Route path="/terms" element={<Terms />} />
+                <Route path="*" element={<NotFound />} />
+              </Routes>
+            </Suspense>
+          </AuthProvider>
         </BrowserRouter>
       </TooltipProvider>
     </ThemeProvider>
