@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
-import { createClient } from "@supabase/supabase-js";
+import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
+import { useAuth } from "@/hooks/useAuth";
 import { Navigation } from "@/components/Navigation";
 import { Footer } from "@/components/Footer";
 import { Button } from "@/components/ui/button";
@@ -13,12 +14,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { ExternalLink, FileText, Mail, Phone, Github, Linkedin, Briefcase } from "lucide-react";
-
-const supabaseUrl = "https://ggoqrdvlvapmcgonufds.supabase.co";
-const supabaseAnonKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imdnb3FyZHZsdmFwbWNnb251ZmRzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjQ0NDM1NTEsImV4cCI6MjA4MDAxOTU1MX0.5e0PnzXKad0Ydb4tXF0KIjzpHXFKEGWkuzImDwDEIwY";
-
-const supabase = createClient(supabaseUrl, supabaseAnonKey);
+import { ExternalLink, FileText, Mail, Phone, Github, Linkedin, Briefcase, LogOut } from "lucide-react";
 
 interface JobApplication {
   id: string;
@@ -34,12 +30,23 @@ interface JobApplication {
 }
 
 const Applications = () => {
+  const navigate = useNavigate();
+  const { user, isAdmin, loading: authLoading, signOut, supabase } = useAuth();
   const [applications, setApplications] = useState<JobApplication[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetchApplications();
-  }, []);
+    // Redirect if not authenticated or not admin
+    if (!authLoading && (!user || !isAdmin)) {
+      toast.error("You must be an admin to access this page");
+      navigate("/auth");
+      return;
+    }
+
+    if (!authLoading && user && isAdmin) {
+      fetchApplications();
+    }
+  }, [user, isAdmin, authLoading, navigate]);
 
   const fetchApplications = async () => {
     try {
@@ -103,16 +110,45 @@ const Applications = () => {
     });
   };
 
+  const handleSignOut = async () => {
+    await signOut();
+    toast.success("Logged out successfully");
+    navigate("/auth");
+  };
+
+  if (authLoading || loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto mb-4"></div>
+          <p className="text-muted-foreground">Loading...</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (!user || !isAdmin) {
+    return null;
+  }
+
   return (
     <div className="min-h-screen bg-background">
       <Navigation />
       <div className="container mx-auto px-4 py-24">
         <Card>
           <CardHeader>
-            <CardTitle className="text-3xl font-bold">Job Applications</CardTitle>
-            <p className="text-muted-foreground mt-2">
-              Review and manage candidate applications
-            </p>
+            <div className="flex justify-between items-start">
+              <div>
+                <CardTitle className="text-3xl font-bold">Job Applications</CardTitle>
+                <p className="text-muted-foreground mt-2">
+                  Review and manage candidate applications
+                </p>
+              </div>
+              <Button onClick={handleSignOut} variant="outline" className="gap-2">
+                <LogOut className="h-4 w-4" />
+                Logout
+              </Button>
+            </div>
           </CardHeader>
           <CardContent>
             {loading ? (
