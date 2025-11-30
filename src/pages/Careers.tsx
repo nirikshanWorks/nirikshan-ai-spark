@@ -331,12 +331,7 @@ const Careers = () => {
         return;
       }
 
-      // Get the public URL for the uploaded file
-      const { data: { publicUrl } } = supabase.storage
-        .from('resumes')
-        .getPublicUrl(filePath);
-
-      // Save application to database
+      // Save application to database with file path (not public URL)
       const { error: dbError } = await supabase
         .from('job_applications')
         .insert({
@@ -347,7 +342,7 @@ const Careers = () => {
           github_profile: applicationForm.githubProfile,
           portfolio_link: applicationForm.portfolioLink || null,
           job_applied_for: applicationForm.jobAppliedFor,
-          resume_url: publicUrl,
+          resume_url: filePath,
         });
 
       if (dbError) {
