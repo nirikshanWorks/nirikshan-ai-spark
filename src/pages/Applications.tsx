@@ -1,22 +1,10 @@
-import { Footer } from "@/components/Footer";
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { toast } from "sonner";
+import { useAuth } from "@/hooks/useAuth";
 import { Navigation } from "@/components/Navigation";
-import { Badge } from "@/components/ui/badge";
+import { Footer } from "@/components/Footer";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
 import {
   Table,
   TableBody,
@@ -25,24 +13,8 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { useAuth } from "@/hooks/useAuth";
-import {
-  Briefcase,
-  CheckCircle,
-  ExternalLink,
-  FileText,
-  Github,
-  Linkedin,
-  LogOut,
-  Mail,
-  MoreHorizontal,
-  Phone,
-  Send,
-  XCircle,
-} from "lucide-react";
-import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { toast } from "sonner";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { ExternalLink, FileText, Mail, Phone, Github, Linkedin, Briefcase, LogOut } from "lucide-react";
 
 interface JobApplication {
   id: string;
@@ -55,7 +27,6 @@ interface JobApplication {
   portfolio_link: string | null;
   job_applied_for: string;
   resume_url: string;
-  status?: "pending" | "selected" | "rejected";
 }
 
 const Applications = () => {
@@ -63,14 +34,9 @@ const Applications = () => {
   const { user, isAdmin, loading: authLoading, signOut, supabase } = useAuth();
   const [applications, setApplications] = useState<JobApplication[]>([]);
   const [loading, setLoading] = useState(true);
-  const [emailDialog, setEmailDialog] = useState<{
-    open: boolean;
-    type: "selection" | "rejection";
-    application: JobApplication | null;
-  }>({ open: false, type: "selection", application: null });
-  const [sending, setSending] = useState(false);
 
   useEffect(() => {
+    // Redirect if not authenticated or not admin
     if (!authLoading && (!user || !isAdmin)) {
       toast.error("You must be an admin to access this page");
       navigate("/auth");
@@ -106,16 +72,18 @@ const Applications = () => {
 
   const handleViewResume = async (resumeUrl: string, applicantName: string) => {
     try {
+      // The resume_url might be a full URL or just a path
+      // Extract the path if it's a full URL
       let filePath = resumeUrl;
-      if (resumeUrl.includes("/storage/v1/object/public/resumes/")) {
-        filePath = resumeUrl.split("/storage/v1/object/public/resumes/")[1];
-      } else if (resumeUrl.includes("/resumes/")) {
-        filePath = resumeUrl.split("/resumes/")[1];
+      if (resumeUrl.includes('/storage/v1/object/public/resumes/')) {
+        filePath = resumeUrl.split('/storage/v1/object/public/resumes/')[1];
+      } else if (resumeUrl.includes('/resumes/')) {
+        filePath = resumeUrl.split('/resumes/')[1];
       }
 
       const { data, error } = await supabase.storage
         .from("resumes")
-        .createSignedUrl(filePath, 3600);
+        .createSignedUrl(filePath, 3600); // Valid for 1 hour
 
       if (error || !data?.signedUrl) {
         console.error("Error creating signed URL:", error);
@@ -123,77 +91,12 @@ const Applications = () => {
         return;
       }
 
+      // Open in new tab
       window.open(data.signedUrl, "_blank", "noopener,noreferrer");
       toast.success(`Opening resume for ${applicantName}`);
     } catch (err) {
       console.error("View resume error:", err);
       toast.error("Failed to open resume");
-    }
-  };
-
-  const openEmailDialog = (
-    type: "selection" | "rejection",
-    application: JobApplication
-  ) => {
-    setEmailDialog({ open: true, type, application });
-  };
-
-  const closeEmailDialog = () => {
-    setEmailDialog({ open: false, type: "selection", application: null });
-  };
-
-  const sendEmail = async () => {
-    if (!emailDialog.application) return;
-
-    setSending(true);
-    try {
-      const response = await fetch("http://localhost:4000/api/email/send", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          to: emailDialog.application.email,
-          candidateName: emailDialog.application.name,
-          position: emailDialog.application.job_applied_for,
-          type: emailDialog.type,
-        }),
-      });
-
-      if (!response.ok) {
-        const data = await response.json();
-        throw new Error(data.error || "Failed to send email");
-      }
-
-      const newStatus =
-        emailDialog.type === "selection" ? "selected" : "rejected";
-
-      const { error: updateError } = await supabase
-        .from("job_applications")
-        .update({ status: newStatus })
-        .eq("id", emailDialog.application.id);
-
-      if (updateError) {
-        console.error("Error updating status:", updateError);
-      }
-
-      setApplications((prev) =>
-        prev.map((app) =>
-          app.id === emailDialog.application?.id
-            ? { ...app, status: newStatus }
-            : app
-        )
-      );
-
-      toast.success(
-        `${
-          emailDialog.type === "selection" ? "Selection" : "Rejection"
-        } email sent to ${emailDialog.application.name}`
-      );
-      closeEmailDialog();
-    } catch (err: any) {
-      console.error("Email send error:", err);
-      toast.error(err.message || "Failed to send email");
-    } finally {
-      setSending(false);
     }
   };
 
@@ -205,19 +108,6 @@ const Applications = () => {
       hour: "2-digit",
       minute: "2-digit",
     });
-  };
-
-  const getStatusBadge = (status?: string) => {
-    switch (status) {
-      case "selected":
-        return (
-          <Badge className="bg-green-500 hover:bg-green-600">Selected</Badge>
-        );
-      case "rejected":
-        return <Badge variant="destructive">Rejected</Badge>;
-      default:
-        return <Badge variant="secondary">Pending</Badge>;
-    }
   };
 
   const handleSignOut = async () => {
@@ -249,18 +139,12 @@ const Applications = () => {
           <CardHeader>
             <div className="flex justify-between items-start">
               <div>
-                <CardTitle className="text-3xl font-bold">
-                  Job Applications
-                </CardTitle>
+                <CardTitle className="text-3xl font-bold">Job Applications</CardTitle>
                 <p className="text-muted-foreground mt-2">
                   Review and manage candidate applications
                 </p>
               </div>
-              <Button
-                onClick={handleSignOut}
-                variant="outline"
-                className="gap-2"
-              >
+              <Button onClick={handleSignOut} variant="outline" className="gap-2">
                 <LogOut className="h-4 w-4" />
                 Logout
               </Button>
@@ -281,23 +165,17 @@ const Applications = () => {
                 <Table>
                   <TableHeader>
                     <TableRow>
-                      <TableHead className="w-16">Sr No.</TableHead>
                       <TableHead>Date</TableHead>
                       <TableHead>Name</TableHead>
                       <TableHead>Position</TableHead>
                       <TableHead>Contact</TableHead>
                       <TableHead>Links</TableHead>
-                      <TableHead>Status</TableHead>
-                      <TableHead>Resume</TableHead>
-                      <TableHead className="text-right">Actions</TableHead>
+                      <TableHead className="text-right">Resume</TableHead>
                     </TableRow>
                   </TableHeader>
                   <TableBody>
-                    {applications.map((app, index) => (
+                    {applications.map((app) => (
                       <TableRow key={app.id}>
-                        <TableCell className="font-medium text-muted-foreground">
-                          {index + 1}
-                        </TableCell>
                         <TableCell className="text-sm text-muted-foreground">
                           {formatDate(app.created_at)}
                         </TableCell>
@@ -354,48 +232,16 @@ const Applications = () => {
                             )}
                           </div>
                         </TableCell>
-                        <TableCell>{getStatusBadge(app.status)}</TableCell>
-                        <TableCell>
+                        <TableCell className="text-right">
                           <Button
-                            onClick={() =>
-                              handleViewResume(app.resume_url, app.name)
-                            }
+                            onClick={() => handleViewResume(app.resume_url, app.name)}
                             variant="outline"
                             size="sm"
                             className="gap-2"
                           >
                             <FileText className="h-4 w-4" />
-                            View
+                            View Resume
                           </Button>
-                        </TableCell>
-                        <TableCell className="text-right">
-                          <DropdownMenu>
-                            <DropdownMenuTrigger asChild>
-                              <Button variant="ghost" size="sm">
-                                <MoreHorizontal className="h-4 w-4" />
-                              </Button>
-                            </DropdownMenuTrigger>
-                            <DropdownMenuContent align="end">
-                              <DropdownMenuItem
-                                onClick={() =>
-                                  openEmailDialog("selection", app)
-                                }
-                                className="text-green-600 focus:text-green-600"
-                              >
-                                <CheckCircle className="h-4 w-4 mr-2" />
-                                Send Selection Email
-                              </DropdownMenuItem>
-                              <DropdownMenuItem
-                                onClick={() =>
-                                  openEmailDialog("rejection", app)
-                                }
-                                className="text-red-600 focus:text-red-600"
-                              >
-                                <XCircle className="h-4 w-4 mr-2" />
-                                Send Rejection Email
-                              </DropdownMenuItem>
-                            </DropdownMenuContent>
-                          </DropdownMenu>
                         </TableCell>
                       </TableRow>
                     ))}
@@ -406,83 +252,6 @@ const Applications = () => {
           </CardContent>
         </Card>
       </div>
-
-      <Dialog
-        open={emailDialog.open}
-        onOpenChange={(open) => !open && closeEmailDialog()}
-      >
-        <DialogContent>
-          <DialogHeader>
-            <DialogTitle className="flex items-center gap-2">
-              {emailDialog.type === "selection" ? (
-                <>
-                  <CheckCircle className="h-5 w-5 text-green-500" />
-                  Send Selection Email
-                </>
-              ) : (
-                <>
-                  <XCircle className="h-5 w-5 text-red-500" />
-                  Send Rejection Email
-                </>
-              )}
-            </DialogTitle>
-            <DialogDescription>
-              {emailDialog.type === "selection" ? (
-                <>
-                  Send a <strong className="text-green-600">selection</strong>{" "}
-                  email to <strong>{emailDialog.application?.name}</strong> for{" "}
-                  <strong>{emailDialog.application?.job_applied_for}</strong>.
-                </>
-              ) : (
-                <>
-                  Send a <strong className="text-red-600">rejection</strong>{" "}
-                  email to <strong>{emailDialog.application?.name}</strong> for{" "}
-                  <strong>{emailDialog.application?.job_applied_for}</strong>.
-                </>
-              )}
-            </DialogDescription>
-          </DialogHeader>
-          <div className="py-4">
-            <p className="text-sm text-muted-foreground">
-              <strong>Email:</strong> {emailDialog.application?.email}
-            </p>
-            <p className="text-sm text-muted-foreground mt-1">
-              <strong>From:</strong> ai.nirikshan@gmail.com
-            </p>
-          </div>
-          <DialogFooter>
-            <Button
-              variant="outline"
-              onClick={closeEmailDialog}
-              disabled={sending}
-            >
-              Cancel
-            </Button>
-            <Button
-              onClick={sendEmail}
-              disabled={sending}
-              className={
-                emailDialog.type === "selection"
-                  ? "bg-green-600 hover:bg-green-700"
-                  : "bg-red-600 hover:bg-red-700"
-              }
-            >
-              {sending ? (
-                <>
-                  <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
-                  Sending...
-                </>
-              ) : (
-                <>
-                  <Send className="h-4 w-4 mr-2" />
-                  Send Email
-                </>
-              )}
-            </Button>
-          </DialogFooter>
-        </DialogContent>
-      </Dialog>
-
       <Footer />
     </div>
   );
