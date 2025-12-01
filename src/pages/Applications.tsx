@@ -1,10 +1,7 @@
-import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { toast } from "sonner";
-import { useAuth } from "@/hooks/useAuth";
-import { Navigation } from "@/components/Navigation";
 import { Footer } from "@/components/Footer";
+import { Navigation } from "@/components/Navigation";
 import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
   Table,
   TableBody,
@@ -13,8 +10,11 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { ExternalLink, FileText, Mail, Phone, Github, Linkedin, Briefcase, LogOut } from "lucide-react";
+import { useAuth } from "@/hooks/useAuth";
+import { Briefcase, ExternalLink, FileText, Github, Linkedin, LogOut, Mail, Phone } from "lucide-react";
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { toast } from "sonner";
 
 interface JobApplication {
   id: string;
@@ -165,6 +165,7 @@ const Applications = () => {
                 <Table>
                   <TableHeader>
                     <TableRow>
+                      <TableHead className="w-16">Sr No.</TableHead>
                       <TableHead>Date</TableHead>
                       <TableHead>Name</TableHead>
                       <TableHead>Position</TableHead>
@@ -174,8 +175,11 @@ const Applications = () => {
                     </TableRow>
                   </TableHeader>
                   <TableBody>
-                    {applications.map((app) => (
+                    {applications.map((app, index) => (
                       <TableRow key={app.id}>
+                        <TableCell className="font-medium text-muted-foreground">
+                          {index + 1}
+                        </TableCell>
                         <TableCell className="text-sm text-muted-foreground">
                           {formatDate(app.created_at)}
                         </TableCell>
