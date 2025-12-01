@@ -27,6 +27,15 @@ import {
 } from "@/components/ui/table";
 import { useAuth } from "@/hooks/useAuth";
 import {
+  BarElement,
+  CategoryScale,
+  Chart as ChartJS,
+  Legend,
+  LinearScale,
+  Title,
+  Tooltip,
+} from "chart.js";
+import {
   ArrowDown,
   ArrowUp,
   ArrowUpDown,
@@ -45,7 +54,7 @@ import {
   XCircle,
 } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
-import { Bar } from "react-chartjs-2"; // Import chart library
+import { Bar } from "react-chartjs-2";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 
@@ -65,6 +74,16 @@ interface JobApplication {
 
 type SortField = "created_at" | "name" | "job_applied_for" | "status";
 type SortOrder = "asc" | "desc";
+
+// Register ChartJS components
+ChartJS.register(
+  CategoryScale,
+  LinearScale,
+  BarElement,
+  Title,
+  Tooltip,
+  Legend
+);
 
 const Applications = () => {
   const navigate = useNavigate();
@@ -328,9 +347,35 @@ const Applications = () => {
         label: 'Number of Applications',
         data: Object.values(applicationTrends),
         backgroundColor: 'rgba(75, 192, 192, 0.6)',
+        borderColor: 'rgba(75, 192, 192, 1)',
+        borderWidth: 1,
       },
     ],
   };
+
+  const chartOptions = {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: {
+      legend: {
+        position: 'top' as const,
+      },
+      title: {
+        display: false,
+      },
+    },
+    scales: {
+      y: {
+        beginAtZero: true,
+        ticks: {
+          stepSize: 1,
+        },
+      },
+    },
+  };
+
+  // Ensure chartData is valid before rendering
+  const isChartDataValid = chartData.labels.length > 0 && chartData.datasets[0].data.length > 0;
 
   if (authLoading || loading) {
     return (
@@ -375,8 +420,14 @@ const Applications = () => {
           <CardContent>
             {/* New Chart Section */}
             <div className="mb-8">
-              <h2 className="text-xl font-semibold">Application Trends</h2>
-              <Bar data={chartData} />
+              <h2 className="text-xl font-semibold mb-4">Application Trends</h2>
+              {isChartDataValid ? (
+                <div className="h-64">
+                  <Bar data={chartData} options={chartOptions} />
+                </div>
+              ) : (
+                <p className="text-muted-foreground">No data available for chart.</p>
+              )}
             </div>
             {loading ? (
               <div className="text-center py-12">
