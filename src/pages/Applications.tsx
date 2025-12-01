@@ -45,6 +45,7 @@ import {
   XCircle,
 } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
+import { Bar } from "react-chartjs-2"; // Import chart library
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 
@@ -75,7 +76,7 @@ const Applications = () => {
     type: "selection" | "rejection" | "interview";
     application: JobApplication | null;
   }>({ open: false, type: "selection", application: null });
-  const [sending, setSending] = useState(false);
+  const [sending, setSending] = useState(false); // Ensure sending state is defined
   const [sortField, setSortField] = useState<SortField>("created_at");
   const [sortOrder, setSortOrder] = useState<SortOrder>("desc");
   const [currentPage, setCurrentPage] = useState(1);
@@ -205,7 +206,7 @@ const Applications = () => {
   const sendEmail = async () => {
     if (!emailDialog.application) return;
 
-    setSending(true);
+    setSending(true); // Set sending to true when starting to send email
     try {
       const response = await fetch("http://localhost:4000/api/email/send", {
         method: "POST",
@@ -262,9 +263,9 @@ const Applications = () => {
       closeEmailDialog();
     } catch (err: any) {
       console.error("Email send error:", err);
-      toast.error(err.message || "Failed to send email");
+      toast.error(err.message || "Failed to send email. Please try again.");
     } finally {
-      setSending(false);
+      setSending(false); // Reset sending state after email attempt
     }
   };
 
@@ -312,6 +313,25 @@ const Applications = () => {
 
   const totalPages = Math.ceil(filteredApplications.length / applicationsPerPage);
 
+  const applicationTrends = useMemo(() => {
+    const trends: { [key: string]: number } = {};
+    applications.forEach(app => {
+      trends[app.job_applied_for] = (trends[app.job_applied_for] || 0) + 1;
+    });
+    return trends;
+  }, [applications]);
+
+  const chartData = {
+    labels: Object.keys(applicationTrends),
+    datasets: [
+      {
+        label: 'Number of Applications',
+        data: Object.values(applicationTrends),
+        backgroundColor: 'rgba(75, 192, 192, 0.6)',
+      },
+    ],
+  };
+
   if (authLoading || loading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
@@ -353,6 +373,11 @@ const Applications = () => {
             </div>
           </CardHeader>
           <CardContent>
+            {/* New Chart Section */}
+            <div className="mb-8">
+              <h2 className="text-xl font-semibold">Application Trends</h2>
+              <Bar data={chartData} />
+            </div>
             {loading ? (
               <div className="text-center py-12">
                 <p className="text-muted-foreground">Loading applications...</p>
