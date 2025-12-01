@@ -418,11 +418,11 @@ const Applications = () => {
             </div>
           </CardHeader>
           <CardContent>
-            {/* New Chart Section */}
+            {/* Chart Section */}
             <div className="mb-8">
               <h2 className="text-xl font-semibold mb-4">Application Trends</h2>
               {isChartDataValid ? (
-                <div className="h-64">
+                <div className="h-64 w-full">
                   <Bar data={chartData} options={chartOptions} />
                 </div>
               ) : (
