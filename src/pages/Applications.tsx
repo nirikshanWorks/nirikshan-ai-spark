@@ -28,6 +28,7 @@ import {
 import { useAuth } from "@/hooks/useAuth";
 import {
   Briefcase,
+  Calendar,
   CheckCircle,
   ExternalLink,
   FileText,
@@ -55,7 +56,7 @@ interface JobApplication {
   portfolio_link: string | null;
   job_applied_for: string;
   resume_url: string;
-  status?: "pending" | "selected" | "rejected";
+  status?: "pending" | "selected" | "rejected" | "interview_scheduled";
 }
 
 const Applications = () => {
@@ -65,7 +66,7 @@ const Applications = () => {
   const [loading, setLoading] = useState(true);
   const [emailDialog, setEmailDialog] = useState<{
     open: boolean;
-    type: "selection" | "rejection";
+    type: "selection" | "rejection" | "interview";
     application: JobApplication | null;
   }>({ open: false, type: "selection", application: null });
   const [sending, setSending] = useState(false);
@@ -136,7 +137,7 @@ const Applications = () => {
   };
 
   const openEmailDialog = (
-    type: "selection" | "rejection",
+    type: "selection" | "rejection" | "interview",
     application: JobApplication
   ) => {
     setEmailDialog({ open: true, type, application });
@@ -151,24 +152,30 @@ const Applications = () => {
 
     setSending(true);
     try {
-      const { error: invokeError } = await supabase.functions.invoke(
-        "send-application-email",
-        {
-          body: {
-            to: emailDialog.application.email,
-            candidateName: emailDialog.application.name,
-            position: emailDialog.application.job_applied_for,
-            type: emailDialog.type,
-          },
-        }
-      );
+      const response = await fetch("http://localhost:4000/api/email/send", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          to: emailDialog.application.email,
+          candidateName: emailDialog.application.name,
+          position: emailDialog.application.job_applied_for,
+          type: emailDialog.type,
+        }),
+      });
 
-      if (invokeError) {
-        throw new Error(invokeError.message || "Failed to send email");
+      if (!response.ok) {
+        const data = await response.json();
+        throw new Error(data.error || "Failed to send email");
       }
 
-      const newStatus =
-        emailDialog.type === "selection" ? "selected" : "rejected";
+      let newStatus: JobApplication["status"] = "pending";
+      if (emailDialog.type === "selection") {
+        newStatus = "selected";
+      } else if (emailDialog.type === "rejection") {
+        newStatus = "rejected";
+      } else if (emailDialog.type === "interview") {
+        newStatus = "interview_scheduled";
+      }
 
       const { error: updateError } = await supabase
         .from("job_applications")
@@ -187,10 +194,15 @@ const Applications = () => {
         )
       );
 
+      const emailTypeLabel =
+        emailDialog.type === "selection"
+          ? "Selection"
+          : emailDialog.type === "rejection"
+          ? "Rejection"
+          : "Interview";
+
       toast.success(
-        `${
-          emailDialog.type === "selection" ? "Selection" : "Rejection"
-        } email sent to ${emailDialog.application.name}`
+        `${emailTypeLabel} email sent to ${emailDialog.application.name}`
       );
       closeEmailDialog();
     } catch (err: any) {
@@ -219,6 +231,12 @@ const Applications = () => {
         );
       case "rejected":
         return <Badge variant="destructive">Rejected</Badge>;
+      case "interview_scheduled":
+        return (
+          <Badge className="bg-blue-500 hover:bg-blue-600">
+            Interview Scheduled
+          </Badge>
+        );
       default:
         return <Badge variant="secondary">Pending</Badge>;
     }
@@ -381,18 +399,21 @@ const Applications = () => {
                             </DropdownMenuTrigger>
                             <DropdownMenuContent align="end">
                               <DropdownMenuItem
-                                onClick={() =>
-                                  openEmailDialog("selection", app)
-                                }
+                                onClick={() => openEmailDialog("interview", app)}
+                                className="text-blue-600 focus:text-blue-600"
+                              >
+                                <Calendar className="h-4 w-4 mr-2" />
+                                Send Interview Email
+                              </DropdownMenuItem>
+                              <DropdownMenuItem
+                                onClick={() => openEmailDialog("selection", app)}
                                 className="text-green-600 focus:text-green-600"
                               >
                                 <CheckCircle className="h-4 w-4 mr-2" />
                                 Send Selection Email
                               </DropdownMenuItem>
                               <DropdownMenuItem
-                                onClick={() =>
-                                  openEmailDialog("rejection", app)
-                                }
+                                onClick={() => openEmailDialog("rejection", app)}
                                 className="text-red-600 focus:text-red-600"
                               >
                                 <XCircle className="h-4 w-4 mr-2" />
@@ -424,10 +445,15 @@ const Applications = () => {
                   <CheckCircle className="h-5 w-5 text-green-500" />
                   Send Selection Email
                 </>
-              ) : (
+              ) : emailDialog.type === "rejection" ? (
                 <>
                   <XCircle className="h-5 w-5 text-red-500" />
                   Send Rejection Email
+                </>
+              ) : (
+                <>
+                  <Calendar className="h-5 w-5 text-blue-500" />
+                  Send Interview Email
                 </>
               )}
             </DialogTitle>
@@ -438,10 +464,18 @@ const Applications = () => {
                   email to <strong>{emailDialog.application?.name}</strong> for{" "}
                   <strong>{emailDialog.application?.job_applied_for}</strong>.
                 </>
-              ) : (
+              ) : emailDialog.type === "rejection" ? (
                 <>
                   Send a <strong className="text-red-600">rejection</strong>{" "}
                   email to <strong>{emailDialog.application?.name}</strong> for{" "}
+                  <strong>{emailDialog.application?.job_applied_for}</strong>.
+                </>
+              ) : (
+                <>
+                  Send a{" "}
+                  <strong className="text-blue-600">Round 1 Interview</strong>{" "}
+                  invitation to <strong>{emailDialog.application?.name}</strong>{" "}
+                  for{" "}
                   <strong>{emailDialog.application?.job_applied_for}</strong>.
                 </>
               )}
@@ -454,6 +488,19 @@ const Applications = () => {
             <p className="text-sm text-muted-foreground mt-1">
               <strong>From:</strong> ai.nirikshan@gmail.com
             </p>
+            {emailDialog.type === "interview" && (
+              <div className="mt-3 p-3 bg-blue-50 rounded-md border border-blue-200">
+                <p className="text-xs text-blue-800">
+                  <strong>Interview Details:</strong>
+                  <br />
+                  📅 Date: Wednesday, December 10
+                  <br />
+                  🕖 Time: 7:00 PM – 10:00 PM
+                  <br />
+                  🔗 Link: meet.google.com/jzr-fqov-wmu
+                </p>
+              </div>
+            )}
           </div>
           <DialogFooter>
             <Button
@@ -469,7 +516,9 @@ const Applications = () => {
               className={
                 emailDialog.type === "selection"
                   ? "bg-green-600 hover:bg-green-700"
-                  : "bg-red-600 hover:bg-red-700"
+                  : emailDialog.type === "rejection"
+                  ? "bg-red-600 hover:bg-red-700"
+                  : "bg-blue-600 hover:bg-blue-700"
               }
             >
               {sending ? (
