@@ -8,7 +8,8 @@
     "build": "tsc -b && vite build",
     "lint": "eslint .",
     "preview": "vite preview",
-    "server": "nodemon --watch server --exec ts-node server/index.ts"
+    "server": "nodemon --watch server --exec ts-node server/index.ts",
+    "build:dev": "vite build --mode development"
   },
   "dependencies": {
     "@radix-ui/react-accordion": "^1.2.12",
@@ -83,8 +84,5 @@
     "typescript": "~5.6.2",
     "vite": "^5.4.10"
   }
-  "scripts": {
-  "build:dev": "vite build --mode development"
 }
 
-}
