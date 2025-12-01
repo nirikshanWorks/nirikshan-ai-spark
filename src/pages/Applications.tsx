@@ -151,20 +151,20 @@ const Applications = () => {
 
     setSending(true);
     try {
-      const response = await fetch("http://localhost:4000/api/email/send", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          to: emailDialog.application.email,
-          candidateName: emailDialog.application.name,
-          position: emailDialog.application.job_applied_for,
-          type: emailDialog.type,
-        }),
-      });
+      const { error: invokeError } = await supabase.functions.invoke(
+        "send-application-email",
+        {
+          body: {
+            to: emailDialog.application.email,
+            candidateName: emailDialog.application.name,
+            position: emailDialog.application.job_applied_for,
+            type: emailDialog.type,
+          },
+        }
+      );
 
-      if (!response.ok) {
-        const data = await response.json();
-        throw new Error(data.error || "Failed to send email");
+      if (invokeError) {
+        throw new Error(invokeError.message || "Failed to send email");
       }
 
       const newStatus =
