@@ -44,7 +44,7 @@ import {
   Send,
   XCircle,
 } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 
@@ -78,6 +78,8 @@ const Applications = () => {
   const [sending, setSending] = useState(false);
   const [sortField, setSortField] = useState<SortField>("created_at");
   const [sortOrder, setSortOrder] = useState<SortOrder>("desc");
+  const [currentPage, setCurrentPage] = useState(1);
+  const applicationsPerPage = 10; // Set the number of applications per page
 
   useEffect(() => {
     // Redirect if not authenticated or not admin
@@ -301,6 +303,15 @@ const Applications = () => {
     navigate("/auth");
   };
 
+  const filteredApplications = getSortedApplications();
+
+  const paginatedApplications = useMemo(() => {
+    const startIndex = (currentPage - 1) * applicationsPerPage;
+    return filteredApplications.slice(startIndex, startIndex + applicationsPerPage);
+  }, [filteredApplications, currentPage]);
+
+  const totalPages = Math.ceil(filteredApplications.length / applicationsPerPage);
+
   if (authLoading || loading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
@@ -346,10 +357,10 @@ const Applications = () => {
               <div className="text-center py-12">
                 <p className="text-muted-foreground">Loading applications...</p>
               </div>
-            ) : applications.length === 0 ? (
+            ) : paginatedApplications.length === 0 ? (
               <div className="text-center py-12">
                 <Briefcase className="mx-auto h-12 w-12 text-muted-foreground mb-4" />
-                <p className="text-muted-foreground">No applications yet</p>
+                <p className="text-muted-foreground">No applications found</p>
               </div>
             ) : (
               <div className="overflow-x-auto">
@@ -404,7 +415,7 @@ const Applications = () => {
                     </TableRow>
                   </TableHeader>
                   <TableBody>
-                    {getSortedApplications().map((app, index) => (
+                    {paginatedApplications.map((app, index) => (
                       <TableRow key={app.id}>
                         <TableCell className="font-medium text-muted-foreground">
                           {index + 1}
@@ -517,6 +528,23 @@ const Applications = () => {
                 </Table>
               </div>
             )}
+            <div className="flex justify-between mt-4">
+              <Button
+                onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
+                disabled={currentPage === 1}
+              >
+                Previous
+              </Button>
+              <span>
+                Page {currentPage} of {totalPages}
+              </span>
+              <Button
+                onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages))}
+                disabled={currentPage === totalPages}
+              >
+                Next
+              </Button>
+            </div>
           </CardContent>
         </Card>
       </div>
