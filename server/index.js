@@ -91,6 +91,85 @@ app.post('/api/talent', async (req, res) => {
   }
 });
 
+// API: proxy email sending to Supabase Edge Function
+app.post('/api/email/send', async (req, res) => {
+  try {
+    const { to, candidateName, position, type } = req.body || {};
+    if (!to || !candidateName || !position || !type) {
+      return res.status(400).json({ ok: false, error: 'Missing required fields: to, candidateName, position, type' });
+    }
+
+    // Ensure required env vars
+    const SUPABASE_URL = process.env.SUPABASE_URL;
+    const SUPABASE_SERVICE_ROLE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY;
+    if (!SUPABASE_URL || !SUPABASE_SERVICE_ROLE_KEY) {
+      return res.status(500).json({
+        ok: false,
+        error: 'Server misconfiguration: SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY must be set',
+      });
+    }
+
+    // Edge Function endpoint (update name if different)
+    const edgeUrl = `${SUPABASE_URL}/functions/v1/send-email`;
+
+    // Optional: enforce known types
+    const allowedTypes = new Set(['selection', 'rejection', 'interview']);
+    if (!allowedTypes.has(type)) {
+      return res.status(400).json({ ok: false, error: `Invalid email type '${type}'` });
+    }
+
+    // Forward request to Edge Function with timeout
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), 15000); // 15s timeout
+
+    const edgeResp = await fetch(edgeUrl, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        // Use service role for server-to-server call
+        Authorization: `Bearer ${SUPABASE_SERVICE_ROLE_KEY}`,
+      },
+      body: JSON.stringify({ to, candidateName, position, type }),
+      signal: controller.signal,
+    }).catch((err) => {
+      // Network/abort errors
+      throw new Error(`Edge Function request failed: ${err.message}`);
+    });
+    clearTimeout(timeout);
+
+    const text = await edgeResp.text(); // Read as text to capture non-JSON errors
+    let json;
+    try {
+      json = text ? JSON.parse(text) : null;
+    } catch {
+      json = null;
+    }
+
+    if (!edgeResp.ok) {
+      console.error('Edge Function error:', {
+        status: edgeResp.status,
+        statusText: edgeResp.statusText,
+        body: text,
+      });
+      // Normalize error message
+      const message =
+        (json && (json.error || json.message)) ||
+        `Edge Function returned ${edgeResp.status}: ${edgeResp.statusText}`;
+      return res.status(502).json({ ok: false, error: message });
+    }
+
+    // Success
+    return res.json({ ok: true, ...(json || {}) });
+  } catch (err) {
+    console.error('Email proxy failed:', err);
+    const message =
+      err.name === 'AbortError'
+        ? 'Email service timed out. Please try again.'
+        : err.message || 'Internal error while sending email';
+    return res.status(500).json({ ok: false, error: message });
+  }
+});
+
 // runtime env injection for client-side access without rebuilding
 // Serves a tiny JS file that assigns `window.__ENV` from process.env
 app.get('/env.js', (req, res) => {

@@ -1,26 +1,26 @@
-import { Navigation } from "@/components/Navigation";
 import { Footer } from "@/components/Footer";
+import { Navigation } from "@/components/Navigation";
 import { Button } from "@/components/ui/button";
+import { useScrollAnimation } from "@/hooks/use-scroll-animation";
 import {
   ArrowRight,
-  Target,
-  Eye,
-  Users,
   Award,
-  Zap,
+  BarChart3,
   Briefcase,
-  Smile,
-  TrendingUp,
+  Eye,
   Flag,
-  Sparkles,
   Globe2,
-  ShieldCheck,
   Layers,
-  BarChart3
+  ShieldCheck,
+  Smile,
+  Sparkles,
+  Target,
+  TrendingUp,
+  Users,
+  Zap
 } from "lucide-react";
-import { Link } from "react-router-dom";
-import { useScrollAnimation } from "@/hooks/use-scroll-animation";
 import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 
 const AnimatedCounter = ({ end, duration = 2000 }: { end: number, duration?: number }) => {
   const [count, setCount] = useState(0);
@@ -45,7 +45,11 @@ const AnimatedCounter = ({ end, duration = 2000 }: { end: number, duration?: num
     }
   }, [isVisible, end, duration]);
 
-  return <span ref={ref}>{count}</span>;
+  return (
+    <span ref={ref as React.RefObject<HTMLSpanElement>}>
+      {count}
+    </span>
+  );
 };
 
 const About = () => {

@@ -53,7 +53,7 @@ import {
   Send,
   XCircle,
 } from "lucide-react";
-import { useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { Bar } from "react-chartjs-2";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
@@ -99,22 +99,10 @@ const Applications = () => {
   const [sortField, setSortField] = useState<SortField>("created_at");
   const [sortOrder, setSortOrder] = useState<SortOrder>("desc");
   const [currentPage, setCurrentPage] = useState(1);
+  const [excelAvailable] = useState<boolean | null>(null); // keep state but don't check at mount
   const applicationsPerPage = 10; // Set the number of applications per page
 
-  useEffect(() => {
-    // Redirect if not authenticated or not admin
-    if (!authLoading && (!user || !isAdmin)) {
-      toast.error("You must be an admin to access this page");
-      navigate("/auth");
-      return;
-    }
-
-    if (!authLoading && user && isAdmin) {
-      fetchApplications();
-    }
-  }, [user, isAdmin, authLoading, navigate]);
-
-  const fetchApplications = async () => {
+  const fetchApplications = useCallback(async () => {
     try {
       const { data, error } = await supabase
         .from("job_applications")
@@ -134,7 +122,20 @@ const Applications = () => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [supabase]);
+
+  useEffect(() => {
+    // Redirect if not authenticated or not admin
+    if (!authLoading && (!user || !isAdmin)) {
+      toast.error("You must be an admin to access this page");
+      navigate("/auth");
+      return;
+    }
+
+    if (!authLoading && user && isAdmin) {
+      fetchApplications();
+    }
+  }, [user, isAdmin, authLoading, navigate, fetchApplications]);
 
   const handleSort = (field: SortField) => {
     if (sortField === field) {
@@ -227,7 +228,7 @@ const Applications = () => {
 
     setSending(true);
     try {
-      const { data, error } = await supabase.functions.invoke('send-application-email', {
+      const { data, error } = await supabase.functions.invoke("send-application-email", {
         body: {
           to: emailDialog.application.email,
           candidateName: emailDialog.application.name,
@@ -237,7 +238,9 @@ const Applications = () => {
       });
 
       if (error) {
-        throw new Error(error.message || "Failed to send email");
+        // surface function error details
+        const msg = error.message || (typeof error === "string" ? error : "Failed to send email");
+        throw new Error(msg);
       }
 
       let newStatus: JobApplication["status"] = "pending";
@@ -318,6 +321,99 @@ const Applications = () => {
     await signOut();
     toast.success("Logged out successfully");
     navigate("/auth");
+  };
+
+  // Replace the existing exportToExcel with this version
+  const exportToExcel = async (scope: "all" | "currentPage" = "all") => {
+    // helper: trigger download for a Blob
+    const downloadBlob = (blob: Blob, filename: string) => {
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = filename;
+      a.style.display = "none";
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+    };
+
+    try {
+      const rows =
+        scope === "currentPage" ? paginatedApplications : getSortedApplications();
+      if (!rows || rows.length === 0) {
+        toast.error("No application data to export");
+        return;
+      }
+
+      const data = rows.map((app) => ({
+        "Submitted At": formatDate(app.created_at),
+        Name: app.name,
+        Email: app.email,
+        "Phone Number": app.phone_number,
+        Position: app.job_applied_for,
+        Status:
+          app.status === "selected"
+            ? "Selected"
+            : app.status === "rejected"
+            ? "Rejected"
+            : app.status === "interview_scheduled"
+            ? "Interview Scheduled"
+            : "Pending",
+        LinkedIn: app.linkedin_profile,
+        GitHub: app.github_profile,
+        Portfolio: app.portfolio_link || "",
+        "Resume URL": app.resume_url,
+      }));
+
+      // Try dynamic import of xlsx. If it fails, fallback to CSV.
+      let xlsx: any = null;
+      try {
+        // @ts-ignore - allow dynamic import even if types are missing
+        xlsx = await import(/* @vite-ignore */ "xlsx");
+      } catch {
+        xlsx = null;
+      }
+
+      const baseName =
+        scope === "currentPage"
+          ? `applications_page_${currentPage}`
+          : "applications_all";
+
+      if (xlsx?.utils) {
+        const worksheet = xlsx.utils.json_to_sheet(data);
+        const workbook = xlsx.utils.book_new();
+        xlsx.utils.book_append_sheet(workbook, worksheet, "Applications");
+        xlsx.writeFile(workbook, `${baseName}.xlsx`);
+        toast.success("Exported applications to Excel");
+        return;
+      }
+
+      // Fallback: CSV export
+      const headers = Object.keys(data[0]);
+      const escapeCell = (val: any) => {
+        const s = String(val ?? "");
+        // escape double-quotes
+        const escaped = s.replace(/"/g, '""');
+        // wrap with quotes if contains commas, quotes, or newlines
+        return /[",\n]/.test(escaped) ? `"${escaped}"` : escaped;
+      };
+      const csv =
+        [headers.join(",")]
+          .concat(
+            data.map((row) =>
+              headers.map((h) => escapeCell((row as any)[h])).join(",")
+            )
+          )
+          .join("\n");
+
+      const blob = new Blob([csv], { type: "text/csv;charset=utf-8" });
+      downloadBlob(blob, `${baseName}.csv`);
+      toast.success("Exported applications to CSV (xlsx module not found)");
+    } catch (err) {
+      console.error("Export error:", err);
+      toast.error("Failed to export applications");
+    }
   };
 
   const filteredApplications = getSortedApplications();
@@ -404,14 +500,34 @@ const Applications = () => {
                   Review and manage candidate applications
                 </p>
               </div>
-              <Button
-                onClick={handleSignOut}
-                variant="outline"
-                className="gap-2"
-              >
-                <LogOut className="h-4 w-4" />
-                Logout
-              </Button>
+              <div className="flex items-center gap-2">
+                <Button
+                  onClick={handleSignOut}
+                  variant="outline"
+                  className="gap-2"
+                >
+                  <LogOut className="h-4 w-4" />
+                  Logout
+                </Button>
+                <Button
+                  variant="secondary"
+                  onClick={() => exportToExcel("currentPage")}
+                  className="gap-2"
+                  disabled={loading || paginatedApplications.length === 0}
+                  title={excelAvailable === false ? "XLSX not installed. Falling back to CSV." : undefined}
+                >
+                  Export Current Page
+                </Button>
+                <Button
+                  variant="outline"
+                  onClick={() => exportToExcel("all")}
+                  className="gap-2"
+                  disabled={loading || applications.length === 0}
+                  title={excelAvailable === false ? "XLSX not installed. Falling back to CSV." : undefined}
+                >
+                  Export All
+                </Button>
+              </div>
             </div>
           </CardHeader>
           <CardContent>
