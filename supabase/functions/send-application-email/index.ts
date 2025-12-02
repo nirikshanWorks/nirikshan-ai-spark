@@ -1,4 +1,7 @@
 import { serve } from "https://deno.land/std@0.190.0/http/server.ts";
+import { Resend } from "https://esm.sh/resend@4.0.0";
+
+const resend = new Resend(Deno.env.get("RESEND_API_KEY"));
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -23,13 +26,6 @@ const handler = async (req: Request): Promise<Response> => {
 
     console.log(`Sending ${type} email to ${to} for position: ${position}`);
 
-    const gmailUser = Deno.env.get("GMAIL_USER");
-    const gmailPassword = Deno.env.get("GMAIL_APP_PASSWORD");
-
-    if (!gmailUser || !gmailPassword) {
-      throw new Error("Gmail credentials not configured");
-    }
-
     const subject = type === "selection" 
       ? `Congratulations! You've been selected for ${position}`
       : `Update on your application for ${position}`;
@@ -53,54 +49,14 @@ const handler = async (req: Request): Promise<Response> => {
         </div>
       `;
 
-    // Create email message in RFC 2822 format
-    const emailContent = [
-      `From: Nirikshan AI <${gmailUser}>`,
-      `To: ${to}`,
-      `Subject: ${subject}`,
-      "MIME-Version: 1.0",
-      "Content-Type: text/html; charset=utf-8",
-      "",
-      htmlContent,
-    ].join("\r\n");
+    const emailResponse = await resend.emails.send({
+      from: "Nirikshan AI <onboarding@resend.dev>",
+      to: [to],
+      subject: subject,
+      html: htmlContent,
+    });
 
-    // Send via Gmail SMTP
-    const smtpResponse = await fetch(
-      `https://smtp.gmail.com:587`,
-      {
-        method: "POST",
-        headers: {
-          "Authorization": `Basic ${btoa(`${gmailUser}:${gmailPassword}`)}`,
-        },
-        body: emailContent,
-      }
-    );
-
-    // Alternative: Use Gmail API
-    const auth = btoa(`${gmailUser}:${gmailPassword}`);
-    const base64Email = btoa(emailContent).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
-    
-    const gmailApiResponse = await fetch(
-      "https://gmail.googleapis.com/gmail/v1/users/me/messages/send",
-      {
-        method: "POST",
-        headers: {
-          "Authorization": `Basic ${auth}`,
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          raw: base64Email,
-        }),
-      }
-    );
-
-    if (!gmailApiResponse.ok) {
-      const errorText = await gmailApiResponse.text();
-      console.error("Gmail API error:", errorText);
-      throw new Error(`Failed to send email: ${errorText}`);
-    }
-
-    console.log(`${type} email sent successfully to ${to}`);
+    console.log(`${type} email sent successfully to ${to}`, emailResponse);
 
     return new Response(
       JSON.stringify({ success: true, message: "Email sent successfully" }),
