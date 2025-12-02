@@ -193,14 +193,28 @@ const handler = async (req: Request): Promise<Response> => {
         </html>
       `;
 
-    const emailResponse = await resend.emails.send({
+    const { data, error: resendError } = await resend.emails.send({
       from: "Nirikshan AI <onboarding@resend.dev>",
       to: [to],
       subject: subject,
       html: htmlContent,
     });
 
-    console.log(`${type} email sent successfully to ${to}`, emailResponse);
+    if (resendError) {
+      console.error("Error sending email via Resend:", resendError);
+      return new Response(
+        JSON.stringify({
+          success: false,
+          error: resendError.message || "Email service rejected the request",
+        }),
+        {
+          status: 500,
+          headers: { "Content-Type": "application/json", ...corsHeaders },
+        }
+      );
+    }
+
+    console.log(`${type} email sent successfully to ${to}`, data);
 
     return new Response(
       JSON.stringify({ success: true, message: "Email sent successfully" }),
