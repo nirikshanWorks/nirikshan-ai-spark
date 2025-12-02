@@ -225,22 +225,19 @@ const Applications = () => {
   const sendEmail = async () => {
     if (!emailDialog.application) return;
 
-    setSending(true); // Set sending to true when starting to send email
+    setSending(true);
     try {
-      const response = await fetch("http://localhost:4000/api/email/send", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
+      const { data, error } = await supabase.functions.invoke('send-application-email', {
+        body: {
           to: emailDialog.application.email,
           candidateName: emailDialog.application.name,
           position: emailDialog.application.job_applied_for,
           type: emailDialog.type,
-        }),
+        },
       });
 
-      if (!response.ok) {
-        const data = await response.json();
-        throw new Error(data.error || "Failed to send email");
+      if (error) {
+        throw new Error(error.message || "Failed to send email");
       }
 
       let newStatus: JobApplication["status"] = "pending";
