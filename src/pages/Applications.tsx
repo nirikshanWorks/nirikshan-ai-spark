@@ -95,12 +95,17 @@ const Applications = () => {
     type: "selection" | "rejection" | "interview";
     application: JobApplication | null;
   }>({ open: false, type: "selection", application: null });
-  const [sending, setSending] = useState(false); // Ensure sending state is defined
+  const [sending, setSending] = useState(false);
   const [sortField, setSortField] = useState<SortField>("created_at");
   const [sortOrder, setSortOrder] = useState<SortOrder>("desc");
   const [currentPage, setCurrentPage] = useState(1);
-  const [excelAvailable] = useState<boolean | null>(null); // keep state but don't check at mount
-  const applicationsPerPage = 10; // Set the number of applications per page
+  const [excelAvailable] = useState<boolean | null>(null);
+  const applicationsPerPage = 10;
+  
+  // Interview details state
+  const [interviewDate, setInterviewDate] = useState("");
+  const [interviewTime, setInterviewTime] = useState("");
+  const [meetLink, setMeetLink] = useState("");
 
   const fetchApplications = useCallback(async () => {
     try {
@@ -217,10 +222,19 @@ const Applications = () => {
     application: JobApplication
   ) => {
     setEmailDialog({ open: true, type, application });
+    // Reset interview fields when opening dialog
+    if (type === "interview") {
+      setInterviewDate("");
+      setInterviewTime("");
+      setMeetLink("");
+    }
   };
 
   const closeEmailDialog = () => {
     setEmailDialog({ open: false, type: "selection", application: null });
+    setInterviewDate("");
+    setInterviewTime("");
+    setMeetLink("");
   };
 
   const sendEmail = async () => {
@@ -228,13 +242,22 @@ const Applications = () => {
 
     setSending(true);
     try {
+      const emailBody: any = {
+        to: emailDialog.application.email,
+        candidateName: emailDialog.application.name,
+        position: emailDialog.application.job_applied_for,
+        type: emailDialog.type,
+      };
+      
+      // Add interview details if it's an interview email
+      if (emailDialog.type === "interview") {
+        emailBody.interviewDate = interviewDate;
+        emailBody.interviewTime = interviewTime;
+        emailBody.meetLink = meetLink;
+      }
+
       const { data, error } = await supabase.functions.invoke("send-application-email", {
-        body: {
-          to: emailDialog.application.email,
-          candidateName: emailDialog.application.name,
-          position: emailDialog.application.job_applied_for,
-          type: emailDialog.type,
-        },
+        body: emailBody,
       });
 
       if (error) {
@@ -795,16 +818,37 @@ const Applications = () => {
               <strong>From:</strong> ai.nirikshan@gmail.com
             </p>
             {emailDialog.type === "interview" && (
-              <div className="mt-3 p-3 bg-blue-50 rounded-md border border-blue-200">
-                <p className="text-xs text-blue-800">
-                  <strong>Interview Details:</strong>
-                  <br />
-                  📅 Date: Wednesday, December 10
-                  <br />
-                  🕖 Time: 7:00 PM – 10:00 PM
-                  <br />
-                  🔗 Link: meet.google.com/jzr-fqov-wmu
-                </p>
+              <div className="mt-3 space-y-3">
+                <div>
+                  <label className="text-sm font-medium">📅 Interview Date</label>
+                  <input
+                    type="text"
+                    placeholder="e.g., Wednesday, December 10, 2025"
+                    value={interviewDate}
+                    onChange={(e) => setInterviewDate(e.target.value)}
+                    className="w-full mt-1 px-3 py-2 border rounded-md text-sm bg-background"
+                  />
+                </div>
+                <div>
+                  <label className="text-sm font-medium">⏰ Interview Time</label>
+                  <input
+                    type="text"
+                    placeholder="e.g., 7:00 PM – 8:00 PM IST"
+                    value={interviewTime}
+                    onChange={(e) => setInterviewTime(e.target.value)}
+                    className="w-full mt-1 px-3 py-2 border rounded-md text-sm bg-background"
+                  />
+                </div>
+                <div>
+                  <label className="text-sm font-medium">🔗 Google Meet Link</label>
+                  <input
+                    type="url"
+                    placeholder="e.g., https://meet.google.com/xxx-xxxx-xxx"
+                    value={meetLink}
+                    onChange={(e) => setMeetLink(e.target.value)}
+                    className="w-full mt-1 px-3 py-2 border rounded-md text-sm bg-background"
+                  />
+                </div>
               </div>
             )}
           </div>
