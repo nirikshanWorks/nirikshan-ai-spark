@@ -11,6 +11,9 @@ interface EmailRequest {
   candidateName: string;
   position: string;
   type: "selection" | "rejection" | "interview";
+  interviewDate?: string;
+  interviewTime?: string;
+  meetLink?: string;
 }
 
 const handler = async (req: Request): Promise<Response> => {
@@ -19,7 +22,7 @@ const handler = async (req: Request): Promise<Response> => {
   }
 
   try {
-    const { to, candidateName, position, type }: EmailRequest = await req.json();
+    const { to, candidateName, position, type, interviewDate, interviewTime, meetLink }: EmailRequest = await req.json();
     
     console.log(`Sending ${type} email to ${to} for ${candidateName}`);
 
@@ -30,8 +33,6 @@ const handler = async (req: Request): Promise<Response> => {
       console.error("Gmail credentials not configured");
       throw new Error("Gmail credentials not configured");
     }
-
-    console.log(`Using Gmail account: ${gmailUser}`);
 
     const client = new SMTPClient({
       connection: {
@@ -45,255 +46,115 @@ const handler = async (req: Request): Promise<Response> => {
       },
     });
 
-    const subject = type === "selection" 
-      ? `Congratulations! You've been selected for ${position}`
-      : type === "interview"
-      ? `Interview Invitation - ${position} at Nirikshan AI`
-      : `Update on your application for ${position}`;
+    let subject = "";
+    let htmlContent = "";
 
-    const htmlContent = type === "selection"
-      ? `
+    if (type === "selection") {
+      subject = `🎉 Congratulations! You've been selected - ${position}`;
+      htmlContent = `
         <!DOCTYPE html>
         <html>
-        <head>
-          <meta charset="utf-8">
-          <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        </head>
-        <body style="margin: 0; padding: 0; background-color: #0a0118; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;">
-          <table width="100%" cellpadding="0" cellspacing="0" style="background-color: #0a0118; padding: 40px 20px;">
-            <tr>
-              <td align="center">
-                <table width="600" cellpadding="0" cellspacing="0" style="background: linear-gradient(135deg, #1a0b2e 0%, #16213e 100%); border-radius: 16px; overflow: hidden; box-shadow: 0 20px 60px rgba(139, 92, 246, 0.3);">
-                  <!-- Header with gradient -->
-                  <tr>
-                    <td style="background: linear-gradient(135deg, #8b5cf6 0%, #3b82f6 100%); padding: 40px 40px 30px; text-align: center;">
-                      <h1 style="margin: 0; color: #ffffff; font-size: 32px; font-weight: 700; text-shadow: 0 2px 4px rgba(0,0,0,0.2);">Nirikshan AI</h1>
-                      <p style="margin: 10px 0 0; color: rgba(255,255,255,0.9); font-size: 14px; letter-spacing: 2px;">EMPOWERING VISION & INTELLIGENCE</p>
-                    </td>
-                  </tr>
-                  
-                  <!-- Success Badge -->
-                  <tr>
-                    <td align="center" style="padding: 30px 40px 0;">
-                      <div style="display: inline-block; background: linear-gradient(135deg, #22c55e 0%, #16a34a 100%); padding: 12px 30px; border-radius: 50px; box-shadow: 0 4px 12px rgba(34, 197, 94, 0.4);">
-                        <span style="color: #ffffff; font-size: 16px; font-weight: 600; letter-spacing: 1px;">✓ SELECTED</span>
-                      </div>
-                    </td>
-                  </tr>
-                  
-                  <!-- Main Content -->
-                  <tr>
-                    <td style="padding: 30px 40px; color: #e2e8f0;">
-                      <h2 style="margin: 0 0 20px; color: #22c55e; font-size: 28px; font-weight: 600;">Congratulations, ${candidateName}!</h2>
-                      
-                      <p style="margin: 0 0 20px; font-size: 16px; line-height: 1.6; color: #cbd5e1;">
-                        We are thrilled to inform you that you have been <strong style="color: #22c55e;">selected</strong> for the position of:
-                      </p>
-                      
-                      <div style="background: rgba(139, 92, 246, 0.1); border-left: 4px solid #8b5cf6; padding: 20px; margin: 20px 0; border-radius: 8px;">
-                        <p style="margin: 0; font-size: 20px; font-weight: 600; color: #a78bfa;">${position}</p>
-                      </div>
-                      
-                      <p style="margin: 20px 0; font-size: 16px; line-height: 1.6; color: #cbd5e1;">
-                        Your skills and experience stood out among many qualified candidates, and we're excited to have you join our team.
-                      </p>
-                      
-                      <p style="margin: 20px 0; font-size: 16px; line-height: 1.6; color: #cbd5e1;">
-                        Our team will be in touch with you shortly with the next steps and onboarding details.
-                      </p>
-                      
-                      <div style="margin: 30px 0; padding: 20px; background: rgba(59, 130, 246, 0.1); border-radius: 8px; border: 1px solid rgba(59, 130, 246, 0.3);">
-                        <p style="margin: 0; font-size: 14px; color: #94a3b8; line-height: 1.6;">
-                          <strong style="color: #3b82f6;">Next Steps:</strong><br>
-                          • Check your email for onboarding documents<br>
-                          • Prepare any required documentation<br>
-                          • Be ready for an amazing journey with us!
-                        </p>
-                      </div>
-                    </td>
-                  </tr>
-                  
-                  <!-- Footer -->
-                  <tr>
-                    <td style="padding: 30px 40px; background: rgba(139, 92, 246, 0.1); border-top: 1px solid rgba(139, 92, 246, 0.2);">
-                      <p style="margin: 0 0 15px; font-size: 16px; color: #cbd5e1; font-weight: 500;">
-                        Best regards,<br>
-                        <span style="color: #8b5cf6; font-weight: 600;">The Nirikshan AI Team</span>
-                      </p>
-                      
-                      <div style="margin-top: 20px; padding-top: 20px; border-top: 1px solid rgba(139, 92, 246, 0.2);">
-                        <p style="margin: 0; font-size: 12px; color: #64748b; line-height: 1.6;">
-                          Nirikshan AI | Empowering Vision and Intelligence<br>
-                          From OpenCV to Agentic AI
-                        </p>
-                      </div>
-                    </td>
-                  </tr>
-                </table>
-              </td>
-            </tr>
-          </table>
-        </body>
-        </html>
-      `
-      : type === "interview"
-      ? `
-        <!DOCTYPE html>
-        <html>
-        <head>
-          <meta charset="utf-8">
-          <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        </head>
-        <body style="margin: 0; padding: 0; background-color: #0a0118; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;">
-          <table width="100%" cellpadding="0" cellspacing="0" style="background-color: #0a0118; padding: 40px 20px;">
-            <tr>
-              <td align="center">
-                <table width="600" cellpadding="0" cellspacing="0" style="background: linear-gradient(135deg, #1a0b2e 0%, #16213e 100%); border-radius: 16px; overflow: hidden; box-shadow: 0 20px 60px rgba(139, 92, 246, 0.3);">
-                  <!-- Header with gradient -->
-                  <tr>
-                    <td style="background: linear-gradient(135deg, #8b5cf6 0%, #3b82f6 100%); padding: 40px 40px 30px; text-align: center;">
-                      <h1 style="margin: 0; color: #ffffff; font-size: 32px; font-weight: 700; text-shadow: 0 2px 4px rgba(0,0,0,0.2);">Nirikshan AI</h1>
-                      <p style="margin: 10px 0 0; color: rgba(255,255,255,0.9); font-size: 14px; letter-spacing: 2px;">EMPOWERING VISION & INTELLIGENCE</p>
-                    </td>
-                  </tr>
-                  
-                  <!-- Interview Badge -->
-                  <tr>
-                    <td align="center" style="padding: 30px 40px 0;">
-                      <div style="display: inline-block; background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%); padding: 12px 30px; border-radius: 50px; box-shadow: 0 4px 12px rgba(59, 130, 246, 0.4);">
-                        <span style="color: #ffffff; font-size: 16px; font-weight: 600; letter-spacing: 1px;">📅 INTERVIEW SCHEDULED</span>
-                      </div>
-                    </td>
-                  </tr>
-                  
-                  <!-- Main Content -->
-                  <tr>
-                    <td style="padding: 30px 40px; color: #e2e8f0;">
-                      <h2 style="margin: 0 0 20px; color: #3b82f6; font-size: 28px; font-weight: 600;">Hello, ${candidateName}!</h2>
-                      
-                      <p style="margin: 0 0 20px; font-size: 16px; line-height: 1.6; color: #cbd5e1;">
-                        We have reviewed your application for the position of:
-                      </p>
-                      
-                      <div style="background: rgba(139, 92, 246, 0.1); border-left: 4px solid #8b5cf6; padding: 20px; margin: 20px 0; border-radius: 8px;">
-                        <p style="margin: 0; font-size: 20px; font-weight: 600; color: #a78bfa;">${position}</p>
-                      </div>
-                      
-                      <p style="margin: 20px 0; font-size: 16px; line-height: 1.6; color: #cbd5e1;">
-                        We would like to invite you for an interview! Our HR team will contact you shortly with the interview schedule and details.
-                      </p>
-                      
-                      <div style="margin: 30px 0; padding: 20px; background: rgba(59, 130, 246, 0.1); border-radius: 8px; border: 1px solid rgba(59, 130, 246, 0.3);">
-                        <p style="margin: 0; font-size: 14px; color: #94a3b8; line-height: 1.6;">
-                          <strong style="color: #3b82f6;">Prepare For:</strong><br>
-                          • Technical discussion about your experience<br>
-                          • Questions about your projects and skills<br>
-                          • Ensure your contact information is up to date
-                        </p>
-                      </div>
-                    </td>
-                  </tr>
-                  
-                  <!-- Footer -->
-                  <tr>
-                    <td style="padding: 30px 40px; background: rgba(139, 92, 246, 0.1); border-top: 1px solid rgba(139, 92, 246, 0.2);">
-                      <p style="margin: 0 0 15px; font-size: 16px; color: #cbd5e1; font-weight: 500;">
-                        Best regards,<br>
-                        <span style="color: #8b5cf6; font-weight: 600;">The Nirikshan AI Team</span>
-                      </p>
-                      
-                      <div style="margin-top: 20px; padding-top: 20px; border-top: 1px solid rgba(139, 92, 246, 0.2);">
-                        <p style="margin: 0; font-size: 12px; color: #64748b; line-height: 1.6;">
-                          Nirikshan AI | Empowering Vision and Intelligence<br>
-                          From OpenCV to Agentic AI
-                        </p>
-                      </div>
-                    </td>
-                  </tr>
-                </table>
-              </td>
-            </tr>
-          </table>
-        </body>
-        </html>
-      `
-      : `
-        <!DOCTYPE html>
-        <html>
-        <head>
-          <meta charset="utf-8">
-          <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        </head>
-        <body style="margin: 0; padding: 0; background-color: #0a0118; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;">
-          <table width="100%" cellpadding="0" cellspacing="0" style="background-color: #0a0118; padding: 40px 20px;">
-            <tr>
-              <td align="center">
-                <table width="600" cellpadding="0" cellspacing="0" style="background: linear-gradient(135deg, #1a0b2e 0%, #16213e 100%); border-radius: 16px; overflow: hidden; box-shadow: 0 20px 60px rgba(139, 92, 246, 0.3);">
-                  <!-- Header with gradient -->
-                  <tr>
-                    <td style="background: linear-gradient(135deg, #8b5cf6 0%, #3b82f6 100%); padding: 40px 40px 30px; text-align: center;">
-                      <h1 style="margin: 0; color: #ffffff; font-size: 32px; font-weight: 700; text-shadow: 0 2px 4px rgba(0,0,0,0.2);">Nirikshan AI</h1>
-                      <p style="margin: 10px 0 0; color: rgba(255,255,255,0.9); font-size: 14px; letter-spacing: 2px;">EMPOWERING VISION & INTELLIGENCE</p>
-                    </td>
-                  </tr>
-                  
-                  <!-- Main Content -->
-                  <tr>
-                    <td style="padding: 40px 40px; color: #e2e8f0;">
-                      <h2 style="margin: 0 0 20px; color: #cbd5e1; font-size: 24px; font-weight: 600;">Dear ${candidateName},</h2>
-                      
-                      <p style="margin: 0 0 20px; font-size: 16px; line-height: 1.6; color: #cbd5e1;">
-                        Thank you for your interest in the position of:
-                      </p>
-                      
-                      <div style="background: rgba(139, 92, 246, 0.1); border-left: 4px solid #8b5cf6; padding: 20px; margin: 20px 0; border-radius: 8px;">
-                        <p style="margin: 0; font-size: 18px; font-weight: 600; color: #a78bfa;">${position}</p>
-                      </div>
-                      
-                      <p style="margin: 20px 0; font-size: 16px; line-height: 1.6; color: #cbd5e1;">
-                        We appreciate the time and effort you invested in the application process. After careful consideration of all candidates, we have decided to move forward with other applicants whose qualifications more closely match our current needs.
-                      </p>
-                      
-                      <p style="margin: 20px 0; font-size: 16px; line-height: 1.6; color: #cbd5e1;">
-                        We were impressed by your background and encourage you to apply for future opportunities that align with your skills and experience.
-                      </p>
-                      
-                      <div style="margin: 30px 0; padding: 20px; background: rgba(59, 130, 246, 0.1); border-radius: 8px; border: 1px solid rgba(59, 130, 246, 0.3);">
-                        <p style="margin: 0; font-size: 14px; color: #94a3b8; line-height: 1.6;">
-                          <strong style="color: #3b82f6;">Stay Connected:</strong><br>
-                          We invite you to follow our journey and explore future opportunities as we continue to grow and innovate in AI technology.
-                        </p>
-                      </div>
-                      
-                      <p style="margin: 20px 0 0; font-size: 16px; line-height: 1.6; color: #cbd5e1;">
-                        We wish you the best in your job search and future career endeavors.
-                      </p>
-                    </td>
-                  </tr>
-                  
-                  <!-- Footer -->
-                  <tr>
-                    <td style="padding: 30px 40px; background: rgba(139, 92, 246, 0.1); border-top: 1px solid rgba(139, 92, 246, 0.2);">
-                      <p style="margin: 0 0 15px; font-size: 16px; color: #cbd5e1; font-weight: 500;">
-                        Best regards,<br>
-                        <span style="color: #8b5cf6; font-weight: 600;">The Nirikshan AI Team</span>
-                      </p>
-                      
-                      <div style="margin-top: 20px; padding-top: 20px; border-top: 1px solid rgba(139, 92, 246, 0.2);">
-                        <p style="margin: 0; font-size: 12px; color: #64748b; line-height: 1.6;">
-                          Nirikshan AI | Empowering Vision and Intelligence<br>
-                          From OpenCV to Agentic AI
-                        </p>
-                      </div>
-                    </td>
-                  </tr>
-                </table>
-              </td>
-            </tr>
-          </table>
+        <body style="margin:0; padding:20px; font-family:Arial, sans-serif; background:#f5f5f5;">
+          <div style="max-width:600px; margin:0 auto; background:#fff; border-radius:8px; overflow:hidden; box-shadow:0 2px 10px rgba(0,0,0,0.1);">
+            <div style="background:linear-gradient(135deg,#8b5cf6,#3b82f6); padding:30px; text-align:center;">
+              <h1 style="color:#fff; margin:0; font-size:24px;">Nirikshan AI</h1>
+            </div>
+            <div style="padding:30px;">
+              <div style="text-align:center; margin-bottom:20px;">
+                <span style="background:#22c55e; color:#fff; padding:8px 20px; border-radius:20px; font-size:14px;">✓ SELECTED</span>
+              </div>
+              <h2 style="color:#333; margin:0 0 15px;">Congratulations, ${candidateName}!</h2>
+              <p style="color:#555; line-height:1.6;">
+                We are thrilled to inform you that you have been <strong style="color:#22c55e;">selected</strong> for the <strong>${position}</strong> position at Nirikshan AI!
+              </p>
+              <p style="color:#555; line-height:1.6;">
+                Our team will contact you shortly with onboarding details and next steps.
+              </p>
+              <p style="color:#555; margin-top:25px;">
+                Best regards,<br><strong style="color:#8b5cf6;">The Nirikshan AI Team</strong>
+              </p>
+            </div>
+            <div style="background:#f8f9fa; padding:15px; text-align:center; border-top:1px solid #eee;">
+              <p style="color:#888; font-size:12px; margin:0;">Nirikshan AI | Empowering Vision and Intelligence</p>
+            </div>
+          </div>
         </body>
         </html>
       `;
+    } else if (type === "interview") {
+      subject = `📅 Interview Scheduled - ${position} at Nirikshan AI`;
+      htmlContent = `
+        <!DOCTYPE html>
+        <html>
+        <body style="margin:0; padding:20px; font-family:Arial, sans-serif; background:#f5f5f5;">
+          <div style="max-width:600px; margin:0 auto; background:#fff; border-radius:8px; overflow:hidden; box-shadow:0 2px 10px rgba(0,0,0,0.1);">
+            <div style="background:linear-gradient(135deg,#8b5cf6,#3b82f6); padding:30px; text-align:center;">
+              <h1 style="color:#fff; margin:0; font-size:24px;">Nirikshan AI</h1>
+            </div>
+            <div style="padding:30px;">
+              <div style="text-align:center; margin-bottom:20px;">
+                <span style="background:#3b82f6; color:#fff; padding:8px 20px; border-radius:20px; font-size:14px;">📅 INTERVIEW SCHEDULED</span>
+              </div>
+              <h2 style="color:#333; margin:0 0 15px;">Hello, ${candidateName}!</h2>
+              <p style="color:#555; line-height:1.6;">
+                We have reviewed your application for <strong>${position}</strong> and would like to invite you for an interview!
+              </p>
+              
+              <div style="background:#f0f7ff; border:1px solid #3b82f6; border-radius:8px; padding:20px; margin:20px 0;">
+                <h3 style="color:#3b82f6; margin:0 0 15px; font-size:16px;">📋 Interview Details</h3>
+                <p style="color:#333; margin:5px 0;"><strong>📅 Date:</strong> ${interviewDate || 'To be confirmed'}</p>
+                <p style="color:#333; margin:5px 0;"><strong>⏰ Time:</strong> ${interviewTime || 'To be confirmed'}</p>
+                ${meetLink ? `<p style="color:#333; margin:15px 0 5px;"><strong>🔗 Google Meet Link:</strong></p>
+                <a href="${meetLink}" style="display:inline-block; background:#22c55e; color:#fff; padding:10px 20px; border-radius:5px; text-decoration:none; margin-top:5px;">Join Meeting</a>` : ''}
+              </div>
+              
+              <p style="color:#555; line-height:1.6;">
+                Please confirm your availability by replying to this email. We look forward to speaking with you!
+              </p>
+              <p style="color:#555; margin-top:25px;">
+                Best regards,<br><strong style="color:#8b5cf6;">The Nirikshan AI Team</strong>
+              </p>
+            </div>
+            <div style="background:#f8f9fa; padding:15px; text-align:center; border-top:1px solid #eee;">
+              <p style="color:#888; font-size:12px; margin:0;">Nirikshan AI | Empowering Vision and Intelligence</p>
+            </div>
+          </div>
+        </body>
+        </html>
+      `;
+    } else {
+      subject = `Application Update - ${position}`;
+      htmlContent = `
+        <!DOCTYPE html>
+        <html>
+        <body style="margin:0; padding:20px; font-family:Arial, sans-serif; background:#f5f5f5;">
+          <div style="max-width:600px; margin:0 auto; background:#fff; border-radius:8px; overflow:hidden; box-shadow:0 2px 10px rgba(0,0,0,0.1);">
+            <div style="background:linear-gradient(135deg,#8b5cf6,#3b82f6); padding:30px; text-align:center;">
+              <h1 style="color:#fff; margin:0; font-size:24px;">Nirikshan AI</h1>
+            </div>
+            <div style="padding:30px;">
+              <h2 style="color:#333; margin:0 0 15px;">Dear ${candidateName},</h2>
+              <p style="color:#555; line-height:1.6;">
+                Thank you for your interest in the <strong>${position}</strong> position at Nirikshan AI.
+              </p>
+              <p style="color:#555; line-height:1.6;">
+                After careful consideration, we have decided to move forward with other candidates whose qualifications more closely match our current needs.
+              </p>
+              <p style="color:#555; line-height:1.6;">
+                We encourage you to apply for future opportunities. We wish you the best in your career journey!
+              </p>
+              <p style="color:#555; margin-top:25px;">
+                Best regards,<br><strong style="color:#8b5cf6;">The Nirikshan AI Team</strong>
+              </p>
+            </div>
+            <div style="background:#f8f9fa; padding:15px; text-align:center; border-top:1px solid #eee;">
+              <p style="color:#888; font-size:12px; margin:0;">Nirikshan AI | Empowering Vision and Intelligence</p>
+            </div>
+          </div>
+        </body>
+        </html>
+      `;
+    }
 
     console.log(`Sending email with subject: ${subject}`);
 
