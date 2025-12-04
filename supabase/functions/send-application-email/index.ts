@@ -25,6 +25,8 @@ const handler = async (req: Request): Promise<Response> => {
     const { to, candidateName, position, type, interviewDate, interviewTime, meetLink }: EmailRequest = await req.json();
     
     console.log(`Sending ${type} email to ${to} for ${candidateName}`);
+    console.log(`Interview details - Date: "${interviewDate}", Time: "${interviewTime}", Meet: "${meetLink}"`);
+
 
     const gmailUser = Deno.env.get("GMAIL_USER");
     const gmailPassword = Deno.env.get("GMAIL_APP_PASSWORD");
