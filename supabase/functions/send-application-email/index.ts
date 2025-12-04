@@ -82,14 +82,14 @@ const handler = async (req: Request): Promise<Response> => {
         </html>
       `;
     } else if (type === "interview") {
-      subject = `📅 Interview Scheduled - ${position} at Nirikshan AI`;
+      subject = `📅 Round 1 Interview Scheduled - ${position} at Nirikshan AI`;
       htmlContent = `
         <!DOCTYPE html>
         <html>
         <body style="margin:0; padding:20px; font-family:Arial, sans-serif; background:#f5f5f5;">
           <div style="max-width:600px; margin:0 auto; background:#fff; border-radius:8px; overflow:hidden; box-shadow:0 2px 10px rgba(0,0,0,0.1);">
             <div style="background:linear-gradient(135deg,#8b5cf6,#3b82f6); padding:30px; text-align:center;">
-              <h1 style="color:#fff; margin:0; font-size:24px;">Nirikshan AI</h1>
+              <h1 style="color:#fff; margin:0; font-size:24px;">Nirikshan AI Pvt. Ltd.</h1>
             </div>
             <div style="padding:30px;">
               <div style="text-align:center; margin-bottom:20px;">
@@ -97,26 +97,58 @@ const handler = async (req: Request): Promise<Response> => {
               </div>
               <h2 style="color:#333; margin:0 0 15px;">Hello, ${candidateName}!</h2>
               <p style="color:#555; line-height:1.6;">
-                We have reviewed your application for <strong>${position}</strong> and would like to invite you for an interview!
+                We have reviewed your application for <strong>${position}</strong> and would like to invite you for Round 1 Interview!
               </p>
               
               <div style="background:#f0f7ff; border:1px solid #3b82f6; border-radius:8px; padding:20px; margin:20px 0;">
-                <h3 style="color:#3b82f6; margin:0 0 15px; font-size:16px;">📋 Interview Details</h3>
-                <p style="color:#333; margin:5px 0;"><strong>📅 Date:</strong> ${interviewDate || 'To be confirmed'}</p>
-                <p style="color:#333; margin:5px 0;"><strong>⏰ Time:</strong> ${interviewTime || 'To be confirmed'}</p>
-                ${meetLink ? `<p style="color:#333; margin:15px 0 5px;"><strong>🔗 Google Meet Link:</strong></p>
-                <a href="${meetLink}" style="display:inline-block; background:#22c55e; color:#fff; padding:10px 20px; border-radius:5px; text-decoration:none; margin-top:5px;">Join Meeting</a>` : ''}
+                <h3 style="color:#3b82f6; margin:0 0 15px; font-size:16px;">📋 Round 1 Interview Details</h3>
+                <p style="color:#333; margin:8px 0;"><strong>📍 Organization:</strong> Nirikshan AI Pvt. Ltd.</p>
+                <p style="color:#333; margin:8px 0;"><strong>📅 Date:</strong> ${interviewDate || 'To be confirmed'}</p>
+                <p style="color:#333; margin:8px 0;"><strong>⏰ Time:</strong> ${interviewTime || 'To be confirmed'}</p>
+                <p style="color:#333; margin:8px 0;"><strong>💻 Mode:</strong> Google Meet (Online)</p>
+                ${meetLink ? `<p style="color:#333; margin:15px 0 5px;"><strong>🔗 Join Link:</strong></p>
+                <a href="${meetLink.startsWith('http') ? meetLink : 'https://' + meetLink}" style="display:inline-block; background:#22c55e; color:#fff; padding:12px 24px; border-radius:5px; text-decoration:none; margin-top:5px; font-weight:bold;">Join Meeting</a>
+                <p style="color:#666; font-size:12px; margin-top:8px;">${meetLink}</p>` : ''}
+              </div>
+
+              <div style="background:#fff8e6; border:1px solid #f59e0b; border-radius:8px; padding:15px; margin:20px 0;">
+                <p style="color:#b45309; margin:0; font-weight:bold;">⏱️ Important Notice</p>
+                <p style="color:#555; margin:10px 0 0; line-height:1.5;">We request you to join <strong>30 minutes before</strong> your expected slot for smooth verification and to avoid last-moment delays.</p>
               </div>
               
-              <p style="color:#555; line-height:1.6;">
-                Please confirm your availability by replying to this email. We look forward to speaking with you!
+              <div style="background:#f8fafc; border-radius:8px; padding:20px; margin:20px 0;">
+                <h3 style="color:#333; margin:0 0 15px; font-size:16px;">🎯 What Will Happen in Round 1?</h3>
+                <p style="color:#555; line-height:1.6; margin:0 0 10px;">You will go through a short and interactive session covering:</p>
+                <ul style="color:#555; line-height:1.8; margin:0; padding-left:20px;">
+                  <li>A quick self-introduction</li>
+                  <li>Communication assessment</li>
+                  <li>Basic aptitude & reasoning questions</li>
+                  <li>Understanding your interest in the role</li>
+                </ul>
+                <p style="color:#555; line-height:1.6; margin:15px 0 0; font-style:italic;">This round helps us get to know you better and evaluate your clarity, confidence, and thinking approach.</p>
+              </div>
+
+              <div style="background:#f0fdf4; border:1px solid #22c55e; border-radius:8px; padding:20px; margin:20px 0;">
+                <h3 style="color:#16a34a; margin:0 0 15px; font-size:16px;">✔ A Few Pointers Before You Join</h3>
+                <ul style="color:#555; line-height:1.8; margin:0; padding-left:20px;">
+                  <li>Ensure a stable internet connection</li>
+                  <li>Keep your camera & mic ready</li>
+                  <li>Be in a quiet, disturbance-free space</li>
+                  <li>Have a notepad and pen with you</li>
+                </ul>
+              </div>
+
+              <p style="color:#555; line-height:1.6; text-align:center; font-weight:bold; margin:25px 0;">
+                We're looking forward to meeting you and understanding your potential.<br>
+                <span style="color:#8b5cf6; font-size:18px;">All the best! 🌟</span>
               </p>
+              
               <p style="color:#555; margin-top:25px;">
-                Best regards,<br><strong style="color:#8b5cf6;">The Nirikshan AI Team</strong>
+                Warm regards,<br><strong style="color:#8b5cf6;">Nirikshan AI Pvt. Ltd.</strong>
               </p>
             </div>
             <div style="background:#f8f9fa; padding:15px; text-align:center; border-top:1px solid #eee;">
-              <p style="color:#888; font-size:12px; margin:0;">Nirikshan AI | Empowering Vision and Intelligence</p>
+              <p style="color:#888; font-size:12px; margin:0;">Nirikshan AI Pvt. Ltd. | Empowering Vision and Intelligence</p>
             </div>
           </div>
         </body>
