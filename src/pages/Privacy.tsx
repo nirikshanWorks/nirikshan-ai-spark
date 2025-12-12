@@ -40,7 +40,16 @@ const sections = [
     items: [
       "Email: ai.nirikshan@gmail.com",
       "Phone: +91 9410 992204",
-  "Address: Nirikshan AI Pvt. Ltd., Noida, Uttar Pradesh, India"
+      "Address: Nirikshan AI Pvt. Ltd., Noida, Uttar Pradesh, India"
+    ]
+  },
+  {
+    title: "6. Disclaimer",
+    items: [
+      "Niraskhan AI Private Limited is the legally registered company under CIN U62091HR2025PTC134110.",
+      "Please note that our products, services, and digital platforms may use the brand name \"Niirikshan AI\" for marketing, product identity, and public communication purposes.",
+      "Both names refer to the same business entity, and all activities under the brand \"Niirikshan AI\" are fully owned, managed, and operated by Niraskhan AI Private Limited.",
+      "For any official clarification or communication, please contact: Anshul, Co-Founder & COO, Phone: +91 94101 47660, Email: kanshulmussoorie@gmail.com"
     ]
   }
 ];
