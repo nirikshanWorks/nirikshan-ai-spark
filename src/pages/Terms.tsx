@@ -1,7 +1,13 @@
 import { Navigation } from "@/components/Navigation";
 import { Footer } from "@/components/Footer";
 
-const sections = [
+interface Section {
+  title: string;
+  description: string;
+  isHighlighted?: boolean;
+}
+
+const sections: Section[] = [
   {
     title: "1. Acceptance of Terms",
     description:
@@ -39,8 +45,9 @@ const sections = [
   },
   {
     title: "8. Disclaimer",
+    isHighlighted: true,
     description:
-      "Niraskhan AI Private Limited is the legally registered company under CIN U62091HR2025PTC134110. Please note that our products, services, and digital platforms may use the brand name \"Niirikshan AI\" for marketing, product identity, and public communication purposes. Both names refer to the same business entity, and all activities under the brand \"Niirikshan AI\" are fully owned, managed, and operated by Niraskhan AI Private Limited. For any official clarification or communication, please contact: Anshul, Co-Founder & COO, Phone: +91 94101 47660, Email: kanshulmussoorie@gmail.com"
+      "Niraskhan AI Private Limited is the legally registered company under CIN U62091HR2025PTC134110. Please note that our products, services, and digital platforms may use the brand name \"Nirikshan AI\" for marketing, product identity, and public communication purposes. Both names refer to the same business entity, and all activities under the brand \"Nirikshan AI\" are fully owned, managed, and operated by Niraskhan AI Private Limited. For any official clarification or communication, please contact: Anshul — Co-Founder & COO, Phone: +91 94101 47660, Email: kanshulmussoorie@gmail.com"
   }
 ];
 
@@ -58,9 +65,22 @@ const Terms = () => (
           </header>
 
           {sections.map((section) => (
-            <article key={section.title} className="p-6 md:p-8 rounded-2xl border border-border bg-secondary/20">
-              <h2 className="text-2xl font-semibold mb-4">{section.title}</h2>
-              <p className="text-muted-foreground leading-relaxed">{section.description}</p>
+            <article 
+              key={section.title} 
+              className={`p-6 md:p-8 rounded-2xl border ${
+                section.isHighlighted 
+                  ? 'border-primary bg-primary/10' 
+                  : 'border-border bg-secondary/20'
+              }`}
+            >
+              <h2 className={`text-2xl font-semibold mb-4 ${section.isHighlighted ? 'text-primary' : ''}`}>
+                {section.title}
+              </h2>
+              <p className={`leading-relaxed ${
+                section.isHighlighted ? 'text-foreground font-semibold' : 'text-muted-foreground'
+              }`}>
+                {section.description}
+              </p>
             </article>
           ))}
 
