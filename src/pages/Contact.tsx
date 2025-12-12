@@ -642,12 +642,32 @@ const Contact = () => {
                       <span className="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-2xl bg-primary text-white">
                         <MapPin size={20} />
                       </span>
-                      <div>
-                        <h3 className="text-lg font-semibold">Office</h3>
-                        <p className="text-sm text-muted-foreground leading-relaxed">
-                          Nirikshan AI Pvt. Ltd.
-                          <br /> Noida, Uttar Pradesh, India
-                        </p>
+                      <div className="space-y-4">
+                        <h3 className="text-lg font-semibold">Our Offices</h3>
+                        
+                        <div className="space-y-1">
+                          <h4 className="text-sm font-semibold text-foreground">Registered Office</h4>
+                          <p className="text-sm text-muted-foreground leading-relaxed">
+                            166A, Village Malra Sarai, Lawan, Lawan,<br />
+                            Mahendragarh - 123029, Haryana
+                          </p>
+                        </div>
+                        
+                        <div className="space-y-1">
+                          <h4 className="text-sm font-semibold text-foreground">Chair Office - Noida</h4>
+                          <p className="text-sm text-muted-foreground leading-relaxed">
+                            14th Avenue, Gaur City,<br />
+                            Noida, Uttar Pradesh
+                          </p>
+                        </div>
+                        
+                        <div className="space-y-1">
+                          <h4 className="text-sm font-semibold text-foreground">Chair Office - Dehradun</h4>
+                          <p className="text-sm text-muted-foreground leading-relaxed">
+                            Near Golu Ice Cream, Keenal Road,<br />
+                            Vikasnagar, Dehradun, Uttarakhand
+                          </p>
+                        </div>
                       </div>
                     </div>
                   </div>
