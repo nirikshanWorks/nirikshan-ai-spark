@@ -16,6 +16,7 @@ export type Database = {
     Tables: {
       job_applications: {
         Row: {
+          acceptance_token: string | null
           created_at: string
           email: string
           github_profile: string
@@ -23,6 +24,8 @@ export type Database = {
           job_applied_for: string
           linkedin_profile: string
           name: string
+          offer_accepted: boolean | null
+          offer_accepted_at: string | null
           phone_number: string
           portfolio_link: string | null
           resume_url: string
@@ -30,6 +33,7 @@ export type Database = {
           updated_at: string
         }
         Insert: {
+          acceptance_token?: string | null
           created_at?: string
           email: string
           github_profile: string
@@ -37,6 +41,8 @@ export type Database = {
           job_applied_for: string
           linkedin_profile: string
           name: string
+          offer_accepted?: boolean | null
+          offer_accepted_at?: string | null
           phone_number: string
           portfolio_link?: string | null
           resume_url: string
@@ -44,6 +50,7 @@ export type Database = {
           updated_at?: string
         }
         Update: {
+          acceptance_token?: string | null
           created_at?: string
           email?: string
           github_profile?: string
@@ -51,6 +58,8 @@ export type Database = {
           job_applied_for?: string
           linkedin_profile?: string
           name?: string
+          offer_accepted?: boolean | null
+          offer_accepted_at?: string | null
           phone_number?: string
           portfolio_link?: string | null
           resume_url?: string
