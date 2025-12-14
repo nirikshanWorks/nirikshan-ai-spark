@@ -69,7 +69,9 @@ interface JobApplication {
   portfolio_link: string | null;
   job_applied_for: string;
   resume_url: string;
-  status?: "pending" | "selected" | "rejected" | "interview_scheduled";
+  status?: "pending" | "selected" | "rejected" | "interview_scheduled" | "offer_accepted";
+  offer_accepted?: boolean | null;
+  offer_accepted_at?: string | null;
 }
 
 type SortField = "created_at" | "name" | "job_applied_for" | "status";
@@ -242,11 +244,30 @@ const Applications = () => {
 
     setSending(true);
     try {
+      // For selection emails, generate an acceptance token first
+      let acceptanceToken: string | null = null;
+      if (emailDialog.type === "selection") {
+        acceptanceToken = crypto.randomUUID();
+        
+        // Save the acceptance token to the database
+        const { error: tokenError } = await supabase
+          .from("job_applications")
+          .update({ acceptance_token: acceptanceToken })
+          .eq("id", emailDialog.application.id);
+        
+        if (tokenError) {
+          console.error("Error saving acceptance token:", tokenError);
+          throw new Error("Failed to generate acceptance link");
+        }
+      }
+      
       const emailBody: any = {
         to: emailDialog.application.email,
         candidateName: emailDialog.application.name,
         position: emailDialog.application.job_applied_for,
         type: emailDialog.type,
+        acceptanceToken: acceptanceToken,
+        siteUrl: window.location.origin,
       };
       
       // Add interview details if it's an interview email
@@ -321,7 +342,12 @@ const Applications = () => {
     });
   };
 
-  const getStatusBadge = (status?: string) => {
+  const getStatusBadge = (status?: string, offerAccepted?: boolean | null) => {
+    if (offerAccepted === true) {
+      return (
+        <Badge className="bg-emerald-600 hover:bg-emerald-700">Offer Accepted</Badge>
+      );
+    }
     switch (status) {
       case "selected":
         return (
@@ -334,6 +360,10 @@ const Applications = () => {
           <Badge className="bg-blue-500 hover:bg-blue-600">
             Interview Scheduled
           </Badge>
+        );
+      case "offer_accepted":
+        return (
+          <Badge className="bg-emerald-600 hover:bg-emerald-700">Offer Accepted</Badge>
         );
       default:
         return <Badge variant="secondary">Pending</Badge>;
@@ -688,7 +718,7 @@ const Applications = () => {
                             )}
                           </div>
                         </TableCell>
-                        <TableCell>{getStatusBadge(app.status)}</TableCell>
+                        <TableCell>{getStatusBadge(app.status, app.offer_accepted)}</TableCell>
                         <TableCell>
                           <Button
                             onClick={() =>

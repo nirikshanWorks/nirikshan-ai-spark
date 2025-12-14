@@ -1,1 +1,10 @@
 project_id = "ggoqrdvlvapmcgonufds"
+
+[functions.send-application-email]
+verify_jwt = false
+
+[functions.verify-offer-acceptance]
+verify_jwt = false
+
+[functions.accept-offer]
+verify_jwt = false
