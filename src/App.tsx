@@ -25,7 +25,7 @@ const Testimonials = lazy(() => import("./pages/Testimonials"));
 const Journey = lazy(() => import("./pages/Journey"));
 const Applications = lazy(() => import("./pages/Applications"));
 const Auth = lazy(() => import("./pages/Auth"));
-const AcceptOffer = lazy(() => import("./pages/AcceptOffer"));
+import AcceptOffer from "./pages/AcceptOffer";
 const NotFound = lazy(() => import("./pages/NotFound"));
 
 const queryClient = new QueryClient();
