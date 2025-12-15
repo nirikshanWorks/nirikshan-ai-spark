@@ -1,8 +1,6 @@
 import { useState, useEffect } from "react";
 import { useSearchParams, Link } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
-import { Navigation } from "@/components/Navigation";
-import { Footer } from "@/components/Footer";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -10,20 +8,24 @@ import { Label } from "@/components/ui/label";
 import { useToast } from "@/hooks/use-toast";
 import { CheckCircle2, XCircle, Loader2, Mail, ArrowLeft, PartyPopper } from "lucide-react";
 
+type Step = "verify" | "accept" | "success" | "error" | "already_accepted";
+
+interface ApplicationData {
+  name: string;
+  position: string;
+  email: string;
+}
+
 const AcceptOffer = () => {
   const [searchParams] = useSearchParams();
   const token = searchParams.get("token");
   const { toast } = useToast();
 
-  const [step, setStep] = useState<"verify" | "accept" | "success" | "error" | "already_accepted">("verify");
+  const [step, setStep] = useState<Step>("verify");
   const [email, setEmail] = useState("");
   const [loading, setLoading] = useState(false);
   const [verifying, setVerifying] = useState(false);
-  const [applicationData, setApplicationData] = useState<{
-    name: string;
-    position: string;
-    email: string;
-  } | null>(null);
+  const [applicationData, setApplicationData] = useState<ApplicationData | null>(null);
   const [errorMessage, setErrorMessage] = useState("");
 
   useEffect(() => {
@@ -74,7 +76,7 @@ const AcceptOffer = () => {
         });
         setStep("accept");
       }
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error("Verification error:", error);
       toast({
         title: "Verification Error",
@@ -104,11 +106,12 @@ const AcceptOffer = () => {
       } else {
         throw new Error(data.error || "Failed to accept offer");
       }
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error("Accept offer error:", error);
+      const errorMsg = error instanceof Error ? error.message : "Failed to accept offer. Please try again.";
       toast({
         title: "Error",
-        description: error.message || "Failed to accept offer. Please try again.",
+        description: errorMsg,
         variant: "destructive",
       });
     } finally {
@@ -118,9 +121,21 @@ const AcceptOffer = () => {
 
   return (
     <div className="min-h-screen bg-background">
-      <Navigation />
+      {/* Simple Header */}
+      <header className="border-b bg-card">
+        <div className="container mx-auto px-4 py-4 flex items-center justify-between">
+          <Link to="/" className="flex items-center space-x-3">
+            <img
+              src="/Nirikshan_AI_Logo_new-removebg-preview.png"
+              alt="Nirikshan AI"
+              className="h-10 w-auto"
+            />
+            <span className="text-xl font-bold text-gradient">Nirikshan AI</span>
+          </Link>
+        </div>
+      </header>
       
-      <main className="container mx-auto px-4 py-20 md:py-32">
+      <main className="container mx-auto px-4 py-12 md:py-20">
         <div className="max-w-lg mx-auto">
           {step === "verify" && (
             <Card className="border-primary/20">
@@ -295,7 +310,12 @@ const AcceptOffer = () => {
         </div>
       </main>
 
-      <Footer />
+      {/* Simple Footer */}
+      <footer className="border-t bg-card mt-auto py-6">
+        <div className="container mx-auto px-4 text-center text-sm text-muted-foreground">
+          © {new Date().getFullYear()} Nirikshan AI Pvt. Ltd. All rights reserved.
+        </div>
+      </footer>
     </div>
   );
 };
