@@ -397,7 +397,7 @@ const WhoWeAre = () => {
               </div>
               <div className="relative flex justify-center">
                 <img
-                  src="https://res.cloudinary.com/dch0uyw8e/image/upload/v1760811387/Dinbg-removebg-preview_lqirls.png"
+                  src="https://res.cloudinary.com/dlqvk6v14/image/upload/v1766061891/Picsart_25-12-18_18-13-18-816_clp11p.png"
                   alt="Dinesh Yadav"
                   className="w-full max-w-sm h-auto drop-shadow-2xl"
                 />
@@ -408,7 +408,7 @@ const WhoWeAre = () => {
             <div className="grid gap-10 lg:grid-cols-[0.8fr,1.2fr] items-center">
               <div className="relative flex justify-center order-last lg:order-first">
                 <img
-                  src="https://res.cloudinary.com/dch0uyw8e/image/upload/v1760824873/908bbff4-13cf-42d9-8891-e44b92821d41.png"
+                  src="https://res.cloudinary.com/dlqvk6v14/image/upload/v1766061671/Picsart_25-12-18_18-09-42-855_nhoru2.png"
                   alt="Anshul"
                   className="w-full max-w-sm h-auto drop-shadow-2xl"
                 />
