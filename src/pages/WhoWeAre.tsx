@@ -1,27 +1,27 @@
-import { Navigation } from "@/components/Navigation";
+import anshulImage from "@/assets/team/anshul.jpg";
+import ashwinImage from "@/assets/team/ashwin-hole.jpg";
+import dineshImage from "@/assets/team/dinesh-yadav.jpg";
+import wwaTeamVideo from "@/assets/wwa-team.mp4";
 import { Footer } from "@/components/Footer";
+import { Navigation } from "@/components/Navigation";
 import { Button } from "@/components/ui/button";
+import { useScrollAnimation } from "@/hooks/use-scroll-animation";
 import {
   ArrowRight,
   ArrowUp,
-  Sparkles,
   Focus,
-  Rocket,
-  Users2,
-  GraduationCap,
-  ShieldCheck,
   Globe2,
-  Quote,
+  GraduationCap,
+  Linkedin,
   Milestone,
-  Linkedin
+  Quote,
+  Rocket,
+  ShieldCheck,
+  Sparkles,
+  Users2
 } from "lucide-react";
-import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { useScrollAnimation } from "@/hooks/use-scroll-animation";
-import wwaTeamVideo from "@/assets/wwa-team.mp4";
-import dineshImage from "@/assets/team/dinesh-yadav.jpg";
-import anshulImage from "@/assets/team/anshul.jpg";
-import ashwinImage from "@/assets/team/ashwin-hole.jpg";
+import { Link } from "react-router-dom";
 
 const values = [
   {
@@ -264,9 +264,9 @@ const WhoWeAre = () => {
               {leadership.map((member) => (
                 <div
                   key={member.name}
-                  className="group relative w-full max-w-sm overflow-hidden rounded-3xl border border-border bg-background shadow-sm hover:shadow-2xl transition-all duration-300"
+                  className="group relative w-full max-w-md overflow-hidden rounded-3xl border border-border bg-background shadow-sm hover:shadow-2xl transition-all duration-300"
                 >
-                  <div className="relative h-56 overflow-hidden">
+                  <div className="relative h-80 overflow-hidden">
                     <img
                       src={member.image}
                       alt={member.name}
