@@ -25,7 +25,6 @@ const Testimonials = lazy(() => import("./pages/Testimonials"));
 const Journey = lazy(() => import("./pages/Journey"));
 const Applications = lazy(() => import("./pages/Applications"));
 const Auth = lazy(() => import("./pages/Auth"));
-const AcceptOffer = lazy(() => import("./pages/AcceptOffer"));
 const NotFound = lazy(() => import("./pages/NotFound"));
 
 const queryClient = new QueryClient();
@@ -62,7 +61,6 @@ const App = () => (
                 <Route path="/journey" element={<Journey />} />
                 <Route path="/auth" element={<Auth />} />
                 <Route path="/applications" element={<Applications />} />
-                <Route path="/accept-offer" element={<AcceptOffer />} />
                 <Route path="/privacy" element={<Privacy />} />
                 <Route path="/terms" element={<Terms />} />
                 <Route path="*" element={<NotFound />} />

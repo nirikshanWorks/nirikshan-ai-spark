@@ -14,8 +14,6 @@ interface EmailRequest {
   interviewDate?: string;
   interviewTime?: string;
   meetLink?: string;
-  acceptanceToken?: string;
-  siteUrl?: string;
 }
 
 const handler = async (req: Request): Promise<Response> => {
@@ -24,11 +22,10 @@ const handler = async (req: Request): Promise<Response> => {
   }
 
   try {
-    const { to, candidateName, position, type, interviewDate, interviewTime, meetLink, acceptanceToken, siteUrl }: EmailRequest = await req.json();
+    const { to, candidateName, position, type, interviewDate, interviewTime, meetLink }: EmailRequest = await req.json();
     
     console.log(`Sending ${type} email to ${to} for ${candidateName}`);
     console.log(`Interview details - Date: "${interviewDate}", Time: "${interviewTime}", Meet: "${meetLink}"`);
-    console.log(`Acceptance token: ${acceptanceToken}, Site URL: ${siteUrl}`);
 
 
     const gmailUser = Deno.env.get("GMAIL_USER");
@@ -55,10 +52,6 @@ const handler = async (req: Request): Promise<Response> => {
     let htmlContent = "";
 
     if (type === "selection") {
-      const acceptanceUrl = acceptanceToken && siteUrl 
-        ? `${siteUrl}/accept-offer?token=${acceptanceToken}`
-        : null;
-      
       subject = `🎉 Congratulations! You've been selected - ${position}`;
       htmlContent = `
         <!DOCTYPE html>
@@ -76,16 +69,12 @@ const handler = async (req: Request): Promise<Response> => {
               <p style="color:#555; line-height:1.6;">
                 We are thrilled to inform you that you have been <strong style="color:#22c55e;">selected</strong> for the <strong>${position}</strong> position at Nirikshan AI!
               </p>
-              ${acceptanceUrl ? `
               <div style="background:#f0fdf4; border:1px solid #22c55e; border-radius:8px; padding:20px; margin:20px 0; text-align:center;">
-                <h3 style="color:#16a34a; margin:0 0 10px; font-size:16px;">🎯 Accept Your Offer</h3>
-                <p style="color:#555; margin:0 0 15px; font-size:14px;">Please click the button below to accept your offer and confirm your joining.</p>
-                <a href="${acceptanceUrl}" style="display:inline-block; background:linear-gradient(135deg,#22c55e,#16a34a); color:#fff; padding:14px 28px; border-radius:8px; text-decoration:none; font-weight:bold; font-size:16px;">Accept Offer</a>
-                <p style="color:#888; font-size:12px; margin-top:15px;">Or copy this link: ${acceptanceUrl}</p>
+                <h3 style="color:#16a34a; margin:0 0 10px; font-size:16px;">📄 Offer Letter</h3>
+                <p style="color:#555; margin:0; font-size:14px;">Your official offer letter will be shared with you soon. Please keep an eye on your inbox!</p>
               </div>
-              ` : ''}
               <p style="color:#555; line-height:1.6;">
-                Our team will contact you shortly with onboarding details and next steps after you accept the offer.
+                Our team will contact you shortly with onboarding details and next steps.
               </p>
               <p style="color:#555; margin-top:25px;">
                 Best regards,<br><strong style="color:#8b5cf6;">The Nirikshan AI Team</strong>
