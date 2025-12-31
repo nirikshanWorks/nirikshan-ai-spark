@@ -2,6 +2,17 @@ import { Navigation } from "@/components/Navigation";
 import { Footer } from "@/components/Footer";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import { HeroParticles } from "@/components/HeroParticles";
+import { FloatingElements } from "@/components/FloatingElements";
+import {
+  FadeUp,
+  SlideLeft,
+  SlideRight,
+  ScaleUp,
+  StaggerContainer,
+  StaggerItem,
+  BlurIn,
+} from "@/components/ScrollAnimations";
 import {
   ArrowRight,
   BellRing,
@@ -364,14 +375,18 @@ const Careers = () => {
             />
           </div>
           <div className="absolute inset-0 bg-gradient-to-br from-slate-950/85 via-slate-900/70 to-slate-900/80" />
+          
+          {/* Particle effects */}
+          <HeroParticles />
+          <FloatingElements count={6} />
+          
           <div className="absolute inset-0 pointer-events-none">
-            <div className="absolute top-10 left-10 h-24 w-24 rounded-2xl border border-white/15 rotate-12" />
-            <div className="absolute bottom-12 right-16 h-28 w-28 rounded-full border border-white/10" />
-            <div className="absolute top-1/2 left-1/3 h-12 w-12 -translate-y-1/2 rounded-full bg-white/10 blur-2xl" />
+            <div className="absolute top-10 left-10 h-24 w-24 rounded-2xl border border-white/15 rotate-12 animate-spin-slow" />
+            <div className="absolute bottom-12 right-16 h-28 w-28 rounded-full border border-white/10 animate-pulse-slow" />
           </div>
           <div className="relative z-10">
             <div className="container mx-auto px-6 py-20 md:py-28 flex flex-col items-center text-center gap-10">
-              <div className="max-w-3xl mx-auto">
+              <FadeUp className="max-w-3xl mx-auto">
                 <span className="inline-flex items-center gap-2 rounded-full bg-white/10 px-4 py-1 text-xs font-semibold uppercase tracking-[0.2em] text-white/80 mb-5">
                   Careers at Nirikshan AI
                 </span>
@@ -395,64 +410,75 @@ const Careers = () => {
                     </Button>
                   </a>
                 </div>
-              </div>
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-6 w-full max-w-3xl">
+              </FadeUp>
+              <StaggerContainer className="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-6 w-full max-w-3xl">
                 {statsHighlights.map((item) => (
-                  <div
-                    key={item.label}
-                    className="rounded-2xl border border-white/10 bg-white/5 px-6 py-4 text-white text-center backdrop-blur-md"
-                  >
-                    <p className="text-sm text-white/70 mb-1">{item.label}</p>
-                    <p className="text-2xl font-semibold">{item.value}</p>
-                  </div>
+                  <StaggerItem key={item.label}>
+                    <div className="rounded-2xl border border-white/10 bg-white/5 px-6 py-4 text-white text-center backdrop-blur-md hover:bg-white/10 transition-colors">
+                      <p className="text-sm text-white/70 mb-1">{item.label}</p>
+                      <p className="text-2xl font-semibold">{item.value}</p>
+                    </div>
+                  </StaggerItem>
                 ))}
-              </div>
+              </StaggerContainer>
             </div>
           </div>
         </section>
 
         {/* Why Join Us */}
         <section className="py-20 container mx-auto px-6">
-          <div className="text-center mb-12">
+          <FadeUp className="text-center mb-12">
             <h2 className="text-3xl md:text-4xl font-bold mb-4">Why Nirikshan AI Pvt. Ltd.?</h2>
             <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
               We're building something special, and we want you to be part of it
             </p>
-          </div>
-          <div className="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto">
-            <Card className="p-6">
-              <h3 className="text-xl font-semibold mb-3">Impactful Work</h3>
-              <p className="text-muted-foreground">
-                Work on projects that make a real difference. Our solutions impact millions of 
-                users and transform entire industries.
-              </p>
-            </Card>
-            <Card className="p-6">
-              <h3 className="text-xl font-semibold mb-3">Growth & Learning</h3>
-              <p className="text-muted-foreground">
-                Continuous learning opportunities, mentorship from experts, and access to cutting-edge 
-                technologies and training resources.
-              </p>
-            </Card>
-            <Card className="p-6">
-              <h3 className="text-xl font-semibold mb-3">Great Culture</h3>
-              <p className="text-muted-foreground">
-                Collaborative, inclusive environment where your ideas matter. We celebrate diversity 
-                and value every team member's perspective.
-              </p>
-            </Card>
-          </div>
+          </FadeUp>
+          <StaggerContainer className="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto" staggerDelay={0.15}>
+            <StaggerItem>
+              <ScaleUp>
+                <Card className="p-6 h-full hover:shadow-lg hover:shadow-primary/10 transition-all hover:-translate-y-1">
+                  <h3 className="text-xl font-semibold mb-3">Impactful Work</h3>
+                  <p className="text-muted-foreground">
+                    Work on projects that make a real difference. Our solutions impact millions of 
+                    users and transform entire industries.
+                  </p>
+                </Card>
+              </ScaleUp>
+            </StaggerItem>
+            <StaggerItem>
+              <ScaleUp delay={0.1}>
+                <Card className="p-6 h-full hover:shadow-lg hover:shadow-primary/10 transition-all hover:-translate-y-1">
+                  <h3 className="text-xl font-semibold mb-3">Growth & Learning</h3>
+                  <p className="text-muted-foreground">
+                    Continuous learning opportunities, mentorship from experts, and access to cutting-edge 
+                    technologies and training resources.
+                  </p>
+                </Card>
+              </ScaleUp>
+            </StaggerItem>
+            <StaggerItem>
+              <ScaleUp delay={0.2}>
+                <Card className="p-6 h-full hover:shadow-lg hover:shadow-primary/10 transition-all hover:-translate-y-1">
+                  <h3 className="text-xl font-semibold mb-3">Great Culture</h3>
+                  <p className="text-muted-foreground">
+                    Collaborative, inclusive environment where your ideas matter. We celebrate diversity 
+                    and value every team member's perspective.
+                  </p>
+                </Card>
+              </ScaleUp>
+            </StaggerItem>
+          </StaggerContainer>
         </section>
 
         {/* Open Positions */}
         <section className="py-20 bg-secondary/30">
           <div className="container mx-auto px-6">
-            <div className="text-center mb-12">
+            <FadeUp className="text-center mb-12">
               <h2 className="text-3xl md:text-4xl font-bold mb-4">Open Positions</h2>
               <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
                 Join our team and work on cutting-edge AI projects. We're looking for passionate individuals ready to make an impact.
               </p>
-            </div>
+            </FadeUp>
             
             {jobOpenings.length > 0 ? (
               <div className="max-w-5xl mx-auto space-y-6">
