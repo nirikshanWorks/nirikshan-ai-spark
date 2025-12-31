@@ -157,34 +157,6 @@ const hiringSteps = [
 
 const jobOpenings = [
   {
-    code: "NAI-AI-INT-01",
-    title: "AI Engineer",
-    type: "Internship",
-    location: "Remote / Work from Home",
-    duration: "3–6 Months",
-    stipend: "Performance-based",
-    overview: "You'll work on real AI/ML projects — not dummy assignments. Expect hands-on tasks in Computer Vision, Generative AI, Agentic Systems, and Image/Video Recognition. If your fundamentals are weak or you can't learn fast, this role will expose that.",
-    responsibilities: [
-      "Build and optimize AI/ML models for production use",
-      "Work with OpenCV for image/video processing",
-      "Implement Generative AI pipelines (LLMs, diffusion models, transformers)",
-      "Experiment with Agentic AI workflows",
-      "Prepare datasets, train models, and test accuracy",
-      "Assist senior engineers with deployments & documentation"
-    ],
-    required: [
-      "Basic understanding of Python",
-      "Familiarity with ML concepts (train/test, CNNs, embeddings)",
-      "Curiosity to explore OpenCV, LLMs, and Computer Vision",
-      "Ability to research and implement without spoon-feeding"
-    ],
-    goodToHave: [
-      "Knowledge of TensorFlow / PyTorch",
-      "Experience with GPU workflows",
-      "Personal AI/ML projects"
-    ]
-  },
-  {
     code: "NAI-SALES-INT-02",
     title: "Sales Executive",
     type: "Internship",
