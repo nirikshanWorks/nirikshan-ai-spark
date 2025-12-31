@@ -12,6 +12,7 @@ import { CTASection } from "@/components/CTASection";
 import { AIExpertiseSection } from "@/components/AIExpertiseSection";
 import { TAMSection } from "@/components/TAMSection";
 import { AIParticles } from "@/components/AIParticles";
+import { TestimonialsCarousel3D } from "@/components/TestimonialsCarousel3D";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -335,6 +336,9 @@ const Index = () => {
             </div>
           </div>
         </section>
+
+        {/* Testimonials Carousel */}
+        <TestimonialsCarousel3D />
 
         {/* Process Section */}
         <ProcessSection />
