@@ -2,6 +2,9 @@ import { Navigation } from "@/components/Navigation";
 import { Footer } from "@/components/Footer";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
+import { HeroParticles } from "@/components/HeroParticles";
+import { FloatingElements } from "@/components/FloatingElements";
+import { ProductCarousel3D } from "@/components/ProductCarousel3D";
 import { 
   Brain, 
   Eye, 
@@ -497,8 +500,8 @@ const Services = () => {
       <Navigation />
 
       <main className="pt-16">
-        {/* Hero Section with 3D depth */}
-        <section className="relative h-[400px] md:h-[500px] overflow-hidden group perspective-container" ref={heroRef.ref}>
+        {/* Hero Section with 3D depth and particles */}
+        <section className="relative h-[450px] md:h-[550px] overflow-hidden group perspective-container" ref={heroRef.ref}>
           <img 
             src={heroAI} 
             alt="Our Services" 
@@ -508,26 +511,57 @@ const Services = () => {
           <div className="absolute inset-0 bg-gradient-to-r from-slate-950/90 via-slate-900/70 to-transparent" />
           <div className="absolute inset-0 bg-gradient-to-t from-slate-950/70 via-transparent to-slate-900/40" />
           
-          {/* Floating orbs for 3D effect */}
-          <div className="absolute top-1/4 right-1/4 w-40 h-40 rounded-full bg-gradient-to-br from-primary/30 to-accent/20 blur-3xl floating opacity-50" />
-          <div className="absolute bottom-1/3 left-1/4 w-32 h-32 rounded-full bg-gradient-to-tr from-accent/20 to-primary/30 blur-2xl floating-delayed opacity-40" />
+          {/* Particle effects */}
+          <HeroParticles />
+          
+          {/* Floating elements */}
+          <FloatingElements count={8} />
           
           <div className="relative z-10 container mx-auto px-6 h-full flex items-center">
             <div className={`max-w-3xl transition-all duration-1000 ${
               heroRef.isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
             }`}>
-              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/10 backdrop-blur-sm border border-white/20 text-white/90 text-sm font-medium mb-6">
-                <Zap size={16} className="text-accent" />
+              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/10 backdrop-blur-sm border border-white/20 text-white/90 text-sm font-medium mb-6 animate-fade-in">
+                <Zap size={16} className="text-accent animate-pulse" />
                 <span>Full-Stack Technology Solutions</span>
               </div>
-              <h1 className="text-4xl md:text-6xl font-bold text-white mb-6 leading-tight">
+              <h1 className="text-4xl md:text-6xl font-bold text-white mb-6 leading-tight animate-fade-in" style={{ animationDelay: '0.1s' }}>
                 Our <span className="text-gradient">Services</span>
               </h1>
-              <div className="h-1 w-24 bg-gradient-to-r from-primary to-accent rounded-full mb-6" />
-              <p className="text-lg md:text-xl text-white/85 max-w-2xl leading-relaxed">
+              <div className="h-1 w-24 bg-gradient-to-r from-primary to-accent rounded-full mb-6 animate-fade-in" style={{ animationDelay: '0.15s' }} />
+              <p className="text-lg md:text-xl text-white/85 max-w-2xl leading-relaxed animate-fade-in" style={{ animationDelay: '0.2s' }}>
                 Comprehensive technology solutions powered by deep expertise and innovation across AI, Cloud, and Enterprise domains
               </p>
             </div>
+          </div>
+        </section>
+
+        {/* 3D Product Carousel */}
+        <section className="py-16 bg-gradient-to-b from-background via-secondary/20 to-background">
+          <div className="container mx-auto px-6">
+            <div className="text-center mb-8">
+              <h2 className="text-3xl md:text-4xl font-bold mb-4">Explore Our Solutions</h2>
+              <div className="h-1 w-16 bg-gradient-to-r from-primary to-accent mx-auto rounded-full mb-4" />
+              <p className="text-muted-foreground max-w-2xl mx-auto">
+                Interactive 3D showcase of our core technology offerings
+              </p>
+            </div>
+            <ProductCarousel3D
+              items={servicesData.slice(0, 6).map((service, idx) => ({
+                icon: service.icon,
+                title: service.title.split(' ').slice(0, 3).join(' '),
+                description: service.shortDesc,
+                features: service.features,
+                color: [
+                  'hsl(216, 82%, 62%)',
+                  'hsl(192, 100%, 42%)',
+                  'hsl(266, 73%, 45%)',
+                  'hsl(142, 71%, 45%)',
+                  'hsl(38, 92%, 50%)',
+                  'hsl(340, 82%, 52%)',
+                ][idx],
+              }))}
+            />
           </div>
         </section>
 

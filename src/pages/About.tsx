@@ -3,6 +3,8 @@ import { Navigation } from "@/components/Navigation";
 import { Button } from "@/components/ui/button";
 import { useScrollAnimation } from "@/hooks/use-scroll-animation";
 import GlobeSection from "@/components/Globe";
+import { HeroParticles } from "@/components/HeroParticles";
+import { FloatingElements } from "@/components/FloatingElements";
 import {
   ArrowRight,
   Award,
@@ -135,8 +137,8 @@ const About = () => {
       <Navigation />
       
       <main className="pt-16">
-        {/* Hero with 3D depth */}
-        <section className="relative h-[400px] md:h-[500px] overflow-hidden group perspective-container">
+        {/* Hero with 3D depth and particles */}
+        <section className="relative h-[450px] md:h-[550px] overflow-hidden group perspective-container">
           <video 
             src="https://res.cloudinary.com/dch0uyw8e/video/upload/v1760826173/6_wrsepd.mp4"
             autoPlay
@@ -149,23 +151,25 @@ const About = () => {
           <div className="absolute inset-0 bg-gradient-to-r from-slate-950/90 via-slate-900/70 to-transparent" />
           <div className="absolute inset-0 bg-gradient-to-t from-slate-950/60 via-transparent to-slate-900/30" />
           
-          {/* Floating decorative elements */}
-          <div className="absolute top-20 right-20 w-32 h-32 rounded-full bg-gradient-to-br from-primary/30 to-accent/20 blur-3xl floating opacity-60" />
-          <div className="absolute bottom-20 left-1/3 w-24 h-24 rounded-full bg-gradient-to-br from-accent/20 to-primary/30 blur-2xl floating-delayed opacity-50" />
+          {/* Particle effects */}
+          <HeroParticles />
+          
+          {/* Floating elements */}
+          <FloatingElements count={8} />
           
           <div className="relative z-10 container mx-auto px-6 h-full flex items-center">
             <div className="max-w-3xl">
-              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/10 backdrop-blur-sm border border-white/20 text-white/90 text-sm font-medium mb-6">
-                <Sparkles size={16} className="text-accent" />
+              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/10 backdrop-blur-sm border border-white/20 text-white/90 text-sm font-medium mb-6 animate-fade-in">
+                <Sparkles size={16} className="text-accent animate-pulse" />
                 <span>AI-First Innovation Company</span>
               </div>
-              <h1 className="text-4xl md:text-6xl font-bold text-white mb-6 leading-tight">
+              <h1 className="text-4xl md:text-6xl font-bold text-white mb-6 leading-tight animate-fade-in" style={{ animationDelay: '0.1s' }}>
                 About <span className="text-gradient">Nirikshan AI</span>
               </h1>
-              <p className="text-lg md:text-xl text-white/85 max-w-2xl leading-relaxed">
+              <p className="text-lg md:text-xl text-white/85 max-w-2xl leading-relaxed animate-fade-in" style={{ animationDelay: '0.2s' }}>
                 We specialize in OpenCV, Generative AI, and Agentic AI — crafting intelligent systems that combine vision, reasoning, and autonomy for enterprises worldwide.
               </p>
-              <div className="mt-8 flex items-center gap-4">
+              <div className="mt-8 flex items-center gap-4 animate-fade-in" style={{ animationDelay: '0.3s' }}>
                 <div className="h-1 w-24 bg-gradient-to-r from-primary to-accent rounded-full" />
                 <span className="text-white/60 text-sm">Transforming ideas into intelligence</span>
               </div>
