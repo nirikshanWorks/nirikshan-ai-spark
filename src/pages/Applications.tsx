@@ -51,6 +51,7 @@ import {
   MoreHorizontal,
   Phone,
   Send,
+  Trash2,
   XCircle,
 } from "lucide-react";
 import { useCallback, useEffect, useMemo, useState } from "react";
@@ -108,6 +109,13 @@ const Applications = () => {
   const [interviewDate, setInterviewDate] = useState("");
   const [interviewTime, setInterviewTime] = useState("");
   const [meetLink, setMeetLink] = useState("");
+  
+  // Delete dialog state
+  const [deleteDialog, setDeleteDialog] = useState<{
+    open: boolean;
+    application: JobApplication | null;
+  }>({ open: false, application: null });
+  const [deleting, setDeleting] = useState(false);
 
   const fetchApplications = useCallback(async () => {
     try {
@@ -355,6 +363,63 @@ const Applications = () => {
     await signOut();
     toast.success("Logged out successfully");
     navigate("/auth");
+  };
+
+  const openDeleteDialog = (application: JobApplication) => {
+    setDeleteDialog({ open: true, application });
+  };
+
+  const closeDeleteDialog = () => {
+    setDeleteDialog({ open: false, application: null });
+  };
+
+  const handleDeleteApplication = async () => {
+    if (!deleteDialog.application) return;
+
+    setDeleting(true);
+    try {
+      // First, delete the resume from storage
+      let filePath = deleteDialog.application.resume_url;
+      if (filePath.includes("/storage/v1/object/public/resumes/")) {
+        filePath = filePath.split("/storage/v1/object/public/resumes/")[1];
+      } else if (filePath.includes("/resumes/")) {
+        filePath = filePath.split("/resumes/")[1];
+      }
+
+      const { error: storageError } = await supabase.storage
+        .from("resumes")
+        .remove([filePath]);
+
+      if (storageError) {
+        console.error("Error deleting resume from storage:", storageError);
+        // Continue with database deletion even if storage fails
+      }
+
+      // Delete from database
+      const { error: dbError } = await supabase
+        .from("job_applications")
+        .delete()
+        .eq("id", deleteDialog.application.id);
+
+      if (dbError) {
+        console.error("Error deleting application:", dbError);
+        toast.error("Failed to delete application");
+        return;
+      }
+
+      // Update local state
+      setApplications((prev) =>
+        prev.filter((app) => app.id !== deleteDialog.application?.id)
+      );
+
+      toast.success(`Application from ${deleteDialog.application.name} deleted successfully`);
+      closeDeleteDialog();
+    } catch (err) {
+      console.error("Delete error:", err);
+      toast.error("Failed to delete application");
+    } finally {
+      setDeleting(false);
+    }
   };
 
   // Replace the existing exportToExcel with this version
@@ -742,6 +807,13 @@ const Applications = () => {
                                 <XCircle className="h-4 w-4 mr-2" />
                                 Send Rejection Email
                               </DropdownMenuItem>
+                              <DropdownMenuItem
+                                onClick={() => openDeleteDialog(app)}
+                                className="text-destructive focus:text-destructive"
+                              >
+                                <Trash2 className="h-4 w-4 mr-2" />
+                                Delete Application
+                              </DropdownMenuItem>
                             </DropdownMenuContent>
                           </DropdownMenu>
                         </TableCell>
@@ -891,6 +963,55 @@ const Applications = () => {
                 <>
                   <Send className="h-4 w-4 mr-2" />
                   Send Email
+                </>
+              )}
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
+      {/* Delete Confirmation Dialog */}
+      <Dialog
+        open={deleteDialog.open}
+        onOpenChange={(open) => !open && closeDeleteDialog()}
+      >
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle className="flex items-center gap-2">
+              <Trash2 className="h-5 w-5 text-destructive" />
+              Delete Application
+            </DialogTitle>
+            <DialogDescription>
+              Are you sure you want to permanently delete the application from{" "}
+              <strong>{deleteDialog.application?.name}</strong> for{" "}
+              <strong>{deleteDialog.application?.job_applied_for}</strong>?
+              <br />
+              <br />
+              This action cannot be undone. The resume file will also be deleted from storage.
+            </DialogDescription>
+          </DialogHeader>
+          <DialogFooter className="gap-2 sm:gap-0">
+            <Button
+              variant="outline"
+              onClick={closeDeleteDialog}
+              disabled={deleting}
+            >
+              Cancel
+            </Button>
+            <Button
+              variant="destructive"
+              onClick={handleDeleteApplication}
+              disabled={deleting}
+            >
+              {deleting ? (
+                <>
+                  <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
+                  Deleting...
+                </>
+              ) : (
+                <>
+                  <Trash2 className="h-4 w-4 mr-2" />
+                  Delete
                 </>
               )}
             </Button>
