@@ -11,6 +11,8 @@ import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 import { Switch } from "@/components/ui/switch";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { HeroParticles } from "@/components/HeroParticles";
+import { FloatingElements } from "@/components/FloatingElements";
 import {
   AlarmClock,
   ArrowUpRight,
@@ -265,11 +267,18 @@ const Contact = () => {
       <Navigation />
       
       <main className="pt-16">
-        {/* Hero */}
-        <section className="relative overflow-hidden py-24">
+        {/* Hero with particles */}
+        <section className="relative overflow-hidden py-28">
           <div className="absolute inset-0 bg-gradient-to-br from-indigo-900 via-slate-900 to-slate-950" aria-hidden="true" />
-          <div className="absolute -top-40 right-[-10%] h-[420px] w-[420px] rounded-full bg-primary/20 blur-3xl opacity-70" aria-hidden="true" />
-          <div className="absolute bottom-[-20%] left-[-10%] h-[360px] w-[360px] rounded-full bg-sky-500/20 blur-3xl opacity-70" aria-hidden="true" />
+          
+          {/* Particle effects */}
+          <HeroParticles />
+          
+          {/* Floating elements */}
+          <FloatingElements count={10} />
+          
+          <div className="absolute -top-40 right-[-10%] h-[420px] w-[420px] rounded-full bg-primary/20 blur-3xl opacity-70 animate-pulse-slow" aria-hidden="true" />
+          <div className="absolute bottom-[-20%] left-[-10%] h-[360px] w-[360px] rounded-full bg-sky-500/20 blur-3xl opacity-70 animate-float-slow" aria-hidden="true" />
           <div className="relative container mx-auto px-6">
             <div className="mx-auto max-w-4xl text-center space-y-8">
               <Badge className="inline-flex items-center gap-2 bg-white/10 text-white">
