@@ -13,6 +13,7 @@ import { AIExpertiseSection } from "@/components/AIExpertiseSection";
 import { TAMSection } from "@/components/TAMSection";
 import { AIParticles } from "@/components/AIParticles";
 import { TestimonialsCarousel3D } from "@/components/TestimonialsCarousel3D";
+import { FadeUp, StaggerContainer, StaggerItem, SlideLeft, SlideRight } from "@/components/ScrollAnimations";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -227,7 +228,7 @@ const Index = () => {
 
         {/* Services Section */}
         <section className="py-20 container mx-auto px-6">
-          <div className="text-center mb-12">
+          <FadeUp className="text-center mb-12">
             <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 text-primary font-semibold mb-4">
               <Sparkles className="w-4 h-4" />
               <span className="text-sm uppercase tracking-wider">Technology Expertise & Implementation Capabilities</span>
@@ -236,61 +237,67 @@ const Index = () => {
             <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
               Modern engineering services co-piloted by OpenCV, generative, and agentic AI frameworks to accelerate delivery and unlock new value chains.
             </p>
-          </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          </FadeUp>
+          <StaggerContainer className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" staggerDelay={0.1}>
             {services.map((service, index) => (
-              <ServiceCard key={index} {...service} />
+              <StaggerItem key={index}>
+                <ServiceCard {...service} />
+              </StaggerItem>
             ))}
-          </div>
-          <div className="text-center mt-12">
+          </StaggerContainer>
+          <FadeUp delay={0.3} className="text-center mt-12">
             <Link to="/expertise">
               <Button size="lg" variant="outline">
                 View All Services
                 <ArrowRight className="ml-2" size={20} />
               </Button>
             </Link>
-          </div>
+          </FadeUp>
         </section>
 
         {/* Mission Section */}
         <section className="py-20 bg-gradient-to-b from-secondary/30 to-background">
           <div className="container mx-auto px-6">
             <div className="max-w-5xl mx-auto">
-              <div className="text-center mb-12">
+              <FadeUp className="text-center mb-12">
                 <p className="text-accent text-sm font-semibold mb-3 uppercase tracking-wider">Our Mission</p>
                 <h2 className="text-4xl md:text-5xl font-bold mb-6">Empowering Businesses Through AI</h2>
                 <p className="text-xl text-muted-foreground">
                   Making cutting-edge technology accessible and practical for everyone
                 </p>
-              </div>
-              <Card className="p-10 md:p-14 card-hover border-2 border-border relative overflow-hidden group">
-                <div className="absolute top-0 right-0 w-64 h-64 bg-primary/5 rounded-full -mr-32 -mt-32 group-hover:scale-150 transition-transform duration-700" />
-                <div className="relative z-10">
-                  <div className="flex flex-col md:flex-row gap-8">
-                    <div className="flex-1">
-                      <p className="text-lg leading-relaxed text-muted-foreground mb-6">
-                        We're here to bring the power of AI to everyone, not just the big players. Think of us as your local AI partner – making smart technology simple, affordable, and actually useful for businesses like yours.
-                      </p>
-                      <p className="text-lg leading-relaxed text-muted-foreground">
-                        Whether you're running a startup, a small business, or have a great idea you want to bring to life, we're here to help turn complex AI into practical solutions that make a real difference in our community. No corporate jargon, just real solutions for real people.
-                      </p>
-                    </div>
-                    <div className="md:w-64 flex flex-col gap-4">
-                      {[
-                        "Simple & Accessible",
-                        "Affordable Solutions",
-                        "Real Results",
-                        "Local Partnership"
-                      ].map((item, i) => (
-                        <div key={i} className="flex items-center gap-3 p-3 rounded-lg bg-secondary/50 group-hover:bg-primary/10 transition-colors">
-                          <CheckCircle2 className="text-primary flex-shrink-0" size={20} />
-                          <span className="font-medium">{item}</span>
+              </FadeUp>
+              <SlideLeft>
+                <Card className="p-10 md:p-14 card-hover border-2 border-border relative overflow-hidden group">
+                  <div className="absolute top-0 right-0 w-64 h-64 bg-primary/5 rounded-full -mr-32 -mt-32 group-hover:scale-150 transition-transform duration-700" />
+                  <div className="relative z-10">
+                    <div className="flex flex-col md:flex-row gap-8">
+                      <div className="flex-1">
+                        <p className="text-lg leading-relaxed text-muted-foreground mb-6">
+                          We're here to bring the power of AI to everyone, not just the big players. Think of us as your local AI partner – making smart technology simple, affordable, and actually useful for businesses like yours.
+                        </p>
+                        <p className="text-lg leading-relaxed text-muted-foreground">
+                          Whether you're running a startup, a small business, or have a great idea you want to bring to life, we're here to help turn complex AI into practical solutions that make a real difference in our community. No corporate jargon, just real solutions for real people.
+                        </p>
+                      </div>
+                      <SlideRight delay={0.2}>
+                        <div className="md:w-64 flex flex-col gap-4">
+                          {[
+                            "Simple & Accessible",
+                            "Affordable Solutions",
+                            "Real Results",
+                            "Local Partnership"
+                          ].map((item, i) => (
+                            <div key={i} className="flex items-center gap-3 p-3 rounded-lg bg-secondary/50 group-hover:bg-primary/10 transition-colors">
+                              <CheckCircle2 className="text-primary flex-shrink-0" size={20} />
+                              <span className="font-medium">{item}</span>
+                            </div>
+                          ))}
                         </div>
-                      ))}
+                      </SlideRight>
                     </div>
                   </div>
-                </div>
-              </Card>
+                </Card>
+              </SlideLeft>
             </div>
           </div>
         </section>
@@ -301,13 +308,13 @@ const Index = () => {
         {/* Our Partners */}
         <section className="py-16 bg-background">
           <div className="container mx-auto px-6">
-            <div className="text-center mb-10">
+            <FadeUp className="text-center mb-10">
               <p className="text-accent text-sm font-semibold mb-3 uppercase tracking-wider">Trusted By</p>
               <h2 className="text-3xl md:text-4xl font-bold mb-4">Our Clients</h2>
               <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
                 Collaborating with forward-thinking organizations to drive innovation together
               </p>
-            </div>
+            </FadeUp>
             <div
               className="overflow-hidden"
               ref={partnersContainerRef}
@@ -321,7 +328,7 @@ const Index = () => {
               <div className="flex gap-8 min-w-max items-center">
                 {duplicatedPartners.map((partner, index) => (
                   <div key={`${partner.name}-${index}`} className="w-48 flex-shrink-0">
-                    <div className="h-32 w-full bg-secondary/40 border border-border rounded-xl flex items-center justify-center p-6">
+                    <div className="h-32 w-full bg-secondary/40 border border-border rounded-xl flex items-center justify-center p-6 hover:border-primary/50 transition-colors">
                       <img
                         src={partner.logo}
                         alt={partner.name}
@@ -352,12 +359,12 @@ const Index = () => {
         {/* Industries Section */}
         <section className="py-20 bg-secondary/30">
           <div className="container mx-auto px-6">
-            <div className="text-center mb-12">
+            <FadeUp className="text-center mb-12">
               <h2 className="text-3xl md:text-4xl font-bold mb-4">Industries We Serve</h2>
               <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
                 Delivering tailored solutions across diverse sectors
               </p>
-            </div>
+            </FadeUp>
             <div
               className="overflow-hidden"
               ref={industriesContainerRef}
