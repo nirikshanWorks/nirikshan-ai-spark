@@ -417,7 +417,7 @@ const ServiceDetail = ({ service, index }: { service: typeof servicesData[0], in
   const contentRef = useScrollAnimation(0.2);
 
   return (
-    <section className={`py-20 ${index % 2 === 0 ? "bg-white dark:bg-slate-900" : "bg-secondary/30"}`}>
+    <section className={`py-20 ${index % 2 === 0 ? "bg-background" : "bg-secondary/30"}`}>
       <div className="container mx-auto px-6" ref={contentRef.ref}>
         <div className={`grid md:grid-cols-2 gap-12 items-center transition-all duration-1000 ${
           contentRef.isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
@@ -425,7 +425,7 @@ const ServiceDetail = ({ service, index }: { service: typeof servicesData[0], in
           {/* Left side - Icon and description */}
           <div className={index % 2 === 1 ? "order-2" : ""}>
             <div className="flex items-center gap-4 mb-6">
-              <div className="w-16 h-16 rounded-xl gradient-primary flex items-center justify-center shadow-lg flex-shrink-0">
+              <div className="w-16 h-16 rounded-xl gradient-primary flex items-center justify-center shadow-lg flex-shrink-0 icon-3d">
                 <service.icon className="text-white" size={32} />
               </div>
               <h2 className="text-3xl md:text-4xl font-bold">{service.title}</h2>
@@ -434,59 +434,60 @@ const ServiceDetail = ({ service, index }: { service: typeof servicesData[0], in
               {service.fullDesc}
             </p>
 
-            {/* Key Features */}
+            {/* Key Features with 3D cards */}
             <div className="mb-8">
               <h3 className="text-xl font-semibold mb-4 flex items-center gap-2">
-                <Zap size={20} className="text-blue-600" />
+                <Zap size={20} className="text-primary" />
                 Key Features
               </h3>
               <ul className="space-y-3">
                 {service.features.map((feature, idx) => (
-                  <li key={idx} className="flex items-start gap-3">
-                    <Check size={20} className="text-green-500 flex-shrink-0 mt-0.5" />
-                    <span className="text-muted-foreground">{feature}</span>
+                  <li key={idx} className="flex items-start gap-3 group">
+                    <Check size={20} className="text-green-500 flex-shrink-0 mt-0.5 group-hover:scale-110 transition-transform" />
+                    <span className="text-muted-foreground group-hover:text-foreground transition-colors">{feature}</span>
                   </li>
                 ))}
               </ul>
             </div>
           </div>
 
-          {/* Right side - Benefits and Use Cases */}
+          {/* Right side - Benefits and Use Cases with 3D effects */}
           <div className={index % 2 === 1 ? "order-1" : ""}>
-            {/* Benefits */}
-            <Card className="p-6 mb-6 bg-gradient-to-br from-blue-50 to-purple-50 dark:from-slate-800/50 dark:to-slate-800/30 border-blue-200/30 dark:border-slate-700/50">
+            {/* Benefits Card */}
+            <div className="p-6 mb-6 rounded-2xl tilt-card glass-card border border-primary/10">
               <h3 className="text-xl font-semibold mb-4 flex items-center gap-2">
-                <TrendingUp size={20} className="text-blue-600" />
+                <TrendingUp size={20} className="text-primary" />
                 Benefits
               </h3>
               <ul className="space-y-3">
                 {service.benefits.map((benefit, idx) => (
                   <li key={idx} className="flex items-start gap-3">
-                    <div className="w-2 h-2 rounded-full bg-blue-600 mt-2 flex-shrink-0"></div>
+                    <div className="w-2 h-2 rounded-full bg-primary mt-2 flex-shrink-0" />
                     <span className="text-muted-foreground">{benefit}</span>
                   </li>
                 ))}
               </ul>
-            </Card>
+            </div>
 
-            {/* Use Cases */}
-            <Card className="p-6 bg-gradient-to-br from-purple-50 to-blue-50 dark:from-slate-800/50 dark:to-slate-800/30 border-purple-200/30 dark:border-slate-700/50">
+            {/* Use Cases Card */}
+            <div className="p-6 rounded-2xl tilt-card glass-card border border-accent/10">
               <h3 className="text-xl font-semibold mb-4">Real-World Applications</h3>
               <ul className="space-y-3">
                 {service.useCases.map((useCase, idx) => (
                   <li key={idx} className="flex items-start gap-3">
-                    <div className="w-2 h-2 rounded-full bg-purple-600 mt-2 flex-shrink-0"></div>
+                    <div className="w-2 h-2 rounded-full bg-accent mt-2 flex-shrink-0" />
                     <span className="text-muted-foreground">{useCase}</span>
                   </li>
                 ))}
               </ul>
-            </Card>
+            </div>
           </div>
         </div>
       </div>
     </section>
   );
 };
+
 
 const Services = () => {
   const heroRef = useScrollAnimation(0.1);
@@ -496,22 +497,35 @@ const Services = () => {
       <Navigation />
 
       <main className="pt-16">
-        {/* Hero Section */}
-        <section className="relative h-[400px] md:h-[500px] overflow-hidden group" ref={heroRef.ref}>
+        {/* Hero Section with 3D depth */}
+        <section className="relative h-[400px] md:h-[500px] overflow-hidden group perspective-container" ref={heroRef.ref}>
           <img 
             src={heroAI} 
             alt="Our Services" 
-            className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" 
+            className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" 
           />
-          <div className="absolute inset-0 hero-overlay" />
+          {/* Multi-layer gradient for depth */}
+          <div className="absolute inset-0 bg-gradient-to-r from-slate-950/90 via-slate-900/70 to-transparent" />
+          <div className="absolute inset-0 bg-gradient-to-t from-slate-950/70 via-transparent to-slate-900/40" />
+          
+          {/* Floating orbs for 3D effect */}
+          <div className="absolute top-1/4 right-1/4 w-40 h-40 rounded-full bg-gradient-to-br from-primary/30 to-accent/20 blur-3xl floating opacity-50" />
+          <div className="absolute bottom-1/3 left-1/4 w-32 h-32 rounded-full bg-gradient-to-tr from-accent/20 to-primary/30 blur-2xl floating-delayed opacity-40" />
+          
           <div className="relative z-10 container mx-auto px-6 h-full flex items-center">
-            <div className={`transition-all duration-1000 ${
+            <div className={`max-w-3xl transition-all duration-1000 ${
               heroRef.isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
             }`}>
-              <h1 className="text-4xl md:text-6xl font-bold text-white mb-4 leading-tight">Our Services</h1>
-              <div className="h-1 w-24 bg-gradient-to-r from-blue-400 to-purple-500 rounded-full mb-6"></div>
-              <p className="text-lg md:text-xl text-white/90 max-w-2xl font-light">
-                Comprehensive technology solutions powered by deep expertise and innovation across all domains
+              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/10 backdrop-blur-sm border border-white/20 text-white/90 text-sm font-medium mb-6">
+                <Zap size={16} className="text-accent" />
+                <span>Full-Stack Technology Solutions</span>
+              </div>
+              <h1 className="text-4xl md:text-6xl font-bold text-white mb-6 leading-tight">
+                Our <span className="text-gradient">Services</span>
+              </h1>
+              <div className="h-1 w-24 bg-gradient-to-r from-primary to-accent rounded-full mb-6" />
+              <p className="text-lg md:text-xl text-white/85 max-w-2xl leading-relaxed">
+                Comprehensive technology solutions powered by deep expertise and innovation across AI, Cloud, and Enterprise domains
               </p>
             </div>
           </div>

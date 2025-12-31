@@ -287,12 +287,159 @@ All colors MUST be HSL.
     }
   }
 
+  @keyframes pulse-ring {
+    0% {
+      transform: scale(1);
+      opacity: 1;
+    }
+    100% {
+      transform: scale(1.5);
+      opacity: 0;
+    }
+  }
+
+  @keyframes shimmer {
+    0% {
+      background-position: -200% 0;
+    }
+    100% {
+      background-position: 200% 0;
+    }
+  }
+
+  @keyframes rotate-3d {
+    0% {
+      transform: perspective(1000px) rotateY(0deg);
+    }
+    100% {
+      transform: perspective(1000px) rotateY(360deg);
+    }
+  }
+
   .hover-float:hover {
     animation: float 2s ease-in-out infinite;
   }
 
   .hover-glow:hover {
     animation: glow 2s ease-in-out infinite;
+  }
+
+  /* 3D Card Effects */
+  .card-3d {
+    transform-style: preserve-3d;
+    perspective: 1000px;
+    transition: transform 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+  }
+
+  .card-3d:hover {
+    transform: perspective(1000px) rotateX(5deg) rotateY(-5deg) translateZ(20px);
+  }
+
+  .card-3d-reverse:hover {
+    transform: perspective(1000px) rotateX(-5deg) rotateY(5deg) translateZ(20px);
+  }
+
+  .card-3d-content {
+    transform: translateZ(40px);
+  }
+
+  /* Glassmorphism Enhanced */
+  .glass-card {
+    background: hsl(var(--background) / 0.7);
+    backdrop-filter: blur(20px) saturate(180%);
+    border: 1px solid hsl(var(--border) / 0.3);
+    box-shadow: 
+      0 8px 32px hsl(var(--primary) / 0.1),
+      inset 0 1px 0 hsl(var(--background) / 0.5);
+  }
+
+  .glass-card-dark {
+    background: hsl(230 50% 11% / 0.8);
+    backdrop-filter: blur(20px) saturate(180%);
+    border: 1px solid hsl(var(--border) / 0.2);
+  }
+
+  /* Neumorphism */
+  .neo-card {
+    background: hsl(var(--background));
+    box-shadow: 
+      8px 8px 16px hsl(var(--foreground) / 0.08),
+      -8px -8px 16px hsl(var(--background));
+    transition: all 0.3s ease;
+  }
+
+  .neo-card:hover {
+    box-shadow: 
+      12px 12px 24px hsl(var(--foreground) / 0.1),
+      -12px -12px 24px hsl(var(--background));
+  }
+
+  /* 3D Button */
+  .btn-3d {
+    position: relative;
+    transform-style: preserve-3d;
+    transition: transform 0.2s;
+  }
+
+  .btn-3d::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: hsl(var(--primary) / 0.3);
+    transform: translateZ(-10px);
+    border-radius: inherit;
+    filter: blur(10px);
+  }
+
+  .btn-3d:hover {
+    transform: translateY(-4px) translateZ(10px);
+  }
+
+  .btn-3d:active {
+    transform: translateY(0) translateZ(0);
+  }
+
+  /* Floating Elements */
+  .floating {
+    animation: float 6s ease-in-out infinite;
+  }
+
+  .floating-delayed {
+    animation: float 6s ease-in-out infinite;
+    animation-delay: 2s;
+  }
+
+  /* Shimmer Effect */
+  .shimmer {
+    background: linear-gradient(
+      90deg,
+      hsl(var(--background)) 0%,
+      hsl(var(--primary) / 0.1) 50%,
+      hsl(var(--background)) 100%
+    );
+    background-size: 200% 100%;
+    animation: shimmer 2s infinite;
+  }
+
+  /* Gradient Border */
+  .gradient-border {
+    position: relative;
+    background: hsl(var(--background));
+  }
+
+  .gradient-border::before {
+    content: '';
+    position: absolute;
+    inset: -2px;
+    background: linear-gradient(90deg, hsl(var(--gradient-start)), hsl(var(--gradient-end)));
+    border-radius: inherit;
+    z-index: -1;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+
+  .gradient-border:hover::before {
+    opacity: 1;
   }
 
   /* Particle background animation */
@@ -306,21 +453,91 @@ All colors MUST be HSL.
   }
 
   .particle-background {
-    background-image: radial-gradient(circle at 20% 50%, rgba(120, 119, 198, 0.1) 0%, transparent 50%),
-                      radial-gradient(circle at 80% 80%, rgba(120, 119, 198, 0.1) 0%, transparent 50%),
-                      radial-gradient(circle at 40% 90%, rgba(120, 119, 198, 0.05) 0%, transparent 50%);
+    background-image: radial-gradient(circle at 20% 50%, hsl(var(--primary) / 0.1) 0%, transparent 50%),
+                      radial-gradient(circle at 80% 80%, hsl(var(--accent) / 0.1) 0%, transparent 50%),
+                      radial-gradient(circle at 40% 90%, hsl(var(--primary) / 0.05) 0%, transparent 50%);
     background-size: 100% 100%;
     animation: particle-move 20s ease-in-out infinite;
   }
 
   .neon-glow {
-    box-shadow: 0 0 20px rgba(120, 119, 198, 0.3),
-                0 0 40px rgba(120, 119, 198, 0.2),
-                0 0 60px rgba(120, 119, 198, 0.1);
+    box-shadow: 0 0 20px hsl(var(--primary) / 0.3),
+                0 0 40px hsl(var(--primary) / 0.2),
+                0 0 60px hsl(var(--primary) / 0.1);
   }
 
   .text-glow {
-    text-shadow: 0 0 10px rgba(120, 119, 198, 0.5),
-                 0 0 20px rgba(120, 119, 198, 0.3);
+    text-shadow: 0 0 10px hsl(var(--primary) / 0.5),
+                 0 0 20px hsl(var(--primary) / 0.3);
+  }
+
+  /* Perspective Container */
+  .perspective-container {
+    perspective: 2000px;
+    perspective-origin: center center;
+  }
+
+  /* Tilt on hover */
+  .tilt-card {
+    transition: transform 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+  }
+
+  .tilt-card:hover {
+    transform: perspective(1000px) rotateX(3deg) rotateY(-3deg) scale(1.02);
+    box-shadow: 
+      20px 20px 60px hsl(var(--foreground) / 0.08),
+      -5px -5px 20px hsl(var(--background));
+  }
+
+  /* Animated underline */
+  .animated-underline {
+    position: relative;
+  }
+
+  .animated-underline::after {
+    content: '';
+    position: absolute;
+    bottom: -4px;
+    left: 0;
+    width: 0;
+    height: 3px;
+    background: linear-gradient(90deg, hsl(var(--gradient-start)), hsl(var(--gradient-end)));
+    border-radius: 2px;
+    transition: width 0.3s ease;
+  }
+
+  .animated-underline:hover::after {
+    width: 100%;
+  }
+
+  /* Morphing background */
+  @keyframes morph {
+    0%, 100% {
+      border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%;
+    }
+    50% {
+      border-radius: 30% 60% 70% 40% / 50% 60% 30% 60%;
+    }
+  }
+
+  .morph-bg {
+    animation: morph 8s ease-in-out infinite;
+  }
+
+  /* Icon container with depth */
+  .icon-3d {
+    position: relative;
+    transform-style: preserve-3d;
+  }
+
+  .icon-3d::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: inherit;
+    border-radius: inherit;
+    transform: translateZ(-8px);
+    filter: blur(8px);
+    opacity: 0.4;
   }
 }
