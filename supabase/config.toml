@@ -2,3 +2,6 @@ project_id = "ggoqrdvlvapmcgonufds"
 
 [functions.send-application-email]
 verify_jwt = false
+
+[functions.company-chatbot]
+verify_jwt = false
