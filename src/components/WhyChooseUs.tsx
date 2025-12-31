@@ -36,10 +36,12 @@ const benefits = [
 
 export const WhyChooseUs = () => {
   return (
-    <section className="py-20 container mx-auto px-6">
+    <section className="py-20 container mx-auto px-6 perspective-container">
       <div className="text-center mb-16">
         <p className="text-accent text-sm font-semibold mb-3 uppercase tracking-wider">Why Partner With Us</p>
-        <h2 className="text-4xl md:text-5xl font-bold mb-4">Why Choose Nirikshan AI</h2>
+        <h2 className="text-4xl md:text-5xl font-bold mb-4">
+          Why Choose <span className="text-gradient">Nirikshan AI</span>
+        </h2>
         <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
           We combine technical excellence with business acumen to deliver solutions that truly make a difference
         </p>
@@ -47,17 +49,29 @@ export const WhyChooseUs = () => {
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
         {benefits.map((benefit, index) => (
-          <Card key={index} className="p-8 card-hover group border-2 border-border hover:border-primary/30 relative overflow-hidden">
-            <div className="absolute top-0 right-0 w-32 h-32 bg-primary/5 rounded-full -mr-16 -mt-16 group-hover:scale-150 transition-transform duration-500" />
+          <Card 
+            key={index} 
+            className="p-8 group border-2 border-border hover:border-primary/30 relative overflow-hidden tilt-card"
+            style={{ animationDelay: `${index * 100}ms` }}
+          >
+            {/* 3D glow effect */}
+            <div className="absolute -inset-1 bg-gradient-to-r from-primary/10 via-accent/10 to-primary/10 rounded-xl blur-xl opacity-0 group-hover:opacity-60 transition-opacity duration-500" />
+            
+            {/* Floating orb */}
+            <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-primary/10 to-accent/10 rounded-full -mr-16 -mt-16 group-hover:scale-150 group-hover:opacity-80 transition-all duration-700 blur-xl" />
+            
             <div className="relative z-10">
               <div className="mb-6">
-                <div className="w-14 h-14 rounded-xl gradient-primary flex items-center justify-center group-hover:scale-110 group-hover:rotate-3 transition-all duration-300 shadow-lg">
+                <div className="w-14 h-14 rounded-xl gradient-primary flex items-center justify-center group-hover:scale-110 transition-all duration-300 shadow-lg icon-3d">
                   <benefit.icon className="text-white" size={24} />
                 </div>
               </div>
               <h3 className="text-xl font-bold mb-3 group-hover:text-primary transition-colors">{benefit.title}</h3>
               <p className="text-muted-foreground leading-relaxed">{benefit.description}</p>
             </div>
+            
+            {/* Bottom animated line */}
+            <div className="absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-primary/50 to-transparent scale-x-0 group-hover:scale-x-100 transition-transform duration-500" />
           </Card>
         ))}
       </div>

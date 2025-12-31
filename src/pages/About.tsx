@@ -135,23 +135,40 @@ const About = () => {
       <Navigation />
       
       <main className="pt-16">
-        {/* Hero */}
-        <section className="relative h-[400px] md:h-[500px] overflow-hidden group">
+        {/* Hero with 3D depth */}
+        <section className="relative h-[400px] md:h-[500px] overflow-hidden group perspective-container">
           <video 
             src="https://res.cloudinary.com/dch0uyw8e/video/upload/v1760826173/6_wrsepd.mp4"
             autoPlay
             muted
             loop
             playsInline
-            className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" 
+            className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" 
           />
+          {/* Gradient overlays for depth */}
+          <div className="absolute inset-0 bg-gradient-to-r from-slate-950/90 via-slate-900/70 to-transparent" />
+          <div className="absolute inset-0 bg-gradient-to-t from-slate-950/60 via-transparent to-slate-900/30" />
+          
+          {/* Floating decorative elements */}
+          <div className="absolute top-20 right-20 w-32 h-32 rounded-full bg-gradient-to-br from-primary/30 to-accent/20 blur-3xl floating opacity-60" />
+          <div className="absolute bottom-20 left-1/3 w-24 h-24 rounded-full bg-gradient-to-br from-accent/20 to-primary/30 blur-2xl floating-delayed opacity-50" />
+          
           <div className="relative z-10 container mx-auto px-6 h-full flex items-center">
-            <div className="animate-fade-in-up">
-              <h1 className="text-4xl md:text-6xl font-bold text-white mb-4 leading-tight">About Nirikshan AI</h1>
-              <p className="text-lg md:text-xl text-white/90 max-w-2xl font-light">
-                At Nirikshan AI, we specialize in OpenCV, Generative AI, and Agentic AI — crafting intelligent systems that combine vision, reasoning, and autonomy. With expertise across Microsoft, SAP, and Cloud ecosystems, we deliver full-stack intelligent transformation for enterprises worldwide.
+            <div className="max-w-3xl">
+              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/10 backdrop-blur-sm border border-white/20 text-white/90 text-sm font-medium mb-6">
+                <Sparkles size={16} className="text-accent" />
+                <span>AI-First Innovation Company</span>
+              </div>
+              <h1 className="text-4xl md:text-6xl font-bold text-white mb-6 leading-tight">
+                About <span className="text-gradient">Nirikshan AI</span>
+              </h1>
+              <p className="text-lg md:text-xl text-white/85 max-w-2xl leading-relaxed">
+                We specialize in OpenCV, Generative AI, and Agentic AI — crafting intelligent systems that combine vision, reasoning, and autonomy for enterprises worldwide.
               </p>
-              <div className="mt-8 h-1 w-24 bg-gradient-to-r from-blue-400 to-purple-500 rounded-full"></div>
+              <div className="mt-8 flex items-center gap-4">
+                <div className="h-1 w-24 bg-gradient-to-r from-primary to-accent rounded-full" />
+                <span className="text-white/60 text-sm">Transforming ideas into intelligence</span>
+              </div>
             </div>
           </div>
         </section>
@@ -237,19 +254,23 @@ const About = () => {
               ].map((value, idx) => (
                 <div
                   key={idx}
-                  className="group relative p-8 bg-white dark:bg-slate-800/50 rounded-2xl border border-transparent hover:border-blue-500/30 transition-all duration-300 hover:shadow-xl hover:-translate-y-2 backdrop-blur"
+                  className="group relative p-8 bg-white dark:bg-slate-800/50 rounded-2xl border border-transparent hover:border-primary/30 transition-all duration-500 tilt-card glass-card"
                 >
-                  <div className="absolute inset-0 bg-gradient-to-br from-blue-500/5 to-purple-500/5 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                  {/* 3D glow effect */}
+                  <div className="absolute -inset-1 bg-gradient-to-r from-primary/20 via-accent/20 to-primary/20 rounded-2xl blur-xl opacity-0 group-hover:opacity-60 transition-opacity duration-500" />
+                  
                   <div className="relative z-10">
-                    <div className="w-16 h-16 rounded-xl gradient-primary flex items-center justify-center mx-auto mb-6 shadow-lg group-hover:scale-110 transition-transform duration-300">
+                    <div className="w-16 h-16 rounded-xl gradient-primary flex items-center justify-center mx-auto mb-6 shadow-lg group-hover:scale-110 transition-transform duration-300 icon-3d">
                       <value.icon className="text-white" size={32} />
                     </div>
-                    <h3 className="text-2xl font-bold mb-3 text-center text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-purple-600">{value.title}</h3>
+                    <h3 className="text-2xl font-bold mb-3 text-center text-gradient">{value.title}</h3>
                     <p className="text-muted-foreground text-center leading-relaxed">
                       {value.desc}
                     </p>
                   </div>
-                  <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-0 h-1 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full group-hover:w-12 transition-all duration-300"></div>
+                  
+                  {/* Animated bottom border */}
+                  <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-0 h-1 bg-gradient-to-r from-primary to-accent rounded-full group-hover:w-16 transition-all duration-500" />
                 </div>
               ))}
             </div>
