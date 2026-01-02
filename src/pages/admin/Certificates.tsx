@@ -1,10 +1,11 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/hooks/useAuth";
 import { motion } from "framer-motion";
+import { QRCodeSVG } from "qrcode.react";
 import { 
   Plus, Trash2, Edit, Copy, ExternalLink, Shield, 
-  Search, Calendar, FileText, Lock, LockOpen 
+  Search, Calendar, FileText, Lock, LockOpen, QrCode, Download
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -60,6 +61,8 @@ const AdminCertificates = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [isCreateOpen, setIsCreateOpen] = useState(false);
   const [editingCertificate, setEditingCertificate] = useState<Certificate | null>(null);
+  const [qrCertificate, setQrCertificate] = useState<Certificate | null>(null);
+  const qrRef = useRef<HTMLDivElement>(null);
 
   // Form state
   const [formData, setFormData] = useState({
@@ -170,6 +173,41 @@ const AdminCertificates = () => {
     const link = `${window.location.origin}/verify/${encodeURIComponent(certNumber)}`;
     navigator.clipboard.writeText(link);
     toast.success("Verification link copied to clipboard");
+  };
+
+  const getVerificationUrl = (certNumber: string) => {
+    return `${window.location.origin}/verify/${encodeURIComponent(certNumber)}`;
+  };
+
+  const downloadQRCode = (cert: Certificate) => {
+    const svg = document.getElementById(`qr-${cert.id}`);
+    if (!svg) return;
+
+    const svgData = new XMLSerializer().serializeToString(svg);
+    const canvas = document.createElement("canvas");
+    const ctx = canvas.getContext("2d");
+    const img = new Image();
+
+    img.onload = () => {
+      canvas.width = 300;
+      canvas.height = 300;
+      if (ctx) {
+        ctx.fillStyle = "white";
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        ctx.drawImage(img, 0, 0, 300, 300);
+        
+        const pngUrl = canvas.toDataURL("image/png");
+        const downloadLink = document.createElement("a");
+        downloadLink.href = pngUrl;
+        downloadLink.download = `certificate-${cert.certificate_number}-qr.png`;
+        document.body.appendChild(downloadLink);
+        downloadLink.click();
+        document.body.removeChild(downloadLink);
+        toast.success("QR code downloaded");
+      }
+    };
+
+    img.src = "data:image/svg+xml;base64," + btoa(unescape(encodeURIComponent(svgData)));
   };
 
   const resetForm = () => {
@@ -378,6 +416,70 @@ const AdminCertificates = () => {
                             </TableCell>
                             <TableCell>
                               <div className="flex items-center justify-end gap-2">
+                                {/* QR Code Dialog */}
+                                <Dialog
+                                  open={qrCertificate?.id === cert.id}
+                                  onOpenChange={(open) => {
+                                    if (!open) setQrCertificate(null);
+                                  }}
+                                >
+                                  <DialogTrigger asChild>
+                                    <Button
+                                      variant="ghost"
+                                      size="icon"
+                                      onClick={() => setQrCertificate(cert)}
+                                      title="Generate QR Code"
+                                    >
+                                      <QrCode className="w-4 h-4" />
+                                    </Button>
+                                  </DialogTrigger>
+                                  <DialogContent className="sm:max-w-md">
+                                    <DialogHeader>
+                                      <DialogTitle className="flex items-center gap-2">
+                                        <QrCode className="w-5 h-5" />
+                                        QR Code - {cert.certificate_number}
+                                      </DialogTitle>
+                                    </DialogHeader>
+                                    <div className="flex flex-col items-center gap-4 py-4">
+                                      <div className="bg-white p-4 rounded-lg shadow-inner" ref={qrRef}>
+                                        <QRCodeSVG
+                                          id={`qr-${cert.id}`}
+                                          value={getVerificationUrl(cert.certificate_number)}
+                                          size={200}
+                                          level="H"
+                                          includeMargin
+                                        />
+                                      </div>
+                                      <div className="text-center space-y-1">
+                                        <p className="font-semibold">{cert.recipient_name}</p>
+                                        <p className="text-sm text-muted-foreground font-mono">
+                                          {cert.certificate_number}
+                                        </p>
+                                      </div>
+                                      <p className="text-xs text-muted-foreground text-center max-w-xs">
+                                        Scan this QR code to verify the certificate authenticity
+                                      </p>
+                                    </div>
+                                    <DialogFooter className="flex-col sm:flex-row gap-2">
+                                      <Button
+                                        variant="outline"
+                                        onClick={() => copyVerificationLink(cert.certificate_number)}
+                                        className="gap-2"
+                                      >
+                                        <Copy className="w-4 h-4" />
+                                        Copy Link
+                                      </Button>
+                                      <Button
+                                        onClick={() => downloadQRCode(cert)}
+                                        className="gap-2"
+                                      >
+                                        <Download className="w-4 h-4" />
+                                        Download QR
+                                      </Button>
+                                    </DialogFooter>
+                                  </DialogContent>
+                                </Dialog>
+
                                 <Button
                                   variant="ghost"
                                   size="icon"
