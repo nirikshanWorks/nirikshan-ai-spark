@@ -14,6 +14,39 @@ export type Database = {
   }
   public: {
     Tables: {
+      certificates: {
+        Row: {
+          certificate_number: string
+          created_at: string
+          created_by: string | null
+          id: string
+          issue_date: string
+          nda_signed: boolean
+          recipient_name: string
+          updated_at: string
+        }
+        Insert: {
+          certificate_number: string
+          created_at?: string
+          created_by?: string | null
+          id?: string
+          issue_date?: string
+          nda_signed?: boolean
+          recipient_name: string
+          updated_at?: string
+        }
+        Update: {
+          certificate_number?: string
+          created_at?: string
+          created_by?: string | null
+          id?: string
+          issue_date?: string
+          nda_signed?: boolean
+          recipient_name?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       job_applications: {
         Row: {
           acceptance_token: string | null

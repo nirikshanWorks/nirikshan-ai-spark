@@ -28,6 +28,8 @@ const Testimonials = lazy(() => import("./pages/Testimonials"));
 const Journey = lazy(() => import("./pages/Journey"));
 const Applications = lazy(() => import("./pages/Applications"));
 const Auth = lazy(() => import("./pages/Auth"));
+const CertificateVerify = lazy(() => import("./pages/CertificateVerify"));
+const AdminCertificates = lazy(() => import("./pages/admin/Certificates"));
 const NotFound = lazy(() => import("./pages/NotFound"));
 
 const queryClient = new QueryClient();
@@ -66,6 +68,9 @@ const AnimatedRoutes = () => {
         <Route path="/applications" element={<PageTransition><Applications /></PageTransition>} />
         <Route path="/privacy" element={<PageTransition><Privacy /></PageTransition>} />
         <Route path="/terms" element={<PageTransition><Terms /></PageTransition>} />
+        <Route path="/verify" element={<PageTransition><CertificateVerify /></PageTransition>} />
+        <Route path="/verify/:certificateNumber" element={<PageTransition><CertificateVerify /></PageTransition>} />
+        <Route path="/admin/certificates" element={<PageTransition><AdminCertificates /></PageTransition>} />
         <Route path="*" element={<PageTransition><NotFound /></PageTransition>} />
       </Routes>
     </AnimatePresence>
