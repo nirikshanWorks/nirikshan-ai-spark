@@ -625,10 +625,10 @@ const Contact = () => {
                       <div>
                         <h3 className="text-lg font-semibold">Email</h3>
                         <a
-                          href="mailto:ai.nirikshan@gmail.com"
+                          href="mailto:info@nirikshanai.com"
                           className="text-sm text-muted-foreground transition-colors hover:text-primary"
                         >
-                          ai.nirikshan@gmail.com
+                          info@nirikshanai.com
                         </a>
                       </div>
                     </div>
@@ -673,7 +673,7 @@ const Contact = () => {
                         <div className="space-y-1">
                           <h4 className="text-sm font-semibold text-foreground">Chair Office - Dehradun</h4>
                           <p className="text-sm text-muted-foreground leading-relaxed">
-                            Near Golu Ice Cream, Keenal Road,<br />
+                            Keenal Road,<br />
                             Vikasnagar, Dehradun, Uttarakhand
                           </p>
                         </div>
