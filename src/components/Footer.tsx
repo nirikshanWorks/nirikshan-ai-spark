@@ -1,5 +1,5 @@
+import { Instagram, Linkedin, Mail, Phone } from "lucide-react";
 import { Link } from "react-router-dom";
-import { Mail, Phone, Linkedin, Instagram } from "lucide-react";
 
 export const Footer = () => {
   return (
@@ -100,7 +100,7 @@ export const Footer = () => {
               <li className="flex items-center space-x-2">
                 <Mail size={16} className="text-primary" />
                 <a href="mailto:ai.nirikshan@gmail.com" className="text-muted-foreground hover:text-primary transition-colors">
-                  ai.nirikshan@gmail.com
+                  info@nirikshanai.com
                 </a>
               </li>
               <li className="flex items-center space-x-2">
