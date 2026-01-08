@@ -59,25 +59,25 @@ export const chatbotResponses: Record<string, ChatResponse> = {
   },
   
   "📞 Contact Us": {
-    message: "You can reach our team at info@nirikshanai.in or through the Contact Us form on our website.\n\nWe're available Monday to Saturday, 10 AM – 6 PM (IST).\n\nFor partnership or business inquiries, please include your organization name and project brief — our team will respond within 24 hours.",
+    message: "You can reach our team at info@nirikshanai.com or through the Contact Us form on our website.\n\nWe're available Monday to Saturday, 10 AM – 6 PM (IST).\n\nFor partnership or business inquiries, please include your organization name and project brief — our team will respond within 24 hours.",
     followUp: ["📧 Visit Contact Page", "💼 Career Opportunities"],
     links: [{ text: "Contact Us Now", url: "/contact" }]
   },
   
   "📧 Visit Contact Page": {
-    message: "You can fill out our contact form or reach us directly:\n\n📧 Email: info@nirikshanai.in\n🕐 Hours: Monday-Saturday, 10 AM – 6 PM (IST)\n\nWe look forward to hearing from you!",
+    message: "You can fill out our contact form or reach us directly:\n\n📧 Email: info@nirikshanai.com\n🕐 Hours: Monday-Saturday, 10 AM – 6 PM (IST)\n\nWe look forward to hearing from you!",
     followUp: ["🧠 Our Expertise", "🚀 Projects"],
     links: [{ text: "Go to Contact Page", url: "/contact" }]
   },
   
   "💼 Career Opportunities": {
-    message: "We're always looking for passionate innovators to join our growing AI team!\n\nExplore open roles and internships in AI development, data science, and product design.\n\n👉 Visit our Career section or email careers@nirikshanai.in with your CV and portfolio.",
+    message: "We're always looking for passionate innovators to join our growing AI team!\n\nExplore open roles and internships in AI development, data science, and product design.\n\n👉 Visit our Career section or email info@nirikshanai.com with your CV and portfolio.",
     followUp: ["📧 Visit Careers Page", "🧠 Our Expertise"],
     links: [{ text: "View Open Positions", url: "/careers" }]
   },
   
   "📧 Visit Careers Page": {
-    message: "Check out our current openings and apply today!\n\nSend your CV and portfolio to careers@nirikshanai.in\n\nWe're looking for talented individuals in:\n• AI Development\n• Data Science\n• Product Design\n• Software Engineering",
+    message: "Check out our current openings and apply today!\n\nSend your CV and portfolio to info@nirikshanai.com\n\nWe're looking for talented individuals in:\n• AI Development\n• Data Science\n• Product Design\n• Software Engineering",
     followUp: ["👥 About Nirikshan AI", "💼 Meet the team"],
     links: [{ text: "View Careers", url: "/careers" }]
   },
@@ -89,7 +89,7 @@ export const chatbotResponses: Record<string, ChatResponse> = {
   },
   
   "🤝 Book a consultation": {
-    message: "Ready to discuss your AI project? Let's talk!\n\nReach out to us at info@nirikshanai.in or fill out our contact form. We'll get back to you within 24 hours to schedule a consultation.\n\nWe offer free initial consultations to understand your needs.",
+    message: "Ready to discuss your AI project? Let's talk!\n\nReach out to us at info@nirikshanai.com or fill out our contact form. We'll get back to you within 24 hours to schedule a consultation.\n\nWe offer free initial consultations to understand your needs.",
     followUp: ["📞 Contact Us"],
     links: [{ text: "Contact Us Now", url: "/contact" }]
   },
