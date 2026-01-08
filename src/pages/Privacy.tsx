@@ -44,7 +44,7 @@ const sections: Section[] = [
   {
     title: "5. Contact Us",
     items: [
-      "Email: ai.nirikshan@gmail.com",
+      "Email: info@nirikshanai.com",
       "Phone: +91 9410 992204",
       "Address: Nirikshan AI Pvt. Ltd., Noida, Uttar Pradesh, India"
     ]
@@ -59,7 +59,7 @@ const sections: Section[] = [
       "For any official clarification or communication, please contact:",
       "Anshul — Co-Founder & COO",
       "Phone: +91 94101 47660",
-      "Email: kanshulmussoorie@gmail.com"
+      "Email: anshul@nirikshanai.com"
     ]
   }
 ];
