@@ -1,18 +1,18 @@
-import { Navigation } from "@/components/Navigation";
-import { Footer } from "@/components/Footer";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
-import { Label } from "@/components/ui/label";
-import { Card } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
-import { Switch } from "@/components/ui/switch";
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { HeroParticles } from "@/components/HeroParticles";
 import { FloatingElements } from "@/components/FloatingElements";
+import { Footer } from "@/components/Footer";
+import { HeroParticles } from "@/components/HeroParticles";
+import { Navigation } from "@/components/Navigation";
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Switch } from "@/components/ui/switch";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Textarea } from "@/components/ui/textarea";
+import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 import {
   AlarmClock,
   ArrowUpRight,
@@ -29,8 +29,8 @@ import {
   Sparkles
 } from "lucide-react";
 import { useRef, useState } from "react";
-import { toast } from "sonner";
 import ReCAPTCHA from "react-google-recaptcha";
+import { toast } from "sonner";
 
 const COUNTRIES = [
   "India",
@@ -128,7 +128,7 @@ const CONNECT_OPTIONS = [
     description: "Invite our founders for keynotes, podcasts, or thought leadership collaborations around responsible AI innovation.",
     bullets: ["Insights on applied AI and ethics", "Stories from live deployments", "Tailored narrative for your audience"],
     actionLabel: "Request Availability",
-    actionHref: "mailto:ai.nirikshan@gmail.com",
+    actionHref: "mailto:info@nirikshanai.com",
     icon: Mic2
   }
 ];
@@ -707,10 +707,10 @@ const Contact = () => {
                   Existing clients can reach our support team at
                   {" "}
                   <a
-                    href="mailto:ai.nirikshan@gmail.com"
+                    href="mailto:info@nirikshanai.com"
                     className="font-semibold text-primary transition-colors hover:text-primary/80"
                   >
-                    ai.nirikshan@gmail.com
+                    info@nirikshanai.com
                   </a>
                   {" "}
                   for technical assistance and urgent requests.
