@@ -29,7 +29,7 @@ Career Opportunities:
 - Performance-based stipends
 
 Contact Information:
-- Email: ai.nirikshan@gmail.com
+- Email: info@nirikshanai.com
 - Website: nirikshan.ai
 
 Guidelines:
