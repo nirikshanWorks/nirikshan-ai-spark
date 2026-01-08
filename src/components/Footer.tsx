@@ -114,7 +114,7 @@ export const Footer = () => {
         </div>
 
         <div className="border-t border-border mt-8 pt-8 flex flex-col md:flex-row justify-between items-center text-sm text-muted-foreground">
-          <p>© 2025 Nirikshan AI Private Limited. All rights reserved.</p>
+          <p>© 2026 Nirikshan AI Private Limited. All rights reserved.</p>
           <div className="flex space-x-6 mt-4 md:mt-0">
             <Link to="/privacy" className="hover:text-primary transition-colors">
               Privacy Policy
