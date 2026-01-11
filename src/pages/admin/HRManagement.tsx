@@ -1970,31 +1970,26 @@ const AdminHRManagement = () => {
             
             <div className="space-y-2">
               <Label htmlFor="joining_date">Joining Date</Label>
-              <Popover>
-                <PopoverTrigger asChild>
-                  <Button
-                    variant="outline"
-                    className={cn(
-                      "w-full justify-start text-left font-normal",
-                      !formData.joining_date && "text-muted-foreground"
-                    )}
-                  >
-                    <CalendarIcon className="mr-2 h-4 w-4" />
-                    {formData.joining_date 
-                      ? format(new Date(formData.joining_date), "PPP")
-                      : <span>Pick a date</span>}
-                  </Button>
-                </PopoverTrigger>
-                <PopoverContent className="w-auto p-0 bg-popover border shadow-xl z-[200]" align="start" sideOffset={8}>
-                  <Calendar
-                    mode="single"
-                    selected={formData.joining_date ? new Date(formData.joining_date) : undefined}
-                    onSelect={(date) => setFormData({ ...formData, joining_date: date ? format(date, 'yyyy-MM-dd') : '' })}
-                    initialFocus
-                    className="p-3 pointer-events-auto"
-                  />
-                </PopoverContent>
-              </Popover>
+              <Input
+                id="joining_date"
+                type="text"
+                placeholder="DD/MM/YYYY"
+                value={formData.joining_date ? format(new Date(formData.joining_date), "dd/MM/yyyy") : ""}
+                onChange={(e) => {
+                  const value = e.target.value;
+                  // Try to parse DD/MM/YYYY format
+                  const parts = value.split('/');
+                  if (parts.length === 3 && parts[0].length <= 2 && parts[1].length <= 2 && parts[2].length === 4) {
+                    const date = new Date(`${parts[2]}-${parts[1]}-${parts[0]}`);
+                    if (!isNaN(date.getTime())) {
+                      setFormData({ ...formData, joining_date: format(date, 'yyyy-MM-dd') });
+                      return;
+                    }
+                  }
+                  // Allow typing in progress
+                  setFormData({ ...formData, joining_date: value });
+                }}
+              />
             </div>
           </div>
           
@@ -2081,31 +2076,26 @@ const AdminHRManagement = () => {
             
             <div className="space-y-2">
               <Label htmlFor="edit_joining_date">Joining Date</Label>
-              <Popover>
-                <PopoverTrigger asChild>
-                  <Button
-                    variant="outline"
-                    className={cn(
-                      "w-full justify-start text-left font-normal",
-                      !formData.joining_date && "text-muted-foreground"
-                    )}
-                  >
-                    <CalendarIcon className="mr-2 h-4 w-4" />
-                    {formData.joining_date 
-                      ? format(new Date(formData.joining_date), "PPP")
-                      : <span>Pick a date</span>}
-                  </Button>
-                </PopoverTrigger>
-                <PopoverContent className="w-auto p-0 bg-popover border shadow-xl z-[200]" align="start" sideOffset={8}>
-                  <Calendar
-                    mode="single"
-                    selected={formData.joining_date ? new Date(formData.joining_date) : undefined}
-                    onSelect={(date) => setFormData({ ...formData, joining_date: date ? format(date, 'yyyy-MM-dd') : '' })}
-                    initialFocus
-                    className="p-3 pointer-events-auto"
-                  />
-                </PopoverContent>
-              </Popover>
+              <Input
+                id="edit_joining_date"
+                type="text"
+                placeholder="DD/MM/YYYY"
+                value={formData.joining_date ? format(new Date(formData.joining_date), "dd/MM/yyyy") : ""}
+                onChange={(e) => {
+                  const value = e.target.value;
+                  // Try to parse DD/MM/YYYY format
+                  const parts = value.split('/');
+                  if (parts.length === 3 && parts[0].length <= 2 && parts[1].length <= 2 && parts[2].length === 4) {
+                    const date = new Date(`${parts[2]}-${parts[1]}-${parts[0]}`);
+                    if (!isNaN(date.getTime())) {
+                      setFormData({ ...formData, joining_date: format(date, 'yyyy-MM-dd') });
+                      return;
+                    }
+                  }
+                  // Allow typing in progress
+                  setFormData({ ...formData, joining_date: value });
+                }}
+              />
             </div>
           </div>
           
