@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
@@ -8,7 +8,6 @@ import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Lock, Mail, CheckCircle, Clock, Home } from "lucide-react";
-import { Link } from "react-router-dom";
 
 const Auth = () => {
   const navigate = useNavigate();
@@ -151,9 +150,28 @@ const Auth = () => {
         return;
       }
 
+      // Send notification to HR about new signup
+      try {
+        const { error: notifyError } = await supabase.functions.invoke("notify-hr-new-user", {
+          body: {
+            userEmail: signupForm.email,
+            signupTime: new Date().toISOString(),
+          },
+        });
+
+        if (notifyError) {
+          console.error("Failed to notify HR:", notifyError);
+          // Don't block signup if notification fails
+        } else {
+          console.log("HR notification sent successfully");
+        }
+      } catch (notifyErr) {
+        console.error("Error sending HR notification:", notifyErr);
+      }
+
       // Show signup complete message
       setSignupComplete(true);
-      toast.success("Account created successfully!");
+      toast.success("Account created successfully! HR has been notified.");
     } catch (err) {
       console.error("Signup error:", err);
       toast.error("An error occurred during signup");
