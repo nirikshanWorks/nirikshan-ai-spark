@@ -7,33 +7,70 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Lock, Mail } from "lucide-react";
+import { Lock, Mail, CheckCircle, Clock, Home } from "lucide-react";
+import { Link } from "react-router-dom";
 
 const Auth = () => {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
+  const [signupComplete, setSignupComplete] = useState(false);
   const [loginForm, setLoginForm] = useState({ email: "", password: "" });
   const [signupForm, setSignupForm] = useState({ email: "", password: "", confirmPassword: "" });
 
   useEffect(() => {
-    // Check if user is already logged in
-    const checkSession = async () => {
+    // Check if user is already logged in and determine where to redirect
+    const checkSessionAndRole = async () => {
       const { data: { session } } = await supabase.auth.getSession();
       if (session) {
-        navigate("/applications");
+        await handleUserRedirect(session.user.id);
       }
     };
-    checkSession();
+    checkSessionAndRole();
 
     // Listen for auth changes
     const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
       if (session && event === 'SIGNED_IN') {
-        navigate("/applications");
+        // Use setTimeout to avoid Supabase deadlock
+        setTimeout(() => {
+          handleUserRedirect(session.user.id);
+        }, 0);
       }
     });
 
     return () => subscription.unsubscribe();
   }, [navigate]);
+
+  const handleUserRedirect = async (userId: string) => {
+    // Check if user is admin
+    const { data: roleData } = await supabase
+      .from("user_roles")
+      .select("role")
+      .eq("user_id", userId)
+      .eq("role", "admin")
+      .maybeSingle();
+
+    if (roleData) {
+      // User is admin, redirect to admin panel
+      navigate("/admin/hr");
+      return;
+    }
+
+    // Check if user is an employee
+    const { data: employeeData } = await supabase
+      .from("employees")
+      .select("id")
+      .eq("user_id", userId)
+      .maybeSingle();
+
+    if (employeeData) {
+      // User is an employee, redirect to employee dashboard
+      navigate("/employee/dashboard");
+      return;
+    }
+
+    // User is neither admin nor employee - show signup complete message
+    setSignupComplete(true);
+  };
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -62,7 +99,7 @@ const Auth = () => {
 
       if (data.session) {
         toast.success("Logged in successfully!");
-        navigate("/applications");
+        // Redirect will be handled by onAuthStateChange
       }
     } catch (err) {
       console.error("Login error:", err);
@@ -95,7 +132,7 @@ const Auth = () => {
         return;
       }
 
-      const redirectUrl = `${window.location.origin}/`;
+      const redirectUrl = `${window.location.origin}/auth`;
 
       const { data, error } = await supabase.auth.signUp({
         email: signupForm.email,
@@ -114,12 +151,9 @@ const Auth = () => {
         return;
       }
 
-      if (data.session) {
-        toast.success("Account created successfully!");
-        navigate("/applications");
-      } else {
-        toast.success("Account created! Please check your email to confirm.");
-      }
+      // Show signup complete message
+      setSignupComplete(true);
+      toast.success("Account created successfully!");
     } catch (err) {
       console.error("Signup error:", err);
       toast.error("An error occurred during signup");
@@ -128,13 +162,71 @@ const Auth = () => {
     }
   };
 
+  const handleLogout = async () => {
+    await supabase.auth.signOut();
+    setSignupComplete(false);
+  };
+
+  // Show signup complete / pending approval screen
+  if (signupComplete) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-background via-background to-primary/5 p-4">
+        <Card className="w-full max-w-md text-center">
+          <CardHeader>
+            <div className="mx-auto mb-4 p-4 bg-green-100 rounded-full w-fit">
+              <CheckCircle className="h-12 w-12 text-green-600" />
+            </div>
+            <CardTitle className="text-2xl font-bold text-green-600">
+              Thank You for Signing Up!
+            </CardTitle>
+            <CardDescription className="text-base mt-2">
+              Your account has been created successfully.
+            </CardDescription>
+          </CardHeader>
+          <CardContent className="space-y-6">
+            <div className="bg-muted/50 p-4 rounded-lg space-y-3">
+              <div className="flex items-center gap-3 text-left">
+                <Clock className="h-5 w-5 text-primary flex-shrink-0" />
+                <p className="text-sm text-muted-foreground">
+                  Please wait for HR to add you as an employee. Once added, you'll be able to access the Employee Dashboard.
+                </p>
+              </div>
+            </div>
+            
+            <div className="text-sm text-muted-foreground">
+              <p>You will receive access to:</p>
+              <ul className="mt-2 space-y-1 text-left list-disc list-inside">
+                <li>Mark your daily attendance</li>
+                <li>View attendance history</li>
+                <li>Apply for leaves</li>
+                <li>Track leave request status</li>
+              </ul>
+            </div>
+
+            <div className="flex flex-col gap-3">
+              <Button variant="outline" onClick={handleLogout} className="w-full">
+                Sign Out
+              </Button>
+              <Link to="/" className="w-full">
+                <Button variant="ghost" className="w-full gap-2">
+                  <Home className="h-4 w-4" />
+                  Go to Homepage
+                </Button>
+              </Link>
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-background via-background to-primary/5 p-4">
       <Card className="w-full max-w-md">
         <CardHeader className="text-center">
-          <CardTitle className="text-3xl font-bold">Admin Access</CardTitle>
+          <CardTitle className="text-3xl font-bold">Welcome</CardTitle>
           <CardDescription>
-            Sign in to access the applications dashboard
+            Sign in to access your dashboard
           </CardDescription>
         </CardHeader>
         <CardContent>
@@ -153,7 +245,7 @@ const Auth = () => {
                     <Input
                       id="login-email"
                       type="email"
-                      placeholder="admin@example.com"
+                      placeholder="you@example.com"
                       className="pl-10"
                       value={loginForm.email}
                       onChange={(e) => setLoginForm({ ...loginForm, email: e.target.value })}
@@ -191,7 +283,7 @@ const Auth = () => {
                     <Input
                       id="signup-email"
                       type="email"
-                      placeholder="admin@example.com"
+                      placeholder="you@example.com"
                       className="pl-10"
                       value={signupForm.email}
                       onChange={(e) => setSignupForm({ ...signupForm, email: e.target.value })}
@@ -235,6 +327,12 @@ const Auth = () => {
               </form>
             </TabsContent>
           </Tabs>
+
+          <div className="mt-6 text-center">
+            <Link to="/" className="text-sm text-muted-foreground hover:text-primary transition-colors">
+              ← Back to Homepage
+            </Link>
+          </div>
         </CardContent>
       </Card>
     </div>
