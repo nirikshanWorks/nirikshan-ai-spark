@@ -100,6 +100,11 @@ export const Footer = () => {
                   Admin Panel
                 </Link>
               </li>
+              <li>
+                <Link to="/admin/leaves" className="text-muted-foreground hover:text-primary transition-colors">
+                  Leave Management
+                </Link>
+              </li>
             </ul>
           </div>
 
