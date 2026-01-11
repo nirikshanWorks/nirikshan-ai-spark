@@ -775,13 +775,49 @@ const AdminHRManagement = () => {
   };
 
   // Individual Attendance Functions
-  const openEditAttendance = (employee: Employee) => {
+  const openEditAttendance = async (employee: Employee) => {
     setEditingAttendanceEmployee(employee);
     setIndividualAttendanceDates([new Date()]);
     setIndividualAttendanceStatus("present");
     setIndividualAttendanceNotes("");
     setDateSelectionMode("multiple");
     setDateRange(undefined);
+    
+    // Fetch existing attendance for this employee
+    const { data: existingAttendance } = await supabase
+      .from("attendance")
+      .select("date, status")
+      .eq("employee_id", employee.id);
+    
+    setEmployeeExistingAttendance(existingAttendance || []);
+  };
+  
+  // State for existing attendance records
+  const [employeeExistingAttendance, setEmployeeExistingAttendance] = useState<{date: string, status: string}[]>([]);
+  
+  // Get attendance status for a specific date
+  const getAttendanceStatusForDate = (date: Date): string | null => {
+    const dateStr = format(date, 'yyyy-MM-dd');
+    const record = employeeExistingAttendance.find(a => a.date === dateStr);
+    return record ? record.status : null;
+  };
+  
+  // Get color class based on attendance status
+  const getAttendanceColorClass = (status: string): string => {
+    switch (status) {
+      case 'present':
+        return 'bg-green-500 text-white hover:bg-green-600';
+      case 'absent':
+        return 'bg-red-500 text-white hover:bg-red-600';
+      case 'half-day':
+        return 'bg-blue-500 text-white hover:bg-blue-600';
+      case 'late':
+        return 'bg-yellow-500 text-white hover:bg-yellow-600';
+      case 'leave':
+        return 'bg-purple-500 text-white hover:bg-purple-600';
+      default:
+        return '';
+    }
   };
 
   // Helper to get dates from range
@@ -1084,8 +1120,8 @@ const AdminHRManagement = () => {
                                   <TableCell>
                                     {employee.joining_date ? (
                                       <span className="flex items-center gap-1 text-sm">
-                                        <Calendar className="h-3 w-3" />
-                                        {new Date(employee.joining_date).toLocaleDateString()}
+                                        <CalendarIcon className="h-3 w-3" />
+                                        {new Date(employee.joining_date).toLocaleDateString('en-IN', { day: '2-digit', month: '2-digit', year: 'numeric' })}
                                       </span>
                                     ) : (
                                       <span className="text-muted-foreground text-sm">—</span>
@@ -2352,6 +2388,18 @@ const AdminHRManagement = () => {
                 </div>
               </div>
 
+              {/* Legend for attendance colors */}
+              <div className="space-y-2">
+                <Label>Attendance Legend</Label>
+                <div className="flex flex-wrap gap-2">
+                  <Badge className="bg-green-500 text-white text-xs">Present</Badge>
+                  <Badge className="bg-red-500 text-white text-xs">Absent</Badge>
+                  <Badge className="bg-blue-500 text-white text-xs">Half-Day</Badge>
+                  <Badge className="bg-yellow-500 text-white text-xs">Late</Badge>
+                  <Badge className="bg-purple-500 text-white text-xs">Leave</Badge>
+                </div>
+              </div>
+
               {/* Multiple Dates Picker */}
               {dateSelectionMode === "multiple" && (
                 <div className="space-y-2">
@@ -2378,7 +2426,41 @@ const AdminHRManagement = () => {
                         mode="multiple"
                         selected={individualAttendanceDates}
                         onSelect={(dates) => setIndividualAttendanceDates(dates || [])}
-                        disabled={(date) => date > new Date()}
+                        disabled={(date) => {
+                          // Disable future dates
+                          if (date > new Date()) return true;
+                          // Disable dates before joining date
+                          if (editingAttendanceEmployee?.joining_date) {
+                            const joiningDate = new Date(editingAttendanceEmployee.joining_date);
+                            joiningDate.setHours(0, 0, 0, 0);
+                            if (date < joiningDate) return true;
+                          }
+                          return false;
+                        }}
+                        modifiers={{
+                          present: employeeExistingAttendance
+                            .filter(a => a.status === 'present')
+                            .map(a => new Date(a.date)),
+                          absent: employeeExistingAttendance
+                            .filter(a => a.status === 'absent')
+                            .map(a => new Date(a.date)),
+                          halfDay: employeeExistingAttendance
+                            .filter(a => a.status === 'half-day')
+                            .map(a => new Date(a.date)),
+                          late: employeeExistingAttendance
+                            .filter(a => a.status === 'late')
+                            .map(a => new Date(a.date)),
+                          leave: employeeExistingAttendance
+                            .filter(a => a.status === 'leave')
+                            .map(a => new Date(a.date)),
+                        }}
+                        modifiersClassNames={{
+                          present: 'bg-green-500 text-white hover:bg-green-600',
+                          absent: 'bg-red-500 text-white hover:bg-red-600',
+                          halfDay: 'bg-blue-500 text-white hover:bg-blue-600',
+                          late: 'bg-yellow-500 text-white hover:bg-yellow-600',
+                          leave: 'bg-purple-500 text-white hover:bg-purple-600',
+                        }}
                         initialFocus
                         className="p-3 pointer-events-auto"
                       />
@@ -2386,11 +2468,21 @@ const AdminHRManagement = () => {
                   </Popover>
                   {individualAttendanceDates.length > 0 && (
                     <div className="flex flex-wrap gap-1 mt-2">
-                      {individualAttendanceDates.slice(0, 5).map((date, index) => (
-                        <Badge key={index} variant="secondary" className="text-xs">
-                          {format(date, "MMM d")}
-                        </Badge>
-                      ))}
+                      {individualAttendanceDates.slice(0, 5).map((date, index) => {
+                        const status = getAttendanceStatusForDate(date);
+                        return (
+                          <Badge 
+                            key={index} 
+                            className={cn(
+                              "text-xs",
+                              status ? getAttendanceColorClass(status) : "bg-secondary text-secondary-foreground"
+                            )}
+                          >
+                            {format(date, "MMM d")}
+                            {status && ` (${status})`}
+                          </Badge>
+                        );
+                      })}
                       {individualAttendanceDates.length > 5 && (
                         <Badge variant="outline" className="text-xs">
                           +{individualAttendanceDates.length - 5} more
@@ -2440,7 +2532,41 @@ const AdminHRManagement = () => {
                         mode="range"
                         selected={dateRange}
                         onSelect={setDateRange}
-                        disabled={(date) => date > new Date()}
+                        disabled={(date) => {
+                          // Disable future dates
+                          if (date > new Date()) return true;
+                          // Disable dates before joining date
+                          if (editingAttendanceEmployee?.joining_date) {
+                            const joiningDate = new Date(editingAttendanceEmployee.joining_date);
+                            joiningDate.setHours(0, 0, 0, 0);
+                            if (date < joiningDate) return true;
+                          }
+                          return false;
+                        }}
+                        modifiers={{
+                          present: employeeExistingAttendance
+                            .filter(a => a.status === 'present')
+                            .map(a => new Date(a.date)),
+                          absent: employeeExistingAttendance
+                            .filter(a => a.status === 'absent')
+                            .map(a => new Date(a.date)),
+                          halfDay: employeeExistingAttendance
+                            .filter(a => a.status === 'half-day')
+                            .map(a => new Date(a.date)),
+                          late: employeeExistingAttendance
+                            .filter(a => a.status === 'late')
+                            .map(a => new Date(a.date)),
+                          leave: employeeExistingAttendance
+                            .filter(a => a.status === 'leave')
+                            .map(a => new Date(a.date)),
+                        }}
+                        modifiersClassNames={{
+                          present: 'bg-green-500 text-white hover:bg-green-600',
+                          absent: 'bg-red-500 text-white hover:bg-red-600',
+                          halfDay: 'bg-blue-500 text-white hover:bg-blue-600',
+                          late: 'bg-yellow-500 text-white hover:bg-yellow-600',
+                          leave: 'bg-purple-500 text-white hover:bg-purple-600',
+                        }}
                         initialFocus
                         numberOfMonths={2}
                         className="p-3 pointer-events-auto"
