@@ -130,7 +130,13 @@ const Applications = () => {
         return;
       }
 
-      setApplications(data || []);
+      // Cast the data to match our interface
+      const typedData = (data || []).map(app => ({
+        ...app,
+        status: app.status as JobApplication['status']
+      }));
+      
+      setApplications(typedData);
     } catch (err) {
       console.error("Fetch error:", err);
       toast.error("Failed to load applications");
