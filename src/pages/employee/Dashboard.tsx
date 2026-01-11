@@ -202,7 +202,13 @@ const EmployeeDashboard = () => {
           </TabsContent>
 
           <TabsContent value="attendance-history">
-            <AttendanceHistory employeeId={employee?.id || ''} />
+            <AttendanceHistory 
+              employeeId={employee?.id || ''} 
+              employeeName={employee?.full_name}
+              employeeCode={employee?.employee_id}
+              department={employee?.department || ''}
+              designation={employee?.designation || ''}
+            />
           </TabsContent>
 
           <TabsContent value="apply-leave">
