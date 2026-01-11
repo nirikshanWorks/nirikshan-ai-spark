@@ -3,6 +3,7 @@ import { useNavigate, useSearchParams } from "react-router-dom";
 import { useAuth } from "@/hooks/useAuth";
 import { motion } from "framer-motion";
 import { format } from "date-fns";
+import { DateRange } from "react-day-picker";
 import { 
   Calendar as CalendarIcon, CheckCircle, XCircle, Clock, Search, Users, 
   MessageSquare, Filter, CalendarDays, Download, BarChart3, Building2,
@@ -206,6 +207,8 @@ const AdminHRManagement = () => {
   const [individualAttendanceDates, setIndividualAttendanceDates] = useState<Date[]>([]);
   const [individualAttendanceStatus, setIndividualAttendanceStatus] = useState<string>("present");
   const [individualAttendanceNotes, setIndividualAttendanceNotes] = useState<string>("");
+  const [dateSelectionMode, setDateSelectionMode] = useState<"multiple" | "range">("multiple");
+  const [dateRange, setDateRange] = useState<DateRange | undefined>(undefined);
 
   // Job Applications State
   const [applications, setApplications] = useState<JobApplication[]>([]);
@@ -777,10 +780,33 @@ const AdminHRManagement = () => {
     setIndividualAttendanceDates([new Date()]);
     setIndividualAttendanceStatus("present");
     setIndividualAttendanceNotes("");
+    setDateSelectionMode("multiple");
+    setDateRange(undefined);
+  };
+
+  // Helper to get dates from range
+  const getDatesFromRange = (from: Date, to: Date): Date[] => {
+    const dates: Date[] = [];
+    const current = new Date(from);
+    while (current <= to) {
+      dates.push(new Date(current));
+      current.setDate(current.getDate() + 1);
+    }
+    return dates;
+  };
+
+  // Get effective dates based on mode
+  const getEffectiveDates = (): Date[] => {
+    if (dateSelectionMode === "range" && dateRange?.from && dateRange?.to) {
+      return getDatesFromRange(dateRange.from, dateRange.to);
+    }
+    return individualAttendanceDates;
   };
 
   const handleSaveIndividualAttendance = async () => {
-    if (!editingAttendanceEmployee || individualAttendanceDates.length === 0) {
+    const effectiveDates = getEffectiveDates();
+    
+    if (!editingAttendanceEmployee || effectiveDates.length === 0) {
       toast.error("Please select at least one date");
       return;
     }
@@ -788,7 +814,7 @@ const AdminHRManagement = () => {
     let successCount = 0;
     let errorCount = 0;
 
-    for (const date of individualAttendanceDates) {
+    for (const date of effectiveDates) {
       const selectedDate = format(date, 'yyyy-MM-dd');
       
       // Check if attendance already exists for this employee on this date
@@ -2273,51 +2299,128 @@ const AdminHRManagement = () => {
                 )}
               </div>
               
+              {/* Date Selection Mode Toggle */}
               <div className="space-y-2">
-                <Label>Select Dates ({individualAttendanceDates.length} selected)</Label>
-                <Popover>
-                  <PopoverTrigger asChild>
-                    <Button
-                      variant="outline"
-                      className={cn(
-                        "w-full justify-start text-left font-normal",
-                        individualAttendanceDates.length === 0 && "text-muted-foreground"
-                      )}
-                    >
-                      <CalendarIcon className="mr-2 h-4 w-4" />
-                      {individualAttendanceDates.length > 0 
-                        ? individualAttendanceDates.length === 1
-                          ? format(individualAttendanceDates[0], "PPP")
-                          : `${individualAttendanceDates.length} dates selected`
-                        : <span>Pick dates</span>}
-                    </Button>
-                  </PopoverTrigger>
-                  <PopoverContent className="w-auto p-0 bg-popover border shadow-xl z-[100]" align="start" sideOffset={8}>
-                    <Calendar
-                      mode="multiple"
-                      selected={individualAttendanceDates}
-                      onSelect={(dates) => setIndividualAttendanceDates(dates || [])}
-                      disabled={(date) => date > new Date()}
-                      initialFocus
-                      className="p-3 pointer-events-auto"
-                    />
-                  </PopoverContent>
-                </Popover>
-                {individualAttendanceDates.length > 0 && (
-                  <div className="flex flex-wrap gap-1 mt-2">
-                    {individualAttendanceDates.slice(0, 5).map((date, index) => (
-                      <Badge key={index} variant="secondary" className="text-xs">
-                        {format(date, "MMM d")}
-                      </Badge>
-                    ))}
-                    {individualAttendanceDates.length > 5 && (
-                      <Badge variant="outline" className="text-xs">
-                        +{individualAttendanceDates.length - 5} more
-                      </Badge>
-                    )}
-                  </div>
-                )}
+                <Label>Selection Mode</Label>
+                <div className="flex gap-2">
+                  <Button
+                    type="button"
+                    variant={dateSelectionMode === "multiple" ? "default" : "outline"}
+                    size="sm"
+                    onClick={() => setDateSelectionMode("multiple")}
+                    className="flex-1"
+                  >
+                    Multiple Dates
+                  </Button>
+                  <Button
+                    type="button"
+                    variant={dateSelectionMode === "range" ? "default" : "outline"}
+                    size="sm"
+                    onClick={() => setDateSelectionMode("range")}
+                    className="flex-1"
+                  >
+                    Date Range
+                  </Button>
+                </div>
               </div>
+
+              {/* Multiple Dates Picker */}
+              {dateSelectionMode === "multiple" && (
+                <div className="space-y-2">
+                  <Label>Select Dates ({individualAttendanceDates.length} selected)</Label>
+                  <Popover>
+                    <PopoverTrigger asChild>
+                      <Button
+                        variant="outline"
+                        className={cn(
+                          "w-full justify-start text-left font-normal",
+                          individualAttendanceDates.length === 0 && "text-muted-foreground"
+                        )}
+                      >
+                        <CalendarIcon className="mr-2 h-4 w-4" />
+                        {individualAttendanceDates.length > 0 
+                          ? individualAttendanceDates.length === 1
+                            ? format(individualAttendanceDates[0], "PPP")
+                            : `${individualAttendanceDates.length} dates selected`
+                          : <span>Pick dates</span>}
+                      </Button>
+                    </PopoverTrigger>
+                    <PopoverContent className="w-auto p-0 bg-popover border shadow-xl z-[100]" align="start" sideOffset={8}>
+                      <Calendar
+                        mode="multiple"
+                        selected={individualAttendanceDates}
+                        onSelect={(dates) => setIndividualAttendanceDates(dates || [])}
+                        disabled={(date) => date > new Date()}
+                        initialFocus
+                        className="p-3 pointer-events-auto"
+                      />
+                    </PopoverContent>
+                  </Popover>
+                  {individualAttendanceDates.length > 0 && (
+                    <div className="flex flex-wrap gap-1 mt-2">
+                      {individualAttendanceDates.slice(0, 5).map((date, index) => (
+                        <Badge key={index} variant="secondary" className="text-xs">
+                          {format(date, "MMM d")}
+                        </Badge>
+                      ))}
+                      {individualAttendanceDates.length > 5 && (
+                        <Badge variant="outline" className="text-xs">
+                          +{individualAttendanceDates.length - 5} more
+                        </Badge>
+                      )}
+                    </div>
+                  )}
+                </div>
+              )}
+
+              {/* Date Range Picker */}
+              {dateSelectionMode === "range" && (
+                <div className="space-y-2">
+                  <Label>
+                    Select Date Range 
+                    {dateRange?.from && dateRange?.to && (
+                      <span className="text-muted-foreground ml-2">
+                        ({getDatesFromRange(dateRange.from, dateRange.to).length} days)
+                      </span>
+                    )}
+                  </Label>
+                  <Popover>
+                    <PopoverTrigger asChild>
+                      <Button
+                        variant="outline"
+                        className={cn(
+                          "w-full justify-start text-left font-normal",
+                          !dateRange?.from && "text-muted-foreground"
+                        )}
+                      >
+                        <CalendarIcon className="mr-2 h-4 w-4" />
+                        {dateRange?.from ? (
+                          dateRange?.to ? (
+                            <>
+                              {format(dateRange.from, "MMM d")} - {format(dateRange.to, "MMM d, yyyy")}
+                            </>
+                          ) : (
+                            format(dateRange.from, "PPP")
+                          )
+                        ) : (
+                          <span>Pick a date range</span>
+                        )}
+                      </Button>
+                    </PopoverTrigger>
+                    <PopoverContent className="w-auto p-0 bg-popover border shadow-xl z-[100]" align="start" sideOffset={8}>
+                      <Calendar
+                        mode="range"
+                        selected={dateRange}
+                        onSelect={setDateRange}
+                        disabled={(date) => date > new Date()}
+                        initialFocus
+                        numberOfMonths={2}
+                        className="p-3 pointer-events-auto"
+                      />
+                    </PopoverContent>
+                  </Popover>
+                </div>
+              )}
               
               <div className="space-y-2">
                 <Label>Status</Label>
