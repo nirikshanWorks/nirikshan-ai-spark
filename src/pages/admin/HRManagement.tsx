@@ -129,6 +129,15 @@ interface JobApplication {
   offer_accepted_at: string | null;
 }
 
+interface Holiday {
+  id: string;
+  name: string;
+  date: string;
+  type: string;
+  description: string | null;
+  created_at: string;
+}
+
 // ==================== CONSTANTS ====================
 
 const DEPARTMENTS = [
@@ -217,6 +226,18 @@ const AdminHRManagement = () => {
   const [applicationStatusFilter, setApplicationStatusFilter] = useState<string>("all");
   const [selectedApplication, setSelectedApplication] = useState<JobApplication | null>(null);
 
+  // Holidays State
+  const [holidays, setHolidays] = useState<Holiday[]>([]);
+  const [holidaysLoading, setHolidaysLoading] = useState(true);
+  const [isHolidayDialogOpen, setIsHolidayDialogOpen] = useState(false);
+  const [editingHoliday, setEditingHoliday] = useState<Holiday | null>(null);
+  const [holidayFormData, setHolidayFormData] = useState({
+    name: "",
+    date: new Date().toISOString().split("T")[0],
+    type: "public",
+    description: "",
+  });
+
   useEffect(() => {
     if (!authLoading && (!user || !isAdmin)) {
       navigate("/auth");
@@ -228,6 +249,7 @@ const AdminHRManagement = () => {
       fetchLeaveRequests();
       fetchAttendanceData();
       fetchApplications();
+      fetchHolidays();
     }
   }, [user, isAdmin, authLoading, navigate]);
 
@@ -239,6 +261,134 @@ const AdminHRManagement = () => {
 
   const handleTabChange = (value: string) => {
     setSearchParams({ tab: value });
+  };
+
+  // ==================== HOLIDAYS FUNCTIONS ====================
+
+  const fetchHolidays = async () => {
+    setHolidaysLoading(true);
+    const { data, error } = await supabase
+      .from("holidays")
+      .select("*")
+      .order("date", { ascending: true });
+
+    if (error) {
+      toast.error("Failed to fetch holidays");
+      console.error(error);
+    } else {
+      setHolidays(data || []);
+    }
+    setHolidaysLoading(false);
+  };
+
+  const resetHolidayForm = () => {
+    setHolidayFormData({
+      name: "",
+      date: new Date().toISOString().split("T")[0],
+      type: "public",
+      description: "",
+    });
+    setEditingHoliday(null);
+  };
+
+  const openHolidayDialog = (holiday?: Holiday) => {
+    if (holiday) {
+      setEditingHoliday(holiday);
+      setHolidayFormData({
+        name: holiday.name,
+        date: holiday.date,
+        type: holiday.type,
+        description: holiday.description || "",
+      });
+    } else {
+      resetHolidayForm();
+    }
+    setIsHolidayDialogOpen(true);
+  };
+
+  const handleSaveHoliday = async () => {
+    if (!holidayFormData.name || !holidayFormData.date) {
+      toast.error("Please fill in holiday name and date");
+      return;
+    }
+
+    if (editingHoliday) {
+      const { error } = await supabase
+        .from("holidays")
+        .update({
+          name: holidayFormData.name,
+          date: holidayFormData.date,
+          type: holidayFormData.type,
+          description: holidayFormData.description || null,
+        })
+        .eq("id", editingHoliday.id);
+
+      if (error) {
+        toast.error("Failed to update holiday: " + error.message);
+      } else {
+        toast.success("Holiday updated successfully");
+        setIsHolidayDialogOpen(false);
+        resetHolidayForm();
+        fetchHolidays();
+      }
+    } else {
+      const { error } = await supabase.from("holidays").insert({
+        name: holidayFormData.name,
+        date: holidayFormData.date,
+        type: holidayFormData.type,
+        description: holidayFormData.description || null,
+        created_by: user?.id,
+      });
+
+      if (error) {
+        if (error.message.includes("duplicate")) {
+          toast.error("A holiday already exists on this date");
+        } else {
+          toast.error("Failed to add holiday: " + error.message);
+        }
+      } else {
+        toast.success("Holiday added successfully");
+        setIsHolidayDialogOpen(false);
+        resetHolidayForm();
+        fetchHolidays();
+      }
+    }
+  };
+
+  const handleDeleteHoliday = async (id: string) => {
+    const { error } = await supabase.from("holidays").delete().eq("id", id);
+
+    if (error) {
+      toast.error("Failed to delete holiday: " + error.message);
+    } else {
+      toast.success("Holiday deleted successfully");
+      fetchHolidays();
+    }
+  };
+
+  const getHolidayTypeBadge = (type: string) => {
+    switch (type) {
+      case "public":
+        return <Badge className="bg-red-100 text-red-800">Public Holiday</Badge>;
+      case "company":
+        return <Badge className="bg-blue-100 text-blue-800">Company Holiday</Badge>;
+      case "optional":
+        return <Badge className="bg-yellow-100 text-yellow-800">Optional Holiday</Badge>;
+      default:
+        return <Badge variant="secondary">{type}</Badge>;
+    }
+  };
+
+  // Check if a date is a holiday
+  const isHoliday = (date: Date): boolean => {
+    const dateStr = format(date, 'yyyy-MM-dd');
+    return holidays.some(h => h.date === dateStr);
+  };
+
+  // Get holiday for a date
+  const getHolidayForDate = (date: Date): Holiday | undefined => {
+    const dateStr = format(date, 'yyyy-MM-dd');
+    return holidays.find(h => h.date === dateStr);
   };
 
   // ==================== EMPLOYEE MANAGEMENT FUNCTIONS ====================
@@ -952,7 +1102,7 @@ const AdminHRManagement = () => {
 
           {/* Tabs */}
           <Tabs value={defaultTab} onValueChange={handleTabChange} className="space-y-6">
-            <TabsList className="grid w-full max-w-3xl grid-cols-4">
+            <TabsList className="grid w-full max-w-4xl grid-cols-5">
               <TabsTrigger value="employees" className="gap-2">
                 <UserPlus className="h-4 w-4" />
                 Employees
@@ -968,6 +1118,10 @@ const AdminHRManagement = () => {
               <TabsTrigger value="attendance" className="gap-2">
                 <BarChart3 className="h-4 w-4" />
                 Attendance
+              </TabsTrigger>
+              <TabsTrigger value="holidays" className="gap-2">
+                <CalendarIcon className="h-4 w-4" />
+                Holidays
               </TabsTrigger>
             </TabsList>
 
@@ -1901,6 +2055,192 @@ const AdminHRManagement = () => {
                 </>
               )}
             </TabsContent>
+
+            {/* ==================== HOLIDAYS TAB ==================== */}
+            <TabsContent value="holidays" className="space-y-6">
+              {holidaysLoading ? (
+                <div className="flex items-center justify-center py-12">
+                  <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
+                </div>
+              ) : (
+                <>
+                  {/* Add Holiday Button */}
+                  <div className="flex justify-between items-center">
+                    <div>
+                      <h3 className="text-lg font-semibold">Company Holidays</h3>
+                      <p className="text-sm text-muted-foreground">
+                        Manage public holidays, company holidays, and optional holidays
+                      </p>
+                    </div>
+                    <Button onClick={() => openHolidayDialog()} className="gap-2">
+                      <Plus className="h-4 w-4" />
+                      Add Holiday
+                    </Button>
+                  </div>
+
+                  {/* Holiday Stats */}
+                  <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                    <Card>
+                      <CardContent className="p-4">
+                        <div className="flex items-center gap-3">
+                          <div className="p-2 bg-primary/10 rounded-lg">
+                            <CalendarDays className="h-5 w-5 text-primary" />
+                          </div>
+                          <div>
+                            <p className="text-sm text-muted-foreground">Total Holidays</p>
+                            <p className="text-2xl font-bold">{holidays.length}</p>
+                          </div>
+                        </div>
+                      </CardContent>
+                    </Card>
+                    <Card>
+                      <CardContent className="p-4">
+                        <div className="flex items-center gap-3">
+                          <div className="p-2 bg-red-500/10 rounded-lg">
+                            <CalendarIcon className="h-5 w-5 text-red-500" />
+                          </div>
+                          <div>
+                            <p className="text-sm text-muted-foreground">Public</p>
+                            <p className="text-2xl font-bold text-red-600">
+                              {holidays.filter(h => h.type === 'public').length}
+                            </p>
+                          </div>
+                        </div>
+                      </CardContent>
+                    </Card>
+                    <Card>
+                      <CardContent className="p-4">
+                        <div className="flex items-center gap-3">
+                          <div className="p-2 bg-blue-500/10 rounded-lg">
+                            <Building2 className="h-5 w-5 text-blue-500" />
+                          </div>
+                          <div>
+                            <p className="text-sm text-muted-foreground">Company</p>
+                            <p className="text-2xl font-bold text-blue-600">
+                              {holidays.filter(h => h.type === 'company').length}
+                            </p>
+                          </div>
+                        </div>
+                      </CardContent>
+                    </Card>
+                    <Card>
+                      <CardContent className="p-4">
+                        <div className="flex items-center gap-3">
+                          <div className="p-2 bg-yellow-500/10 rounded-lg">
+                            <Clock className="h-5 w-5 text-yellow-500" />
+                          </div>
+                          <div>
+                            <p className="text-sm text-muted-foreground">Optional</p>
+                            <p className="text-2xl font-bold text-yellow-600">
+                              {holidays.filter(h => h.type === 'optional').length}
+                            </p>
+                          </div>
+                        </div>
+                      </CardContent>
+                    </Card>
+                  </div>
+
+                  {/* Holidays Table */}
+                  <Card>
+                    <CardHeader>
+                      <CardTitle className="flex items-center gap-2">
+                        <CalendarDays className="h-5 w-5" />
+                        Holiday Calendar
+                      </CardTitle>
+                      <CardDescription>
+                        Note: Sundays are automatically marked as holidays in attendance tracking
+                      </CardDescription>
+                    </CardHeader>
+                    <CardContent>
+                      {holidays.length === 0 ? (
+                        <div className="text-center py-12 text-muted-foreground">
+                          <CalendarDays className="h-12 w-12 mx-auto mb-4 opacity-50" />
+                          <p>No holidays configured</p>
+                          <p className="text-sm">Add holidays to track them in attendance</p>
+                        </div>
+                      ) : (
+                        <div className="overflow-x-auto">
+                          <Table>
+                            <TableHeader>
+                              <TableRow>
+                                <TableHead>Date</TableHead>
+                                <TableHead>Holiday Name</TableHead>
+                                <TableHead>Type</TableHead>
+                                <TableHead>Description</TableHead>
+                                <TableHead className="text-right">Actions</TableHead>
+                              </TableRow>
+                            </TableHeader>
+                            <TableBody>
+                              {holidays.map((holiday) => (
+                                <TableRow key={holiday.id}>
+                                  <TableCell>
+                                    <span className="flex items-center gap-2 font-medium">
+                                      <CalendarIcon className="h-4 w-4 text-muted-foreground" />
+                                      {new Date(holiday.date).toLocaleDateString('en-IN', {
+                                        weekday: 'short',
+                                        day: '2-digit',
+                                        month: 'short',
+                                        year: 'numeric'
+                                      })}
+                                    </span>
+                                  </TableCell>
+                                  <TableCell className="font-medium">{holiday.name}</TableCell>
+                                  <TableCell>{getHolidayTypeBadge(holiday.type)}</TableCell>
+                                  <TableCell className="max-w-[200px]">
+                                    {holiday.description ? (
+                                      <p className="truncate" title={holiday.description}>
+                                        {holiday.description}
+                                      </p>
+                                    ) : (
+                                      <span className="text-muted-foreground">—</span>
+                                    )}
+                                  </TableCell>
+                                  <TableCell className="text-right">
+                                    <div className="flex justify-end gap-2">
+                                      <Button
+                                        variant="ghost"
+                                        size="sm"
+                                        onClick={() => openHolidayDialog(holiday)}
+                                      >
+                                        <Edit className="h-4 w-4" />
+                                      </Button>
+                                      <AlertDialog>
+                                        <AlertDialogTrigger asChild>
+                                          <Button variant="ghost" size="sm" className="text-destructive">
+                                            <Trash2 className="h-4 w-4" />
+                                          </Button>
+                                        </AlertDialogTrigger>
+                                        <AlertDialogContent>
+                                          <AlertDialogHeader>
+                                            <AlertDialogTitle>Delete Holiday</AlertDialogTitle>
+                                            <AlertDialogDescription>
+                                              Are you sure you want to delete "{holiday.name}"? This action cannot be undone.
+                                            </AlertDialogDescription>
+                                          </AlertDialogHeader>
+                                          <AlertDialogFooter>
+                                            <AlertDialogCancel>Cancel</AlertDialogCancel>
+                                            <AlertDialogAction
+                                              onClick={() => handleDeleteHoliday(holiday.id)}
+                                              className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+                                            >
+                                              Delete
+                                            </AlertDialogAction>
+                                          </AlertDialogFooter>
+                                        </AlertDialogContent>
+                                      </AlertDialog>
+                                    </div>
+                                  </TableCell>
+                                </TableRow>
+                              ))}
+                            </TableBody>
+                          </Table>
+                        </div>
+                      )}
+                    </CardContent>
+                  </Card>
+                </>
+              )}
+            </TabsContent>
           </Tabs>
         </motion.div>
       </div>
@@ -2397,7 +2737,8 @@ const AdminHRManagement = () => {
                   <Badge className="bg-blue-500 text-white text-xs">Half-Day</Badge>
                   <Badge className="bg-yellow-500 text-white text-xs">Late</Badge>
                   <Badge className="bg-purple-500 text-white text-xs">Leave</Badge>
-                  <Badge className="bg-gray-400 text-white text-xs">Sunday (Holiday)</Badge>
+                  <Badge className="bg-gray-400 text-white text-xs">Sunday</Badge>
+                  <Badge className="bg-orange-400 text-white text-xs">Holiday</Badge>
                 </div>
               </div>
 
@@ -2432,6 +2773,8 @@ const AdminHRManagement = () => {
                           if (date > new Date()) return true;
                           // Disable Sundays (holiday)
                           if (date.getDay() === 0) return true;
+                          // Disable configured holidays
+                          if (isHoliday(date)) return true;
                           // Disable dates before joining date
                           if (editingAttendanceEmployee?.joining_date) {
                             const joiningDate = new Date(editingAttendanceEmployee.joining_date);
@@ -2442,6 +2785,7 @@ const AdminHRManagement = () => {
                         }}
                         modifiers={{
                           sunday: (date) => date.getDay() === 0,
+                          holiday: (date) => isHoliday(date),
                           present: employeeExistingAttendance
                             .filter(a => a.status === 'present')
                             .map(a => new Date(a.date)),
@@ -2460,6 +2804,7 @@ const AdminHRManagement = () => {
                         }}
                         modifiersClassNames={{
                           sunday: 'bg-gray-400 text-white opacity-50',
+                          holiday: 'bg-orange-400 text-white opacity-50',
                           present: 'bg-green-500 text-white hover:bg-green-600',
                           absent: 'bg-red-500 text-white hover:bg-red-600',
                           halfDay: 'bg-blue-500 text-white hover:bg-blue-600',
@@ -2542,6 +2887,8 @@ const AdminHRManagement = () => {
                           if (date > new Date()) return true;
                           // Disable Sundays (holiday)
                           if (date.getDay() === 0) return true;
+                          // Disable configured holidays
+                          if (isHoliday(date)) return true;
                           // Disable dates before joining date
                           if (editingAttendanceEmployee?.joining_date) {
                             const joiningDate = new Date(editingAttendanceEmployee.joining_date);
@@ -2552,6 +2899,7 @@ const AdminHRManagement = () => {
                         }}
                         modifiers={{
                           sunday: (date) => date.getDay() === 0,
+                          holiday: (date) => isHoliday(date),
                           present: employeeExistingAttendance
                             .filter(a => a.status === 'present')
                             .map(a => new Date(a.date)),
@@ -2570,6 +2918,7 @@ const AdminHRManagement = () => {
                         }}
                         modifiersClassNames={{
                           sunday: 'bg-gray-400 text-white opacity-50',
+                          holiday: 'bg-orange-400 text-white opacity-50',
                           present: 'bg-green-500 text-white hover:bg-green-600',
                           absent: 'bg-red-500 text-white hover:bg-red-600',
                           halfDay: 'bg-blue-500 text-white hover:bg-blue-600',
@@ -2638,6 +2987,119 @@ const AdminHRManagement = () => {
             </DialogClose>
             <Button onClick={handleSaveIndividualAttendance}>
               Save Attendance
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
+      {/* Holiday Dialog */}
+      <Dialog open={isHolidayDialogOpen} onOpenChange={(open) => {
+        if (!open) {
+          setIsHolidayDialogOpen(false);
+          resetHolidayForm();
+        }
+      }}>
+        <DialogContent className="sm:max-w-md">
+          <DialogHeader>
+            <DialogTitle className="flex items-center gap-2">
+              <CalendarDays className="h-5 w-5" />
+              {editingHoliday ? "Edit Holiday" : "Add Holiday"}
+            </DialogTitle>
+          </DialogHeader>
+          
+          <div className="space-y-4 py-4">
+            <div className="space-y-2">
+              <Label htmlFor="holiday_name">Holiday Name *</Label>
+              <Input
+                id="holiday_name"
+                placeholder="e.g., Independence Day"
+                value={holidayFormData.name}
+                onChange={(e) => setHolidayFormData({ ...holidayFormData, name: e.target.value })}
+              />
+            </div>
+            
+            <div className="space-y-2">
+              <Label htmlFor="holiday_date">Date *</Label>
+              <Popover>
+                <PopoverTrigger asChild>
+                  <Button
+                    variant="outline"
+                    className={cn(
+                      "w-full justify-start text-left font-normal",
+                      !holidayFormData.date && "text-muted-foreground"
+                    )}
+                  >
+                    <CalendarIcon className="mr-2 h-4 w-4" />
+                    {holidayFormData.date 
+                      ? format(new Date(holidayFormData.date), "PPP")
+                      : <span>Pick a date</span>}
+                  </Button>
+                </PopoverTrigger>
+                <PopoverContent className="w-auto p-0 bg-popover border shadow-xl z-[200]" align="start" sideOffset={8}>
+                  <Calendar
+                    mode="single"
+                    selected={holidayFormData.date ? new Date(holidayFormData.date) : undefined}
+                    onSelect={(date) => setHolidayFormData({ 
+                      ...holidayFormData, 
+                      date: date ? format(date, 'yyyy-MM-dd') : '' 
+                    })}
+                    initialFocus
+                    className="p-3 pointer-events-auto"
+                  />
+                </PopoverContent>
+              </Popover>
+            </div>
+            
+            <div className="space-y-2">
+              <Label htmlFor="holiday_type">Type *</Label>
+              <Select
+                value={holidayFormData.type}
+                onValueChange={(value) => setHolidayFormData({ ...holidayFormData, type: value })}
+              >
+                <SelectTrigger>
+                  <SelectValue placeholder="Select type" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="public">
+                    <div className="flex items-center gap-2">
+                      <span className="w-2 h-2 rounded-full bg-red-500"></span>
+                      Public Holiday
+                    </div>
+                  </SelectItem>
+                  <SelectItem value="company">
+                    <div className="flex items-center gap-2">
+                      <span className="w-2 h-2 rounded-full bg-blue-500"></span>
+                      Company Holiday
+                    </div>
+                  </SelectItem>
+                  <SelectItem value="optional">
+                    <div className="flex items-center gap-2">
+                      <span className="w-2 h-2 rounded-full bg-yellow-500"></span>
+                      Optional Holiday
+                    </div>
+                  </SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+            
+            <div className="space-y-2">
+              <Label htmlFor="holiday_description">Description (Optional)</Label>
+              <Textarea
+                id="holiday_description"
+                placeholder="Add a description for this holiday..."
+                value={holidayFormData.description}
+                onChange={(e) => setHolidayFormData({ ...holidayFormData, description: e.target.value })}
+                rows={3}
+              />
+            </div>
+          </div>
+          
+          <DialogFooter className="gap-2">
+            <DialogClose asChild>
+              <Button variant="outline">Cancel</Button>
+            </DialogClose>
+            <Button onClick={handleSaveHoliday}>
+              {editingHoliday ? "Save Changes" : "Add Holiday"}
             </Button>
           </DialogFooter>
         </DialogContent>
