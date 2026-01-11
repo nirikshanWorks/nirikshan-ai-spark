@@ -90,6 +90,16 @@ export const Footer = () => {
                   Contact
                 </Link>
               </li>
+              <li>
+                <Link to="/employee/login" className="text-muted-foreground hover:text-primary transition-colors">
+                  Employee Portal
+                </Link>
+              </li>
+              <li>
+                <Link to="/admin/employees" className="text-muted-foreground hover:text-primary transition-colors">
+                  Admin Panel
+                </Link>
+              </li>
             </ul>
           </div>
 
