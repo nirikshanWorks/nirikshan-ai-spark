@@ -1653,11 +1653,11 @@ const AdminHRManagement = () => {
                   <Card>
                     <CardHeader>
                       <CardTitle className="flex items-center gap-2">
-                        <Calendar className="h-5 w-5" />
-                        Monthly Summary
+                        <Users className="h-5 w-5" />
+                        Attendance Records
                       </CardTitle>
                       <CardDescription>
-                        Attendance summary for {new Date(selectedMonth + '-01').toLocaleString('en-US', { month: 'long', year: 'numeric' })}
+                        Showing attendance for {new Date(selectedMonth + '-01').toLocaleString('en-US', { month: 'long', year: 'numeric' })}
                       </CardDescription>
                     </CardHeader>
                     <CardContent>
