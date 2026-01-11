@@ -105,6 +105,11 @@ export const Footer = () => {
                   Leave Management
                 </Link>
               </li>
+              <li>
+                <Link to="/admin/attendance" className="text-muted-foreground hover:text-primary transition-colors">
+                  Attendance Reports
+                </Link>
+              </li>
             </ul>
           </div>
 
