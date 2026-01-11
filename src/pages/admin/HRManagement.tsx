@@ -1495,106 +1495,113 @@ const AdminHRManagement = () => {
                 </div>
               ) : (
                 <>
-                  {/* Action Buttons */}
-                  <div className="flex flex-col sm:flex-row justify-end gap-2">
-                    <div className="flex items-center gap-2">
-                      <Popover>
-                        <PopoverTrigger asChild>
-                          <Button
-                            variant="outline"
-                            className={cn(
-                              "w-[200px] justify-start text-left font-normal",
-                              !markAttendanceDate && "text-muted-foreground"
-                            )}
-                          >
-                            <CalendarIcon className="mr-2 h-4 w-4" />
-                            {markAttendanceDate ? format(markAttendanceDate, "PPP") : <span>Pick a date</span>}
-                          </Button>
-                        </PopoverTrigger>
-                        <PopoverContent className="w-auto p-0" align="start">
-                          <Calendar
-                            mode="single"
-                            selected={markAttendanceDate}
-                            onSelect={(date) => date && setMarkAttendanceDate(date)}
-                            disabled={(date) => date > new Date()}
-                            initialFocus
-                            className={cn("p-3 pointer-events-auto")}
-                          />
-                        </PopoverContent>
-                      </Popover>
-                      <Button onClick={handleMarkAllPresent} variant="outline" className="gap-2">
-                        <CheckCircle className="h-4 w-4" />
-                        Mark Everyone Present
-                      </Button>
-                    </div>
-                    <Button onClick={exportToExcel} className="gap-2">
-                      <Download className="h-4 w-4" />
-                      Export to Excel
-                    </Button>
-                  </div>
-
                   {/* Attendance Stats Cards */}
-                  <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                    <Card>
-                      <CardContent className="p-4">
-                        <div className="flex items-center gap-3">
-                          <div className="p-2 bg-primary/10 rounded-lg">
-                            <Users className="h-5 w-5 text-primary" />
-                          </div>
+                  <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+                    <Card className="border-l-4 border-l-primary">
+                      <CardContent className="p-5">
+                        <div className="flex items-center justify-between">
                           <div>
-                            <p className="text-sm text-muted-foreground">Total Employees</p>
-                            <p className="text-2xl font-bold">{overallStats.totalEmployees}</p>
+                            <p className="text-sm font-medium text-muted-foreground">Total Employees</p>
+                            <p className="text-3xl font-bold mt-1">{overallStats.totalEmployees}</p>
+                          </div>
+                          <div className="p-3 bg-primary/10 rounded-full">
+                            <Users className="h-6 w-6 text-primary" />
                           </div>
                         </div>
                       </CardContent>
                     </Card>
                     
-                    <Card>
-                      <CardContent className="p-4">
-                        <div className="flex items-center gap-3">
-                          <div className="p-2 bg-green-500/10 rounded-lg">
-                            <BarChart3 className="h-5 w-5 text-green-500" />
-                          </div>
+                    <Card className="border-l-4 border-l-green-500">
+                      <CardContent className="p-5">
+                        <div className="flex items-center justify-between">
                           <div>
-                            <p className="text-sm text-muted-foreground">Avg Attendance</p>
-                            <p className="text-2xl font-bold text-green-600">{overallStats.avgAttendance}%</p>
+                            <p className="text-sm font-medium text-muted-foreground">Avg Attendance</p>
+                            <p className="text-3xl font-bold mt-1 text-green-600">{overallStats.avgAttendance}%</p>
+                          </div>
+                          <div className="p-3 bg-green-500/10 rounded-full">
+                            <BarChart3 className="h-6 w-6 text-green-500" />
                           </div>
                         </div>
                       </CardContent>
                     </Card>
                     
-                    <Card>
-                      <CardContent className="p-4">
-                        <div className="flex items-center gap-3">
-                          <div className="p-2 bg-blue-500/10 rounded-lg">
-                            <CheckCircle className="h-5 w-5 text-blue-500" />
-                          </div>
+                    <Card className="border-l-4 border-l-blue-500">
+                      <CardContent className="p-5">
+                        <div className="flex items-center justify-between">
                           <div>
-                            <p className="text-sm text-muted-foreground">Total Present</p>
-                            <p className="text-2xl font-bold text-blue-600">{overallStats.totalPresent}</p>
+                            <p className="text-sm font-medium text-muted-foreground">Total Present</p>
+                            <p className="text-3xl font-bold mt-1 text-blue-600">{overallStats.totalPresent}</p>
+                          </div>
+                          <div className="p-3 bg-blue-500/10 rounded-full">
+                            <CheckCircle className="h-6 w-6 text-blue-500" />
                           </div>
                         </div>
                       </CardContent>
                     </Card>
                     
-                    <Card>
-                      <CardContent className="p-4">
-                        <div className="flex items-center gap-3">
-                          <div className="p-2 bg-red-500/10 rounded-lg">
-                            <XCircle className="h-5 w-5 text-red-500" />
-                          </div>
+                    <Card className="border-l-4 border-l-red-500">
+                      <CardContent className="p-5">
+                        <div className="flex items-center justify-between">
                           <div>
-                            <p className="text-sm text-muted-foreground">Total Absent</p>
-                            <p className="text-2xl font-bold text-red-600">{overallStats.totalAbsent}</p>
+                            <p className="text-sm font-medium text-muted-foreground">Total Absent</p>
+                            <p className="text-3xl font-bold mt-1 text-red-600">{overallStats.totalAbsent}</p>
+                          </div>
+                          <div className="p-3 bg-red-500/10 rounded-full">
+                            <XCircle className="h-6 w-6 text-red-500" />
                           </div>
                         </div>
                       </CardContent>
                     </Card>
                   </div>
 
-                  {/* Attendance Filters */}
+                  {/* Filters and Actions Card */}
                   <Card>
-                    <CardContent className="p-4">
+                    <CardHeader className="pb-4">
+                      <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
+                        <div>
+                          <CardTitle className="flex items-center gap-2 text-lg">
+                            <Filter className="h-5 w-5" />
+                            Filters & Actions
+                          </CardTitle>
+                          <CardDescription>Filter attendance data or mark attendance for a specific date</CardDescription>
+                        </div>
+                        <div className="flex flex-wrap items-center gap-3">
+                          <Popover>
+                            <PopoverTrigger asChild>
+                              <Button
+                                variant="outline"
+                                className={cn(
+                                  "w-[180px] justify-start text-left font-normal",
+                                  !markAttendanceDate && "text-muted-foreground"
+                                )}
+                              >
+                                <CalendarIcon className="mr-2 h-4 w-4" />
+                                {markAttendanceDate ? format(markAttendanceDate, "PP") : <span>Pick date</span>}
+                              </Button>
+                            </PopoverTrigger>
+                            <PopoverContent className="w-auto p-0 bg-popover border shadow-lg z-50" align="end">
+                              <Calendar
+                                mode="single"
+                                selected={markAttendanceDate}
+                                onSelect={(date) => date && setMarkAttendanceDate(date)}
+                                disabled={(date) => date > new Date()}
+                                initialFocus
+                                className="p-3 pointer-events-auto"
+                              />
+                            </PopoverContent>
+                          </Popover>
+                          <Button onClick={handleMarkAllPresent} className="gap-2">
+                            <CheckCircle className="h-4 w-4" />
+                            Mark All Present
+                          </Button>
+                          <Button onClick={exportToExcel} variant="outline" className="gap-2">
+                            <Download className="h-4 w-4" />
+                            Export Excel
+                          </Button>
+                        </div>
+                      </div>
+                    </CardHeader>
+                    <CardContent className="pt-0">
                       <div className="flex flex-col md:flex-row gap-4">
                         <div className="relative flex-1">
                           <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4" />
@@ -1605,36 +1612,38 @@ const AdminHRManagement = () => {
                             className="pl-10"
                           />
                         </div>
-                        <div className="flex items-center gap-2">
-                          <CalendarDays className="h-4 w-4 text-muted-foreground" />
-                          <Select value={selectedMonth} onValueChange={setSelectedMonth}>
-                            <SelectTrigger className="w-[180px]">
-                              <SelectValue placeholder="Select month" />
-                            </SelectTrigger>
-                            <SelectContent>
-                              {getMonthOptions().map(opt => (
-                                <SelectItem key={opt.value} value={opt.value}>
-                                  {opt.label}
-                                </SelectItem>
-                              ))}
-                            </SelectContent>
-                          </Select>
-                        </div>
-                        <div className="flex items-center gap-2">
-                          <Building2 className="h-4 w-4 text-muted-foreground" />
-                          <Select value={departmentFilter} onValueChange={setDepartmentFilter}>
-                            <SelectTrigger className="w-[150px]">
-                              <SelectValue placeholder="Department" />
-                            </SelectTrigger>
-                            <SelectContent>
-                              <SelectItem value="all">All Departments</SelectItem>
-                              {departments.map(dept => (
-                                <SelectItem key={dept} value={dept!}>
-                                  {dept}
-                                </SelectItem>
-                              ))}
-                            </SelectContent>
-                          </Select>
+                        <div className="flex flex-wrap items-center gap-3">
+                          <div className="flex items-center gap-2">
+                            <CalendarDays className="h-4 w-4 text-muted-foreground shrink-0" />
+                            <Select value={selectedMonth} onValueChange={setSelectedMonth}>
+                              <SelectTrigger className="w-[160px]">
+                                <SelectValue placeholder="Select month" />
+                              </SelectTrigger>
+                              <SelectContent className="bg-popover border shadow-lg z-50">
+                                {getMonthOptions().map(opt => (
+                                  <SelectItem key={opt.value} value={opt.value}>
+                                    {opt.label}
+                                  </SelectItem>
+                                ))}
+                              </SelectContent>
+                            </Select>
+                          </div>
+                          <div className="flex items-center gap-2">
+                            <Building2 className="h-4 w-4 text-muted-foreground shrink-0" />
+                            <Select value={departmentFilter} onValueChange={setDepartmentFilter}>
+                              <SelectTrigger className="w-[160px]">
+                                <SelectValue placeholder="Department" />
+                              </SelectTrigger>
+                              <SelectContent className="bg-popover border shadow-lg z-50">
+                                <SelectItem value="all">All Departments</SelectItem>
+                                {departments.map(dept => (
+                                  <SelectItem key={dept} value={dept!}>
+                                    {dept}
+                                  </SelectItem>
+                                ))}
+                              </SelectContent>
+                            </Select>
+                          </div>
                         </div>
                       </div>
                     </CardContent>
