@@ -73,11 +73,14 @@ export const MarkAttendance = ({ employeeId, todayAttendance, onAttendanceMarked
     }
 
     setLoading(true);
+    const todayStr = format(today, 'yyyy-MM-dd');
+    
     try {
       const { error } = await supabase
         .from("attendance")
         .insert({
           employee_id: employeeId,
+          date: todayStr,
           status: "present",
           check_in_time: new Date().toISOString(),
         });
