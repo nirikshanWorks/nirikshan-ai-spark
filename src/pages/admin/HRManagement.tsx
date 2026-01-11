@@ -1043,8 +1043,8 @@ const AdminHRManagement = () => {
                           <p className="text-sm">Create an employee to get started</p>
                         </div>
                       ) : (
-                        <div className="overflow-x-auto">
-                          <Table>
+                        <div className="overflow-x-auto overflow-y-visible">
+                          <Table className="relative">
                             <TableHeader>
                               <TableRow>
                                 <TableHead>Employee ID</TableHead>
@@ -1970,12 +1970,31 @@ const AdminHRManagement = () => {
             
             <div className="space-y-2">
               <Label htmlFor="joining_date">Joining Date</Label>
-              <Input
-                id="joining_date"
-                type="date"
-                value={formData.joining_date}
-                onChange={(e) => setFormData({ ...formData, joining_date: e.target.value })}
-              />
+              <Popover>
+                <PopoverTrigger asChild>
+                  <Button
+                    variant="outline"
+                    className={cn(
+                      "w-full justify-start text-left font-normal",
+                      !formData.joining_date && "text-muted-foreground"
+                    )}
+                  >
+                    <CalendarIcon className="mr-2 h-4 w-4" />
+                    {formData.joining_date 
+                      ? format(new Date(formData.joining_date), "PPP")
+                      : <span>Pick a date</span>}
+                  </Button>
+                </PopoverTrigger>
+                <PopoverContent className="w-auto p-0 bg-popover border shadow-xl z-[200]" align="start" sideOffset={8}>
+                  <Calendar
+                    mode="single"
+                    selected={formData.joining_date ? new Date(formData.joining_date) : undefined}
+                    onSelect={(date) => setFormData({ ...formData, joining_date: date ? format(date, 'yyyy-MM-dd') : '' })}
+                    initialFocus
+                    className="p-3 pointer-events-auto"
+                  />
+                </PopoverContent>
+              </Popover>
             </div>
           </div>
           
@@ -2062,12 +2081,31 @@ const AdminHRManagement = () => {
             
             <div className="space-y-2">
               <Label htmlFor="edit_joining_date">Joining Date</Label>
-              <Input
-                id="edit_joining_date"
-                type="date"
-                value={formData.joining_date}
-                onChange={(e) => setFormData({ ...formData, joining_date: e.target.value })}
-              />
+              <Popover>
+                <PopoverTrigger asChild>
+                  <Button
+                    variant="outline"
+                    className={cn(
+                      "w-full justify-start text-left font-normal",
+                      !formData.joining_date && "text-muted-foreground"
+                    )}
+                  >
+                    <CalendarIcon className="mr-2 h-4 w-4" />
+                    {formData.joining_date 
+                      ? format(new Date(formData.joining_date), "PPP")
+                      : <span>Pick a date</span>}
+                  </Button>
+                </PopoverTrigger>
+                <PopoverContent className="w-auto p-0 bg-popover border shadow-xl z-[200]" align="start" sideOffset={8}>
+                  <Calendar
+                    mode="single"
+                    selected={formData.joining_date ? new Date(formData.joining_date) : undefined}
+                    onSelect={(date) => setFormData({ ...formData, joining_date: date ? format(date, 'yyyy-MM-dd') : '' })}
+                    initialFocus
+                    className="p-3 pointer-events-auto"
+                  />
+                </PopoverContent>
+              </Popover>
             </div>
           </div>
           
