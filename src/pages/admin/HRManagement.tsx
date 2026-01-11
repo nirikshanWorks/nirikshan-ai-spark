@@ -5,7 +5,7 @@ import { motion } from "framer-motion";
 import { 
   Calendar, CheckCircle, XCircle, Clock, Search, Users, 
   MessageSquare, Filter, CalendarDays, Download, BarChart3, Building2,
-  Plus, Trash2, Edit, Briefcase, UserPlus, Link2
+  Plus, Trash2, Edit, Briefcase, UserPlus, Link2, FileText, Eye, Mail, Phone, Linkedin, Github, Globe, ExternalLink
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -107,6 +107,23 @@ interface EmployeeSummary {
   attendanceRate: number;
 }
 
+interface JobApplication {
+  id: string;
+  name: string;
+  email: string;
+  phone_number: string;
+  linkedin_profile: string;
+  github_profile: string;
+  portfolio_link: string | null;
+  job_applied_for: string;
+  resume_url: string;
+  status: string | null;
+  created_at: string;
+  updated_at: string;
+  offer_accepted: boolean | null;
+  offer_accepted_at: string | null;
+}
+
 // ==================== CONSTANTS ====================
 
 const DEPARTMENTS = [
@@ -179,6 +196,13 @@ const AdminHRManagement = () => {
   });
   const [departmentFilter, setDepartmentFilter] = useState<string>("all");
 
+  // Job Applications State
+  const [applications, setApplications] = useState<JobApplication[]>([]);
+  const [applicationsLoading, setApplicationsLoading] = useState(true);
+  const [applicationSearchQuery, setApplicationSearchQuery] = useState("");
+  const [applicationStatusFilter, setApplicationStatusFilter] = useState<string>("all");
+  const [selectedApplication, setSelectedApplication] = useState<JobApplication | null>(null);
+
   useEffect(() => {
     if (!authLoading && (!user || !isAdmin)) {
       navigate("/auth");
@@ -189,6 +213,7 @@ const AdminHRManagement = () => {
       fetchAvailableUsers();
       fetchLeaveRequests();
       fetchAttendanceData();
+      fetchApplications();
     }
   }, [user, isAdmin, authLoading, navigate]);
 
@@ -344,6 +369,106 @@ const AdminHRManagement = () => {
       (emp.department?.toLowerCase().includes(employeeSearchQuery.toLowerCase()) ?? false) ||
       (emp.designation?.toLowerCase().includes(employeeSearchQuery.toLowerCase()) ?? false)
   );
+
+  // ==================== JOB APPLICATIONS FUNCTIONS ====================
+
+  const fetchApplications = async () => {
+    setApplicationsLoading(true);
+    const { data, error } = await supabase
+      .from("job_applications")
+      .select("*")
+      .order("created_at", { ascending: false });
+
+    if (error) {
+      toast.error("Failed to fetch applications");
+      console.error(error);
+    } else {
+      setApplications(data || []);
+    }
+    setApplicationsLoading(false);
+  };
+
+  const handleUpdateApplicationStatus = async (id: string, newStatus: string) => {
+    const { error } = await supabase
+      .from("job_applications")
+      .update({ status: newStatus })
+      .eq("id", id);
+
+    if (error) {
+      toast.error("Failed to update application status: " + error.message);
+      console.error(error);
+    } else {
+      toast.success(`Application status updated to ${newStatus}`);
+      fetchApplications();
+    }
+  };
+
+  const handleDeleteApplication = async (id: string) => {
+    const { error } = await supabase.from("job_applications").delete().eq("id", id);
+
+    if (error) {
+      toast.error("Failed to delete application: " + error.message);
+      console.error(error);
+    } else {
+      toast.success("Application deleted successfully");
+      fetchApplications();
+    }
+  };
+
+  const getApplicationStatusBadge = (status: string | null) => {
+    const config: Record<string, { className: string; icon: React.ReactNode }> = {
+      pending: { 
+        className: "bg-yellow-100 text-yellow-800 border-yellow-200", 
+        icon: <Clock className="h-3 w-3" /> 
+      },
+      reviewed: { 
+        className: "bg-blue-100 text-blue-800 border-blue-200", 
+        icon: <Eye className="h-3 w-3" /> 
+      },
+      shortlisted: { 
+        className: "bg-purple-100 text-purple-800 border-purple-200", 
+        icon: <CheckCircle className="h-3 w-3" /> 
+      },
+      interview: { 
+        className: "bg-cyan-100 text-cyan-800 border-cyan-200", 
+        icon: <Calendar className="h-3 w-3" /> 
+      },
+      selected: { 
+        className: "bg-green-100 text-green-800 border-green-200", 
+        icon: <CheckCircle className="h-3 w-3" /> 
+      },
+      rejected: { 
+        className: "bg-red-100 text-red-800 border-red-200", 
+        icon: <XCircle className="h-3 w-3" /> 
+      },
+    };
+    const { className, icon } = config[status || "pending"] || config.pending;
+    return (
+      <Badge variant="outline" className={`${className} gap-1`}>
+        {icon}
+        {(status || "pending").charAt(0).toUpperCase() + (status || "pending").slice(1)}
+      </Badge>
+    );
+  };
+
+  const filteredApplications = applications.filter((app) => {
+    const matchesSearch = 
+      app.name.toLowerCase().includes(applicationSearchQuery.toLowerCase()) ||
+      app.email.toLowerCase().includes(applicationSearchQuery.toLowerCase()) ||
+      app.job_applied_for.toLowerCase().includes(applicationSearchQuery.toLowerCase());
+    
+    const matchesStatus = applicationStatusFilter === "all" || app.status === applicationStatusFilter;
+    
+    return matchesSearch && matchesStatus;
+  });
+
+  const applicationStats = {
+    total: applications.length,
+    pending: applications.filter(a => !a.status || a.status === "pending").length,
+    shortlisted: applications.filter(a => a.status === "shortlisted").length,
+    selected: applications.filter(a => a.status === "selected").length,
+    rejected: applications.filter(a => a.status === "rejected").length,
+  };
 
   // ==================== LEAVE MANAGEMENT FUNCTIONS ====================
 
@@ -618,21 +743,25 @@ const AdminHRManagement = () => {
                 HR Management
               </h1>
               <p className="text-muted-foreground mt-2">
-                Manage employees, leave requests, and attendance reports
+                Manage employees, applications, leave requests, and attendance reports
               </p>
             </div>
           </div>
 
           {/* Tabs */}
           <Tabs value={defaultTab} onValueChange={handleTabChange} className="space-y-6">
-            <TabsList className="grid w-full max-w-2xl grid-cols-3">
+            <TabsList className="grid w-full max-w-3xl grid-cols-4">
               <TabsTrigger value="employees" className="gap-2">
                 <UserPlus className="h-4 w-4" />
                 Employees
               </TabsTrigger>
+              <TabsTrigger value="applications" className="gap-2">
+                <FileText className="h-4 w-4" />
+                Applications
+              </TabsTrigger>
               <TabsTrigger value="leaves" className="gap-2">
                 <CalendarDays className="h-4 w-4" />
-                Leave Requests
+                Leaves
               </TabsTrigger>
               <TabsTrigger value="attendance" className="gap-2">
                 <BarChart3 className="h-4 w-4" />
@@ -823,6 +952,251 @@ const AdminHRManagement = () => {
                                             <AlertDialogCancel>Cancel</AlertDialogCancel>
                                             <AlertDialogAction
                                               onClick={() => handleDeleteEmployee(employee.id)}
+                                              className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+                                            >
+                                              Delete
+                                            </AlertDialogAction>
+                                          </AlertDialogFooter>
+                                        </AlertDialogContent>
+                                      </AlertDialog>
+                                    </div>
+                                  </TableCell>
+                                </TableRow>
+                              ))}
+                            </TableBody>
+                          </Table>
+                        </div>
+                      )}
+                    </CardContent>
+                  </Card>
+                </>
+              )}
+            </TabsContent>
+
+            {/* ==================== APPLICATIONS TAB ==================== */}
+            <TabsContent value="applications" className="space-y-6">
+              {applicationsLoading ? (
+                <div className="flex items-center justify-center py-12">
+                  <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
+                </div>
+              ) : (
+                <>
+                  {/* Application Stats Cards */}
+                  <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
+                    <Card>
+                      <CardContent className="p-4">
+                        <div className="flex items-center gap-3">
+                          <div className="p-2 bg-primary/10 rounded-lg">
+                            <FileText className="h-5 w-5 text-primary" />
+                          </div>
+                          <div>
+                            <p className="text-sm text-muted-foreground">Total</p>
+                            <p className="text-2xl font-bold">{applicationStats.total}</p>
+                          </div>
+                        </div>
+                      </CardContent>
+                    </Card>
+                    
+                    <Card className="cursor-pointer hover:shadow-md transition-shadow" onClick={() => setApplicationStatusFilter("pending")}>
+                      <CardContent className="p-4">
+                        <div className="flex items-center gap-3">
+                          <div className="p-2 bg-yellow-500/10 rounded-lg">
+                            <Clock className="h-5 w-5 text-yellow-500" />
+                          </div>
+                          <div>
+                            <p className="text-sm text-muted-foreground">Pending</p>
+                            <p className="text-2xl font-bold text-yellow-600">{applicationStats.pending}</p>
+                          </div>
+                        </div>
+                      </CardContent>
+                    </Card>
+                    
+                    <Card className="cursor-pointer hover:shadow-md transition-shadow" onClick={() => setApplicationStatusFilter("shortlisted")}>
+                      <CardContent className="p-4">
+                        <div className="flex items-center gap-3">
+                          <div className="p-2 bg-purple-500/10 rounded-lg">
+                            <CheckCircle className="h-5 w-5 text-purple-500" />
+                          </div>
+                          <div>
+                            <p className="text-sm text-muted-foreground">Shortlisted</p>
+                            <p className="text-2xl font-bold text-purple-600">{applicationStats.shortlisted}</p>
+                          </div>
+                        </div>
+                      </CardContent>
+                    </Card>
+                    
+                    <Card className="cursor-pointer hover:shadow-md transition-shadow" onClick={() => setApplicationStatusFilter("selected")}>
+                      <CardContent className="p-4">
+                        <div className="flex items-center gap-3">
+                          <div className="p-2 bg-green-500/10 rounded-lg">
+                            <CheckCircle className="h-5 w-5 text-green-500" />
+                          </div>
+                          <div>
+                            <p className="text-sm text-muted-foreground">Selected</p>
+                            <p className="text-2xl font-bold text-green-600">{applicationStats.selected}</p>
+                          </div>
+                        </div>
+                      </CardContent>
+                    </Card>
+                    
+                    <Card className="cursor-pointer hover:shadow-md transition-shadow" onClick={() => setApplicationStatusFilter("rejected")}>
+                      <CardContent className="p-4">
+                        <div className="flex items-center gap-3">
+                          <div className="p-2 bg-red-500/10 rounded-lg">
+                            <XCircle className="h-5 w-5 text-red-500" />
+                          </div>
+                          <div>
+                            <p className="text-sm text-muted-foreground">Rejected</p>
+                            <p className="text-2xl font-bold text-red-600">{applicationStats.rejected}</p>
+                          </div>
+                        </div>
+                      </CardContent>
+                    </Card>
+                  </div>
+
+                  {/* Application Filters */}
+                  <Card>
+                    <CardContent className="p-4">
+                      <div className="flex flex-col md:flex-row gap-4">
+                        <div className="relative flex-1">
+                          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4" />
+                          <Input
+                            placeholder="Search by name, email, or position..."
+                            value={applicationSearchQuery}
+                            onChange={(e) => setApplicationSearchQuery(e.target.value)}
+                            className="pl-10"
+                          />
+                        </div>
+                        <div className="flex items-center gap-2">
+                          <Filter className="h-4 w-4 text-muted-foreground" />
+                          <Select value={applicationStatusFilter} onValueChange={setApplicationStatusFilter}>
+                            <SelectTrigger className="w-[150px]">
+                              <SelectValue placeholder="Filter status" />
+                            </SelectTrigger>
+                            <SelectContent>
+                              <SelectItem value="all">All Status</SelectItem>
+                              <SelectItem value="pending">Pending</SelectItem>
+                              <SelectItem value="reviewed">Reviewed</SelectItem>
+                              <SelectItem value="shortlisted">Shortlisted</SelectItem>
+                              <SelectItem value="interview">Interview</SelectItem>
+                              <SelectItem value="selected">Selected</SelectItem>
+                              <SelectItem value="rejected">Rejected</SelectItem>
+                            </SelectContent>
+                          </Select>
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
+
+                  {/* Applications Table */}
+                  <Card>
+                    <CardHeader>
+                      <CardTitle className="flex items-center gap-2">
+                        <Briefcase className="h-5 w-5" />
+                        Job Applications
+                      </CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                      {filteredApplications.length === 0 ? (
+                        <div className="text-center py-12 text-muted-foreground">
+                          <FileText className="h-12 w-12 mx-auto mb-4 opacity-50" />
+                          <p>No applications found</p>
+                          {applicationStatusFilter !== "all" && (
+                            <Button variant="link" onClick={() => setApplicationStatusFilter("all")}>
+                              Clear filter
+                            </Button>
+                          )}
+                        </div>
+                      ) : (
+                        <div className="overflow-x-auto">
+                          <Table>
+                            <TableHeader>
+                              <TableRow>
+                                <TableHead>Candidate</TableHead>
+                                <TableHead>Position</TableHead>
+                                <TableHead>Contact</TableHead>
+                                <TableHead>Applied</TableHead>
+                                <TableHead>Status</TableHead>
+                                <TableHead className="text-right">Actions</TableHead>
+                              </TableRow>
+                            </TableHeader>
+                            <TableBody>
+                              {filteredApplications.map((app) => (
+                                <TableRow key={app.id}>
+                                  <TableCell>
+                                    <div>
+                                      <p className="font-medium">{app.name}</p>
+                                      <p className="text-xs text-muted-foreground">{app.email}</p>
+                                    </div>
+                                  </TableCell>
+                                  <TableCell>
+                                    <Badge variant="secondary">{app.job_applied_for}</Badge>
+                                  </TableCell>
+                                  <TableCell>
+                                    <div className="flex items-center gap-2">
+                                      <a href={`tel:${app.phone_number}`} className="text-muted-foreground hover:text-foreground">
+                                        <Phone className="h-4 w-4" />
+                                      </a>
+                                      {app.linkedin_profile && (
+                                        <a href={app.linkedin_profile} target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-blue-500">
+                                          <Linkedin className="h-4 w-4" />
+                                        </a>
+                                      )}
+                                      {app.github_profile && (
+                                        <a href={app.github_profile} target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-foreground">
+                                          <Github className="h-4 w-4" />
+                                        </a>
+                                      )}
+                                      {app.portfolio_link && (
+                                        <a href={app.portfolio_link} target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-foreground">
+                                          <Globe className="h-4 w-4" />
+                                        </a>
+                                      )}
+                                    </div>
+                                  </TableCell>
+                                  <TableCell className="text-sm">
+                                    {new Date(app.created_at).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
+                                  </TableCell>
+                                  <TableCell>{getApplicationStatusBadge(app.status)}</TableCell>
+                                  <TableCell className="text-right">
+                                    <div className="flex justify-end gap-2">
+                                      <Button
+                                        variant="ghost"
+                                        size="sm"
+                                        onClick={() => setSelectedApplication(app)}
+                                      >
+                                        <Eye className="h-4 w-4" />
+                                      </Button>
+                                      
+                                      {app.resume_url && (
+                                        <Button
+                                          variant="ghost"
+                                          size="sm"
+                                          asChild
+                                        >
+                                          <a href={app.resume_url} target="_blank" rel="noopener noreferrer">
+                                            <ExternalLink className="h-4 w-4" />
+                                          </a>
+                                        </Button>
+                                      )}
+                                      
+                                      <AlertDialog>
+                                        <AlertDialogTrigger asChild>
+                                          <Button variant="ghost" size="sm" className="text-destructive">
+                                            <Trash2 className="h-4 w-4" />
+                                          </Button>
+                                        </AlertDialogTrigger>
+                                        <AlertDialogContent>
+                                          <AlertDialogHeader>
+                                            <AlertDialogTitle>Delete Application</AlertDialogTitle>
+                                            <AlertDialogDescription>
+                                              Are you sure you want to delete the application from {app.name}? This action cannot be undone.
+                                            </AlertDialogDescription>
+                                          </AlertDialogHeader>
+                                          <AlertDialogFooter>
+                                            <AlertDialogCancel>Cancel</AlertDialogCancel>
+                                            <AlertDialogAction
+                                              onClick={() => handleDeleteApplication(app.id)}
                                               className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
                                             >
                                               Delete
@@ -1563,6 +1937,127 @@ const AdminHRManagement = () => {
             >
               {actionType === "approve" ? "Approve" : "Reject"}
             </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
+      {/* Application Details Dialog */}
+      <Dialog open={!!selectedApplication} onOpenChange={(open) => !open && setSelectedApplication(null)}>
+        <DialogContent className="sm:max-w-lg">
+          <DialogHeader>
+            <DialogTitle className="flex items-center gap-2">
+              <FileText className="h-5 w-5" />
+              Application Details
+            </DialogTitle>
+          </DialogHeader>
+          
+          {selectedApplication && (
+            <div className="space-y-4">
+              <div className="bg-muted/50 p-4 rounded-lg space-y-3">
+                <div className="flex justify-between items-start">
+                  <span className="text-sm text-muted-foreground">Name:</span>
+                  <span className="text-sm font-medium">{selectedApplication.name}</span>
+                </div>
+                <div className="flex justify-between items-start">
+                  <span className="text-sm text-muted-foreground">Email:</span>
+                  <a href={`mailto:${selectedApplication.email}`} className="text-sm text-primary hover:underline flex items-center gap-1">
+                    <Mail className="h-3 w-3" />
+                    {selectedApplication.email}
+                  </a>
+                </div>
+                <div className="flex justify-between items-start">
+                  <span className="text-sm text-muted-foreground">Phone:</span>
+                  <a href={`tel:${selectedApplication.phone_number}`} className="text-sm text-primary hover:underline flex items-center gap-1">
+                    <Phone className="h-3 w-3" />
+                    {selectedApplication.phone_number}
+                  </a>
+                </div>
+                <div className="flex justify-between items-start">
+                  <span className="text-sm text-muted-foreground">Position:</span>
+                  <Badge variant="secondary">{selectedApplication.job_applied_for}</Badge>
+                </div>
+                <div className="flex justify-between items-start">
+                  <span className="text-sm text-muted-foreground">Applied:</span>
+                  <span className="text-sm">{new Date(selectedApplication.created_at).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}</span>
+                </div>
+                <div className="flex justify-between items-start">
+                  <span className="text-sm text-muted-foreground">Status:</span>
+                  {getApplicationStatusBadge(selectedApplication.status)}
+                </div>
+                {selectedApplication.offer_accepted !== null && (
+                  <div className="flex justify-between items-start">
+                    <span className="text-sm text-muted-foreground">Offer:</span>
+                    <Badge variant={selectedApplication.offer_accepted ? "default" : "destructive"}>
+                      {selectedApplication.offer_accepted ? "Accepted" : "Declined"}
+                    </Badge>
+                  </div>
+                )}
+              </div>
+              
+              <div className="flex flex-wrap gap-2">
+                {selectedApplication.linkedin_profile && (
+                  <Button variant="outline" size="sm" asChild>
+                    <a href={selectedApplication.linkedin_profile} target="_blank" rel="noopener noreferrer">
+                      <Linkedin className="h-4 w-4 mr-2" />
+                      LinkedIn
+                    </a>
+                  </Button>
+                )}
+                {selectedApplication.github_profile && (
+                  <Button variant="outline" size="sm" asChild>
+                    <a href={selectedApplication.github_profile} target="_blank" rel="noopener noreferrer">
+                      <Github className="h-4 w-4 mr-2" />
+                      GitHub
+                    </a>
+                  </Button>
+                )}
+                {selectedApplication.portfolio_link && (
+                  <Button variant="outline" size="sm" asChild>
+                    <a href={selectedApplication.portfolio_link} target="_blank" rel="noopener noreferrer">
+                      <Globe className="h-4 w-4 mr-2" />
+                      Portfolio
+                    </a>
+                  </Button>
+                )}
+                {selectedApplication.resume_url && (
+                  <Button variant="outline" size="sm" asChild>
+                    <a href={selectedApplication.resume_url} target="_blank" rel="noopener noreferrer">
+                      <FileText className="h-4 w-4 mr-2" />
+                      Resume
+                    </a>
+                  </Button>
+                )}
+              </div>
+              
+              <div className="space-y-2">
+                <Label>Update Status</Label>
+                <Select 
+                  value={selectedApplication.status || "pending"} 
+                  onValueChange={(value) => {
+                    handleUpdateApplicationStatus(selectedApplication.id, value);
+                    setSelectedApplication({ ...selectedApplication, status: value });
+                  }}
+                >
+                  <SelectTrigger>
+                    <SelectValue placeholder="Select status" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="pending">Pending</SelectItem>
+                    <SelectItem value="reviewed">Reviewed</SelectItem>
+                    <SelectItem value="shortlisted">Shortlisted</SelectItem>
+                    <SelectItem value="interview">Interview</SelectItem>
+                    <SelectItem value="selected">Selected</SelectItem>
+                    <SelectItem value="rejected">Rejected</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+            </div>
+          )}
+          
+          <DialogFooter>
+            <DialogClose asChild>
+              <Button variant="outline">Close</Button>
+            </DialogClose>
           </DialogFooter>
         </DialogContent>
       </Dialog>
