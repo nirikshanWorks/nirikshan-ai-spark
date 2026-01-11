@@ -32,6 +32,7 @@ const CertificateVerify = lazy(() => import("./pages/CertificateVerify"));
 const AdminCertificates = lazy(() => import("./pages/admin/Certificates"));
 const AdminEmployees = lazy(() => import("./pages/admin/Employees"));
 const AdminLeaveManagement = lazy(() => import("./pages/admin/LeaveManagement"));
+const AdminAttendanceReports = lazy(() => import("./pages/admin/AttendanceReports"));
 const EmployeeLogin = lazy(() => import("./pages/employee/Login"));
 const EmployeeDashboard = lazy(() => import("./pages/employee/Dashboard"));
 const NotFound = lazy(() => import("./pages/NotFound"));
@@ -77,6 +78,7 @@ const AnimatedRoutes = () => {
         <Route path="/admin/certificates" element={<PageTransition><AdminCertificates /></PageTransition>} />
         <Route path="/admin/employees" element={<PageTransition><AdminEmployees /></PageTransition>} />
         <Route path="/admin/leaves" element={<PageTransition><AdminLeaveManagement /></PageTransition>} />
+        <Route path="/admin/attendance" element={<PageTransition><AdminAttendanceReports /></PageTransition>} />
         <Route path="/employee/login" element={<PageTransition><EmployeeLogin /></PageTransition>} />
         <Route path="/employee/dashboard" element={<PageTransition><EmployeeDashboard /></PageTransition>} />
         <Route path="*" element={<PageTransition><NotFound /></PageTransition>} />
