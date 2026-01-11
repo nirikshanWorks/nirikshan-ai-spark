@@ -1579,7 +1579,7 @@ const AdminHRManagement = () => {
                                 {markAttendanceDate ? format(markAttendanceDate, "PP") : <span>Pick date</span>}
                               </Button>
                             </PopoverTrigger>
-                            <PopoverContent className="w-auto p-0 bg-popover border shadow-lg z-50" align="end">
+                            <PopoverContent className="w-auto p-0 bg-popover border shadow-xl z-[100]" align="end" sideOffset={8}>
                               <Calendar
                                 mode="single"
                                 selected={markAttendanceDate}
