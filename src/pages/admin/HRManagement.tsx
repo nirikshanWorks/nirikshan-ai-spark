@@ -1434,7 +1434,7 @@ const AdminHRManagement = () => {
                       <CardContent className="p-4">
                         <div className="flex items-center gap-3">
                           <div className="p-2 bg-primary/10 rounded-lg">
-                            <Calendar className="h-5 w-5 text-primary" />
+                            <CalendarDays className="h-5 w-5 text-primary" />
                           </div>
                           <div>
                             <p className="text-sm text-muted-foreground">Total Requests</p>
@@ -1529,7 +1529,7 @@ const AdminHRManagement = () => {
                     <CardContent>
                       {filteredLeaveRequests.length === 0 ? (
                         <div className="text-center py-12 text-muted-foreground">
-                          <Calendar className="h-12 w-12 mx-auto mb-4 opacity-50" />
+                          <CalendarDays className="h-12 w-12 mx-auto mb-4 opacity-50" />
                           <p>No leave requests found</p>
                           {statusFilter !== "all" && (
                             <Button variant="link" onClick={() => setStatusFilter("all")}>
@@ -2397,6 +2397,7 @@ const AdminHRManagement = () => {
                   <Badge className="bg-blue-500 text-white text-xs">Half-Day</Badge>
                   <Badge className="bg-yellow-500 text-white text-xs">Late</Badge>
                   <Badge className="bg-purple-500 text-white text-xs">Leave</Badge>
+                  <Badge className="bg-gray-400 text-white text-xs">Sunday (Holiday)</Badge>
                 </div>
               </div>
 
@@ -2429,6 +2430,8 @@ const AdminHRManagement = () => {
                         disabled={(date) => {
                           // Disable future dates
                           if (date > new Date()) return true;
+                          // Disable Sundays (holiday)
+                          if (date.getDay() === 0) return true;
                           // Disable dates before joining date
                           if (editingAttendanceEmployee?.joining_date) {
                             const joiningDate = new Date(editingAttendanceEmployee.joining_date);
@@ -2438,6 +2441,7 @@ const AdminHRManagement = () => {
                           return false;
                         }}
                         modifiers={{
+                          sunday: (date) => date.getDay() === 0,
                           present: employeeExistingAttendance
                             .filter(a => a.status === 'present')
                             .map(a => new Date(a.date)),
@@ -2455,6 +2459,7 @@ const AdminHRManagement = () => {
                             .map(a => new Date(a.date)),
                         }}
                         modifiersClassNames={{
+                          sunday: 'bg-gray-400 text-white opacity-50',
                           present: 'bg-green-500 text-white hover:bg-green-600',
                           absent: 'bg-red-500 text-white hover:bg-red-600',
                           halfDay: 'bg-blue-500 text-white hover:bg-blue-600',
@@ -2535,6 +2540,8 @@ const AdminHRManagement = () => {
                         disabled={(date) => {
                           // Disable future dates
                           if (date > new Date()) return true;
+                          // Disable Sundays (holiday)
+                          if (date.getDay() === 0) return true;
                           // Disable dates before joining date
                           if (editingAttendanceEmployee?.joining_date) {
                             const joiningDate = new Date(editingAttendanceEmployee.joining_date);
@@ -2544,6 +2551,7 @@ const AdminHRManagement = () => {
                           return false;
                         }}
                         modifiers={{
+                          sunday: (date) => date.getDay() === 0,
                           present: employeeExistingAttendance
                             .filter(a => a.status === 'present')
                             .map(a => new Date(a.date)),
@@ -2561,6 +2569,7 @@ const AdminHRManagement = () => {
                             .map(a => new Date(a.date)),
                         }}
                         modifiersClassNames={{
+                          sunday: 'bg-gray-400 text-white opacity-50',
                           present: 'bg-green-500 text-white hover:bg-green-600',
                           absent: 'bg-red-500 text-white hover:bg-red-600',
                           halfDay: 'bg-blue-500 text-white hover:bg-blue-600',
