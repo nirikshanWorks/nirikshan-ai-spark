@@ -200,6 +200,12 @@ const AdminHRManagement = () => {
   });
   const [departmentFilter, setDepartmentFilter] = useState<string>("all");
   const [markAttendanceDate, setMarkAttendanceDate] = useState<Date>(new Date());
+  
+  // Individual Attendance Editing State
+  const [editingAttendanceEmployee, setEditingAttendanceEmployee] = useState<Employee | null>(null);
+  const [individualAttendanceDate, setIndividualAttendanceDate] = useState<Date>(new Date());
+  const [individualAttendanceStatus, setIndividualAttendanceStatus] = useState<string>("present");
+  const [individualAttendanceNotes, setIndividualAttendanceNotes] = useState<string>("");
 
   // Job Applications State
   const [applications, setApplications] = useState<JobApplication[]>([]);
@@ -762,6 +768,72 @@ const AdminHRManagement = () => {
     } else {
       toast.success(`Marked ${employeesToMark.length} employees as present for ${formattedDisplayDate}`);
       fetchAttendanceData();
+    }
+  };
+
+  // Individual Attendance Functions
+  const openEditAttendance = (employee: Employee) => {
+    setEditingAttendanceEmployee(employee);
+    setIndividualAttendanceDate(new Date());
+    setIndividualAttendanceStatus("present");
+    setIndividualAttendanceNotes("");
+  };
+
+  const handleSaveIndividualAttendance = async () => {
+    if (!editingAttendanceEmployee) return;
+
+    const selectedDate = format(individualAttendanceDate, 'yyyy-MM-dd');
+    
+    // Check if attendance already exists for this employee on this date
+    const { data: existingAttendance, error: fetchError } = await supabase
+      .from("attendance")
+      .select("id")
+      .eq("employee_id", editingAttendanceEmployee.id)
+      .eq("date", selectedDate)
+      .maybeSingle();
+
+    if (fetchError) {
+      toast.error("Failed to check existing attendance: " + fetchError.message);
+      return;
+    }
+
+    if (existingAttendance) {
+      // Update existing record
+      const { error } = await supabase
+        .from("attendance")
+        .update({
+          status: individualAttendanceStatus,
+          notes: individualAttendanceNotes || null,
+          check_in_time: individualAttendanceStatus !== 'absent' ? new Date().toISOString() : null,
+        })
+        .eq("id", existingAttendance.id);
+
+      if (error) {
+        toast.error("Failed to update attendance: " + error.message);
+      } else {
+        toast.success(`Updated attendance for ${editingAttendanceEmployee.full_name} on ${format(individualAttendanceDate, 'PPP')}`);
+        setEditingAttendanceEmployee(null);
+        fetchAttendanceData();
+      }
+    } else {
+      // Insert new record
+      const { error } = await supabase
+        .from("attendance")
+        .insert({
+          employee_id: editingAttendanceEmployee.id,
+          date: selectedDate,
+          status: individualAttendanceStatus,
+          notes: individualAttendanceNotes || null,
+          check_in_time: individualAttendanceStatus !== 'absent' ? new Date().toISOString() : null,
+        });
+
+      if (error) {
+        toast.error("Failed to save attendance: " + error.message);
+      } else {
+        toast.success(`Marked ${editingAttendanceEmployee.full_name} as ${individualAttendanceStatus} on ${format(individualAttendanceDate, 'PPP')}`);
+        setEditingAttendanceEmployee(null);
+        fetchAttendanceData();
+      }
     }
   };
 
@@ -1679,6 +1751,7 @@ const AdminHRManagement = () => {
                                 <TableHead className="text-center">Absent</TableHead>
                                 <TableHead className="text-center">Working Days</TableHead>
                                 <TableHead className="text-center">Rate</TableHead>
+                                <TableHead className="text-center">Actions</TableHead>
                               </TableRow>
                             </TableHeader>
                             <TableBody>
@@ -1729,6 +1802,17 @@ const AdminHRManagement = () => {
                                       </div>
                                       <span className="text-sm font-medium">{summary.attendanceRate}%</span>
                                     </div>
+                                  </TableCell>
+                                  <TableCell className="text-center">
+                                    <Button
+                                      variant="outline"
+                                      size="sm"
+                                      onClick={() => openEditAttendance(summary.employee)}
+                                      className="gap-1"
+                                    >
+                                      <Edit className="h-3 w-3" />
+                                      Edit
+                                    </Button>
                                   </TableCell>
                                 </TableRow>
                               ))}
@@ -2151,6 +2235,112 @@ const AdminHRManagement = () => {
             <DialogClose asChild>
               <Button variant="outline">Close</Button>
             </DialogClose>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
+      {/* Individual Attendance Dialog */}
+      <Dialog open={!!editingAttendanceEmployee} onOpenChange={(open) => !open && setEditingAttendanceEmployee(null)}>
+        <DialogContent className="sm:max-w-md">
+          <DialogHeader>
+            <DialogTitle className="flex items-center gap-2">
+              <Edit className="h-5 w-5" />
+              Edit Attendance
+            </DialogTitle>
+          </DialogHeader>
+          
+          {editingAttendanceEmployee && (
+            <div className="space-y-4 py-4">
+              <div className="bg-muted/50 p-4 rounded-lg">
+                <p className="font-medium">{editingAttendanceEmployee.full_name}</p>
+                <p className="text-sm text-muted-foreground">{editingAttendanceEmployee.employee_id}</p>
+                {editingAttendanceEmployee.department && (
+                  <Badge variant="secondary" className="mt-2">{editingAttendanceEmployee.department}</Badge>
+                )}
+              </div>
+              
+              <div className="space-y-2">
+                <Label>Date</Label>
+                <Popover>
+                  <PopoverTrigger asChild>
+                    <Button
+                      variant="outline"
+                      className={cn(
+                        "w-full justify-start text-left font-normal",
+                        !individualAttendanceDate && "text-muted-foreground"
+                      )}
+                    >
+                      <CalendarIcon className="mr-2 h-4 w-4" />
+                      {individualAttendanceDate ? format(individualAttendanceDate, "PPP") : <span>Pick date</span>}
+                    </Button>
+                  </PopoverTrigger>
+                  <PopoverContent className="w-auto p-0 bg-popover border shadow-xl z-[100]" align="start" sideOffset={8}>
+                    <Calendar
+                      mode="single"
+                      selected={individualAttendanceDate}
+                      onSelect={(date) => date && setIndividualAttendanceDate(date)}
+                      disabled={(date) => date > new Date()}
+                      initialFocus
+                      className="p-3 pointer-events-auto"
+                    />
+                  </PopoverContent>
+                </Popover>
+              </div>
+              
+              <div className="space-y-2">
+                <Label>Status</Label>
+                <Select value={individualAttendanceStatus} onValueChange={setIndividualAttendanceStatus}>
+                  <SelectTrigger>
+                    <SelectValue placeholder="Select status" />
+                  </SelectTrigger>
+                  <SelectContent className="bg-popover border shadow-lg z-50">
+                    <SelectItem value="present">
+                      <div className="flex items-center gap-2">
+                        <CheckCircle className="h-4 w-4 text-green-600" />
+                        Present
+                      </div>
+                    </SelectItem>
+                    <SelectItem value="absent">
+                      <div className="flex items-center gap-2">
+                        <XCircle className="h-4 w-4 text-red-600" />
+                        Absent
+                      </div>
+                    </SelectItem>
+                    <SelectItem value="half-day">
+                      <div className="flex items-center gap-2">
+                        <Clock className="h-4 w-4 text-blue-600" />
+                        Half-Day
+                      </div>
+                    </SelectItem>
+                    <SelectItem value="late">
+                      <div className="flex items-center gap-2">
+                        <Clock className="h-4 w-4 text-yellow-600" />
+                        Late
+                      </div>
+                    </SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+              
+              <div className="space-y-2">
+                <Label>Notes (Optional)</Label>
+                <Textarea
+                  placeholder="Add any notes about this attendance..."
+                  value={individualAttendanceNotes}
+                  onChange={(e) => setIndividualAttendanceNotes(e.target.value)}
+                  rows={3}
+                />
+              </div>
+            </div>
+          )}
+          
+          <DialogFooter className="gap-2">
+            <DialogClose asChild>
+              <Button variant="outline">Cancel</Button>
+            </DialogClose>
+            <Button onClick={handleSaveIndividualAttendance}>
+              Save Attendance
+            </Button>
           </DialogFooter>
         </DialogContent>
       </Dialog>
