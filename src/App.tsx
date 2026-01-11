@@ -30,6 +30,7 @@ const Applications = lazy(() => import("./pages/Applications"));
 const Auth = lazy(() => import("./pages/Auth"));
 const CertificateVerify = lazy(() => import("./pages/CertificateVerify"));
 const AdminCertificates = lazy(() => import("./pages/admin/Certificates"));
+const AdminEmployees = lazy(() => import("./pages/admin/Employees"));
 const EmployeeLogin = lazy(() => import("./pages/employee/Login"));
 const EmployeeDashboard = lazy(() => import("./pages/employee/Dashboard"));
 const NotFound = lazy(() => import("./pages/NotFound"));
@@ -73,6 +74,7 @@ const AnimatedRoutes = () => {
         <Route path="/verify" element={<PageTransition><CertificateVerify /></PageTransition>} />
         <Route path="/verify/:certificateNumber" element={<PageTransition><CertificateVerify /></PageTransition>} />
         <Route path="/admin/certificates" element={<PageTransition><AdminCertificates /></PageTransition>} />
+        <Route path="/admin/employees" element={<PageTransition><AdminEmployees /></PageTransition>} />
         <Route path="/employee/login" element={<PageTransition><EmployeeLogin /></PageTransition>} />
         <Route path="/employee/dashboard" element={<PageTransition><EmployeeDashboard /></PageTransition>} />
         <Route path="*" element={<PageTransition><NotFound /></PageTransition>} />
