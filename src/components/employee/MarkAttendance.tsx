@@ -4,7 +4,9 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { toast } from "@/components/ui/use-toast";
 import { CheckCircle, Clock, Fingerprint, CalendarOff, PartyPopper } from "lucide-react";
-import { format } from "date-fns";
+import { toZonedTime, formatInTimeZone } from "date-fns-tz";
+
+const IST_TIMEZONE = "Asia/Kolkata";
 
 interface Holiday {
   id: string;
@@ -20,20 +22,32 @@ interface MarkAttendanceProps {
   onAttendanceMarked: () => void;
 }
 
+// Get current date in IST timezone
+const getTodayIST = () => {
+  const now = new Date();
+  return toZonedTime(now, IST_TIMEZONE);
+};
+
+// Format date as YYYY-MM-DD in IST
+const getTodayDateStringIST = () => {
+  const now = new Date();
+  return formatInTimeZone(now, IST_TIMEZONE, 'yyyy-MM-dd');
+};
+
 export const MarkAttendance = ({ employeeId, todayAttendance, onAttendanceMarked }: MarkAttendanceProps) => {
   const [loading, setLoading] = useState(false);
   const [todayHoliday, setTodayHoliday] = useState<Holiday | null>(null);
   const [checkingHoliday, setCheckingHoliday] = useState(true);
 
-  const today = new Date();
-  const isSunday = today.getDay() === 0;
+  const todayIST = getTodayIST();
+  const isSunday = todayIST.getDay() === 0;
 
   useEffect(() => {
     checkTodayHoliday();
   }, []);
 
   const checkTodayHoliday = async () => {
-    const todayStr = format(today, 'yyyy-MM-dd');
+    const todayStr = getTodayDateStringIST();
     const { data } = await supabase
       .from("holidays")
       .select("*")
@@ -73,7 +87,7 @@ export const MarkAttendance = ({ employeeId, todayAttendance, onAttendanceMarked
     }
 
     setLoading(true);
-    const todayStr = format(today, 'yyyy-MM-dd');
+    const todayStr = getTodayDateStringIST();
     
     try {
       const { error } = await supabase
@@ -220,7 +234,7 @@ export const MarkAttendance = ({ employeeId, todayAttendance, onAttendanceMarked
           Mark Attendance
         </CardTitle>
         <CardDescription>
-          Tap the button below to mark your attendance for today
+          Tap the button below to mark your attendance for today ({formatInTimeZone(new Date(), IST_TIMEZONE, 'dd MMM yyyy')} IST)
         </CardDescription>
       </CardHeader>
       <CardContent className="flex flex-col items-center py-8 space-y-6">
@@ -254,10 +268,11 @@ export const MarkAttendance = ({ employeeId, todayAttendance, onAttendanceMarked
             <div>
               <h3 className="text-xl font-semibold text-green-600">Present Today!</h3>
               <p className="text-muted-foreground mt-1">
-                Checked in at {new Date(todayAttendance.check_in_time).toLocaleTimeString('en-US', { 
+                Checked in at {new Date(todayAttendance.check_in_time).toLocaleTimeString('en-IN', { 
                   hour: '2-digit', 
-                  minute: '2-digit' 
-                })}
+                  minute: '2-digit',
+                  timeZone: IST_TIMEZONE
+                })} IST
               </p>
             </div>
             
@@ -274,10 +289,11 @@ export const MarkAttendance = ({ employeeId, todayAttendance, onAttendanceMarked
               </Button>
             ) : (
               <p className="text-muted-foreground">
-                Checked out at {new Date(todayAttendance.check_out_time).toLocaleTimeString('en-US', { 
+                Checked out at {new Date(todayAttendance.check_out_time).toLocaleTimeString('en-IN', { 
                   hour: '2-digit', 
-                  minute: '2-digit' 
-                })}
+                  minute: '2-digit',
+                  timeZone: IST_TIMEZONE
+                })} IST
               </p>
             )}
           </div>
