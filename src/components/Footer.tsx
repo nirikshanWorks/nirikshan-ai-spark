@@ -96,11 +96,6 @@ export const Footer = () => {
                 </Link>
               </li>
               <li>
-                <Link to="/admin/employees" className="text-muted-foreground hover:text-primary transition-colors">
-                  Admin Panel
-                </Link>
-              </li>
-              <li>
                 <Link to="/admin/hr" className="text-muted-foreground hover:text-primary transition-colors">
                   HR Management
                 </Link>
