@@ -1,11 +1,7 @@
 import { createContext, useContext, useEffect, useState, ReactNode } from "react";
-import { createClient, User, Session } from "@supabase/supabase-js";
+import { User, Session } from "@supabase/supabase-js";
 import { useNavigate } from "react-router-dom";
-
-const supabaseUrl = "https://ggoqrdvlvapmcgonufds.supabase.co";
-const supabaseAnonKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imdnb3FyZHZsdmFwbWNnb251ZmRzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjQ0NDM1NTEsImV4cCI6MjA4MDAxOTU1MX0.5e0PnzXKad0Ydb4tXF0KIjzpHXFKEGWkuzImDwDEIwY";
-
-const supabase = createClient(supabaseUrl, supabaseAnonKey);
+import { supabase } from "@/integrations/supabase/client";
 
 interface AuthContextType {
   user: User | null;
