@@ -4,7 +4,8 @@ import { useAuth } from "@/hooks/useAuth";
 import { motion } from "framer-motion";
 import { 
   Calendar, CheckCircle, XCircle, Clock, Search, Users, 
-  MessageSquare, Filter, CalendarDays, Download, BarChart3, Building2
+  MessageSquare, Filter, CalendarDays, Download, BarChart3, Building2,
+  Plus, Trash2, Edit, Briefcase, UserPlus, Link2
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -27,6 +28,17 @@ import {
   DialogFooter,
   DialogClose,
 } from "@/components/ui/dialog";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
 import {
   Select,
   SelectContent,
@@ -61,9 +73,18 @@ interface LeaveRequest {
 
 interface Employee {
   id: string;
+  user_id: string;
   employee_id: string;
   full_name: string;
   department: string | null;
+  designation: string | null;
+  joining_date: string | null;
+  created_at: string | null;
+}
+
+interface UserProfile {
+  id: string;
+  email: string;
 }
 
 interface AttendanceRecord {
@@ -86,13 +107,58 @@ interface EmployeeSummary {
   attendanceRate: number;
 }
 
+// ==================== CONSTANTS ====================
+
+const DEPARTMENTS = [
+  "Engineering",
+  "Product",
+  "Design",
+  "Marketing",
+  "Sales",
+  "Human Resources",
+  "Finance",
+  "Operations",
+  "Research & Development",
+  "Customer Support",
+];
+
+const DESIGNATIONS = [
+  "Intern",
+  "Junior Engineer",
+  "Engineer",
+  "Senior Engineer",
+  "Lead Engineer",
+  "Manager",
+  "Senior Manager",
+  "Director",
+  "Vice President",
+  "CTO",
+  "CEO",
+];
+
 // ==================== MAIN COMPONENT ====================
 
 const AdminHRManagement = () => {
   const { user, isAdmin, loading: authLoading, supabase } = useAuth();
   const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
-  const defaultTab = searchParams.get("tab") || "leaves";
+  const defaultTab = searchParams.get("tab") || "employees";
+
+  // Employee Management State
+  const [allEmployees, setAllEmployees] = useState<Employee[]>([]);
+  const [availableUsers, setAvailableUsers] = useState<UserProfile[]>([]);
+  const [employeesLoading, setEmployeesLoading] = useState(true);
+  const [employeeSearchQuery, setEmployeeSearchQuery] = useState("");
+  const [isCreateOpen, setIsCreateOpen] = useState(false);
+  const [editingEmployee, setEditingEmployee] = useState<Employee | null>(null);
+  const [formData, setFormData] = useState({
+    user_id: "",
+    employee_id: "",
+    full_name: "",
+    department: "",
+    designation: "",
+    joining_date: new Date().toISOString().split("T")[0],
+  });
 
   // Leave Management State
   const [leaveRequests, setLeaveRequests] = useState<LeaveRequest[]>([]);
@@ -104,7 +170,6 @@ const AdminHRManagement = () => {
   const [actionType, setActionType] = useState<"approve" | "reject" | null>(null);
 
   // Attendance State
-  const [employees, setEmployees] = useState<Employee[]>([]);
   const [attendance, setAttendance] = useState<AttendanceRecord[]>([]);
   const [attendanceLoading, setAttendanceLoading] = useState(true);
   const [attendanceSearchQuery, setAttendanceSearchQuery] = useState("");
@@ -120,6 +185,8 @@ const AdminHRManagement = () => {
       return;
     }
     if (user && isAdmin) {
+      fetchAllEmployees();
+      fetchAvailableUsers();
       fetchLeaveRequests();
       fetchAttendanceData();
     }
@@ -134,6 +201,149 @@ const AdminHRManagement = () => {
   const handleTabChange = (value: string) => {
     setSearchParams({ tab: value });
   };
+
+  // ==================== EMPLOYEE MANAGEMENT FUNCTIONS ====================
+
+  const fetchAllEmployees = async () => {
+    setEmployeesLoading(true);
+    const { data, error } = await supabase
+      .from("employees")
+      .select("*")
+      .order("created_at", { ascending: false });
+
+    if (error) {
+      toast.error("Failed to fetch employees");
+      console.error(error);
+    } else {
+      setAllEmployees(data || []);
+    }
+    setEmployeesLoading(false);
+  };
+
+  const fetchAvailableUsers = async () => {
+    const { data: profiles, error: profilesError } = await supabase
+      .from("profiles")
+      .select("id, email");
+
+    if (profilesError) {
+      console.error("Error fetching profiles:", profilesError);
+      return;
+    }
+
+    const { data: existingEmployees, error: empError } = await supabase
+      .from("employees")
+      .select("user_id");
+
+    if (empError) {
+      console.error("Error fetching employees:", empError);
+      return;
+    }
+
+    const linkedUserIds = new Set(existingEmployees?.map(e => e.user_id) || []);
+    const available = (profiles || []).filter(p => !linkedUserIds.has(p.id));
+    setAvailableUsers(available);
+  };
+
+  const resetForm = () => {
+    setFormData({
+      user_id: "",
+      employee_id: "",
+      full_name: "",
+      department: "",
+      designation: "",
+      joining_date: new Date().toISOString().split("T")[0],
+    });
+  };
+
+  const handleCreateEmployee = async () => {
+    if (!formData.user_id || !formData.employee_id || !formData.full_name) {
+      toast.error("Please fill in all required fields");
+      return;
+    }
+
+    const { error } = await supabase.from("employees").insert({
+      user_id: formData.user_id,
+      employee_id: formData.employee_id,
+      full_name: formData.full_name,
+      department: formData.department || null,
+      designation: formData.designation || null,
+      joining_date: formData.joining_date || null,
+    });
+
+    if (error) {
+      toast.error("Failed to create employee: " + error.message);
+      console.error(error);
+    } else {
+      toast.success("Employee created successfully");
+      setIsCreateOpen(false);
+      resetForm();
+      fetchAllEmployees();
+      fetchAvailableUsers();
+    }
+  };
+
+  const handleUpdateEmployee = async () => {
+    if (!editingEmployee) return;
+
+    if (!formData.employee_id || !formData.full_name) {
+      toast.error("Please fill in all required fields");
+      return;
+    }
+
+    const { error } = await supabase
+      .from("employees")
+      .update({
+        employee_id: formData.employee_id,
+        full_name: formData.full_name,
+        department: formData.department || null,
+        designation: formData.designation || null,
+        joining_date: formData.joining_date || null,
+      })
+      .eq("id", editingEmployee.id);
+
+    if (error) {
+      toast.error("Failed to update employee: " + error.message);
+      console.error(error);
+    } else {
+      toast.success("Employee updated successfully");
+      setEditingEmployee(null);
+      resetForm();
+      fetchAllEmployees();
+    }
+  };
+
+  const handleDeleteEmployee = async (id: string) => {
+    const { error } = await supabase.from("employees").delete().eq("id", id);
+
+    if (error) {
+      toast.error("Failed to delete employee: " + error.message);
+      console.error(error);
+    } else {
+      toast.success("Employee deleted successfully");
+      fetchAllEmployees();
+      fetchAvailableUsers();
+    }
+  };
+
+  const openEditDialog = (employee: Employee) => {
+    setEditingEmployee(employee);
+    setFormData({
+      user_id: employee.user_id,
+      employee_id: employee.employee_id,
+      full_name: employee.full_name,
+      department: employee.department || "",
+      designation: employee.designation || "",
+      joining_date: employee.joining_date || new Date().toISOString().split("T")[0],
+    });
+  };
+
+  const filteredEmployees = allEmployees.filter(
+    (emp) =>
+      emp.full_name.toLowerCase().includes(employeeSearchQuery.toLowerCase()) ||
+      emp.employee_id.toLowerCase().includes(employeeSearchQuery.toLowerCase()) ||
+      (emp.department?.toLowerCase().includes(employeeSearchQuery.toLowerCase()) ?? false) ||
+      (emp.designation?.toLowerCase().includes(employeeSearchQuery.toLowerCase()) ?? false)
+  );
 
   // ==================== LEAVE MANAGEMENT FUNCTIONS ====================
 
@@ -255,18 +465,6 @@ const AdminHRManagement = () => {
     const [year, month] = selectedMonth.split('-').map(Number);
     const startDate = new Date(year, month - 1, 1);
     const endDate = new Date(year, month, 0);
-    
-    const { data: empData, error: empError } = await supabase
-      .from("employees")
-      .select("id, employee_id, full_name, department")
-      .order("full_name");
-
-    if (empError) {
-      toast.error("Failed to fetch employees");
-      console.error(empError);
-    } else {
-      setEmployees(empData || []);
-    }
 
     const { data: attData, error: attError } = await supabase
       .from("attendance")
@@ -294,7 +492,7 @@ const AdminHRManagement = () => {
       if (day !== 0 && day !== 6) workingDays++;
     }
 
-    return employees
+    return allEmployees
       .filter(emp => {
         const matchesSearch = 
           emp.full_name.toLowerCase().includes(attendanceSearchQuery.toLowerCase()) ||
@@ -324,7 +522,7 @@ const AdminHRManagement = () => {
   const summaries = getEmployeeSummaries();
 
   const overallStats = {
-    totalEmployees: employees.length,
+    totalEmployees: allEmployees.length,
     avgAttendance: summaries.length > 0 
       ? Math.round(summaries.reduce((acc, s) => acc + s.attendanceRate, 0) / summaries.length) 
       : 0,
@@ -332,7 +530,7 @@ const AdminHRManagement = () => {
     totalAbsent: summaries.reduce((acc, s) => acc + s.absent, 0),
   };
 
-  const departments = [...new Set(employees.map(e => e.department).filter(Boolean))];
+  const departments = [...new Set(allEmployees.map(e => e.department).filter(Boolean))];
 
   const exportToExcel = () => {
     const [year, month] = selectedMonth.split('-').map(Number);
@@ -351,7 +549,7 @@ const AdminHRManagement = () => {
     }));
 
     const detailedData = attendance.map(a => {
-      const emp = employees.find(e => e.id === a.employee_id);
+      const emp = allEmployees.find(e => e.id === a.employee_id);
       return {
         'Date': a.date,
         'Employee ID': emp?.employee_id || 'Unknown',
@@ -420,25 +618,233 @@ const AdminHRManagement = () => {
                 HR Management
               </h1>
               <p className="text-muted-foreground mt-2">
-                Manage leave requests and view attendance reports
+                Manage employees, leave requests, and attendance reports
               </p>
             </div>
           </div>
 
           {/* Tabs */}
           <Tabs value={defaultTab} onValueChange={handleTabChange} className="space-y-6">
-            <TabsList className="grid w-full max-w-md grid-cols-2">
+            <TabsList className="grid w-full max-w-2xl grid-cols-3">
+              <TabsTrigger value="employees" className="gap-2">
+                <UserPlus className="h-4 w-4" />
+                Employees
+              </TabsTrigger>
               <TabsTrigger value="leaves" className="gap-2">
                 <CalendarDays className="h-4 w-4" />
-                Leave Management
+                Leave Requests
               </TabsTrigger>
               <TabsTrigger value="attendance" className="gap-2">
                 <BarChart3 className="h-4 w-4" />
-                Attendance Reports
+                Attendance
               </TabsTrigger>
             </TabsList>
 
-            {/* Leave Management Tab */}
+            {/* ==================== EMPLOYEES TAB ==================== */}
+            <TabsContent value="employees" className="space-y-6">
+              {employeesLoading ? (
+                <div className="flex items-center justify-center py-12">
+                  <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
+                </div>
+              ) : (
+                <>
+                  {/* Add Employee Button */}
+                  <div className="flex justify-end">
+                    <Button onClick={() => { resetForm(); setIsCreateOpen(true); }} className="gap-2">
+                      <UserPlus className="h-4 w-4" />
+                      Add Employee
+                    </Button>
+                  </div>
+
+                  {/* Employee Stats Cards */}
+                  <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                    <Card>
+                      <CardContent className="p-4">
+                        <div className="flex items-center gap-3">
+                          <div className="p-2 bg-primary/10 rounded-lg">
+                            <Users className="h-5 w-5 text-primary" />
+                          </div>
+                          <div>
+                            <p className="text-sm text-muted-foreground">Total Employees</p>
+                            <p className="text-2xl font-bold">{allEmployees.length}</p>
+                          </div>
+                        </div>
+                      </CardContent>
+                    </Card>
+                    
+                    <Card>
+                      <CardContent className="p-4">
+                        <div className="flex items-center gap-3">
+                          <div className="p-2 bg-green-500/10 rounded-lg">
+                            <Building2 className="h-5 w-5 text-green-500" />
+                          </div>
+                          <div>
+                            <p className="text-sm text-muted-foreground">Departments</p>
+                            <p className="text-2xl font-bold">
+                              {new Set(allEmployees.map(e => e.department).filter(Boolean)).size}
+                            </p>
+                          </div>
+                        </div>
+                      </CardContent>
+                    </Card>
+                    
+                    <Card>
+                      <CardContent className="p-4">
+                        <div className="flex items-center gap-3">
+                          <div className="p-2 bg-blue-500/10 rounded-lg">
+                            <Link2 className="h-5 w-5 text-blue-500" />
+                          </div>
+                          <div>
+                            <p className="text-sm text-muted-foreground">Linked Accounts</p>
+                            <p className="text-2xl font-bold">{allEmployees.length}</p>
+                          </div>
+                        </div>
+                      </CardContent>
+                    </Card>
+                    
+                    <Card>
+                      <CardContent className="p-4">
+                        <div className="flex items-center gap-3">
+                          <div className="p-2 bg-orange-500/10 rounded-lg">
+                            <UserPlus className="h-5 w-5 text-orange-500" />
+                          </div>
+                          <div>
+                            <p className="text-sm text-muted-foreground">Unlinked Users</p>
+                            <p className="text-2xl font-bold">{availableUsers.length}</p>
+                          </div>
+                        </div>
+                      </CardContent>
+                    </Card>
+                  </div>
+
+                  {/* Employee Search */}
+                  <Card>
+                    <CardContent className="p-4">
+                      <div className="relative">
+                        <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4" />
+                        <Input
+                          placeholder="Search by name, ID, department, or designation..."
+                          value={employeeSearchQuery}
+                          onChange={(e) => setEmployeeSearchQuery(e.target.value)}
+                          className="pl-10"
+                        />
+                      </div>
+                    </CardContent>
+                  </Card>
+
+                  {/* Employee Table */}
+                  <Card>
+                    <CardHeader>
+                      <CardTitle className="flex items-center gap-2">
+                        <Briefcase className="h-5 w-5" />
+                        Employee Directory
+                      </CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                      {filteredEmployees.length === 0 ? (
+                        <div className="text-center py-12 text-muted-foreground">
+                          <Users className="h-12 w-12 mx-auto mb-4 opacity-50" />
+                          <p>No employees found</p>
+                          <p className="text-sm">Create an employee to get started</p>
+                        </div>
+                      ) : (
+                        <div className="overflow-x-auto">
+                          <Table>
+                            <TableHeader>
+                              <TableRow>
+                                <TableHead>Employee ID</TableHead>
+                                <TableHead>Full Name</TableHead>
+                                <TableHead>Department</TableHead>
+                                <TableHead>Designation</TableHead>
+                                <TableHead>Joining Date</TableHead>
+                                <TableHead className="text-right">Actions</TableHead>
+                              </TableRow>
+                            </TableHeader>
+                            <TableBody>
+                              {filteredEmployees.map((employee) => (
+                                <TableRow key={employee.id}>
+                                  <TableCell className="font-mono text-sm">
+                                    {employee.employee_id}
+                                  </TableCell>
+                                  <TableCell className="font-medium">
+                                    {employee.full_name}
+                                  </TableCell>
+                                  <TableCell>
+                                    {employee.department ? (
+                                      <Badge variant="secondary" className="gap-1">
+                                        <Building2 className="h-3 w-3" />
+                                        {employee.department}
+                                      </Badge>
+                                    ) : (
+                                      <span className="text-muted-foreground text-sm">—</span>
+                                    )}
+                                  </TableCell>
+                                  <TableCell>
+                                    {employee.designation ? (
+                                      <Badge variant="outline">{employee.designation}</Badge>
+                                    ) : (
+                                      <span className="text-muted-foreground text-sm">—</span>
+                                    )}
+                                  </TableCell>
+                                  <TableCell>
+                                    {employee.joining_date ? (
+                                      <span className="flex items-center gap-1 text-sm">
+                                        <Calendar className="h-3 w-3" />
+                                        {new Date(employee.joining_date).toLocaleDateString()}
+                                      </span>
+                                    ) : (
+                                      <span className="text-muted-foreground text-sm">—</span>
+                                    )}
+                                  </TableCell>
+                                  <TableCell className="text-right">
+                                    <div className="flex justify-end gap-2">
+                                      <Button
+                                        variant="ghost"
+                                        size="sm"
+                                        onClick={() => openEditDialog(employee)}
+                                      >
+                                        <Edit className="h-4 w-4" />
+                                      </Button>
+                                      
+                                      <AlertDialog>
+                                        <AlertDialogTrigger asChild>
+                                          <Button variant="ghost" size="sm" className="text-destructive">
+                                            <Trash2 className="h-4 w-4" />
+                                          </Button>
+                                        </AlertDialogTrigger>
+                                        <AlertDialogContent>
+                                          <AlertDialogHeader>
+                                            <AlertDialogTitle>Delete Employee</AlertDialogTitle>
+                                            <AlertDialogDescription>
+                                              Are you sure you want to delete {employee.full_name}? This will also delete all their attendance and leave records.
+                                            </AlertDialogDescription>
+                                          </AlertDialogHeader>
+                                          <AlertDialogFooter>
+                                            <AlertDialogCancel>Cancel</AlertDialogCancel>
+                                            <AlertDialogAction
+                                              onClick={() => handleDeleteEmployee(employee.id)}
+                                              className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+                                            >
+                                              Delete
+                                            </AlertDialogAction>
+                                          </AlertDialogFooter>
+                                        </AlertDialogContent>
+                                      </AlertDialog>
+                                    </div>
+                                  </TableCell>
+                                </TableRow>
+                              ))}
+                            </TableBody>
+                          </Table>
+                        </div>
+                      )}
+                    </CardContent>
+                  </Card>
+                </>
+              )}
+            </TabsContent>
+
+            {/* ==================== LEAVE MANAGEMENT TAB ==================== */}
             <TabsContent value="leaves" className="space-y-6">
               {leaveLoading ? (
                 <div className="flex items-center justify-center py-12">
@@ -540,7 +946,7 @@ const AdminHRManagement = () => {
                   <Card>
                     <CardHeader>
                       <CardTitle className="flex items-center gap-2">
-                        <Users className="h-5 w-5" />
+                        <CalendarDays className="h-5 w-5" />
                         Leave Requests
                       </CardTitle>
                     </CardHeader>
@@ -653,7 +1059,7 @@ const AdminHRManagement = () => {
               )}
             </TabsContent>
 
-            {/* Attendance Reports Tab */}
+            {/* ==================== ATTENDANCE TAB ==================== */}
             <TabsContent value="attendance" className="space-y-6">
               {attendanceLoading ? (
                 <div className="flex items-center justify-center py-12">
@@ -871,6 +1277,220 @@ const AdminHRManagement = () => {
           </Tabs>
         </motion.div>
       </div>
+
+      {/* ==================== DIALOGS ==================== */}
+
+      {/* Create Employee Dialog */}
+      <Dialog open={isCreateOpen} onOpenChange={setIsCreateOpen}>
+        <DialogContent className="sm:max-w-md">
+          <DialogHeader>
+            <DialogTitle className="flex items-center gap-2">
+              <UserPlus className="h-5 w-5" />
+              Add New Employee
+            </DialogTitle>
+          </DialogHeader>
+          
+          <div className="space-y-4 py-4">
+            <div className="space-y-2">
+              <Label htmlFor="user_id">Link to User Account *</Label>
+              <Select
+                value={formData.user_id}
+                onValueChange={(value) => setFormData({ ...formData, user_id: value })}
+              >
+                <SelectTrigger>
+                  <SelectValue placeholder="Select a user account" />
+                </SelectTrigger>
+                <SelectContent>
+                  {availableUsers.length === 0 ? (
+                    <SelectItem value="none" disabled>
+                      No unlinked users available
+                    </SelectItem>
+                  ) : (
+                    availableUsers.map((user) => (
+                      <SelectItem key={user.id} value={user.id}>
+                        {user.email}
+                      </SelectItem>
+                    ))
+                  )}
+                </SelectContent>
+              </Select>
+              <p className="text-xs text-muted-foreground">
+                Only users without an employee profile are shown
+              </p>
+            </div>
+            
+            <div className="space-y-2">
+              <Label htmlFor="employee_id">Employee ID *</Label>
+              <Input
+                id="employee_id"
+                placeholder="e.g., EMP001"
+                value={formData.employee_id}
+                onChange={(e) => setFormData({ ...formData, employee_id: e.target.value })}
+              />
+            </div>
+            
+            <div className="space-y-2">
+              <Label htmlFor="full_name">Full Name *</Label>
+              <Input
+                id="full_name"
+                placeholder="Enter full name"
+                value={formData.full_name}
+                onChange={(e) => setFormData({ ...formData, full_name: e.target.value })}
+              />
+            </div>
+            
+            <div className="space-y-2">
+              <Label htmlFor="department">Department</Label>
+              <Select
+                value={formData.department}
+                onValueChange={(value) => setFormData({ ...formData, department: value })}
+              >
+                <SelectTrigger>
+                  <SelectValue placeholder="Select department" />
+                </SelectTrigger>
+                <SelectContent>
+                  {DEPARTMENTS.map((dept) => (
+                    <SelectItem key={dept} value={dept}>
+                      {dept}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+            
+            <div className="space-y-2">
+              <Label htmlFor="designation">Designation</Label>
+              <Select
+                value={formData.designation}
+                onValueChange={(value) => setFormData({ ...formData, designation: value })}
+              >
+                <SelectTrigger>
+                  <SelectValue placeholder="Select designation" />
+                </SelectTrigger>
+                <SelectContent>
+                  {DESIGNATIONS.map((des) => (
+                    <SelectItem key={des} value={des}>
+                      {des}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+            
+            <div className="space-y-2">
+              <Label htmlFor="joining_date">Joining Date</Label>
+              <Input
+                id="joining_date"
+                type="date"
+                value={formData.joining_date}
+                onChange={(e) => setFormData({ ...formData, joining_date: e.target.value })}
+              />
+            </div>
+          </div>
+          
+          <DialogFooter>
+            <DialogClose asChild>
+              <Button variant="outline">Cancel</Button>
+            </DialogClose>
+            <Button onClick={handleCreateEmployee} disabled={availableUsers.length === 0}>
+              <Plus className="h-4 w-4 mr-2" />
+              Create Employee
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
+      {/* Edit Employee Dialog */}
+      <Dialog open={!!editingEmployee} onOpenChange={(open) => !open && setEditingEmployee(null)}>
+        <DialogContent className="sm:max-w-md">
+          <DialogHeader>
+            <DialogTitle className="flex items-center gap-2">
+              <Edit className="h-5 w-5" />
+              Edit Employee
+            </DialogTitle>
+          </DialogHeader>
+          
+          <div className="space-y-4 py-4">
+            <div className="space-y-2">
+              <Label htmlFor="edit_employee_id">Employee ID *</Label>
+              <Input
+                id="edit_employee_id"
+                placeholder="e.g., EMP001"
+                value={formData.employee_id}
+                onChange={(e) => setFormData({ ...formData, employee_id: e.target.value })}
+              />
+            </div>
+            
+            <div className="space-y-2">
+              <Label htmlFor="edit_full_name">Full Name *</Label>
+              <Input
+                id="edit_full_name"
+                placeholder="Enter full name"
+                value={formData.full_name}
+                onChange={(e) => setFormData({ ...formData, full_name: e.target.value })}
+              />
+            </div>
+            
+            <div className="space-y-2">
+              <Label htmlFor="edit_department">Department</Label>
+              <Select
+                value={formData.department}
+                onValueChange={(value) => setFormData({ ...formData, department: value })}
+              >
+                <SelectTrigger>
+                  <SelectValue placeholder="Select department" />
+                </SelectTrigger>
+                <SelectContent>
+                  {DEPARTMENTS.map((dept) => (
+                    <SelectItem key={dept} value={dept}>
+                      {dept}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+            
+            <div className="space-y-2">
+              <Label htmlFor="edit_designation">Designation</Label>
+              <Select
+                value={formData.designation}
+                onValueChange={(value) => setFormData({ ...formData, designation: value })}
+              >
+                <SelectTrigger>
+                  <SelectValue placeholder="Select designation" />
+                </SelectTrigger>
+                <SelectContent>
+                  {DESIGNATIONS.map((des) => (
+                    <SelectItem key={des} value={des}>
+                      {des}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+            
+            <div className="space-y-2">
+              <Label htmlFor="edit_joining_date">Joining Date</Label>
+              <Input
+                id="edit_joining_date"
+                type="date"
+                value={formData.joining_date}
+                onChange={(e) => setFormData({ ...formData, joining_date: e.target.value })}
+              />
+            </div>
+          </div>
+          
+          <DialogFooter>
+            <DialogClose asChild>
+              <Button variant="outline">Cancel</Button>
+            </DialogClose>
+            <Button onClick={handleUpdateEmployee}>
+              <Edit className="h-4 w-4 mr-2" />
+              Save Changes
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
 
       {/* Leave Action Dialog */}
       <Dialog open={!!selectedRequest && !!actionType} onOpenChange={(open) => {
