@@ -203,7 +203,7 @@ const AdminHRManagement = () => {
   
   // Individual Attendance Editing State
   const [editingAttendanceEmployee, setEditingAttendanceEmployee] = useState<Employee | null>(null);
-  const [individualAttendanceDate, setIndividualAttendanceDate] = useState<Date>(new Date());
+  const [individualAttendanceDates, setIndividualAttendanceDates] = useState<Date[]>([]);
   const [individualAttendanceStatus, setIndividualAttendanceStatus] = useState<string>("present");
   const [individualAttendanceNotes, setIndividualAttendanceNotes] = useState<string>("");
 
@@ -774,67 +774,81 @@ const AdminHRManagement = () => {
   // Individual Attendance Functions
   const openEditAttendance = (employee: Employee) => {
     setEditingAttendanceEmployee(employee);
-    setIndividualAttendanceDate(new Date());
+    setIndividualAttendanceDates([new Date()]);
     setIndividualAttendanceStatus("present");
     setIndividualAttendanceNotes("");
   };
 
   const handleSaveIndividualAttendance = async () => {
-    if (!editingAttendanceEmployee) return;
-
-    const selectedDate = format(individualAttendanceDate, 'yyyy-MM-dd');
-    
-    // Check if attendance already exists for this employee on this date
-    const { data: existingAttendance, error: fetchError } = await supabase
-      .from("attendance")
-      .select("id")
-      .eq("employee_id", editingAttendanceEmployee.id)
-      .eq("date", selectedDate)
-      .maybeSingle();
-
-    if (fetchError) {
-      toast.error("Failed to check existing attendance: " + fetchError.message);
+    if (!editingAttendanceEmployee || individualAttendanceDates.length === 0) {
+      toast.error("Please select at least one date");
       return;
     }
 
-    if (existingAttendance) {
-      // Update existing record
-      const { error } = await supabase
-        .from("attendance")
-        .update({
-          status: individualAttendanceStatus,
-          notes: individualAttendanceNotes || null,
-          check_in_time: individualAttendanceStatus !== 'absent' ? new Date().toISOString() : null,
-        })
-        .eq("id", existingAttendance.id);
+    let successCount = 0;
+    let errorCount = 0;
 
-      if (error) {
-        toast.error("Failed to update attendance: " + error.message);
-      } else {
-        toast.success(`Updated attendance for ${editingAttendanceEmployee.full_name} on ${format(individualAttendanceDate, 'PPP')}`);
-        setEditingAttendanceEmployee(null);
-        fetchAttendanceData();
+    for (const date of individualAttendanceDates) {
+      const selectedDate = format(date, 'yyyy-MM-dd');
+      
+      // Check if attendance already exists for this employee on this date
+      const { data: existingAttendance, error: fetchError } = await supabase
+        .from("attendance")
+        .select("id")
+        .eq("employee_id", editingAttendanceEmployee.id)
+        .eq("date", selectedDate)
+        .maybeSingle();
+
+      if (fetchError) {
+        errorCount++;
+        continue;
       }
-    } else {
-      // Insert new record
-      const { error } = await supabase
-        .from("attendance")
-        .insert({
-          employee_id: editingAttendanceEmployee.id,
-          date: selectedDate,
-          status: individualAttendanceStatus,
-          notes: individualAttendanceNotes || null,
-          check_in_time: individualAttendanceStatus !== 'absent' ? new Date().toISOString() : null,
-        });
 
-      if (error) {
-        toast.error("Failed to save attendance: " + error.message);
+      if (existingAttendance) {
+        // Update existing record
+        const { error } = await supabase
+          .from("attendance")
+          .update({
+            status: individualAttendanceStatus,
+            notes: individualAttendanceNotes || null,
+            check_in_time: individualAttendanceStatus !== 'absent' ? new Date().toISOString() : null,
+          })
+          .eq("id", existingAttendance.id);
+
+        if (error) {
+          errorCount++;
+        } else {
+          successCount++;
+        }
       } else {
-        toast.success(`Marked ${editingAttendanceEmployee.full_name} as ${individualAttendanceStatus} on ${format(individualAttendanceDate, 'PPP')}`);
-        setEditingAttendanceEmployee(null);
-        fetchAttendanceData();
+        // Insert new record
+        const { error } = await supabase
+          .from("attendance")
+          .insert({
+            employee_id: editingAttendanceEmployee.id,
+            date: selectedDate,
+            status: individualAttendanceStatus,
+            notes: individualAttendanceNotes || null,
+            check_in_time: individualAttendanceStatus !== 'absent' ? new Date().toISOString() : null,
+          });
+
+        if (error) {
+          errorCount++;
+        } else {
+          successCount++;
+        }
       }
     }
+
+    if (successCount > 0) {
+      toast.success(`Saved attendance for ${editingAttendanceEmployee.full_name} on ${successCount} date(s)`);
+    }
+    if (errorCount > 0) {
+      toast.error(`Failed to save ${errorCount} record(s)`);
+    }
+    
+    setEditingAttendanceEmployee(null);
+    fetchAttendanceData();
   };
 
   // ==================== RENDER ====================
@@ -2260,31 +2274,49 @@ const AdminHRManagement = () => {
               </div>
               
               <div className="space-y-2">
-                <Label>Date</Label>
+                <Label>Select Dates ({individualAttendanceDates.length} selected)</Label>
                 <Popover>
                   <PopoverTrigger asChild>
                     <Button
                       variant="outline"
                       className={cn(
                         "w-full justify-start text-left font-normal",
-                        !individualAttendanceDate && "text-muted-foreground"
+                        individualAttendanceDates.length === 0 && "text-muted-foreground"
                       )}
                     >
                       <CalendarIcon className="mr-2 h-4 w-4" />
-                      {individualAttendanceDate ? format(individualAttendanceDate, "PPP") : <span>Pick date</span>}
+                      {individualAttendanceDates.length > 0 
+                        ? individualAttendanceDates.length === 1
+                          ? format(individualAttendanceDates[0], "PPP")
+                          : `${individualAttendanceDates.length} dates selected`
+                        : <span>Pick dates</span>}
                     </Button>
                   </PopoverTrigger>
                   <PopoverContent className="w-auto p-0 bg-popover border shadow-xl z-[100]" align="start" sideOffset={8}>
                     <Calendar
-                      mode="single"
-                      selected={individualAttendanceDate}
-                      onSelect={(date) => date && setIndividualAttendanceDate(date)}
+                      mode="multiple"
+                      selected={individualAttendanceDates}
+                      onSelect={(dates) => setIndividualAttendanceDates(dates || [])}
                       disabled={(date) => date > new Date()}
                       initialFocus
                       className="p-3 pointer-events-auto"
                     />
                   </PopoverContent>
                 </Popover>
+                {individualAttendanceDates.length > 0 && (
+                  <div className="flex flex-wrap gap-1 mt-2">
+                    {individualAttendanceDates.slice(0, 5).map((date, index) => (
+                      <Badge key={index} variant="secondary" className="text-xs">
+                        {format(date, "MMM d")}
+                      </Badge>
+                    ))}
+                    {individualAttendanceDates.length > 5 && (
+                      <Badge variant="outline" className="text-xs">
+                        +{individualAttendanceDates.length - 5} more
+                      </Badge>
+                    )}
+                  </div>
+                )}
               </div>
               
               <div className="space-y-2">
