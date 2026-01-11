@@ -2,8 +2,9 @@ import { useEffect, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { useAuth } from "@/hooks/useAuth";
 import { motion } from "framer-motion";
+import { format } from "date-fns";
 import { 
-  Calendar, CheckCircle, XCircle, Clock, Search, Users, 
+  Calendar as CalendarIcon, CheckCircle, XCircle, Clock, Search, Users, 
   MessageSquare, Filter, CalendarDays, Download, BarChart3, Building2,
   Plus, Trash2, Edit, Briefcase, UserPlus, Link2, FileText, Eye, Mail, Phone, Linkedin, Github, Globe, ExternalLink
 } from "lucide-react";
@@ -12,6 +13,9 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { Calendar } from "@/components/ui/calendar";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { cn } from "@/lib/utils";
 import {
   Table,
   TableBody,
@@ -195,6 +199,7 @@ const AdminHRManagement = () => {
     return `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}`;
   });
   const [departmentFilter, setDepartmentFilter] = useState<string>("all");
+  const [markAttendanceDate, setMarkAttendanceDate] = useState<Date>(new Date());
 
   // Job Applications State
   const [applications, setApplications] = useState<JobApplication[]>([]);
@@ -717,13 +722,14 @@ const AdminHRManagement = () => {
       return;
     }
 
-    const today = new Date().toISOString().split('T')[0];
+    const selectedDate = format(markAttendanceDate, 'yyyy-MM-dd');
+    const formattedDisplayDate = format(markAttendanceDate, 'PPP');
     
-    // Check which employees already have attendance marked for today
+    // Check which employees already have attendance marked for selected date
     const { data: existingAttendance, error: fetchError } = await supabase
       .from("attendance")
       .select("employee_id")
-      .eq("date", today);
+      .eq("date", selectedDate);
 
     if (fetchError) {
       toast.error("Failed to check existing attendance: " + fetchError.message);
@@ -735,13 +741,13 @@ const AdminHRManagement = () => {
     const employeesToMark = allEmployees.filter(emp => !markedEmployeeIds.has(emp.id));
 
     if (employeesToMark.length === 0) {
-      toast.info("All employees have already been marked for today");
+      toast.info(`All employees have already been marked for ${formattedDisplayDate}`);
       return;
     }
 
     const attendanceRecords = employeesToMark.map(emp => ({
       employee_id: emp.id,
-      date: today,
+      date: selectedDate,
       status: "present",
       check_in_time: new Date().toISOString(),
     }));
@@ -754,7 +760,7 @@ const AdminHRManagement = () => {
       toast.error("Failed to mark attendance: " + error.message);
       console.error(error);
     } else {
-      toast.success(`Marked ${employeesToMark.length} employees as present for today`);
+      toast.success(`Marked ${employeesToMark.length} employees as present for ${formattedDisplayDate}`);
       fetchAttendanceData();
     }
   };
@@ -1490,11 +1496,37 @@ const AdminHRManagement = () => {
               ) : (
                 <>
                   {/* Action Buttons */}
-                  <div className="flex justify-end gap-2">
-                    <Button onClick={handleMarkAllPresent} variant="outline" className="gap-2">
-                      <CheckCircle className="h-4 w-4" />
-                      Mark Everyone Present
-                    </Button>
+                  <div className="flex flex-col sm:flex-row justify-end gap-2">
+                    <div className="flex items-center gap-2">
+                      <Popover>
+                        <PopoverTrigger asChild>
+                          <Button
+                            variant="outline"
+                            className={cn(
+                              "w-[200px] justify-start text-left font-normal",
+                              !markAttendanceDate && "text-muted-foreground"
+                            )}
+                          >
+                            <CalendarIcon className="mr-2 h-4 w-4" />
+                            {markAttendanceDate ? format(markAttendanceDate, "PPP") : <span>Pick a date</span>}
+                          </Button>
+                        </PopoverTrigger>
+                        <PopoverContent className="w-auto p-0" align="start">
+                          <Calendar
+                            mode="single"
+                            selected={markAttendanceDate}
+                            onSelect={(date) => date && setMarkAttendanceDate(date)}
+                            disabled={(date) => date > new Date()}
+                            initialFocus
+                            className={cn("p-3 pointer-events-auto")}
+                          />
+                        </PopoverContent>
+                      </Popover>
+                      <Button onClick={handleMarkAllPresent} variant="outline" className="gap-2">
+                        <CheckCircle className="h-4 w-4" />
+                        Mark Everyone Present
+                      </Button>
+                    </div>
                     <Button onClick={exportToExcel} className="gap-2">
                       <Download className="h-4 w-4" />
                       Export to Excel
