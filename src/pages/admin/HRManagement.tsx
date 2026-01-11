@@ -711,6 +711,54 @@ const AdminHRManagement = () => {
     return options;
   };
 
+  const handleMarkAllPresent = async () => {
+    if (allEmployees.length === 0) {
+      toast.error("No employees to mark attendance for");
+      return;
+    }
+
+    const today = new Date().toISOString().split('T')[0];
+    
+    // Check which employees already have attendance marked for today
+    const { data: existingAttendance, error: fetchError } = await supabase
+      .from("attendance")
+      .select("employee_id")
+      .eq("date", today);
+
+    if (fetchError) {
+      toast.error("Failed to check existing attendance: " + fetchError.message);
+      console.error(fetchError);
+      return;
+    }
+
+    const markedEmployeeIds = new Set(existingAttendance?.map(a => a.employee_id) || []);
+    const employeesToMark = allEmployees.filter(emp => !markedEmployeeIds.has(emp.id));
+
+    if (employeesToMark.length === 0) {
+      toast.info("All employees have already been marked for today");
+      return;
+    }
+
+    const attendanceRecords = employeesToMark.map(emp => ({
+      employee_id: emp.id,
+      date: today,
+      status: "present",
+      check_in_time: new Date().toISOString(),
+    }));
+
+    const { error } = await supabase
+      .from("attendance")
+      .insert(attendanceRecords);
+
+    if (error) {
+      toast.error("Failed to mark attendance: " + error.message);
+      console.error(error);
+    } else {
+      toast.success(`Marked ${employeesToMark.length} employees as present for today`);
+      fetchAttendanceData();
+    }
+  };
+
   // ==================== RENDER ====================
 
   if (authLoading) {
@@ -1441,8 +1489,12 @@ const AdminHRManagement = () => {
                 </div>
               ) : (
                 <>
-                  {/* Export Button */}
-                  <div className="flex justify-end">
+                  {/* Action Buttons */}
+                  <div className="flex justify-end gap-2">
+                    <Button onClick={handleMarkAllPresent} variant="outline" className="gap-2">
+                      <CheckCircle className="h-4 w-4" />
+                      Mark Everyone Present
+                    </Button>
                     <Button onClick={exportToExcel} className="gap-2">
                       <Download className="h-4 w-4" />
                       Export to Excel
