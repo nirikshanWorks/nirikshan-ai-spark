@@ -14,10 +14,13 @@ import {
   CalendarDays,
   FileText
 } from "lucide-react";
+import { formatInTimeZone } from "date-fns-tz";
 import { MarkAttendance } from "@/components/employee/MarkAttendance";
 import { AttendanceHistory } from "@/components/employee/AttendanceHistory";
 import { LeaveRequestForm } from "@/components/employee/LeaveRequestForm";
 import { LeaveHistory } from "@/components/employee/LeaveHistory";
+
+const IST_TIMEZONE = "Asia/Kolkata";
 
 interface Employee {
   id: string;
@@ -69,12 +72,14 @@ const EmployeeDashboard = () => {
   };
 
   const fetchTodayAttendance = async (empId: string) => {
-    const today = new Date().toISOString().split('T')[0];
+    // Get today's date in IST timezone (YYYY-MM-DD format)
+    const todayIST = formatInTimeZone(new Date(), IST_TIMEZONE, 'yyyy-MM-dd');
+    
     const { data } = await supabase
       .from("attendance")
       .select("*")
       .eq("employee_id", empId)
-      .eq("date", today)
+      .eq("date", todayIST)
       .maybeSingle();
     
     setTodayAttendance(data);
