@@ -1000,13 +1000,43 @@ const AdminHRManagement = () => {
     let successCount = 0;
     let errorCount = 0;
 
+    // Handle reset/delete operation
+    if (individualAttendanceStatus === 'reset') {
+      for (const date of effectiveDates) {
+        const selectedDate = format(date, 'yyyy-MM-dd');
+        
+        const { error } = await supabase
+          .from("attendance")
+          .delete()
+          .eq("employee_id", editingAttendanceEmployee.id)
+          .eq("date", selectedDate);
+
+        if (error) {
+          errorCount++;
+        } else {
+          successCount++;
+        }
+      }
+
+      if (successCount > 0) {
+        toast.success(`Reset attendance for ${editingAttendanceEmployee.full_name} on ${successCount} date(s)${individualAttendanceNotes ? ` - Reason: ${individualAttendanceNotes}` : ''}`);
+      }
+      if (errorCount > 0) {
+        toast.error(`Failed to reset ${errorCount} record(s)`);
+      }
+      
+      setEditingAttendanceEmployee(null);
+      fetchAttendanceData();
+      return;
+    }
+
     for (const date of effectiveDates) {
       const selectedDate = format(date, 'yyyy-MM-dd');
       
       // Check if attendance already exists for this employee on this date
       const { data: existingAttendance, error: fetchError } = await supabase
         .from("attendance")
-        .select("id")
+        .select("id, check_in_time")
         .eq("employee_id", editingAttendanceEmployee.id)
         .eq("date", selectedDate)
         .maybeSingle();
@@ -1017,13 +1047,12 @@ const AdminHRManagement = () => {
       }
 
       if (existingAttendance) {
-        // Update existing record
+        // Update existing record - preserve original check_in_time if updating
         const { error } = await supabase
           .from("attendance")
           .update({
             status: individualAttendanceStatus,
             notes: individualAttendanceNotes || null,
-            check_in_time: individualAttendanceStatus !== 'absent' ? new Date().toISOString() : null,
           })
           .eq("id", existingAttendance.id);
 
@@ -1033,7 +1062,7 @@ const AdminHRManagement = () => {
           successCount++;
         }
       } else {
-        // Insert new record
+        // Insert new record with proper check_in_time based on status
         const { error } = await supabase
           .from("attendance")
           .insert({
@@ -2973,8 +3002,19 @@ const AdminHRManagement = () => {
                         Late
                       </div>
                     </SelectItem>
+                    <SelectItem value="reset">
+                      <div className="flex items-center gap-2">
+                        <Trash2 className="h-4 w-4 text-gray-600" />
+                        Reset (Delete Record)
+                      </div>
+                    </SelectItem>
                   </SelectContent>
                 </Select>
+                {individualAttendanceStatus === 'reset' && (
+                  <p className="text-xs text-muted-foreground">
+                    This will delete the attendance record(s) for the selected date(s). Employee will need to mark attendance again.
+                  </p>
+                )}
               </div>
               
               <div className="space-y-2">
