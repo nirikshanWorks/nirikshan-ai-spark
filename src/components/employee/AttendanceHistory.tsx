@@ -124,7 +124,28 @@ export const AttendanceHistory = ({
     return options;
   };
 
-  // Calculate stats - respect joining date and end date
+  // State for holidays
+  const [holidays, setHolidays] = useState<{date: string; name: string}[]>([]);
+
+  // Fetch holidays for the selected month
+  useEffect(() => {
+    const fetchHolidays = async () => {
+      const [y, m] = selectedMonth.split('-').map(Number);
+      const startDate = new Date(y, m - 1, 1);
+      const endDateMonth = new Date(y, m, 0);
+      
+      const { data } = await supabase
+        .from("holidays")
+        .select("date, name")
+        .gte("date", startDate.toISOString().split('T')[0])
+        .lte("date", endDateMonth.toISOString().split('T')[0]);
+      
+      setHolidays(data || []);
+    };
+    fetchHolidays();
+  }, [selectedMonth]);
+
+  // Calculate stats - respect joining date, end date, holidays, and Sundays
   const [year, month] = selectedMonth.split('-').map(Number);
   const today = new Date();
   const todayStr = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}-${String(today.getDate()).padStart(2, '0')}`;
@@ -134,13 +155,21 @@ export const AttendanceHistory = ({
   const daysInMonth = new Date(year, month, 0).getDate();
   const lastDayToCount = isCurrentMonth ? today.getDate() : daysInMonth;
   
+  const holidayDates = new Set(holidays.map(h => h.date));
+  
   for (let d = 1; d <= lastDayToCount; d++) {
     const date = new Date(year, month - 1, d);
     const dateStr = `${year}-${String(month).padStart(2, '0')}-${String(d).padStart(2, '0')}`;
     const day = date.getDay();
     
-    // Skip weekends
-    if (day === 0 || day === 6) continue;
+    // Skip Sundays
+    if (day === 0) continue;
+    
+    // Skip Saturdays (optional - remove if you want to count Saturdays)
+    if (day === 6) continue;
+    
+    // Skip holidays
+    if (holidayDates.has(dateStr)) continue;
     
     // Skip if before joining date
     if (joiningDate && dateStr < joiningDate) continue;
@@ -162,15 +191,64 @@ export const AttendanceHistory = ({
 
   const exportToExcel = () => {
     const monthName = new Date(year, month - 1).toLocaleString('en-US', { month: 'long', year: 'numeric' });
+    const holidayMap = new Map(holidays.map(h => [h.date, h.name]));
     
-    const data = attendance.map(a => ({
-      'Date': a.date,
-      'Day': new Date(a.date).toLocaleString('en-US', { weekday: 'long' }),
-      'Status': a.status,
-      'Check In': a.check_in_time ? new Date(a.check_in_time).toLocaleTimeString() : '-',
-      'Check Out': a.check_out_time ? new Date(a.check_out_time).toLocaleTimeString() : '-',
-      'Notes': a.notes || '',
-    }));
+    // Generate all days in month with proper status
+    const data: {
+      'Date': string;
+      'Day': string;
+      'Status': string;
+      'Check In': string;
+      'Check Out': string;
+      'Notes': string;
+    }[] = [];
+
+    const attendanceMap = new Map(attendance.map(a => [a.date, a]));
+    
+    for (let d = 1; d <= daysInMonth; d++) {
+      const date = new Date(year, month - 1, d);
+      const dateStr = `${year}-${String(month).padStart(2, '0')}-${String(d).padStart(2, '0')}`;
+      const dayOfWeek = date.getDay();
+      const isSunday = dayOfWeek === 0;
+      const isSaturday = dayOfWeek === 6;
+      const holidayName = holidayMap.get(dateStr);
+      const attendanceRecord = attendanceMap.get(dateStr);
+      
+      let status = '';
+      let checkIn = '-';
+      let checkOut = '-';
+      let notes = '';
+
+      if (isSunday) {
+        status = 'Sunday';
+      } else if (isSaturday) {
+        status = 'Saturday';
+      } else if (holidayName) {
+        status = `Holiday (${holidayName})`;
+      } else if (attendanceRecord) {
+        status = attendanceRecord.status;
+        checkIn = attendanceRecord.check_in_time ? new Date(attendanceRecord.check_in_time).toLocaleTimeString() : '-';
+        checkOut = attendanceRecord.check_out_time ? new Date(attendanceRecord.check_out_time).toLocaleTimeString() : '-';
+        notes = attendanceRecord.notes || '';
+      } else if (joiningDate && dateStr < joiningDate) {
+        status = 'Before Joining';
+      } else if (endDate && dateStr > endDate) {
+        status = 'After End Date';
+      } else if (isCurrentMonth && d > today.getDate()) {
+        status = 'Future';
+      } else {
+        status = 'Absent';
+      }
+
+      data.push({
+        'Date': dateStr,
+        'Day': date.toLocaleString('en-US', { weekday: 'long' }),
+        'Status': status,
+        'Check In': checkIn,
+        'Check Out': checkOut,
+        'Notes': notes,
+      });
+    }
 
     // Add summary row
     data.push({
@@ -182,20 +260,20 @@ export const AttendanceHistory = ({
       'Notes': '',
     });
     data.push({
-      'Date': 'Present',
-      'Day': String(stats.present),
-      'Status': 'Half-Day',
-      'Check In': String(stats.halfDay),
-      'Check Out': 'Absent',
-      'Notes': String(stats.absent),
+      'Date': 'Working Days',
+      'Day': String(stats.workingDays),
+      'Status': 'Present',
+      'Check In': String(stats.present),
+      'Check Out': 'Half-Day',
+      'Notes': String(stats.halfDay),
     });
     data.push({
-      'Date': 'Attendance Rate',
-      'Day': `${stats.rate}%`,
-      'Status': '',
-      'Check In': '',
-      'Check Out': '',
-      'Notes': '',
+      'Date': 'Late',
+      'Day': String(stats.late),
+      'Status': 'Absent',
+      'Check In': String(stats.absent),
+      'Check Out': 'Attendance Rate',
+      'Notes': `${stats.rate}%`,
     });
 
     const ws = XLSX.utils.json_to_sheet(data);
@@ -229,6 +307,15 @@ export const AttendanceHistory = ({
     setPdfLoading(true);
 
     try {
+      // Fetch holidays for the date range
+      const { data: pdfHolidays } = await supabase
+        .from("holidays")
+        .select("date, name")
+        .gte("date", pdfStartDate.toISOString().split('T')[0])
+        .lte("date", effectiveEndDate.toISOString().split('T')[0]);
+
+      const holidayMap = new Map((pdfHolidays || []).map(h => [h.date, h.name]));
+
       // Fetch attendance for selected date range (limited by end date)
       const { data: pdfAttendance, error } = await supabase
         .from("attendance")
@@ -239,6 +326,79 @@ export const AttendanceHistory = ({
         .order("date", { ascending: true });
 
       if (error) throw error;
+
+      // Create attendance map for quick lookup
+      const attendanceMap = new Map((pdfAttendance || []).map(a => [a.date, a]));
+
+      // Generate all dates in range with proper status
+      const allDates: {
+        date: Date;
+        dateStr: string;
+        status: string;
+        checkIn: string;
+        checkOut: string;
+        notes: string;
+        isWorkingDay: boolean;
+      }[] = [];
+
+      const current = new Date(pdfStartDate);
+      while (current <= effectiveEndDate) {
+        const dateStr = format(current, 'yyyy-MM-dd');
+        const dayOfWeek = current.getDay();
+        const isSunday = dayOfWeek === 0;
+        const isSaturday = dayOfWeek === 6;
+        const holidayName = holidayMap.get(dateStr);
+        const attendanceRecord = attendanceMap.get(dateStr);
+
+        let status = '';
+        let checkIn = '-';
+        let checkOut = '-';
+        let notes = '-';
+        let isWorkingDay = true;
+
+        if (isSunday) {
+          status = 'Sunday';
+          isWorkingDay = false;
+        } else if (isSaturday) {
+          status = 'Saturday';
+          isWorkingDay = false;
+        } else if (holidayName) {
+          status = `Holiday (${holidayName})`;
+          isWorkingDay = false;
+        } else if (attendanceRecord) {
+          status = attendanceRecord.status.charAt(0).toUpperCase() + attendanceRecord.status.slice(1);
+          checkIn = attendanceRecord.check_in_time 
+            ? new Date(attendanceRecord.check_in_time).toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit' }) 
+            : '-';
+          checkOut = attendanceRecord.check_out_time 
+            ? new Date(attendanceRecord.check_out_time).toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit' }) 
+            : '-';
+          notes = attendanceRecord.notes || '-';
+        } else {
+          // Check if before joining date
+          if (joiningDate && dateStr < joiningDate) {
+            status = 'Before Joining';
+            isWorkingDay = false;
+          } else if (endDate && dateStr > endDate) {
+            status = 'After End Date';
+            isWorkingDay = false;
+          } else {
+            status = 'Absent';
+          }
+        }
+
+        allDates.push({
+          date: new Date(current),
+          dateStr,
+          status,
+          checkIn,
+          checkOut,
+          notes,
+          isWorkingDay
+        });
+
+        current.setDate(current.getDate() + 1);
+      }
 
       const doc = new jsPDF();
       const pageWidth = doc.internal.pageSize.getWidth();
@@ -257,7 +417,6 @@ export const AttendanceHistory = ({
         });
         doc.addImage(img, 'PNG', 15, 10, 40, 15);
       } catch {
-        // If logo fails, continue without it
         console.log('Logo could not be loaded');
       }
 
@@ -305,13 +464,13 @@ export const AttendanceHistory = ({
       doc.setFont('helvetica', 'bold');
       doc.text('ATTENDANCE RECORD', 15, 90);
 
-      const tableData = (pdfAttendance || []).map(a => [
-        format(new Date(a.date), 'dd/MM/yyyy'),
-        format(new Date(a.date), 'EEEE'),
-        a.status.charAt(0).toUpperCase() + a.status.slice(1),
-        a.check_in_time ? new Date(a.check_in_time).toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit' }) : '-',
-        a.check_out_time ? new Date(a.check_out_time).toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit' }) : '-',
-        a.notes || '-'
+      const tableData = allDates.map(d => [
+        format(d.date, 'dd/MM/yyyy'),
+        format(d.date, 'EEEE'),
+        d.status,
+        d.checkIn,
+        d.checkOut,
+        d.notes
       ]);
 
       autoTable(doc, {
@@ -331,23 +490,44 @@ export const AttendanceHistory = ({
         columnStyles: {
           0: { cellWidth: 22 },
           1: { cellWidth: 25 },
-          2: { cellWidth: 20 },
+          2: { cellWidth: 35 },
           3: { cellWidth: 22 },
           4: { cellWidth: 22 },
           5: { cellWidth: 'auto' }
+        },
+        didParseCell: function(data) {
+          // Color-code non-working days
+          if (data.section === 'body' && data.column.index === 2) {
+            const status = data.cell.text[0] || '';
+            if (status === 'Sunday' || status === 'Saturday') {
+              data.cell.styles.fillColor = [200, 200, 200];
+              data.cell.styles.textColor = [100, 100, 100];
+            } else if (status.startsWith('Holiday')) {
+              data.cell.styles.fillColor = [255, 230, 200];
+              data.cell.styles.textColor = [180, 100, 0];
+            } else if (status === 'Present') {
+              data.cell.styles.textColor = [0, 128, 0];
+            } else if (status === 'Absent') {
+              data.cell.styles.textColor = [200, 0, 0];
+            }
+          }
         }
       });
 
       // Get the Y position after the table
       const finalY = (doc as any).lastAutoTable.finalY + 10;
 
-      // Summary Statistics
+      // Summary Statistics - only count working days
+      const workingDayRecords = allDates.filter(d => d.isWorkingDay);
       const pdfStats = {
-        present: (pdfAttendance || []).filter(a => a.status === 'present').length,
-        halfDay: (pdfAttendance || []).filter(a => a.status === 'half-day').length,
-        late: (pdfAttendance || []).filter(a => a.status === 'late').length,
-        absent: (pdfAttendance || []).filter(a => a.status === 'absent').length,
-        total: (pdfAttendance || []).length
+        present: workingDayRecords.filter(d => d.status === 'Present').length,
+        halfDay: workingDayRecords.filter(d => d.status === 'Half-day').length,
+        late: workingDayRecords.filter(d => d.status === 'Late').length,
+        absent: workingDayRecords.filter(d => d.status === 'Absent').length,
+        totalWorkingDays: workingDayRecords.length,
+        holidays: allDates.filter(d => d.status.startsWith('Holiday')).length,
+        sundays: allDates.filter(d => d.status === 'Sunday').length,
+        saturdays: allDates.filter(d => d.status === 'Saturday').length
       };
 
       doc.setFontSize(11);
@@ -356,19 +536,22 @@ export const AttendanceHistory = ({
       
       doc.setFontSize(9);
       doc.setFont('helvetica', 'normal');
-      doc.text(`Total Days: ${pdfStats.total}`, 15, finalY + 7);
-      doc.text(`Present: ${pdfStats.present}`, 15, finalY + 13);
-      doc.text(`Half-Day: ${pdfStats.halfDay}`, 60, finalY + 7);
-      doc.text(`Late: ${pdfStats.late}`, 60, finalY + 13);
-      doc.text(`Absent: ${pdfStats.absent}`, 105, finalY + 7);
+      doc.text(`Total Days in Period: ${allDates.length}`, 15, finalY + 7);
+      doc.text(`Working Days: ${pdfStats.totalWorkingDays}`, 15, finalY + 13);
+      doc.text(`Sundays: ${pdfStats.sundays}`, 60, finalY + 7);
+      doc.text(`Holidays: ${pdfStats.holidays}`, 60, finalY + 13);
+      doc.text(`Present: ${pdfStats.present}`, 105, finalY + 7);
+      doc.text(`Half-Day: ${pdfStats.halfDay}`, 105, finalY + 13);
+      doc.text(`Late: ${pdfStats.late}`, 150, finalY + 7);
+      doc.text(`Absent: ${pdfStats.absent}`, 150, finalY + 13);
       
-      const attendanceRate = pdfStats.total > 0 
-        ? Math.round(((pdfStats.present + pdfStats.halfDay * 0.5 + pdfStats.late) / pdfStats.total) * 100) 
+      const attendanceRate = pdfStats.totalWorkingDays > 0 
+        ? Math.round(((pdfStats.present + pdfStats.halfDay * 0.5 + pdfStats.late) / pdfStats.totalWorkingDays) * 100) 
         : 0;
-      doc.text(`Attendance Rate: ${attendanceRate}%`, 105, finalY + 13);
+      doc.text(`Attendance Rate: ${attendanceRate}%`, 15, finalY + 21);
 
       // Rights and Validity Section
-      const validityY = finalY + 28;
+      const validityY = finalY + 35;
       doc.setFontSize(9);
       doc.setFont('helvetica', 'bold');
       doc.text('IMPORTANT NOTICE:', 15, validityY);
