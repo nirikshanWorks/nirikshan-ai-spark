@@ -28,6 +28,7 @@ interface Employee {
   full_name: string;
   department: string | null;
   designation: string | null;
+  joining_date: string | null;
   status: string;
   end_date: string | null;
 }
@@ -218,19 +219,51 @@ const EmployeeDashboard = () => {
                 onAttendanceMarked={() => fetchTodayAttendance(employee?.id || '')}
               />
             ) : (
-              <Card>
+              <Card className="border-orange-200 bg-orange-50/50 dark:bg-orange-950/20">
                 <CardHeader>
-                  <CardTitle className="text-red-600">Account Inactive</CardTitle>
-                  <CardDescription>
-                    Your employee status is currently "{employee?.status?.replace('_', ' ')}". 
-                    You cannot mark attendance, but you can still view your attendance history and records.
-                    {employee?.end_date && (
-                      <span className="block mt-2">
-                        End Date: {new Date(employee.end_date).toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' })}
-                      </span>
-                    )}
-                  </CardDescription>
+                  <div className="flex items-center gap-3">
+                    <div className="w-12 h-12 rounded-full bg-orange-100 flex items-center justify-center">
+                      <Calendar className="w-6 h-6 text-orange-600" />
+                    </div>
+                    <div>
+                      <CardTitle className="text-orange-700 dark:text-orange-400">
+                        {employee?.status === 'internship_ended' ? 'Internship Completed' : 
+                         employee?.status === 'resigned' ? 'Employment Ended' : 'Account Inactive'}
+                      </CardTitle>
+                      <CardDescription className="text-orange-600/80">
+                        {employee?.status === 'internship_ended' 
+                          ? 'Thank you for your contribution during your internship!' 
+                          : employee?.status === 'resigned'
+                          ? 'Your employment with us has ended.'
+                          : 'Your account is currently inactive.'}
+                      </CardDescription>
+                    </div>
+                  </div>
                 </CardHeader>
+                <CardContent className="space-y-4">
+                  <div className="bg-white/60 dark:bg-background/60 rounded-lg p-4 space-y-2">
+                    {employee?.end_date && (
+                      <p className="text-sm">
+                        <span className="font-medium">End Date:</span>{' '}
+                        {new Date(employee.end_date).toLocaleDateString('en-IN', { 
+                          day: '2-digit', 
+                          month: 'long', 
+                          year: 'numeric' 
+                        })}
+                      </p>
+                    )}
+                    <p className="text-sm text-muted-foreground">
+                      You cannot mark new attendance, but you can still access your complete attendance history 
+                      and download reports from the <strong>History</strong> tab.
+                    </p>
+                  </div>
+                  <div className="flex items-center gap-2 pt-2">
+                    <FileText className="w-4 h-4 text-muted-foreground" />
+                    <span className="text-sm text-muted-foreground">
+                      Go to the History tab to download your attendance records as PDF or Excel.
+                    </span>
+                  </div>
+                </CardContent>
               </Card>
             )}
           </TabsContent>
@@ -242,6 +275,8 @@ const EmployeeDashboard = () => {
               employeeCode={employee?.employee_id}
               department={employee?.department || ''}
               designation={employee?.designation || ''}
+              joiningDate={employee?.joining_date}
+              endDate={employee?.end_date}
             />
           </TabsContent>
 
