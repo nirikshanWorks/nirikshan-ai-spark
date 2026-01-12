@@ -94,9 +94,11 @@ export type Database = {
           department: string | null
           designation: string | null
           employee_id: string
+          end_date: string | null
           full_name: string
           id: string
           joining_date: string | null
+          status: string
           updated_at: string | null
           user_id: string
         }
@@ -105,9 +107,11 @@ export type Database = {
           department?: string | null
           designation?: string | null
           employee_id: string
+          end_date?: string | null
           full_name: string
           id?: string
           joining_date?: string | null
+          status?: string
           updated_at?: string | null
           user_id: string
         }
@@ -116,9 +120,11 @@ export type Database = {
           department?: string | null
           designation?: string | null
           employee_id?: string
+          end_date?: string | null
           full_name?: string
           id?: string
           joining_date?: string | null
+          status?: string
           updated_at?: string | null
           user_id?: string
         }
