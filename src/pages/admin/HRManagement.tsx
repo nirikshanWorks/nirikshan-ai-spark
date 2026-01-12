@@ -3,12 +3,17 @@ import { useNavigate, useSearchParams } from "react-router-dom";
 import { useAuth } from "@/hooks/useAuth";
 import { motion } from "framer-motion";
 import { format } from "date-fns";
+import { formatInTimeZone, toZonedTime } from "date-fns-tz";
 import { DateRange } from "react-day-picker";
 import { 
   Calendar as CalendarIcon, CheckCircle, XCircle, Clock, Search, Users, 
   MessageSquare, Filter, CalendarDays, Download, BarChart3, Building2,
   Plus, Trash2, Edit, Briefcase, UserPlus, Link2, FileText, Eye, Mail, Phone, Linkedin, Github, Globe, ExternalLink
 } from "lucide-react";
+import TodaysAttendance from "@/components/admin/TodaysAttendance";
+import IndividualAttendanceReport from "@/components/admin/IndividualAttendanceReport";
+
+const IST_TIMEZONE = 'Asia/Kolkata';
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -230,6 +235,9 @@ const AdminHRManagement = () => {
   const [individualAttendanceNotes, setIndividualAttendanceNotes] = useState<string>("");
   const [dateSelectionMode, setDateSelectionMode] = useState<"multiple" | "range">("multiple");
   const [dateRange, setDateRange] = useState<DateRange | undefined>(undefined);
+  
+  // Individual Report State
+  const [viewingReportEmployee, setViewingReportEmployee] = useState<Employee | null>(null);
 
   // Job Applications State
   const [applications, setApplications] = useState<JobApplication[]>([]);
@@ -814,12 +822,25 @@ const AdminHRManagement = () => {
 
   const getEmployeeSummaries = (): EmployeeSummary[] => {
     const [year, month] = selectedMonth.split('-').map(Number);
-    const daysInMonth = new Date(year, month, 0).getDate();
+    const todayIST = toZonedTime(new Date(), IST_TIMEZONE);
+    
+    // Check if selected month is current month
+    const isCurrentMonth = todayIST.getFullYear() === year && (todayIST.getMonth() + 1) === month;
+    
+    // Count working days only up to today for current month, or full month for past months
+    const lastDayToCount = isCurrentMonth ? todayIST.getDate() : new Date(year, month, 0).getDate();
     
     let workingDays = 0;
-    for (let d = 1; d <= daysInMonth; d++) {
-      const day = new Date(year, month - 1, d).getDay();
-      if (day !== 0 && day !== 6) workingDays++;
+    for (let d = 1; d <= lastDayToCount; d++) {
+      const date = new Date(year, month - 1, d);
+      const day = date.getDay();
+      // Skip Sundays (0) and Saturdays (6)
+      if (day !== 0 && day !== 6) {
+        // Also skip holidays
+        if (!isHoliday(date)) {
+          workingDays++;
+        }
+      }
     }
 
     return allEmployees
@@ -835,16 +856,36 @@ const AdminHRManagement = () => {
         const present = empAttendance.filter(a => a.status === 'present').length;
         const halfDay = empAttendance.filter(a => a.status === 'half-day').length;
         const late = empAttendance.filter(a => a.status === 'late').length;
-        const absent = workingDays - present - halfDay - late;
+        const leave = empAttendance.filter(a => a.status === 'leave').length;
+        
+        // Calculate actual working days for this employee (accounting for joining date)
+        let empWorkingDays = workingDays;
+        if (emp.joining_date) {
+          const joiningDate = new Date(emp.joining_date);
+          if (joiningDate.getFullYear() === year && joiningDate.getMonth() + 1 === month) {
+            // Employee joined this month, count working days from joining date
+            empWorkingDays = 0;
+            for (let d = joiningDate.getDate(); d <= lastDayToCount; d++) {
+              const date = new Date(year, month - 1, d);
+              const day = date.getDay();
+              if (day !== 0 && day !== 6 && !isHoliday(date)) {
+                empWorkingDays++;
+              }
+            }
+          }
+        }
+        
+        const markedDays = present + halfDay + late + leave;
+        const absent = Math.max(0, empWorkingDays - markedDays);
         
         return {
           employee: emp,
           present,
-          absent: Math.max(0, absent),
+          absent,
           halfDay,
           late,
-          totalDays: workingDays,
-          attendanceRate: workingDays > 0 ? Math.round(((present + halfDay * 0.5 + late) / workingDays) * 100) : 0,
+          totalDays: empWorkingDays,
+          attendanceRate: empWorkingDays > 0 ? Math.round(((present + halfDay * 0.5 + late) / empWorkingDays) * 100) : 0,
         };
       });
   };
@@ -1906,267 +1947,298 @@ const AdminHRManagement = () => {
 
             {/* ==================== ATTENDANCE TAB ==================== */}
             <TabsContent value="attendance" className="space-y-6">
-              {attendanceLoading ? (
+              {viewingReportEmployee ? (
+                <IndividualAttendanceReport
+                  employee={viewingReportEmployee}
+                  onBack={() => setViewingReportEmployee(null)}
+                  holidays={holidays}
+                />
+              ) : attendanceLoading ? (
                 <div className="flex items-center justify-center py-12">
                   <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
                 </div>
               ) : (
                 <>
-                  {/* Attendance Stats Cards */}
-                  <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-                    <Card className="border-l-4 border-l-primary">
-                      <CardContent className="p-5">
-                        <div className="flex items-center justify-between">
-                          <div>
-                            <p className="text-sm font-medium text-muted-foreground">Total Employees</p>
-                            <p className="text-3xl font-bold mt-1">{overallStats.totalEmployees}</p>
+                  {/* Today's Attendance Section */}
+                  <TodaysAttendance 
+                    employees={allEmployees} 
+                    onRefresh={fetchAttendanceData} 
+                  />
+
+                  {/* Monthly Summary Section */}
+                  <div className="border-t pt-6 mt-6">
+                    <h3 className="text-lg font-semibold mb-4 flex items-center gap-2">
+                      <CalendarDays className="h-5 w-5" />
+                      Monthly Summary
+                    </h3>
+                    
+                    {/* Attendance Stats Cards */}
+                    <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+                      <Card className="border-l-4 border-l-primary">
+                        <CardContent className="p-5">
+                          <div className="flex items-center justify-between">
+                            <div>
+                              <p className="text-sm font-medium text-muted-foreground">Total Employees</p>
+                              <p className="text-3xl font-bold mt-1">{overallStats.totalEmployees}</p>
+                            </div>
+                            <div className="p-3 bg-primary/10 rounded-full">
+                              <Users className="h-6 w-6 text-primary" />
+                            </div>
                           </div>
-                          <div className="p-3 bg-primary/10 rounded-full">
-                            <Users className="h-6 w-6 text-primary" />
+                        </CardContent>
+                      </Card>
+                      
+                      <Card className="border-l-4 border-l-green-500">
+                        <CardContent className="p-5">
+                          <div className="flex items-center justify-between">
+                            <div>
+                              <p className="text-sm font-medium text-muted-foreground">Avg Attendance</p>
+                              <p className="text-3xl font-bold mt-1 text-green-600">{overallStats.avgAttendance}%</p>
+                            </div>
+                            <div className="p-3 bg-green-500/10 rounded-full">
+                              <BarChart3 className="h-6 w-6 text-green-500" />
+                            </div>
+                          </div>
+                        </CardContent>
+                      </Card>
+                      
+                      <Card className="border-l-4 border-l-blue-500">
+                        <CardContent className="p-5">
+                          <div className="flex items-center justify-between">
+                            <div>
+                              <p className="text-sm font-medium text-muted-foreground">Total Present</p>
+                              <p className="text-3xl font-bold mt-1 text-blue-600">{overallStats.totalPresent}</p>
+                            </div>
+                            <div className="p-3 bg-blue-500/10 rounded-full">
+                              <CheckCircle className="h-6 w-6 text-blue-500" />
+                            </div>
+                          </div>
+                        </CardContent>
+                      </Card>
+                      
+                      <Card className="border-l-4 border-l-red-500">
+                        <CardContent className="p-5">
+                          <div className="flex items-center justify-between">
+                            <div>
+                              <p className="text-sm font-medium text-muted-foreground">Total Absent</p>
+                              <p className="text-3xl font-bold mt-1 text-red-600">{overallStats.totalAbsent}</p>
+                            </div>
+                            <div className="p-3 bg-red-500/10 rounded-full">
+                              <XCircle className="h-6 w-6 text-red-500" />
+                            </div>
+                          </div>
+                        </CardContent>
+                      </Card>
+                    </div>
+
+                    {/* Filters and Actions Card */}
+                    <Card className="mb-6">
+                      <CardHeader className="pb-4">
+                        <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
+                          <div>
+                            <CardTitle className="flex items-center gap-2 text-lg">
+                              <Filter className="h-5 w-5" />
+                              Filters & Actions
+                            </CardTitle>
+                            <CardDescription>Filter attendance data or mark attendance for a specific date</CardDescription>
+                          </div>
+                          <div className="flex flex-wrap items-center gap-3">
+                            <Popover>
+                              <PopoverTrigger asChild>
+                                <Button
+                                  variant="outline"
+                                  className={cn(
+                                    "w-[180px] justify-start text-left font-normal",
+                                    !markAttendanceDate && "text-muted-foreground"
+                                  )}
+                                >
+                                  <CalendarIcon className="mr-2 h-4 w-4" />
+                                  {markAttendanceDate ? format(markAttendanceDate, "PP") : <span>Pick date</span>}
+                                </Button>
+                              </PopoverTrigger>
+                              <PopoverContent className="w-auto p-0 bg-popover border shadow-xl z-[100]" align="end" sideOffset={8}>
+                                <Calendar
+                                  mode="single"
+                                  selected={markAttendanceDate}
+                                  onSelect={(date) => date && setMarkAttendanceDate(date)}
+                                  disabled={(date) => date > new Date()}
+                                  initialFocus
+                                  className="p-3 pointer-events-auto"
+                                />
+                              </PopoverContent>
+                            </Popover>
+                            <Button onClick={handleMarkAllPresent} className="gap-2">
+                              <CheckCircle className="h-4 w-4" />
+                              Mark All Present
+                            </Button>
+                            <Button onClick={exportToExcel} variant="outline" className="gap-2">
+                              <Download className="h-4 w-4" />
+                              Export Excel
+                            </Button>
+                          </div>
+                        </div>
+                      </CardHeader>
+                      <CardContent className="pt-0">
+                        <div className="flex flex-col md:flex-row gap-4">
+                          <div className="relative flex-1">
+                            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4" />
+                            <Input
+                              placeholder="Search by employee name or ID..."
+                              value={attendanceSearchQuery}
+                              onChange={(e) => setAttendanceSearchQuery(e.target.value)}
+                              className="pl-10"
+                            />
+                          </div>
+                          <div className="flex flex-wrap items-center gap-3">
+                            <div className="flex items-center gap-2">
+                              <CalendarDays className="h-4 w-4 text-muted-foreground shrink-0" />
+                              <Select value={selectedMonth} onValueChange={setSelectedMonth}>
+                                <SelectTrigger className="w-[160px]">
+                                  <SelectValue placeholder="Select month" />
+                                </SelectTrigger>
+                                <SelectContent className="bg-popover border shadow-lg z-50">
+                                  {getMonthOptions().map(opt => (
+                                    <SelectItem key={opt.value} value={opt.value}>
+                                      {opt.label}
+                                    </SelectItem>
+                                  ))}
+                                </SelectContent>
+                              </Select>
+                            </div>
+                            <div className="flex items-center gap-2">
+                              <Building2 className="h-4 w-4 text-muted-foreground shrink-0" />
+                              <Select value={departmentFilter} onValueChange={setDepartmentFilter}>
+                                <SelectTrigger className="w-[160px]">
+                                  <SelectValue placeholder="Department" />
+                                </SelectTrigger>
+                                <SelectContent className="bg-popover border shadow-lg z-50">
+                                  <SelectItem value="all">All Departments</SelectItem>
+                                  {departments.map(dept => (
+                                    <SelectItem key={dept} value={dept!}>
+                                      {dept}
+                                    </SelectItem>
+                                  ))}
+                                </SelectContent>
+                              </Select>
+                            </div>
                           </div>
                         </div>
                       </CardContent>
                     </Card>
-                    
-                    <Card className="border-l-4 border-l-green-500">
-                      <CardContent className="p-5">
-                        <div className="flex items-center justify-between">
-                          <div>
-                            <p className="text-sm font-medium text-muted-foreground">Avg Attendance</p>
-                            <p className="text-3xl font-bold mt-1 text-green-600">{overallStats.avgAttendance}%</p>
+
+                    {/* Attendance Table */}
+                    <Card>
+                      <CardHeader>
+                        <CardTitle className="flex items-center gap-2">
+                          <Users className="h-5 w-5" />
+                          Monthly Attendance Records
+                        </CardTitle>
+                        <CardDescription>
+                          Showing attendance for {new Date(selectedMonth + '-01').toLocaleString('en-US', { month: 'long', year: 'numeric' })} (up to today's date for current month)
+                        </CardDescription>
+                      </CardHeader>
+                      <CardContent>
+                        {summaries.length === 0 ? (
+                          <div className="text-center py-12 text-muted-foreground">
+                            <Users className="h-12 w-12 mx-auto mb-4 opacity-50" />
+                            <p>No employees found</p>
                           </div>
-                          <div className="p-3 bg-green-500/10 rounded-full">
-                            <BarChart3 className="h-6 w-6 text-green-500" />
+                        ) : (
+                          <div className="overflow-x-auto">
+                            <Table>
+                              <TableHeader>
+                                <TableRow>
+                                  <TableHead>Employee</TableHead>
+                                  <TableHead>Department</TableHead>
+                                  <TableHead className="text-center">Present</TableHead>
+                                  <TableHead className="text-center">Half-Day</TableHead>
+                                  <TableHead className="text-center">Late</TableHead>
+                                  <TableHead className="text-center">Absent</TableHead>
+                                  <TableHead className="text-center">Working Days</TableHead>
+                                  <TableHead className="text-center">Rate</TableHead>
+                                  <TableHead className="text-center">Actions</TableHead>
+                                </TableRow>
+                              </TableHeader>
+                              <TableBody>
+                                {summaries.map((summary) => (
+                                  <TableRow key={summary.employee.id}>
+                                    <TableCell>
+                                      <div>
+                                        <p className="font-medium">{summary.employee.full_name}</p>
+                                        <p className="text-xs text-muted-foreground">{summary.employee.employee_id}</p>
+                                      </div>
+                                    </TableCell>
+                                    <TableCell>
+                                      {summary.employee.department ? (
+                                        <Badge variant="secondary">{summary.employee.department}</Badge>
+                                      ) : (
+                                        <span className="text-muted-foreground">—</span>
+                                      )}
+                                    </TableCell>
+                                    <TableCell className="text-center">
+                                      <Badge className="bg-green-100 text-green-800 hover:bg-green-100">
+                                        {summary.present}
+                                      </Badge>
+                                    </TableCell>
+                                    <TableCell className="text-center">
+                                      <Badge variant="secondary">{summary.halfDay}</Badge>
+                                    </TableCell>
+                                    <TableCell className="text-center">
+                                      <Badge className="bg-yellow-100 text-yellow-800 hover:bg-yellow-100">
+                                        {summary.late}
+                                      </Badge>
+                                    </TableCell>
+                                    <TableCell className="text-center">
+                                      <Badge className="bg-red-100 text-red-800 hover:bg-red-100">
+                                        {summary.absent}
+                                      </Badge>
+                                    </TableCell>
+                                    <TableCell className="text-center">{summary.totalDays}</TableCell>
+                                    <TableCell className="text-center">
+                                      <div className="flex items-center justify-center gap-2">
+                                        <div className="w-16 h-2 bg-muted rounded-full overflow-hidden">
+                                          <div 
+                                            className={`h-full ${
+                                              summary.attendanceRate >= 90 ? 'bg-green-500' :
+                                              summary.attendanceRate >= 75 ? 'bg-yellow-500' : 'bg-red-500'
+                                            }`}
+                                            style={{ width: `${summary.attendanceRate}%` }}
+                                          />
+                                        </div>
+                                        <span className="text-sm font-medium">{summary.attendanceRate}%</span>
+                                      </div>
+                                    </TableCell>
+                                    <TableCell className="text-center">
+                                      <div className="flex items-center justify-center gap-2">
+                                        <Button
+                                          variant="outline"
+                                          size="sm"
+                                          onClick={() => setViewingReportEmployee(summary.employee)}
+                                          className="gap-1"
+                                        >
+                                          <BarChart3 className="h-3 w-3" />
+                                          Report
+                                        </Button>
+                                        <Button
+                                          variant="outline"
+                                          size="sm"
+                                          onClick={() => openEditAttendance(summary.employee)}
+                                          className="gap-1"
+                                        >
+                                          <Edit className="h-3 w-3" />
+                                          Edit
+                                        </Button>
+                                      </div>
+                                    </TableCell>
+                                  </TableRow>
+                                ))}
+                              </TableBody>
+                            </Table>
                           </div>
-                        </div>
-                      </CardContent>
-                    </Card>
-                    
-                    <Card className="border-l-4 border-l-blue-500">
-                      <CardContent className="p-5">
-                        <div className="flex items-center justify-between">
-                          <div>
-                            <p className="text-sm font-medium text-muted-foreground">Total Present</p>
-                            <p className="text-3xl font-bold mt-1 text-blue-600">{overallStats.totalPresent}</p>
-                          </div>
-                          <div className="p-3 bg-blue-500/10 rounded-full">
-                            <CheckCircle className="h-6 w-6 text-blue-500" />
-                          </div>
-                        </div>
-                      </CardContent>
-                    </Card>
-                    
-                    <Card className="border-l-4 border-l-red-500">
-                      <CardContent className="p-5">
-                        <div className="flex items-center justify-between">
-                          <div>
-                            <p className="text-sm font-medium text-muted-foreground">Total Absent</p>
-                            <p className="text-3xl font-bold mt-1 text-red-600">{overallStats.totalAbsent}</p>
-                          </div>
-                          <div className="p-3 bg-red-500/10 rounded-full">
-                            <XCircle className="h-6 w-6 text-red-500" />
-                          </div>
-                        </div>
+                        )}
                       </CardContent>
                     </Card>
                   </div>
-
-                  {/* Filters and Actions Card */}
-                  <Card>
-                    <CardHeader className="pb-4">
-                      <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
-                        <div>
-                          <CardTitle className="flex items-center gap-2 text-lg">
-                            <Filter className="h-5 w-5" />
-                            Filters & Actions
-                          </CardTitle>
-                          <CardDescription>Filter attendance data or mark attendance for a specific date</CardDescription>
-                        </div>
-                        <div className="flex flex-wrap items-center gap-3">
-                          <Popover>
-                            <PopoverTrigger asChild>
-                              <Button
-                                variant="outline"
-                                className={cn(
-                                  "w-[180px] justify-start text-left font-normal",
-                                  !markAttendanceDate && "text-muted-foreground"
-                                )}
-                              >
-                                <CalendarIcon className="mr-2 h-4 w-4" />
-                                {markAttendanceDate ? format(markAttendanceDate, "PP") : <span>Pick date</span>}
-                              </Button>
-                            </PopoverTrigger>
-                            <PopoverContent className="w-auto p-0 bg-popover border shadow-xl z-[100]" align="end" sideOffset={8}>
-                              <Calendar
-                                mode="single"
-                                selected={markAttendanceDate}
-                                onSelect={(date) => date && setMarkAttendanceDate(date)}
-                                disabled={(date) => date > new Date()}
-                                initialFocus
-                                className="p-3 pointer-events-auto"
-                              />
-                            </PopoverContent>
-                          </Popover>
-                          <Button onClick={handleMarkAllPresent} className="gap-2">
-                            <CheckCircle className="h-4 w-4" />
-                            Mark All Present
-                          </Button>
-                          <Button onClick={exportToExcel} variant="outline" className="gap-2">
-                            <Download className="h-4 w-4" />
-                            Export Excel
-                          </Button>
-                        </div>
-                      </div>
-                    </CardHeader>
-                    <CardContent className="pt-0">
-                      <div className="flex flex-col md:flex-row gap-4">
-                        <div className="relative flex-1">
-                          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4" />
-                          <Input
-                            placeholder="Search by employee name or ID..."
-                            value={attendanceSearchQuery}
-                            onChange={(e) => setAttendanceSearchQuery(e.target.value)}
-                            className="pl-10"
-                          />
-                        </div>
-                        <div className="flex flex-wrap items-center gap-3">
-                          <div className="flex items-center gap-2">
-                            <CalendarDays className="h-4 w-4 text-muted-foreground shrink-0" />
-                            <Select value={selectedMonth} onValueChange={setSelectedMonth}>
-                              <SelectTrigger className="w-[160px]">
-                                <SelectValue placeholder="Select month" />
-                              </SelectTrigger>
-                              <SelectContent className="bg-popover border shadow-lg z-50">
-                                {getMonthOptions().map(opt => (
-                                  <SelectItem key={opt.value} value={opt.value}>
-                                    {opt.label}
-                                  </SelectItem>
-                                ))}
-                              </SelectContent>
-                            </Select>
-                          </div>
-                          <div className="flex items-center gap-2">
-                            <Building2 className="h-4 w-4 text-muted-foreground shrink-0" />
-                            <Select value={departmentFilter} onValueChange={setDepartmentFilter}>
-                              <SelectTrigger className="w-[160px]">
-                                <SelectValue placeholder="Department" />
-                              </SelectTrigger>
-                              <SelectContent className="bg-popover border shadow-lg z-50">
-                                <SelectItem value="all">All Departments</SelectItem>
-                                {departments.map(dept => (
-                                  <SelectItem key={dept} value={dept!}>
-                                    {dept}
-                                  </SelectItem>
-                                ))}
-                              </SelectContent>
-                            </Select>
-                          </div>
-                        </div>
-                      </div>
-                    </CardContent>
-                  </Card>
-
-                  {/* Attendance Table */}
-                  <Card>
-                    <CardHeader>
-                      <CardTitle className="flex items-center gap-2">
-                        <Users className="h-5 w-5" />
-                        Attendance Records
-                      </CardTitle>
-                      <CardDescription>
-                        Showing attendance for {new Date(selectedMonth + '-01').toLocaleString('en-US', { month: 'long', year: 'numeric' })}
-                      </CardDescription>
-                    </CardHeader>
-                    <CardContent>
-                      {summaries.length === 0 ? (
-                        <div className="text-center py-12 text-muted-foreground">
-                          <Users className="h-12 w-12 mx-auto mb-4 opacity-50" />
-                          <p>No employees found</p>
-                        </div>
-                      ) : (
-                        <div className="overflow-x-auto">
-                          <Table>
-                            <TableHeader>
-                              <TableRow>
-                                <TableHead>Employee</TableHead>
-                                <TableHead>Department</TableHead>
-                                <TableHead className="text-center">Present</TableHead>
-                                <TableHead className="text-center">Half-Day</TableHead>
-                                <TableHead className="text-center">Late</TableHead>
-                                <TableHead className="text-center">Absent</TableHead>
-                                <TableHead className="text-center">Working Days</TableHead>
-                                <TableHead className="text-center">Rate</TableHead>
-                                <TableHead className="text-center">Actions</TableHead>
-                              </TableRow>
-                            </TableHeader>
-                            <TableBody>
-                              {summaries.map((summary) => (
-                                <TableRow key={summary.employee.id}>
-                                  <TableCell>
-                                    <div>
-                                      <p className="font-medium">{summary.employee.full_name}</p>
-                                      <p className="text-xs text-muted-foreground">{summary.employee.employee_id}</p>
-                                    </div>
-                                  </TableCell>
-                                  <TableCell>
-                                    {summary.employee.department ? (
-                                      <Badge variant="secondary">{summary.employee.department}</Badge>
-                                    ) : (
-                                      <span className="text-muted-foreground">—</span>
-                                    )}
-                                  </TableCell>
-                                  <TableCell className="text-center">
-                                    <Badge className="bg-green-100 text-green-800 hover:bg-green-100">
-                                      {summary.present}
-                                    </Badge>
-                                  </TableCell>
-                                  <TableCell className="text-center">
-                                    <Badge variant="secondary">{summary.halfDay}</Badge>
-                                  </TableCell>
-                                  <TableCell className="text-center">
-                                    <Badge className="bg-yellow-100 text-yellow-800 hover:bg-yellow-100">
-                                      {summary.late}
-                                    </Badge>
-                                  </TableCell>
-                                  <TableCell className="text-center">
-                                    <Badge className="bg-red-100 text-red-800 hover:bg-red-100">
-                                      {summary.absent}
-                                    </Badge>
-                                  </TableCell>
-                                  <TableCell className="text-center">{summary.totalDays}</TableCell>
-                                  <TableCell className="text-center">
-                                    <div className="flex items-center justify-center gap-2">
-                                      <div className="w-16 h-2 bg-muted rounded-full overflow-hidden">
-                                        <div 
-                                          className={`h-full ${
-                                            summary.attendanceRate >= 90 ? 'bg-green-500' :
-                                            summary.attendanceRate >= 75 ? 'bg-yellow-500' : 'bg-red-500'
-                                          }`}
-                                          style={{ width: `${summary.attendanceRate}%` }}
-                                        />
-                                      </div>
-                                      <span className="text-sm font-medium">{summary.attendanceRate}%</span>
-                                    </div>
-                                  </TableCell>
-                                  <TableCell className="text-center">
-                                    <Button
-                                      variant="outline"
-                                      size="sm"
-                                      onClick={() => openEditAttendance(summary.employee)}
-                                      className="gap-1"
-                                    >
-                                      <Edit className="h-3 w-3" />
-                                      Edit
-                                    </Button>
-                                  </TableCell>
-                                </TableRow>
-                              ))}
-                            </TableBody>
-                          </Table>
-                        </div>
-                      )}
-                    </CardContent>
-                  </Card>
                 </>
               )}
             </TabsContent>
