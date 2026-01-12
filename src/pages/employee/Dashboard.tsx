@@ -28,6 +28,8 @@ interface Employee {
   full_name: string;
   department: string | null;
   designation: string | null;
+  status: string;
+  end_date: string | null;
 }
 
 const EmployeeDashboard = () => {
@@ -98,17 +100,27 @@ const EmployeeDashboard = () => {
     );
   }
 
+  const isActive = employee?.status === 'active';
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-primary/5 via-background to-secondary/5">
       {/* Header */}
       <header className="bg-background/80 backdrop-blur-sm border-b sticky top-0 z-50">
         <div className="container mx-auto px-4 py-4 flex justify-between items-center">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 bg-primary/10 rounded-full flex items-center justify-center">
-              <User className="w-5 h-5 text-primary" />
+            <div className={`w-10 h-10 rounded-full flex items-center justify-center ${isActive ? 'bg-primary/10' : 'bg-red-100'}`}>
+              <User className={`w-5 h-5 ${isActive ? 'text-primary' : 'text-red-600'}`} />
             </div>
             <div>
-              <h1 className="font-semibold">{employee?.full_name}</h1>
+              <div className="flex items-center gap-2">
+                <h1 className="font-semibold">{employee?.full_name}</h1>
+                {!isActive && (
+                  <span className="text-xs px-2 py-0.5 bg-red-100 text-red-700 rounded-full">
+                    {employee?.status === 'resigned' ? 'Resigned' : 
+                     employee?.status === 'internship_ended' ? 'Internship Ended' : 'Inactive'}
+                  </span>
+                )}
+              </div>
               <p className="text-sm text-muted-foreground">
                 {employee?.designation} • {employee?.department}
               </p>
@@ -199,11 +211,28 @@ const EmployeeDashboard = () => {
           </TabsList>
 
           <TabsContent value="attendance">
-            <MarkAttendance 
-              employeeId={employee?.id || ''} 
-              todayAttendance={todayAttendance}
-              onAttendanceMarked={() => fetchTodayAttendance(employee?.id || '')}
-            />
+            {isActive ? (
+              <MarkAttendance 
+                employeeId={employee?.id || ''} 
+                todayAttendance={todayAttendance}
+                onAttendanceMarked={() => fetchTodayAttendance(employee?.id || '')}
+              />
+            ) : (
+              <Card>
+                <CardHeader>
+                  <CardTitle className="text-red-600">Account Inactive</CardTitle>
+                  <CardDescription>
+                    Your employee status is currently "{employee?.status?.replace('_', ' ')}". 
+                    You cannot mark attendance, but you can still view your attendance history and records.
+                    {employee?.end_date && (
+                      <span className="block mt-2">
+                        End Date: {new Date(employee.end_date).toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' })}
+                      </span>
+                    )}
+                  </CardDescription>
+                </CardHeader>
+              </Card>
+            )}
           </TabsContent>
 
           <TabsContent value="attendance-history">

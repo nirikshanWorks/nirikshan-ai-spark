@@ -85,6 +85,8 @@ interface Employee {
   designation: string | null;
   joining_date: string | null;
   created_at: string | null;
+  status: string;
+  end_date: string | null;
 }
 
 interface UserProfile {
@@ -167,6 +169,13 @@ const DESIGNATIONS = [
   "CEO",
 ];
 
+const EMPLOYEE_STATUSES = [
+  { value: "active", label: "Active", color: "bg-green-100 text-green-800 border-green-200" },
+  { value: "inactive", label: "Inactive", color: "bg-gray-100 text-gray-800 border-gray-200" },
+  { value: "resigned", label: "Resigned", color: "bg-red-100 text-red-800 border-red-200" },
+  { value: "internship_ended", label: "Internship Ended", color: "bg-orange-100 text-orange-800 border-orange-200" },
+];
+
 // ==================== MAIN COMPONENT ====================
 
 const AdminHRManagement = () => {
@@ -189,7 +198,10 @@ const AdminHRManagement = () => {
     department: "",
     designation: "",
     joining_date: new Date().toISOString().split("T")[0],
+    status: "active",
+    end_date: "",
   });
+  const [employeeStatusFilter, setEmployeeStatusFilter] = useState<string>("all");
 
   // Leave Management State
   const [leaveRequests, setLeaveRequests] = useState<LeaveRequest[]>([]);
@@ -441,6 +453,8 @@ const AdminHRManagement = () => {
       department: "",
       designation: "",
       joining_date: new Date().toISOString().split("T")[0],
+      status: "active",
+      end_date: "",
     });
   };
 
@@ -457,6 +471,8 @@ const AdminHRManagement = () => {
       department: formData.department || null,
       designation: formData.designation || null,
       joining_date: formData.joining_date || null,
+      status: formData.status,
+      end_date: formData.end_date || null,
     });
 
     if (error) {
@@ -487,6 +503,8 @@ const AdminHRManagement = () => {
         department: formData.department || null,
         designation: formData.designation || null,
         joining_date: formData.joining_date || null,
+        status: formData.status,
+        end_date: formData.end_date || null,
       })
       .eq("id", editingEmployee.id);
 
@@ -523,16 +541,39 @@ const AdminHRManagement = () => {
       department: employee.department || "",
       designation: employee.designation || "",
       joining_date: employee.joining_date || new Date().toISOString().split("T")[0],
+      status: employee.status || "active",
+      end_date: employee.end_date || "",
     });
   };
 
   const filteredEmployees = allEmployees.filter(
-    (emp) =>
-      emp.full_name.toLowerCase().includes(employeeSearchQuery.toLowerCase()) ||
-      emp.employee_id.toLowerCase().includes(employeeSearchQuery.toLowerCase()) ||
-      (emp.department?.toLowerCase().includes(employeeSearchQuery.toLowerCase()) ?? false) ||
-      (emp.designation?.toLowerCase().includes(employeeSearchQuery.toLowerCase()) ?? false)
+    (emp) => {
+      const matchesSearch = 
+        emp.full_name.toLowerCase().includes(employeeSearchQuery.toLowerCase()) ||
+        emp.employee_id.toLowerCase().includes(employeeSearchQuery.toLowerCase()) ||
+        (emp.department?.toLowerCase().includes(employeeSearchQuery.toLowerCase()) ?? false) ||
+        (emp.designation?.toLowerCase().includes(employeeSearchQuery.toLowerCase()) ?? false);
+      const matchesStatus = employeeStatusFilter === "all" || emp.status === employeeStatusFilter;
+      return matchesSearch && matchesStatus;
+    }
   );
+
+  const getEmployeeStatusBadge = (status: string) => {
+    const config = EMPLOYEE_STATUSES.find(s => s.value === status) || EMPLOYEE_STATUSES[0];
+    return (
+      <Badge variant="outline" className={config.color}>
+        {config.label}
+      </Badge>
+    );
+  };
+
+  const employeeStats = {
+    total: allEmployees.length,
+    active: allEmployees.filter(e => e.status === "active").length,
+    inactive: allEmployees.filter(e => e.status === "inactive").length,
+    resigned: allEmployees.filter(e => e.status === "resigned").length,
+    internship_ended: allEmployees.filter(e => e.status === "internship_ended").length,
+  };
 
   // ==================== JOB APPLICATIONS FUNCTIONS ====================
 
@@ -1186,62 +1227,92 @@ const AdminHRManagement = () => {
                       </CardContent>
                     </Card>
                     
-                    <Card>
+                    <Card className="cursor-pointer hover:shadow-md transition-shadow" onClick={() => setEmployeeStatusFilter("active")}>
                       <CardContent className="p-4">
                         <div className="flex items-center gap-3">
                           <div className="p-2 bg-green-500/10 rounded-lg">
-                            <Building2 className="h-5 w-5 text-green-500" />
+                            <CheckCircle className="h-5 w-5 text-green-500" />
                           </div>
                           <div>
-                            <p className="text-sm text-muted-foreground">Departments</p>
-                            <p className="text-2xl font-bold">
-                              {new Set(allEmployees.map(e => e.department).filter(Boolean)).size}
-                            </p>
+                            <p className="text-sm text-muted-foreground">Active</p>
+                            <p className="text-2xl font-bold text-green-600">{employeeStats.active}</p>
                           </div>
                         </div>
                       </CardContent>
                     </Card>
                     
-                    <Card>
+                    <Card className="cursor-pointer hover:shadow-md transition-shadow" onClick={() => setEmployeeStatusFilter("inactive")}>
                       <CardContent className="p-4">
                         <div className="flex items-center gap-3">
-                          <div className="p-2 bg-blue-500/10 rounded-lg">
-                            <Link2 className="h-5 w-5 text-blue-500" />
+                          <div className="p-2 bg-gray-500/10 rounded-lg">
+                            <XCircle className="h-5 w-5 text-gray-500" />
                           </div>
                           <div>
-                            <p className="text-sm text-muted-foreground">Linked Accounts</p>
-                            <p className="text-2xl font-bold">{allEmployees.length}</p>
+                            <p className="text-sm text-muted-foreground">Inactive</p>
+                            <p className="text-2xl font-bold text-gray-600">{employeeStats.inactive}</p>
                           </div>
                         </div>
                       </CardContent>
                     </Card>
                     
-                    <Card>
+                    <Card className="cursor-pointer hover:shadow-md transition-shadow" onClick={() => setEmployeeStatusFilter("resigned")}>
+                      <CardContent className="p-4">
+                        <div className="flex items-center gap-3">
+                          <div className="p-2 bg-red-500/10 rounded-lg">
+                            <XCircle className="h-5 w-5 text-red-500" />
+                          </div>
+                          <div>
+                            <p className="text-sm text-muted-foreground">Resigned</p>
+                            <p className="text-2xl font-bold text-red-600">{employeeStats.resigned}</p>
+                          </div>
+                        </div>
+                      </CardContent>
+                    </Card>
+                    
+                    <Card className="cursor-pointer hover:shadow-md transition-shadow" onClick={() => setEmployeeStatusFilter("internship_ended")}>
                       <CardContent className="p-4">
                         <div className="flex items-center gap-3">
                           <div className="p-2 bg-orange-500/10 rounded-lg">
-                            <UserPlus className="h-5 w-5 text-orange-500" />
+                            <Clock className="h-5 w-5 text-orange-500" />
                           </div>
                           <div>
-                            <p className="text-sm text-muted-foreground">Unlinked Users</p>
-                            <p className="text-2xl font-bold">{availableUsers.length}</p>
+                            <p className="text-sm text-muted-foreground">Internship Ended</p>
+                            <p className="text-2xl font-bold text-orange-600">{employeeStats.internship_ended}</p>
                           </div>
                         </div>
                       </CardContent>
                     </Card>
                   </div>
 
-                  {/* Employee Search */}
+                  {/* Employee Search & Filter */}
                   <Card>
                     <CardContent className="p-4">
-                      <div className="relative">
-                        <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4" />
-                        <Input
-                          placeholder="Search by name, ID, department, or designation..."
-                          value={employeeSearchQuery}
-                          onChange={(e) => setEmployeeSearchQuery(e.target.value)}
-                          className="pl-10"
-                        />
+                      <div className="flex flex-col md:flex-row gap-4">
+                        <div className="relative flex-1">
+                          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4" />
+                          <Input
+                            placeholder="Search by name, ID, department, or designation..."
+                            value={employeeSearchQuery}
+                            onChange={(e) => setEmployeeSearchQuery(e.target.value)}
+                            className="pl-10"
+                          />
+                        </div>
+                        <div className="flex items-center gap-2">
+                          <Filter className="h-4 w-4 text-muted-foreground" />
+                          <Select value={employeeStatusFilter} onValueChange={setEmployeeStatusFilter}>
+                            <SelectTrigger className="w-[180px]">
+                              <SelectValue placeholder="Filter status" />
+                            </SelectTrigger>
+                            <SelectContent>
+                              <SelectItem value="all">All Status</SelectItem>
+                              {EMPLOYEE_STATUSES.map((status) => (
+                                <SelectItem key={status.value} value={status.value}>
+                                  {status.label}
+                                </SelectItem>
+                              ))}
+                            </SelectContent>
+                          </Select>
+                        </div>
                       </div>
                     </CardContent>
                   </Card>
@@ -1270,13 +1341,15 @@ const AdminHRManagement = () => {
                                 <TableHead>Full Name</TableHead>
                                 <TableHead>Department</TableHead>
                                 <TableHead>Designation</TableHead>
+                                <TableHead>Status</TableHead>
                                 <TableHead>Joining Date</TableHead>
+                                <TableHead>End Date</TableHead>
                                 <TableHead className="text-right">Actions</TableHead>
                               </TableRow>
                             </TableHeader>
                             <TableBody>
                               {filteredEmployees.map((employee) => (
-                                <TableRow key={employee.id}>
+                                <TableRow key={employee.id} className={employee.status !== 'active' ? 'opacity-60' : ''}>
                                   <TableCell className="font-mono text-sm">
                                     {employee.employee_id}
                                   </TableCell>
@@ -1301,10 +1374,23 @@ const AdminHRManagement = () => {
                                     )}
                                   </TableCell>
                                   <TableCell>
+                                    {getEmployeeStatusBadge(employee.status)}
+                                  </TableCell>
+                                  <TableCell>
                                     {employee.joining_date ? (
                                       <span className="flex items-center gap-1 text-sm">
                                         <CalendarIcon className="h-3 w-3" />
                                         {new Date(employee.joining_date).toLocaleDateString('en-IN', { day: '2-digit', month: '2-digit', year: 'numeric' })}
+                                      </span>
+                                    ) : (
+                                      <span className="text-muted-foreground text-sm">—</span>
+                                    )}
+                                  </TableCell>
+                                  <TableCell>
+                                    {employee.end_date ? (
+                                      <span className="flex items-center gap-1 text-sm text-red-600">
+                                        <CalendarIcon className="h-3 w-3" />
+                                        {new Date(employee.end_date).toLocaleDateString('en-IN', { day: '2-digit', month: '2-digit', year: 'numeric' })}
                                       </span>
                                     ) : (
                                       <span className="text-muted-foreground text-sm">—</span>
@@ -2400,6 +2486,55 @@ const AdminHRManagement = () => {
                 </PopoverContent>
               </Popover>
             </div>
+            
+            <div className="space-y-2">
+              <Label htmlFor="status">Status</Label>
+              <Select
+                value={formData.status}
+                onValueChange={(value) => setFormData({ ...formData, status: value })}
+              >
+                <SelectTrigger>
+                  <SelectValue placeholder="Select status" />
+                </SelectTrigger>
+                <SelectContent>
+                  {EMPLOYEE_STATUSES.map((status) => (
+                    <SelectItem key={status.value} value={status.value}>
+                      {status.label}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+            
+            {(formData.status === 'resigned' || formData.status === 'internship_ended' || formData.status === 'inactive') && (
+              <div className="space-y-2">
+                <Label htmlFor="end_date">End Date (Resignation/Internship End)</Label>
+                <Popover>
+                  <PopoverTrigger asChild>
+                    <Button
+                      id="end_date"
+                      variant="outline"
+                      className={cn(
+                        "w-full justify-start text-left font-normal",
+                        !formData.end_date && "text-muted-foreground"
+                      )}
+                    >
+                      <CalendarIcon className="mr-2 h-4 w-4" />
+                      {formData.end_date ? format(new Date(formData.end_date), "dd MMM yyyy") : "Select end date"}
+                    </Button>
+                  </PopoverTrigger>
+                  <PopoverContent className="w-auto p-0 z-[200]" align="start">
+                    <Calendar
+                      mode="single"
+                      selected={formData.end_date ? new Date(formData.end_date) : undefined}
+                      onSelect={(date) => setFormData({ ...formData, end_date: date ? format(date, 'yyyy-MM-dd') : '' })}
+                      initialFocus
+                      className="p-3 pointer-events-auto"
+                    />
+                  </PopoverContent>
+                </Popover>
+              </div>
+            )}
           </div>
           
           <DialogFooter>
@@ -2510,6 +2645,55 @@ const AdminHRManagement = () => {
                 </PopoverContent>
               </Popover>
             </div>
+            
+            <div className="space-y-2">
+              <Label htmlFor="edit_status">Status</Label>
+              <Select
+                value={formData.status}
+                onValueChange={(value) => setFormData({ ...formData, status: value, end_date: value === 'active' ? '' : formData.end_date })}
+              >
+                <SelectTrigger>
+                  <SelectValue placeholder="Select status" />
+                </SelectTrigger>
+                <SelectContent>
+                  {EMPLOYEE_STATUSES.map((status) => (
+                    <SelectItem key={status.value} value={status.value}>
+                      {status.label}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+            
+            {(formData.status === 'resigned' || formData.status === 'internship_ended' || formData.status === 'inactive') && (
+              <div className="space-y-2">
+                <Label htmlFor="edit_end_date">End Date (Resignation/Internship End)</Label>
+                <Popover>
+                  <PopoverTrigger asChild>
+                    <Button
+                      id="edit_end_date"
+                      variant="outline"
+                      className={cn(
+                        "w-full justify-start text-left font-normal",
+                        !formData.end_date && "text-muted-foreground"
+                      )}
+                    >
+                      <CalendarIcon className="mr-2 h-4 w-4" />
+                      {formData.end_date ? format(new Date(formData.end_date), "dd MMM yyyy") : "Select end date"}
+                    </Button>
+                  </PopoverTrigger>
+                  <PopoverContent className="w-auto p-0 z-[200]" align="start">
+                    <Calendar
+                      mode="single"
+                      selected={formData.end_date ? new Date(formData.end_date) : undefined}
+                      onSelect={(date) => setFormData({ ...formData, end_date: date ? format(date, 'yyyy-MM-dd') : '' })}
+                      initialFocus
+                      className="p-3 pointer-events-auto"
+                    />
+                  </PopoverContent>
+                </Popover>
+              </div>
+            )}
           </div>
           
           <DialogFooter>
