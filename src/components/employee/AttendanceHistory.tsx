@@ -28,6 +28,8 @@ interface AttendanceHistoryProps {
   employeeCode?: string;
   department?: string;
   designation?: string;
+  joiningDate?: string | null;
+  endDate?: string | null;
 }
 
 interface AttendanceRecord {
@@ -44,7 +46,9 @@ export const AttendanceHistory = ({
   employeeName = "Employee",
   employeeCode = "",
   department = "",
-  designation = ""
+  designation = "",
+  joiningDate,
+  endDate
 }: AttendanceHistoryProps) => {
   const [attendance, setAttendance] = useState<AttendanceRecord[]>([]);
   const [loading, setLoading] = useState(true);
@@ -120,13 +124,31 @@ export const AttendanceHistory = ({
     return options;
   };
 
-  // Calculate stats
+  // Calculate stats - respect joining date and end date
   const [year, month] = selectedMonth.split('-').map(Number);
-  const daysInMonth = new Date(year, month, 0).getDate();
+  const today = new Date();
+  const todayStr = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}-${String(today.getDate()).padStart(2, '0')}`;
+  const isCurrentMonth = today.getFullYear() === year && (today.getMonth() + 1) === month;
+  
   let workingDays = 0;
-  for (let d = 1; d <= daysInMonth; d++) {
-    const day = new Date(year, month - 1, d).getDay();
-    if (day !== 0 && day !== 6) workingDays++;
+  const daysInMonth = new Date(year, month, 0).getDate();
+  const lastDayToCount = isCurrentMonth ? today.getDate() : daysInMonth;
+  
+  for (let d = 1; d <= lastDayToCount; d++) {
+    const date = new Date(year, month - 1, d);
+    const dateStr = `${year}-${String(month).padStart(2, '0')}-${String(d).padStart(2, '0')}`;
+    const day = date.getDay();
+    
+    // Skip weekends
+    if (day === 0 || day === 6) continue;
+    
+    // Skip if before joining date
+    if (joiningDate && dateStr < joiningDate) continue;
+    
+    // Skip if after end date (for internship ended employees)
+    if (endDate && dateStr > endDate) continue;
+    
+    workingDays++;
   }
 
   const stats = {
@@ -194,16 +216,26 @@ export const AttendanceHistory = ({
       return;
     }
 
+    // Validate against endDate (internship/employment end)
+    let effectiveEndDate = pdfEndDate;
+    if (endDate) {
+      const empEndDate = new Date(endDate);
+      if (pdfEndDate > empEndDate) {
+        effectiveEndDate = empEndDate;
+        toast.info(`Report limited to your end date: ${format(empEndDate, 'dd MMM yyyy')}`);
+      }
+    }
+
     setPdfLoading(true);
 
     try {
-      // Fetch attendance for selected date range
+      // Fetch attendance for selected date range (limited by end date)
       const { data: pdfAttendance, error } = await supabase
         .from("attendance")
         .select("*")
         .eq("employee_id", employeeId)
         .gte("date", pdfStartDate.toISOString().split('T')[0])
-        .lte("date", pdfEndDate.toISOString().split('T')[0])
+        .lte("date", effectiveEndDate.toISOString().split('T')[0])
         .order("date", { ascending: true });
 
       if (error) throw error;
@@ -263,7 +295,10 @@ export const AttendanceHistory = ({
       doc.text(`Employee ID: ${employeeCode}`, 15, detailsY + 6);
       doc.text(`Department: ${department || 'N/A'}`, 15, detailsY + 12);
       doc.text(`Designation: ${designation || 'N/A'}`, pageWidth / 2, detailsY);
-      doc.text(`Period: ${format(pdfStartDate, 'dd MMM yyyy')} to ${format(pdfEndDate, 'dd MMM yyyy')}`, pageWidth / 2, detailsY + 6);
+      doc.text(`Period: ${format(pdfStartDate, 'dd MMM yyyy')} to ${format(effectiveEndDate, 'dd MMM yyyy')}`, pageWidth / 2, detailsY + 6);
+      if (endDate) {
+        doc.text(`Employment End Date: ${format(new Date(endDate), 'dd MMM yyyy')}`, pageWidth / 2, detailsY + 12);
+      }
 
       // Attendance Table
       doc.setFontSize(12);

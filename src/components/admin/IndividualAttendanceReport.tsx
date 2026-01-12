@@ -1,7 +1,9 @@
 import { useState, useEffect } from "react";
 import { format, startOfMonth, endOfMonth, eachDayOfInterval, isWeekend, isSameMonth } from "date-fns";
 import { formatInTimeZone, toZonedTime } from "date-fns-tz";
-import { Calendar as CalendarIcon, Download, BarChart3, CheckCircle, XCircle, Clock, ArrowLeft } from "lucide-react";
+import { Calendar as CalendarIcon, Download, BarChart3, CheckCircle, XCircle, Clock, ArrowLeft, FileText } from "lucide-react";
+import jsPDF from "jspdf";
+import autoTable from "jspdf-autotable";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -24,6 +26,7 @@ interface Employee {
   designation: string | null;
   joining_date: string | null;
   status: string;
+  end_date: string | null;
 }
 
 interface AttendanceRecord {
@@ -131,6 +134,12 @@ const IndividualAttendanceReport = ({ employee, onBack, holidays }: IndividualAt
         if (date < joiningDate) continue;
       }
       
+      // Skip if after end date (for inactive/internship ended employees)
+      if (employee.end_date) {
+        const endDate = new Date(employee.end_date);
+        if (date > endDate) continue;
+      }
+      
       workingDays++;
       
       const attendance = getAttendanceForDate(date);
@@ -204,6 +213,11 @@ const IndividualAttendanceReport = ({ employee, onBack, holidays }: IndividualAt
       return { status: 'before-joining', label: 'N/A', color: 'bg-gray-200' };
     }
     
+    // After end date (for internship ended / resigned)
+    if (employee.end_date && date > new Date(employee.end_date)) {
+      return { status: 'after-end', label: 'Ended', color: 'bg-gray-200' };
+    }
+    
     const attendance = getAttendanceForDate(date);
     if (attendance) {
       switch (attendance.status) {
@@ -269,7 +283,167 @@ const IndividualAttendanceReport = ({ employee, onBack, holidays }: IndividualAt
     XLSX.utils.book_append_sheet(wb, detailedWs, 'Daily Attendance');
     
     XLSX.writeFile(wb, `${employee.employee_id}_Attendance_${monthName.replace(' ', '_')}.xlsx`);
-    toast.success(`Exported report for ${employee.full_name}`);
+    toast.success(`Exported Excel report for ${employee.full_name}`);
+  };
+
+  const exportToPDF = () => {
+    const [year, month] = selectedMonth.split('-').map(Number);
+    const monthName = new Date(year, month - 1).toLocaleString('en-US', { month: 'long', year: 'numeric' });
+    
+    const doc = new jsPDF();
+    const pageWidth = doc.internal.pageSize.getWidth();
+    const pageHeight = doc.internal.pageSize.getHeight();
+    
+    // Header - Company Name
+    doc.setFontSize(18);
+    doc.setFont('helvetica', 'bold');
+    doc.text('NIRIKSHAN AI PRIVATE LIMITED', pageWidth / 2, 20, { align: 'center' });
+    
+    doc.setFontSize(10);
+    doc.setFont('helvetica', 'normal');
+    doc.text('Monthly Attendance Report', pageWidth / 2, 28, { align: 'center' });
+
+    // Horizontal line
+    doc.setLineWidth(0.5);
+    doc.line(15, 33, pageWidth - 15, 33);
+
+    // Document details
+    doc.setFontSize(10);
+    doc.text(`Date Generated: ${format(new Date(), 'dd MMMM yyyy')}`, pageWidth - 15, 42, { align: 'right' });
+    doc.text(`Document No: ATT-${Date.now().toString().slice(-8)}`, 15, 42);
+
+    // Employee Details Section
+    doc.setFontSize(12);
+    doc.setFont('helvetica', 'bold');
+    doc.text('EMPLOYEE DETAILS', 15, 55);
+    
+    doc.setFontSize(10);
+    doc.setFont('helvetica', 'normal');
+    
+    const detailsY = 62;
+    doc.text(`Employee Name: ${employee.full_name}`, 15, detailsY);
+    doc.text(`Employee ID: ${employee.employee_id}`, 15, detailsY + 6);
+    doc.text(`Department: ${employee.department || 'N/A'}`, 15, detailsY + 12);
+    doc.text(`Designation: ${employee.designation || 'N/A'}`, pageWidth / 2, detailsY);
+    doc.text(`Period: ${monthName}`, pageWidth / 2, detailsY + 6);
+    if (employee.status !== 'active') {
+      doc.text(`Status: ${employee.status.replace('_', ' ').toUpperCase()}`, pageWidth / 2, detailsY + 12);
+    }
+    if (employee.end_date) {
+      doc.text(`End Date: ${format(new Date(employee.end_date), 'dd MMM yyyy')}`, pageWidth / 2, detailsY + 18);
+    }
+
+    // Summary Statistics
+    doc.setFontSize(12);
+    doc.setFont('helvetica', 'bold');
+    doc.text('SUMMARY', 15, 90);
+    
+    doc.setFontSize(10);
+    doc.setFont('helvetica', 'normal');
+    doc.text(`Working Days: ${stats.workingDays}`, 15, 98);
+    doc.text(`Present: ${stats.present}`, 15, 104);
+    doc.text(`Half-Day: ${stats.halfDay}`, 60, 98);
+    doc.text(`Late: ${stats.late}`, 60, 104);
+    doc.text(`Leave: ${stats.leave}`, 105, 98);
+    doc.text(`Absent: ${stats.absent}`, 105, 104);
+    doc.text(`Attendance Rate: ${stats.attendanceRate}%`, 150, 98);
+
+    // Attendance Table
+    const calendarDays = getCalendarDays();
+    const tableData = calendarDays
+      .filter(date => {
+        const dayStatus = getDayStatus(date);
+        return dayStatus.status !== 'future' && dayStatus.status !== 'after-end';
+      })
+      .map(date => {
+        const dayStatus = getDayStatus(date);
+        const attendance = getAttendanceForDate(date);
+        
+        return [
+          format(date, 'dd/MM/yyyy'),
+          format(date, 'EEE'),
+          dayStatus.label,
+          attendance?.check_in_time ? formatInTimeZone(new Date(attendance.check_in_time), IST_TIMEZONE, 'hh:mm a') : '-',
+          attendance?.check_out_time ? formatInTimeZone(new Date(attendance.check_out_time), IST_TIMEZONE, 'hh:mm a') : '-',
+          attendance?.notes || '-'
+        ];
+      });
+
+    autoTable(doc, {
+      startY: 115,
+      head: [['Date', 'Day', 'Status', 'Check In', 'Check Out', 'Notes']],
+      body: tableData,
+      theme: 'grid',
+      headStyles: { 
+        fillColor: [41, 128, 185],
+        textColor: 255,
+        fontStyle: 'bold'
+      },
+      styles: { 
+        fontSize: 8,
+        cellPadding: 2
+      },
+      columnStyles: {
+        0: { cellWidth: 22 },
+        1: { cellWidth: 15 },
+        2: { cellWidth: 22 },
+        3: { cellWidth: 22 },
+        4: { cellWidth: 22 },
+        5: { cellWidth: 'auto' }
+      }
+    });
+
+    // Rights and Validity Section
+    const finalY = (doc as any).lastAutoTable.finalY + 10;
+    doc.setFontSize(9);
+    doc.setFont('helvetica', 'bold');
+    doc.text('IMPORTANT NOTICE:', 15, finalY);
+    
+    doc.setFont('helvetica', 'normal');
+    doc.setFontSize(8);
+    const validityText = [
+      '• This document is the property of Nirikshan AI Private Limited.',
+      '• All intellectual property rights and information contained herein belong to Nirikshan AI.',
+      '• This document is valid ONLY when signed by an authorized signatory of Nirikshan AI Pvt. Ltd.'
+    ];
+    
+    validityText.forEach((line, index) => {
+      doc.text(line, 15, finalY + 6 + (index * 5));
+    });
+
+    // Signature Section
+    const signatureY = finalY + 28;
+    doc.setFontSize(10);
+    doc.setFont('helvetica', 'bold');
+    doc.text('AUTHORIZED SIGNATORY', pageWidth - 60, signatureY);
+    
+    doc.setLineWidth(0.3);
+    doc.line(pageWidth - 85, signatureY + 18, pageWidth - 15, signatureY + 18);
+    
+    doc.setFontSize(8);
+    doc.setFont('helvetica', 'normal');
+    doc.text('Signature & Stamp', pageWidth - 60, signatureY + 24);
+    doc.text('For Nirikshan AI Pvt. Ltd.', pageWidth - 65, signatureY + 30);
+
+    // Footer
+    const footerY = pageHeight - 25;
+    doc.setLineWidth(0.5);
+    doc.line(15, footerY - 5, pageWidth - 15, footerY - 5);
+    
+    doc.setFontSize(7);
+    doc.setFont('helvetica', 'bold');
+    doc.text('Nirikshan AI Private Limited', pageWidth / 2, footerY, { align: 'center' });
+    
+    doc.setFont('helvetica', 'normal');
+    doc.text('CIN: U62091HR2025PTC134110', pageWidth / 2, footerY + 4, { align: 'center' });
+    doc.text('166A, Village Malra Sarai, Lawan, Lawan, Mahendragarh- 123029, Haryana', pageWidth / 2, footerY + 8, { align: 'center' });
+    doc.text('Email: info@nirikshanai.com | Website: www.nirikshanai.com | Phone: +91 94109 92204', pageWidth / 2, footerY + 12, { align: 'center' });
+
+    // Save PDF
+    const fileName = `${employee.employee_id}_Attendance_${monthName.replace(' ', '_')}.pdf`;
+    doc.save(fileName);
+    
+    toast.success(`Exported PDF report for ${employee.full_name}`);
   };
 
   return (
@@ -303,7 +477,11 @@ const IndividualAttendanceReport = ({ employee, onBack, holidays }: IndividualAt
           </Select>
           <Button onClick={exportReport} variant="outline" className="gap-2">
             <Download className="h-4 w-4" />
-            Export
+            Excel
+          </Button>
+          <Button onClick={exportToPDF} variant="default" className="gap-2">
+            <FileText className="h-4 w-4" />
+            PDF
           </Button>
         </div>
       </div>
