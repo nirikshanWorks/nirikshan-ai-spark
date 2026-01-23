@@ -249,7 +249,7 @@ const WhoWeAre = () => {
               </p>
             </div>
             <div
-              className={`grid gap-8 sm:grid-cols-2 lg:grid-cols-3 transition-all duration-1000 max-w-6xl mx-auto justify-items-center ${
+              className={`grid gap-8 grid-cols-1 md:grid-cols-2 transition-all duration-1000 max-w-4xl mx-auto justify-items-center ${
                 leadershipRef.isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
               }`}
             >
