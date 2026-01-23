@@ -1,5 +1,4 @@
 import anshulImage from "@/assets/team/anshul.jpg";
-import ashwinImage from "@/assets/team/ashwin-hole.jpg";
 import dineshImage from "@/assets/team/dinesh-yadav.jpg";
 import wwaTeamVideo from "@/assets/wwa-team.mp4";
 import { Footer } from "@/components/Footer";
@@ -65,13 +64,6 @@ const leadership = [
     bio: "Anshul leads operations and partnerships, ensuring our research pipelines align with industry impact and measurable outcomes.",
     image: anshulImage,
     linkedin: "https://www.linkedin.com/in/anshultech1"
-  },
-  {
-    name: "Ashwin Hole",
-    role: "Co-Founder & Head of Programs",
-    bio: "Ashwin orchestrates delivery excellence, growing high-performing teams that push the boundaries of applied AI.",
-    image: ashwinImage,
-    linkedin: "https://www.linkedin.com/in/ashwinhole18/"
   }
 ];
 
