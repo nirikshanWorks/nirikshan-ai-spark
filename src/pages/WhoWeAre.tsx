@@ -55,15 +55,15 @@ const values = [
 const leadership = [
   {
     name: "Dinesh Yadav",
-    role: "Founder & CEO",
-    bio: "Dinesh architects the strategic vision of Nirikshan AI, guiding research teams to convert ambitious ideas into deployable intelligence platforms.",
+    role: "Director – Technical",
+    bio: "Dinesh, also the Founder & CEO of Nirikshan AI, drives technical excellence across projects, ensuring engineering standards and innovative architectures power every solution we deliver.",
     image: dineshImage,
     linkedin: "https://www.linkedin.com/in/dinesh003"
   },
   {
     name: "Anshul",
-    role: "Co-Founder & COO",
-    bio: "Anshul leads operations and partnerships, ensuring our research pipelines align with industry impact and measurable outcomes.",
+    role: "Director – Technical",
+    bio: "Anshul, also the Co-Founder & COO of Nirikshan AI, spearheads technical strategy and system design, translating complex requirements into scalable, production-ready platforms.",
     image: anshulImage,
     linkedin: "https://www.linkedin.com/in/anshultech1"
   },
