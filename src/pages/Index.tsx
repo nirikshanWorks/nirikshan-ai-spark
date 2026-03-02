@@ -1,342 +1,297 @@
 import { MutableRefObject, useEffect, useRef } from "react";
 import { Navigation } from "@/components/Navigation";
 import { Footer } from "@/components/Footer";
-import { HeroSection } from "@/components/HeroSection";
-import { ServiceCard } from "@/components/ServiceCard";
-import { IndustryCard } from "@/components/IndustryCard";
-import { StatsSection } from "@/components/StatsSection";
-import { ProcessSection } from "@/components/ProcessSection";
-import { WhyChooseUs } from "@/components/WhyChooseUs";
-import { TechnologyStack } from "@/components/TechnologyStack";
-import { CTASection } from "@/components/CTASection";
-import { AIExpertiseSection } from "@/components/AIExpertiseSection";
-import { TAMSection } from "@/components/TAMSection";
-import { AIParticles } from "@/components/AIParticles";
-import { TestimonialsCarousel3D } from "@/components/TestimonialsCarousel3D";
-import { FadeUp, StaggerContainer, StaggerItem, SlideLeft, SlideRight } from "@/components/ScrollAnimations";
 import { Button } from "@/components/ui/button";
-import { Card } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
 import {
-  Brain,
-  Code,
-  Cloud,
-  Cpu,
-  Database,
   ArrowRight,
+  Brain,
+  Eye,
+  MessageSquare,
+  Zap,
+  Bot,
+  Code2,
+  Building2,
+  Activity,
+  TrendingUp,
+  FileText,
+  Wrench,
   CheckCircle2,
-  Sparkles
+  Terminal,
+  ExternalLink,
+  Sparkles,
 } from "lucide-react";
 import { Link } from "react-router-dom";
+import { useScrollAnimation } from "@/hooks/use-scroll-animation";
 
-const heroSlides = [
-  {
-    video: "https://res.cloudinary.com/dch0uyw8e/video/upload/v1760826232/2_sxecvw.mp4",
-    eyebrow: "AI-First Innovation",
-    title: "Empowering Vision and Intelligence — From OpenCV to Agentic AI",
-    description: "We design AI-native solutions that blend computer vision, generative creativity, and autonomous agents to unlock measurable enterprise value.",
-    cta: {
-      text: "Explore Our AI Expertise",
-      link: "#ai-expertise",
-    },
-    secondaryCta: {
-      text: "Learn More",
-      link: "#ai-expertise",
-    },
-  },
-  {
-    video: "https://res.cloudinary.com/dch0uyw8e/video/upload/v1760826230/1_tsiaq0.mp4",
-    eyebrow: "Vision to Reality",
-    title: "Building Intelligent Systems That See, Think, and Act",
-    description: "Our OpenCV engineers orchestrate perception pipelines while generative copilots and agentic workflows automate decision-making in real time.",
-    cta: {
-      text: "Discover AI Solutions",
-      link: "/expertise/artificial-intelligence",
-    },
-    secondaryCta: {
-      text: "View AI Case Studies",
-      link: "/case-studies",
-    },
-  },
-  {
-    video: "https://res.cloudinary.com/dch0uyw8e/video/upload/v1760826234/3_lvxy1u.mp4",
-    eyebrow: "Leading the AI Revolution",
-    title: "Where Computer Vision Meets Generative Intelligence",
-    description: "We pair domain data with agentic AI to craft intelligent experiences, from smart inspections to hyper-personalized content delivery.",
-    cta: {
-      text: "View Our Impact",
-      link: "/case-studies",
-    },
-    secondaryCta: {
-      text: "Talk to an AI Architect",
-      link: "/contact",
-    },
-  },
+/* ─── Data ─── */
+const capabilities = [
+  { icon: Brain, title: "Generative AI", desc: "Enterprise-ready content generation, summarization, and creative automation powered by fine-tuned LLMs." },
+  { icon: Eye, title: "Computer Vision", desc: "Real-time object detection, OCR, and visual inspection systems built on OpenCV and deep learning." },
+  { icon: MessageSquare, title: "LLM Integration", desc: "Seamless integration of large language models into your existing workflows and products." },
+  { icon: Zap, title: "Data Automation", desc: "Intelligent pipelines that extract, transform, and act on data with minimal human oversight." },
+  { icon: Bot, title: "Agentic AI", desc: "Autonomous agents that reason, plan, and execute multi-step tasks across your business systems." },
+  { icon: Code2, title: "API & Developer Tools", desc: "Production-grade APIs, SDKs, and developer tooling for rapid AI integration." },
 ];
 
-const services = [
-  {
-    icon: Brain,
-    title: "Generative AI Solutions",
-    description: "Design conversational agents and creative automation built on enterprise-ready LLM pipelines",
-    link: "/expertise/artificial-intelligence/generative-ai",
-    aiPowered: true,
-  },
-  {
-    icon: Database,
-    title: "Predictive Analytics",
-    description: "Forecast demand and surface insights with production-grade machine learning models",
-    link: "/expertise/artificial-intelligence/machine-learning",
-    aiPowered: true,
-  },
-  {
-    icon: Code,
-    title: ".NET Modernization",
-    description: "Rebuild legacy workloads on the latest .NET stack with AI-enhanced secure architectures",
-    link: "/expertise/microsoft-services/dotnet-development",
-    aiPowered: true,
-  },
-  {
-    icon: Cloud,
-    title: "Azure Cloud Transformation",
-    description: "Migrate and optimize workloads with intelligent monitoring and automation",
-    link: "/expertise/microsoft-services/azure-cloud",
-    aiPowered: true,
-  },
-  {
-    icon: Cpu,
-    title: "SAP BTP Innovation",
-    description: "Extend SAP landscapes with low-code applications and AI-driven intelligent insights",
-    link: "/expertise/sap-btp",
-    aiPowered: true,
-  },
-  {
-    icon: CheckCircle2,
-    title: "Quality Engineering",
-    description: "AI-powered test automation for functional, regression, and performance validation",
-    link: "/expertise/quality-assurance/software-testing",
-    aiPowered: true,
-  },
+const useCases = [
+  { icon: Building2, title: "Enterprise Insight", desc: "Unified dashboards powered by AI to surface actionable intelligence from disparate data sources." },
+  { icon: Activity, title: "Automated Monitoring", desc: "Continuous visual and data monitoring with anomaly detection and instant alerting." },
+  { icon: TrendingUp, title: "Predictive Analysis", desc: "Forecast demand, risk, and opportunity using production-grade ML models." },
+  { icon: FileText, title: "Intelligent Reporting", desc: "Auto-generated reports with natural language summaries and visual analytics." },
+  { icon: Wrench, title: "Custom AI Development", desc: "Bespoke AI solutions tailored to your unique domain, data, and business rules." },
 ];
 
-const industries = [
-  { title: "Healthcare", image: "https://res.cloudinary.com/dch0uyw8e/image/upload/v1760826868/7a2660b5-bbbe-469d-a485-6bf9049a5d16.png" },
-  { title: "Retail & E-commerce", image: "https://res.cloudinary.com/dch0uyw8e/image/upload/v1760826876/5bc25593-911c-453f-be23-024e628d8414.png" },
-  { title: "Manufacturing", image: "https://res.cloudinary.com/dch0uyw8e/image/upload/v1760826989/7e121981-e315-4970-ad0e-27f0cfa917ba.png" },
-  { title: "Finance & Banking", image: "https://res.cloudinary.com/dch0uyw8e/image/upload/v1760827050/cb1da7ea-4d76-45f2-a32b-3cf65a14c9d1.png" },
-  { title: "Agriculture", image: "https://asqi.in/wp-content/uploads/2024/11/Sustainable-Agriculture-In-India.jpg" },
-  { title: "Education", image: "https://images.unsplash.com/photo-1509062522246-3755977927d7?auto=format&fit=crop&w=900&q=80" },
+const trustMetrics = [
+  { value: "20+", label: "Projects Delivered" },
+  { value: "5+", label: "Enterprise Clients" },
+  { value: "3x", label: "Avg. ROI Improvement" },
+  { value: "99.9%", label: "System Uptime" },
 ];
 
 const partners = [
-  {
-    name: "Madapet",
-    logo: "https://res.cloudinary.com/dch0uyw8e/image/upload/v1760830199/LOGO_8_8_kkuti6.jpg",  },
-  {
-    name: "Mangosorange Agritech India Pvt Ltd",
-    logo: "https://mangosorange.co.in/assets/img/MOLogo.png",
-  },
-  {
-    name: "Motherson",
-    logo: "https://apn-portal.my.salesforce.com/servlet/servlet.ImageServer?id=0150h0000055wCcAAI&oid=00DE0000000c48tMAA",
-  },
-  {
-    name: "Ranayara Private Limited",
-    logo: "https://5.imimg.com/data5/NSDMERP/Board/2023/5/308937129/NE/QI/NP/155783236/155783236-board-1684400723760.jpg",
-  },
-  {
-    name: "YMCA University",
-    logo: "https://upload.wikimedia.org/wikipedia/en/a/ae/J.C._Bose_University_of_Science_and_Technology%2C_YMCA_logo.png",
-  },
-];
-const stats = [
-  { value: "5+", label: "Team Members" },
-  { value: "5+", label: "Ongoing Projects" },
-  { value: "20+", label: "Achievements" },
-  { value: "1000+", label: "Network Connections" },
+  { name: "Madapet", logo: "https://res.cloudinary.com/dch0uyw8e/image/upload/v1760830199/LOGO_8_8_kkuti6.jpg" },
+  { name: "Mangosorange Agritech", logo: "https://mangosorange.co.in/assets/img/MOLogo.png" },
+  { name: "Motherson", logo: "https://apn-portal.my.salesforce.com/servlet/servlet.ImageServer?id=0150h0000055wCcAAI&oid=00DE0000000c48tMAA" },
+  { name: "Ranayara Pvt Ltd", logo: "https://5.imimg.com/data5/NSDMERP/Board/2023/5/308937129/NE/QI/NP/155783236/155783236-board-1684400723760.jpg" },
+  { name: "YMCA University", logo: "https://upload.wikimedia.org/wikipedia/en/a/ae/J.C._Bose_University_of_Science_and_Technology%2C_YMCA_logo.png" },
 ];
 
+const codeSnippet = `import { NirikshanAI } from '@nirikshan/sdk';
+
+const client = new NirikshanAI({ apiKey: process.env.NIRIKSHAN_KEY });
+
+// Analyze an image with computer vision
+const result = await client.vision.analyze({
+  image: imageBuffer,
+  tasks: ['detect_objects', 'extract_text'],
+});
+
+console.log(result.objects);  // Detected objects
+console.log(result.text);     // Extracted text`;
+
 const Index = () => {
-  const industriesContainerRef = useRef<HTMLDivElement | null>(null);
+  const heroRef = useScrollAnimation(0.1);
+  const problemRef = useScrollAnimation(0.15);
+  const capRef = useScrollAnimation(0.1);
+  const useCaseRef = useScrollAnimation(0.1);
+  const trustRef = useScrollAnimation(0.1);
+  const devRef = useScrollAnimation(0.15);
+  const ctaRef = useScrollAnimation(0.15);
+
   const partnersContainerRef = useRef<HTMLDivElement | null>(null);
-  const isHoveringRef = useRef(false);
   const isPartnersHoveringRef = useRef(false);
 
   useEffect(() => {
-    const setupAutoScroll = (
-      containerRef: MutableRefObject<HTMLDivElement | null>,
-      hoverRef: MutableRefObject<boolean>
-    ) => {
-      const container = containerRef.current;
-      if (!container) {
-        return () => {};
-      }
-
-      let animationFrame: number;
-      const scrollSpeed = 0.6;
-
-      const loop = () => {
-        if (!hoverRef.current) {
-          container.scrollLeft += scrollSpeed;
-          const maxScroll = container.scrollWidth / 2;
-          if (container.scrollLeft >= maxScroll) {
-            container.scrollLeft = 0;
-          }
-        }
-        animationFrame = requestAnimationFrame(loop);
-      };
-
-      animationFrame = requestAnimationFrame(loop);
-
-      return () => cancelAnimationFrame(animationFrame);
-    };
-
-    const cleanups = [
-      setupAutoScroll(industriesContainerRef, isHoveringRef),
-      setupAutoScroll(partnersContainerRef, isPartnersHoveringRef),
-    ];
-
-    return () => {
-      cleanups.forEach((cleanup) => cleanup());
-    };
+    document.title = "Nirikshan AI | AI & Machine Learning Solutions for Business Intelligence";
+    const metaDesc = document.querySelector('meta[name="description"]');
+    if (metaDesc) {
+      metaDesc.setAttribute("content", "Nirikshan AI builds intelligent systems using Generative AI, Computer Vision, LLMs, and Agentic AI — turning complex data into actionable business insight.");
+    }
   }, []);
-  
-    useEffect(() => {
-      document.title = "Nirikshan AI | AI & Machine Learning Solutions for Business Innovation";
-      const metaDesc = document.querySelector('meta[name="description"]');
-      if (metaDesc) {
-        metaDesc.setAttribute('content', 'Nirikshan AI Private Limited delivers advanced Generative AI, Computer Vision, and Agentic AI solutions to accelerate business innovation.');
-      }
-    }, []);
 
-  const duplicatedIndustries = [...industries, ...industries];
+  useEffect(() => {
+    const container = partnersContainerRef.current;
+    if (!container) return;
+    let raf: number;
+    const speed = 0.5;
+    const loop = () => {
+      if (!isPartnersHoveringRef.current) {
+        container.scrollLeft += speed;
+        if (container.scrollLeft >= container.scrollWidth / 2) container.scrollLeft = 0;
+      }
+      raf = requestAnimationFrame(loop);
+    };
+    raf = requestAnimationFrame(loop);
+    return () => cancelAnimationFrame(raf);
+  }, []);
+
   const duplicatedPartners = [...partners, ...partners];
 
   return (
-    <div className="min-h-screen relative">
-      <AIParticles />
+    <div className="min-h-screen bg-background">
       <Navigation />
-      
-  <main className="relative overflow-hidden">
-        <HeroSection slides={heroSlides} />
 
-        {/* AI Core Expertise Section */}
-        <AIExpertiseSection />
+      <main>
+        {/* ── 1. Hero ── */}
+        <section className="relative overflow-hidden pt-20 pb-28 md:pt-32 md:pb-36">
+          {/* Background elements */}
+          <div className="absolute inset-0 grid-pattern opacity-50" aria-hidden="true" />
+          <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-[800px] h-[800px] rounded-full bg-primary/5 blur-[120px]" aria-hidden="true" />
+          <div className="absolute bottom-0 right-0 w-[400px] h-[400px] rounded-full bg-accent/5 blur-[100px]" aria-hidden="true" />
 
-        {/* TAM Section */}
-        <TAMSection />
+          <div className="relative container mx-auto px-6">
+            <div className="max-w-4xl mx-auto text-center space-y-8">
+              <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-border bg-card/60 backdrop-blur text-sm text-muted-foreground">
+                <Sparkles className="w-4 h-4 text-primary" />
+                AI & Machine Learning Solutions
+              </div>
 
-        {/* Services Section */}
-        <section className="py-20 container mx-auto px-6">
-          <FadeUp className="text-center mb-12">
-            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 text-primary font-semibold mb-4">
-              <Sparkles className="w-4 h-4" />
-              <span className="text-sm uppercase tracking-wider">Technology Expertise & Implementation Capabilities</span>
-            </div>
-            <h2 className="text-3xl md:text-4xl font-bold font-display mb-4">Full-Stack Intelligent Solutions</h2>
-            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-              Modern engineering services co-piloted by OpenCV, generative, and agentic AI frameworks to accelerate delivery and unlock new value chains.
-            </p>
-          </FadeUp>
-          <StaggerContainer className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" staggerDelay={0.1}>
-            {services.map((service, index) => (
-              <StaggerItem key={index}>
-                <ServiceCard {...service} />
-              </StaggerItem>
-            ))}
-          </StaggerContainer>
-          <FadeUp delay={0.3} className="text-center mt-12">
-            <Link to="/expertise">
-              <Button size="lg" variant="outline">
-                View All Services
-                <ArrowRight className="ml-2" size={20} />
-              </Button>
-            </Link>
-          </FadeUp>
-        </section>
+              <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold leading-[1.1] tracking-tight">
+                We Build AI Systems That Turn Data into{" "}
+                <span className="text-gradient">Business Intelligence</span>
+              </h1>
 
-        {/* Mission Section */}
-        <section className="py-20 bg-gradient-to-b from-secondary/30 to-background">
-          <div className="container mx-auto px-6">
-            <div className="max-w-5xl mx-auto">
-              <FadeUp className="text-center mb-12">
-                <p className="text-accent text-sm font-semibold mb-3 uppercase tracking-wider">Our Mission</p>
-                <h2 className="text-4xl md:text-5xl font-bold mb-6">Empowering Businesses Through AI</h2>
-                <p className="text-xl text-muted-foreground">
-                  Making cutting-edge technology accessible and practical for everyone
-                </p>
-              </FadeUp>
-              <SlideLeft>
-                <Card className="p-10 md:p-14 card-hover border-2 border-border relative overflow-hidden group">
-                  <div className="absolute top-0 right-0 w-64 h-64 bg-primary/5 rounded-full -mr-32 -mt-32 group-hover:scale-150 transition-transform duration-700" />
-                  <div className="relative z-10">
-                    <div className="flex flex-col md:flex-row gap-8">
-                      <div className="flex-1">
-                        <p className="text-lg leading-relaxed text-muted-foreground mb-6">
-                          We're here to bring the power of AI to everyone, not just the big players. Think of us as your local AI partner – making smart technology simple, affordable, and actually useful for businesses like yours.
-                        </p>
-                        <p className="text-lg leading-relaxed text-muted-foreground">
-                          Whether you're running a startup, a small business, or have a great idea you want to bring to life, we're here to help turn complex AI into practical solutions that make a real difference in our community. No corporate jargon, just real solutions for real people.
-                        </p>
-                      </div>
-                      <SlideRight delay={0.2}>
-                        <div className="md:w-64 flex flex-col gap-4">
-                          {[
-                            "Simple & Accessible",
-                            "Affordable Solutions",
-                            "Real Results",
-                            "Local Partnership"
-                          ].map((item, i) => (
-                            <div key={i} className="flex items-center gap-3 p-3 rounded-lg bg-secondary/50 group-hover:bg-primary/10 transition-colors">
-                              <CheckCircle2 className="text-primary flex-shrink-0" size={20} />
-                              <span className="font-medium">{item}</span>
-                            </div>
-                          ))}
-                        </div>
-                      </SlideRight>
-                    </div>
-                  </div>
-                </Card>
-              </SlideLeft>
+              <p className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto leading-relaxed">
+                From computer vision to autonomous agents — Nirikshan AI delivers intelligent solutions that help enterprises make smarter decisions, faster.
+              </p>
+
+              <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-2">
+                <Link to="/contact">
+                  <Button size="lg" className="gradient-primary text-primary-foreground px-8 h-12 text-base font-semibold">
+                    Request Demo
+                    <ArrowRight className="ml-2 w-5 h-5" />
+                  </Button>
+                </Link>
+                <Link to="/expertise">
+                  <Button size="lg" variant="outline" className="h-12 px-8 text-base border-border hover:bg-secondary">
+                    Explore Solutions
+                  </Button>
+                </Link>
+              </div>
             </div>
           </div>
         </section>
 
-        {/* Why Choose Us */}
-        <WhyChooseUs />
-
-        {/* Our Partners */}
-        <section className="py-16 bg-background">
-          <div className="container mx-auto px-6">
-            <FadeUp className="text-center mb-10">
-              <p className="text-accent text-sm font-semibold mb-3 uppercase tracking-wider">Trusted By</p>
-              <h2 className="text-3xl md:text-4xl font-bold mb-4">Our Clients</h2>
-              <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-                Collaborating with forward-thinking organizations to drive innovation together
+        {/* ── 2. Problem → Solution ── */}
+        <section className="py-20 md:py-28 bg-secondary/30" ref={problemRef.ref}>
+          <div className={`container mx-auto px-6 transition-all duration-1000 ${problemRef.isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}>
+            <div className="text-center mb-16">
+              <p className="text-sm font-semibold text-accent uppercase tracking-widest mb-3">What We Do</p>
+              <h2 className="text-3xl md:text-4xl font-bold mb-4">Complex Problems. Intelligent Solutions.</h2>
+              <p className="text-muted-foreground max-w-2xl mx-auto text-lg">
+                Enterprises drown in unstructured data. We transform it into intelligence that drives action.
               </p>
-            </FadeUp>
+            </div>
+
+            <div className="grid md:grid-cols-2 gap-8 max-w-5xl mx-auto">
+              {/* Problem */}
+              <div className="p-8 rounded-xl border border-border bg-card space-y-6">
+                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-destructive/10 text-destructive text-sm font-medium">
+                  The Challenge
+                </div>
+                <ul className="space-y-4">
+                  {["Manual data interpretation across siloed systems", "Slow, error-prone decision-making processes", "Inability to scale expertise across the organization", "Missed patterns in complex, high-volume data"].map((item, i) => (
+                    <li key={i} className="flex items-start gap-3 text-muted-foreground">
+                      <span className="mt-1.5 w-1.5 h-1.5 rounded-full bg-destructive flex-shrink-0" />
+                      {item}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+
+              {/* Solution */}
+              <div className="p-8 rounded-xl border border-primary/20 bg-card space-y-6">
+                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 text-primary text-sm font-medium">
+                  Our AI Solution
+                </div>
+                <ul className="space-y-4">
+                  {[
+                    "Generative AI that synthesizes insights from any data source",
+                    "Computer Vision that automates visual inspection at scale",
+                    "LLM-powered automation for reports, queries, and decisions",
+                    "Agentic workflows that execute multi-step tasks autonomously",
+                  ].map((item, i) => (
+                    <li key={i} className="flex items-start gap-3 text-muted-foreground">
+                      <CheckCircle2 className="mt-0.5 w-4 h-4 text-primary flex-shrink-0" />
+                      {item}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* ── 3. Core Capabilities ── */}
+        <section className="py-20 md:py-28" ref={capRef.ref}>
+          <div className={`container mx-auto px-6 transition-all duration-1000 ${capRef.isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}>
+            <div className="text-center mb-16">
+              <p className="text-sm font-semibold text-accent uppercase tracking-widest mb-3">Core Capabilities</p>
+              <h2 className="text-3xl md:text-4xl font-bold mb-4">End-to-End AI Capabilities</h2>
+              <p className="text-muted-foreground max-w-2xl mx-auto text-lg">
+                Six pillars of intelligence that cover every stage of your AI journey.
+              </p>
+            </div>
+
+            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto">
+              {capabilities.map((cap, i) => (
+                <div
+                  key={cap.title}
+                  className="group p-6 rounded-xl border border-border bg-card hover:border-primary/40 hover:shadow-lg hover:shadow-primary/5 transition-all duration-300"
+                >
+                  <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center mb-4 group-hover:bg-primary/20 transition-colors">
+                    <cap.icon className="w-5 h-5 text-primary" />
+                  </div>
+                  <h3 className="text-lg font-semibold mb-2">{cap.title}</h3>
+                  <p className="text-sm text-muted-foreground leading-relaxed">{cap.desc}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* ── 4. Use Cases ── */}
+        <section className="py-20 md:py-28 bg-secondary/30" ref={useCaseRef.ref}>
+          <div className={`container mx-auto px-6 transition-all duration-1000 ${useCaseRef.isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}>
+            <div className="text-center mb-16">
+              <p className="text-sm font-semibold text-accent uppercase tracking-widest mb-3">Use Cases</p>
+              <h2 className="text-3xl md:text-4xl font-bold mb-4">Who Benefits Most</h2>
+              <p className="text-muted-foreground max-w-2xl mx-auto text-lg">
+                Real-world applications that deliver measurable outcomes.
+              </p>
+            </div>
+
+            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto">
+              {useCases.map((uc) => (
+                <div
+                  key={uc.title}
+                  className="relative p-6 rounded-xl border border-border bg-card overflow-hidden group hover:border-accent/40 transition-all duration-300"
+                >
+                  <div className="absolute top-0 right-0 w-24 h-24 bg-accent/5 rounded-full -mr-8 -mt-8 group-hover:scale-150 transition-transform duration-500" aria-hidden="true" />
+                  <div className="relative">
+                    <div className="w-10 h-10 rounded-lg bg-accent/10 flex items-center justify-center mb-4">
+                      <uc.icon className="w-5 h-5 text-accent" />
+                    </div>
+                    <h3 className="text-lg font-semibold mb-2">{uc.title}</h3>
+                    <p className="text-sm text-muted-foreground leading-relaxed">{uc.desc}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* ── 5. Why Nirikshan AI (Trust) ── */}
+        <section className="py-20 md:py-28" ref={trustRef.ref}>
+          <div className={`container mx-auto px-6 transition-all duration-1000 ${trustRef.isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}>
+            <div className="text-center mb-16">
+              <p className="text-sm font-semibold text-accent uppercase tracking-widest mb-3">Why Us</p>
+              <h2 className="text-3xl md:text-4xl font-bold mb-4">Trusted by Forward-Thinking Organizations</h2>
+            </div>
+
+            {/* Metrics */}
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-6 max-w-4xl mx-auto mb-16">
+              {trustMetrics.map((m) => (
+                <div key={m.label} className="text-center p-6 rounded-xl border border-border bg-card">
+                  <div className="text-3xl md:text-4xl font-bold text-gradient mb-1">{m.value}</div>
+                  <div className="text-sm text-muted-foreground">{m.label}</div>
+                </div>
+              ))}
+            </div>
+
+            {/* Client logos */}
             <div
               className="overflow-hidden"
               ref={partnersContainerRef}
-              onMouseEnter={() => {
-                isPartnersHoveringRef.current = true;
-              }}
-              onMouseLeave={() => {
-                isPartnersHoveringRef.current = false;
-              }}
+              onMouseEnter={() => { isPartnersHoveringRef.current = true; }}
+              onMouseLeave={() => { isPartnersHoveringRef.current = false; }}
             >
               <div className="flex gap-8 min-w-max items-center">
-                {duplicatedPartners.map((partner, index) => (
-                  <div key={`${partner.name}-${index}`} className="w-48 flex-shrink-0">
-                    <div className="h-32 w-full bg-secondary/40 border border-border rounded-xl flex items-center justify-center p-6 hover:border-primary/50 transition-colors">
-                      <img
-                        src={partner.logo}
-                        alt={partner.name}
-                        className="max-h-full max-w-full object-contain"
-                        loading="lazy"
-                      />
+                {duplicatedPartners.map((p, i) => (
+                  <div key={`${p.name}-${i}`} className="w-40 flex-shrink-0">
+                    <div className="h-24 w-full bg-card border border-border rounded-xl flex items-center justify-center p-4 hover:border-primary/30 transition-colors">
+                      <img src={p.logo} alt={p.name} className="max-h-full max-w-full object-contain" loading="lazy" />
                     </div>
-                    <p className="mt-4 text-center font-medium text-sm text-muted-foreground">{partner.name}</p>
                   </div>
                 ))}
               </div>
@@ -344,49 +299,80 @@ const Index = () => {
           </div>
         </section>
 
-        {/* Testimonials Carousel */}
-        <TestimonialsCarousel3D />
+        {/* ── 6. Developer Section ── */}
+        <section className="py-20 md:py-28 bg-secondary/30" ref={devRef.ref}>
+          <div className={`container mx-auto px-6 transition-all duration-1000 ${devRef.isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}>
+            <div className="grid lg:grid-cols-2 gap-12 items-center max-w-6xl mx-auto">
+              <div className="space-y-6">
+                <p className="text-sm font-semibold text-accent uppercase tracking-widest">For Developers</p>
+                <h2 className="text-3xl md:text-4xl font-bold">Build with Nirikshan AI</h2>
+                <p className="text-muted-foreground text-lg leading-relaxed">
+                  Integrate computer vision, generative AI, and agentic capabilities into your applications with our production-ready APIs and SDKs.
+                </p>
+                <ul className="space-y-3">
+                  {["RESTful APIs with comprehensive documentation", "Python & TypeScript SDKs", "Webhook support for real-time events", "99.9% uptime SLA"].map((item) => (
+                    <li key={item} className="flex items-center gap-3 text-muted-foreground">
+                      <CheckCircle2 className="w-4 h-4 text-primary flex-shrink-0" />
+                      {item}
+                    </li>
+                  ))}
+                </ul>
+                <div className="flex gap-4 pt-2">
+                  <Link to="/contact">
+                    <Button className="gradient-primary text-primary-foreground">
+                      <Terminal className="w-4 h-4 mr-2" />
+                      View Developer Docs
+                    </Button>
+                  </Link>
+                </div>
+              </div>
 
-        {/* Process Section */}
-        <ProcessSection />
-
-        {/* Stats Section */}
-        <StatsSection stats={stats} />
-
-        {/* Technology Stack */}
-        <TechnologyStack />
-
-        {/* Industries Section */}
-        <section className="py-20 bg-secondary/30">
-          <div className="container mx-auto px-6">
-            <FadeUp className="text-center mb-12">
-              <h2 className="text-3xl md:text-4xl font-bold mb-4">Industries We Serve</h2>
-              <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-                Delivering tailored solutions across diverse sectors
-              </p>
-            </FadeUp>
-            <div
-              className="overflow-hidden"
-              ref={industriesContainerRef}
-              onMouseEnter={() => {
-                isHoveringRef.current = true;
-              }}
-              onMouseLeave={() => {
-                isHoveringRef.current = false;
-              }}
-            >
-              <div className="flex gap-6 min-w-max pb-2">
-                {duplicatedIndustries.map((industry, index) => (
-                  <div key={`${industry.title}-${index}`} className="w-64 flex-shrink-0">
-                    <IndustryCard {...industry} />
-                  </div>
-                ))}
+              {/* Code snippet */}
+              <div className="rounded-xl border border-border bg-card overflow-hidden">
+                <div className="flex items-center gap-2 px-4 py-3 border-b border-border bg-secondary/50">
+                  <div className="w-3 h-3 rounded-full bg-destructive/60" />
+                  <div className="w-3 h-3 rounded-full bg-accent/60" />
+                  <div className="w-3 h-3 rounded-full bg-primary/40" />
+                  <span className="ml-2 text-xs text-muted-foreground font-mono">example.ts</span>
+                </div>
+                <pre className="p-6 text-sm leading-relaxed overflow-x-auto">
+                  <code className="text-muted-foreground font-mono whitespace-pre">{codeSnippet}</code>
+                </pre>
               </div>
             </div>
           </div>
         </section>
 
-            <CTASection />
+        {/* ── 7. CTA ── */}
+        <section className="py-20 md:py-28" ref={ctaRef.ref}>
+          <div className={`container mx-auto px-6 transition-all duration-1000 ${ctaRef.isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}>
+            <div className="max-w-4xl mx-auto text-center space-y-8 p-12 md:p-16 rounded-2xl border border-border bg-card relative overflow-hidden">
+              <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-accent/5" aria-hidden="true" />
+              <div className="relative">
+                <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold leading-tight">
+                  Build Smarter AI.{" "}
+                  <span className="text-gradient">Drive Real Business Impact.</span>
+                </h2>
+                <p className="text-lg text-muted-foreground max-w-2xl mx-auto mt-4">
+                  Let's explore how Nirikshan AI can accelerate your next intelligent solution — from proof of concept to production.
+                </p>
+                <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mt-8">
+                  <Link to="/contact">
+                    <Button size="lg" className="gradient-primary text-primary-foreground px-10 h-12 text-base font-semibold">
+                      Get Started
+                      <ArrowRight className="ml-2 w-5 h-5" />
+                    </Button>
+                  </Link>
+                  <Link to="/case-studies">
+                    <Button size="lg" variant="outline" className="h-12 px-8 text-base border-border">
+                      View Case Studies
+                    </Button>
+                  </Link>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
       </main>
 
       <Footer />
