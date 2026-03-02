@@ -1,7 +1,7 @@
 import anshulImage from "@/assets/team/anshul.jpg";
-import anshulDirectorImage from "@/assets/team/anshul-director.jpg";
 import dineshImage from "@/assets/team/dinesh-yadav.jpg";
-import dineshDirectorImage from "@/assets/team/dinesh-director.jpg";
+import rajeshImage from "@/assets/team/rajesh-dabral.jpg";
+import vikramImage from "@/assets/team/vikram-biyani.jpg";
 import wwaTeamVideo from "@/assets/wwa-team.mp4";
 import { Footer } from "@/components/Footer";
 import { Navigation } from "@/components/Navigation";
@@ -68,17 +68,17 @@ const leadership = [
     linkedin: "https://www.linkedin.com/in/anshultech1"
   },
   {
-    name: "Dinesh",
-    role: "Director – Technical",
-    bio: "Dinesh drives technical excellence across projects, ensuring engineering standards and innovative architectures power every solution we deliver.",
-    image: dineshDirectorImage,
+    name: "Rajesh Dabral",
+    role: "Director – Administration",
+    bio: "Rajesh oversees administrative operations, ensuring seamless coordination across teams and efficient resource management to support our growth.",
+    image: rajeshImage,
     linkedin: ""
   },
   {
-    name: "Anshul",
-    role: "Director – Technical",
-    bio: "Anshul spearheads technical strategy and system design, translating complex requirements into scalable, production-ready platforms.",
-    image: anshulDirectorImage,
+    name: "Vikram Biyani",
+    role: "Director – Finance",
+    bio: "Vikram steers financial strategy and planning, enabling sustainable growth through disciplined fiscal management and strategic investments.",
+    image: vikramImage,
     linkedin: ""
   }
 ];
