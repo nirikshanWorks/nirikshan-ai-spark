@@ -16,8 +16,6 @@ import {
   FileText,
   Wrench,
   CheckCircle2,
-  Terminal,
-  ExternalLink,
   Sparkles,
 } from "lucide-react";
 import { Link } from "react-router-dom";
@@ -56,18 +54,6 @@ const partners = [
   { name: "YMCA University", logo: "https://upload.wikimedia.org/wikipedia/en/a/ae/J.C._Bose_University_of_Science_and_Technology%2C_YMCA_logo.png" },
 ];
 
-const codeSnippet = `import { NirikshanAI } from '@nirikshan/sdk';
-
-const client = new NirikshanAI({ apiKey: process.env.NIRIKSHAN_KEY });
-
-// Analyze an image with computer vision
-const result = await client.vision.analyze({
-  image: imageBuffer,
-  tasks: ['detect_objects', 'extract_text'],
-});
-
-console.log(result.objects);  // Detected objects
-console.log(result.text);     // Extracted text`;
 
 const Index = () => {
   const heroRef = useScrollAnimation(0.1);
@@ -75,7 +61,6 @@ const Index = () => {
   const capRef = useScrollAnimation(0.1);
   const useCaseRef = useScrollAnimation(0.1);
   const trustRef = useScrollAnimation(0.1);
-  const devRef = useScrollAnimation(0.15);
   const ctaRef = useScrollAnimation(0.15);
 
   const partnersContainerRef = useRef<HTMLDivElement | null>(null);
@@ -294,50 +279,6 @@ const Index = () => {
                     </div>
                   </div>
                 ))}
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* ── 6. Developer Section ── */}
-        <section className="py-20 md:py-28 bg-secondary/30" ref={devRef.ref}>
-          <div className={`container mx-auto px-6 transition-all duration-1000 ${devRef.isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}>
-            <div className="grid lg:grid-cols-2 gap-12 items-center max-w-6xl mx-auto">
-              <div className="space-y-6">
-                <p className="text-sm font-semibold text-accent uppercase tracking-widest">For Developers</p>
-                <h2 className="text-3xl md:text-4xl font-bold">Build with Nirikshan AI</h2>
-                <p className="text-muted-foreground text-lg leading-relaxed">
-                  Integrate computer vision, generative AI, and agentic capabilities into your applications with our production-ready APIs and SDKs.
-                </p>
-                <ul className="space-y-3">
-                  {["RESTful APIs with comprehensive documentation", "Python & TypeScript SDKs", "Webhook support for real-time events", "99.9% uptime SLA"].map((item) => (
-                    <li key={item} className="flex items-center gap-3 text-muted-foreground">
-                      <CheckCircle2 className="w-4 h-4 text-primary flex-shrink-0" />
-                      {item}
-                    </li>
-                  ))}
-                </ul>
-                <div className="flex gap-4 pt-2">
-                  <Link to="/contact">
-                    <Button className="gradient-primary text-primary-foreground">
-                      <Terminal className="w-4 h-4 mr-2" />
-                      View Developer Docs
-                    </Button>
-                  </Link>
-                </div>
-              </div>
-
-              {/* Code snippet */}
-              <div className="rounded-xl border border-border bg-card overflow-hidden">
-                <div className="flex items-center gap-2 px-4 py-3 border-b border-border bg-secondary/50">
-                  <div className="w-3 h-3 rounded-full bg-destructive/60" />
-                  <div className="w-3 h-3 rounded-full bg-accent/60" />
-                  <div className="w-3 h-3 rounded-full bg-primary/40" />
-                  <span className="ml-2 text-xs text-muted-foreground font-mono">example.ts</span>
-                </div>
-                <pre className="p-6 text-sm leading-relaxed overflow-x-auto">
-                  <code className="text-muted-foreground font-mono whitespace-pre">{codeSnippet}</code>
-                </pre>
               </div>
             </div>
           </div>
