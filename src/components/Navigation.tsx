@@ -214,60 +214,75 @@ export const Navigation = () => {
           </div>
 
           {/* Mobile Navigation */}
-          <div
-            id="mobile-navigation"
-            className={`fixed inset-x-0 top-16 bottom-0 z-[60] overflow-y-auto bg-background/95 backdrop-blur-xl px-6 py-6 md:hidden border-t border-border transition-all duration-300 ease-in-out ${
-              mobileMenuOpen
-                ? "opacity-100 translate-y-0 pointer-events-auto"
-                : "opacity-0 translate-y-4 pointer-events-none"
-            }`}
-          >
-            <div className="space-y-1">
-              <Link to="/about" className="block rounded-lg px-4 py-3 text-base font-medium hover:bg-secondary transition-colors" onClick={closeMobileMenu}>About</Link>
-              <button
-                className="flex w-full items-center justify-between gap-2 rounded-lg px-4 py-3 text-base font-medium hover:bg-secondary transition-colors"
-                onClick={() => setMobileExpertiseOpen((prev) => !prev)}
-              >
-                Expertise
-                <span className={`transition-transform duration-200 ${mobileExpertiseOpen ? "rotate-180" : ""}`}>▾</span>
-              </button>
-              {mobileExpertiseOpen && (
-                <div className="pl-4 space-y-4 pb-2 animate-in fade-in slide-in-from-top-2 duration-200">
-                  {navigationCategories.map((category) => (
-                    <div key={category.title} className="space-y-2">
-                      <Link
-                        to={`/expertise/${category.slug}`}
-                        className="block text-sm font-bold tracking-wider text-gradient"
-                        onClick={closeMobileMenu}
-                      >
-                        {category.title}
-                      </Link>
-                      <div className="pl-2 space-y-1">
-                        {category.items.map((item) => (
-                          <Link
-                            key={item.title}
-                            to={item.href}
-                            className="block px-4 py-1.5 text-sm text-muted-foreground hover:text-primary rounded-md transition-colors"
-                            onClick={closeMobileMenu}
-                          >
-                            {item.title}
-                          </Link>
-                        ))}
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              )}
-              {navLinks.slice(1).map((link) => (
-                <Link key={link.path} to={link.path} className="block rounded-lg px-4 py-3 text-base font-medium hover:bg-secondary transition-colors" onClick={closeMobileMenu}>
-                  {link.label}
+          {mobileMenuOpen && (
+            <div
+              id="mobile-navigation"
+              className="fixed inset-x-0 top-16 bottom-0 z-[70] overflow-y-auto bg-background/95 backdrop-blur-xl px-5 py-5 md:hidden border-t border-border animate-in fade-in slide-in-from-top-2 duration-200"
+            >
+              <div className="space-y-1 pb-[max(env(safe-area-inset-bottom),1rem)]">
+                <Link
+                  to="/about"
+                  className="block rounded-lg px-4 py-3 text-base font-medium hover:bg-secondary transition-colors"
+                  onClick={closeMobileMenu}
+                >
+                  About
                 </Link>
-              ))}
-              <Link to="/contact" onClick={closeMobileMenu} className="block pt-3">
-                <Button className="w-full gradient-primary text-primary-foreground text-base py-3 h-12">Get in Touch</Button>
-              </Link>
+
+                <button
+                  className="flex w-full items-center justify-between gap-2 rounded-lg px-4 py-3 text-base font-medium hover:bg-secondary transition-colors"
+                  onClick={() => setMobileExpertiseOpen((prev) => !prev)}
+                >
+                  Expertise
+                  <span className={`transition-transform duration-200 ${mobileExpertiseOpen ? "rotate-180" : ""}`}>▾</span>
+                </button>
+
+                {mobileExpertiseOpen && (
+                  <div className="pl-4 space-y-4 pb-2 animate-in fade-in slide-in-from-top-2 duration-200">
+                    {navigationCategories.map((category) => (
+                      <div key={category.title} className="space-y-2">
+                        <Link
+                          to={`/expertise/${category.slug}`}
+                          className="block text-sm font-bold tracking-wider text-gradient"
+                          onClick={closeMobileMenu}
+                        >
+                          {category.title}
+                        </Link>
+                        <div className="pl-2 space-y-1">
+                          {category.items.map((item) => (
+                            <Link
+                              key={item.title}
+                              to={item.href}
+                              className="block px-4 py-1.5 text-sm text-muted-foreground hover:text-primary rounded-md transition-colors"
+                              onClick={closeMobileMenu}
+                            >
+                              {item.title}
+                            </Link>
+                          ))}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                )}
+
+                {navLinks.slice(1).map((link) => (
+                  <Link
+                    key={link.path}
+                    to={link.path}
+                    className="block rounded-lg px-4 py-3 text-base font-medium hover:bg-secondary transition-colors"
+                    onClick={closeMobileMenu}
+                  >
+                    {link.label}
+                  </Link>
+                ))}
+
+                <Link to="/contact" onClick={closeMobileMenu} className="block pt-3">
+                  <Button className="w-full gradient-primary text-primary-foreground text-base py-3 h-12">
+                    Get in Touch
+                  </Button>
+                </Link>
+              </div>
             </div>
-          </div>
+          )}
         </div>
       </nav>
       <div aria-hidden="true" style={{ height: headerHeight }} />
