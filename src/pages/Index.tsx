@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState, useCallback } from "react";
 import { Navigation } from "@/components/Navigation";
 import { Footer } from "@/components/Footer";
+import { MouseColorSplatter } from "@/components/MouseColorSplatter";
 import { Button } from "@/components/ui/button";
 import {
   ArrowRight,
@@ -231,6 +232,7 @@ const Index = () => {
   return (
     <div className="min-h-screen bg-background relative">
       <Navigation />
+      <MouseColorSplatter />
 
       {/* Holi color canvas overlay */}
       <HoliCanvas progress={progress} />
