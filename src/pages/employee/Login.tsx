@@ -23,14 +23,6 @@ const EmployeeLogin = () => {
         checkEmployeeAndRedirect(session.user.id);
       }
     });
-
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
-      if (session) {
-        checkEmployeeAndRedirect(session.user.id);
-      }
-    });
-
-    return () => subscription.unsubscribe();
   }, []);
 
   const checkEmployeeAndRedirect = async (userId: string) => {
@@ -57,11 +49,20 @@ const EmployeeLogin = () => {
 
       if (error) throw error;
 
+      // Wait briefly for the session to fully propagate before querying RLS-protected tables
+      await new Promise((resolve) => setTimeout(resolve, 500));
+
+      // Re-fetch session to ensure auth.uid() is available for RLS
+      const { data: { session } } = await supabase.auth.getSession();
+      if (!session) {
+        throw new Error("Session not established. Please try again.");
+      }
+
       // Check if user is an employee
       const { data: employee, error: empError } = await supabase
         .from("employees")
         .select("id, full_name")
-        .eq("user_id", data.user.id)
+        .eq("user_id", session.user.id)
         .maybeSingle();
 
       if (empError || !employee) {

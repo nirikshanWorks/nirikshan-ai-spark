@@ -44,34 +44,43 @@ const EmployeeDashboard = () => {
   }, []);
 
   const checkAuth = async () => {
-    const { data: { session } } = await supabase.auth.getSession();
-    
-    if (!session) {
+    try {
+      const { data: { session } } = await supabase.auth.getSession();
+      
+      if (!session) {
+        navigate("/employee/login");
+        return;
+      }
+
+      // Small delay to ensure session is fully propagated for RLS
+      await new Promise((resolve) => setTimeout(resolve, 300));
+
+      // Fetch employee data
+      const { data: emp, error } = await supabase
+        .from("employees")
+        .select("*")
+        .eq("user_id", session.user.id)
+        .maybeSingle();
+
+      if (error || !emp) {
+        toast({
+          title: "Access Denied",
+          description: "You are not registered as an employee.",
+          variant: "destructive",
+        });
+        await supabase.auth.signOut();
+        navigate("/employee/login");
+        return;
+      }
+
+      setEmployee(emp);
+      fetchTodayAttendance(emp.id);
+    } catch (err) {
+      console.error("Auth check failed:", err);
       navigate("/employee/login");
-      return;
+    } finally {
+      setLoading(false);
     }
-
-    // Fetch employee data
-    const { data: emp, error } = await supabase
-      .from("employees")
-      .select("*")
-      .eq("user_id", session.user.id)
-      .maybeSingle();
-
-    if (error || !emp) {
-      toast({
-        title: "Access Denied",
-        description: "You are not registered as an employee.",
-        variant: "destructive",
-      });
-      await supabase.auth.signOut();
-      navigate("/employee/login");
-      return;
-    }
-
-    setEmployee(emp);
-    fetchTodayAttendance(emp.id);
-    setLoading(false);
   };
 
   const fetchTodayAttendance = async (empId: string) => {
