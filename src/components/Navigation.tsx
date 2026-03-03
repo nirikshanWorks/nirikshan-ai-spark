@@ -216,12 +216,11 @@ export const Navigation = () => {
           {/* Mobile Navigation */}
           <div
             id="mobile-navigation"
-            className={`fixed inset-x-0 bottom-0 z-40 overflow-y-auto bg-background/95 backdrop-blur-xl px-6 py-6 md:hidden border-t border-border transition-all duration-300 ease-in-out ${
+            className={`fixed inset-x-0 top-16 bottom-0 z-[60] overflow-y-auto bg-background/95 backdrop-blur-xl px-6 py-6 md:hidden border-t border-border transition-all duration-300 ease-in-out ${
               mobileMenuOpen
                 ? "opacity-100 translate-y-0 pointer-events-auto"
                 : "opacity-0 translate-y-4 pointer-events-none"
             }`}
-            style={{ top: `${headerHeight}px` }}
           >
             <div className="space-y-1">
               <Link to="/about" className="block rounded-lg px-4 py-3 text-base font-medium hover:bg-secondary transition-colors" onClick={closeMobileMenu}>About</Link>
