@@ -602,6 +602,7 @@ const CampaignIntelligence = () => {
               </Card>
             </motion.div>
           </div>
+        </section>
 
         {/* CTA */}
         <section className="relative overflow-hidden py-24">
