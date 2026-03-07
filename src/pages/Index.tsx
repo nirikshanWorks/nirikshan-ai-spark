@@ -7,7 +7,6 @@ import { AICircuitLines } from "@/components/AICircuitLines";
 import { AIFloatingIcons } from "@/components/AIFloatingIcons";
 import { AIHexagonGrid } from "@/components/AIHexagonGrid";
 import { FadeUp, SlideLeft, SlideRight, StaggerContainer, StaggerItem, ScaleUp, Counter } from "@/components/ScrollAnimations";
-import { Button } from "@/components/ui/button";
 import {
   ArrowRight, Brain, Eye, Bot, Building2, Activity,
   TrendingUp, FileText, CheckCircle2,
