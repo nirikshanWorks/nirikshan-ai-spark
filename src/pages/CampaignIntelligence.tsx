@@ -1,4 +1,5 @@
 import { Navigation } from "@/components/Navigation";
+import { SentimentAnalysisDemo } from "@/components/SentimentAnalysisDemo";
 import { Footer } from "@/components/Footer";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
@@ -854,6 +855,9 @@ const CampaignIntelligence = () => {
             </motion.div>
           </div>
         </section>
+
+        {/* ── Live AI Demo ── */}
+        <SentimentAnalysisDemo />
 
         {/* ── CTA ── */}
         <section className="relative overflow-hidden py-24">

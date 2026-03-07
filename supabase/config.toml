@@ -8,3 +8,6 @@ verify_jwt = false
 
 [functions.notify-hr-new-user]
 verify_jwt = false
+
+[functions.sentiment-analysis]
+verify_jwt = false
