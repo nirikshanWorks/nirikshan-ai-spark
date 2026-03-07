@@ -11,9 +11,6 @@ import { AICircuitLines } from "@/components/AICircuitLines";
 import { AIFloatingIcons } from "@/components/AIFloatingIcons";
 import { AIHexagonGrid } from "@/components/AIHexagonGrid";
 import { FadeUp, SlideLeft, SlideRight, StaggerContainer, StaggerItem } from "@/components/ScrollAnimations";
-import { Navigation } from "@/components/Navigation";
-import { Button } from "@/components/ui/button";
-import { useScrollAnimation } from "@/hooks/use-scroll-animation";
 import {
   ArrowRight,
   ArrowUp,
