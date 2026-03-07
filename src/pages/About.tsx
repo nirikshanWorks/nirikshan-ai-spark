@@ -293,10 +293,9 @@ const About = () => {
         </section>
 
         {/* Differentiators */}
-        <section className="py-20 container mx-auto px-6" ref={differentiatorsRef.ref}>
-          <div className={`max-w-3xl mx-auto text-center mb-16 transition-all duration-1000 ${
-            differentiatorsRef.isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
-          }`}>
+        <section className="py-20 container mx-auto px-6 relative" ref={differentiatorsRef.ref}>
+          <AIFloatingIcons count={5} className="opacity-40" />
+          <FadeUp className={`max-w-3xl mx-auto text-center mb-16`}>
             <span className="inline-flex items-center gap-2 rounded-full bg-primary/10 px-4 py-2 text-sm font-semibold text-primary mb-4">
               <Sparkles className="h-4 w-4" /> Why Partners Choose Us
             </span>
@@ -304,7 +303,7 @@ const About = () => {
             <p className="text-muted-foreground">
               Every engagement blends strategic foresight, design thinking, and engineering excellence so transformation is fast, predictable, and inspiring.
             </p>
-            </StaggerContainer>
+          </FadeUp>
           <div className={`grid md:grid-cols-2 gap-8 transition-all duration-1000 ${
             differentiatorsRef.isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
           }`}>
