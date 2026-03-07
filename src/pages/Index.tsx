@@ -272,9 +272,8 @@ const Index = () => {
 
         {/* ── 2. Problem → Solution ── */}
         <section className="py-20 md:py-28" style={{ background: `linear-gradient(180deg, transparent, ${holiColors[0]}06, ${holiColors[4]}06, transparent)` }}>
-          <div className="container mx-auto px-6">
-            <div className="text-center mb-16">
-            <FadeUp>
+           <div className="container mx-auto px-6">
+            <FadeUp className="text-center mb-16">
               <p className="text-sm font-semibold uppercase tracking-widest mb-3" style={{ color: holiColors[1] }}>What We Do</p>
               <h2 className="text-3xl md:text-4xl font-bold mb-4">Complex Problems. <span style={{ color: holiColors[4] }}>Intelligent</span> Solutions.</h2>
               <p className="text-muted-foreground max-w-2xl mx-auto text-lg">
@@ -326,9 +325,8 @@ const Index = () => {
         {/* ── 3. Capabilities ── */}
         <section className="py-20 md:py-28 relative">
           <AIHexagonGrid className="opacity-30" />
-          <div className="container mx-auto px-6">
-            <div className="text-center mb-16">
-            <FadeUp>
+           <div className="container mx-auto px-6">
+            <FadeUp className="text-center mb-16">
               <p className="text-sm font-semibold uppercase tracking-widest mb-3" style={{ color: holiColors[6] }}>Core Capabilities</p>
               <h2 className="text-3xl md:text-4xl font-bold mb-4">Intelligence Across <span style={{ color: holiColors[5] }}>Every</span> Dimension</h2>
               <p className="text-muted-foreground max-w-2xl mx-auto text-lg">Three pillars of AI that cover the full spectrum of enterprise automation.</p>
