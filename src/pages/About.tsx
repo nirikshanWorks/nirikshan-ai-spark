@@ -5,6 +5,10 @@ import { useScrollAnimation } from "@/hooks/use-scroll-animation";
 import GlobeSection from "@/components/Globe";
 import { HeroParticles } from "@/components/HeroParticles";
 import { FloatingElements } from "@/components/FloatingElements";
+import { AICircuitLines } from "@/components/AICircuitLines";
+import { AIFloatingIcons } from "@/components/AIFloatingIcons";
+import { AIHexagonGrid } from "@/components/AIHexagonGrid";
+import { FadeUp, SlideLeft, SlideRight, StaggerContainer, StaggerItem, ScaleUp } from "@/components/ScrollAnimations";
 import {
   ArrowRight,
   Award,
@@ -181,10 +185,12 @@ const About = () => {
     <script dangerouslySetInnerHTML={{__html: `document.title = "About — Nirikshan AI | OpenCV, Generative & Agentic AI"; const md=document.querySelector('meta[name=\"description\"]'); if(md){md.setAttribute('content','At Nirikshan AI we specialize in OpenCV, Generative AI, and Agentic AI — crafting intelligent systems that combine vision, reasoning, and autonomy.');}`}} />
 
         {/* Mission & Vision */}
-        <section className="py-20 container mx-auto px-6" ref={missionRef.ref}>
-          <div className={`grid md:grid-cols-2 gap-12 transition-all duration-1000 ${
+        <section className="py-20 container mx-auto px-6 relative" ref={missionRef.ref}>
+          <AICircuitLines className="opacity-20" />
+          <div className={`grid md:grid-cols-2 gap-12 transition-all duration-1000 relative z-10 ${
             missionRef.isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
           }`}>
+            <SlideLeft>
             <div className="space-y-6 group hover:translate-x-2 transition-transform duration-300">
               <div className="flex items-start space-x-4">
                 <div className="w-14 h-14 rounded-xl gradient-primary flex items-center justify-center flex-shrink-0 shadow-lg group-hover:shadow-xl transition-shadow">
@@ -204,6 +210,8 @@ const About = () => {
                 </div>
               </div>
             </div>
+            </SlideLeft>
+            <SlideRight>
             <div className="space-y-6 group hover:translate-x-2 transition-transform duration-300">
               <div className="flex items-start space-x-4">
                 <div className="w-14 h-14 rounded-xl gradient-primary flex items-center justify-center flex-shrink-0 shadow-lg group-hover:shadow-xl transition-shadow">
@@ -223,11 +231,13 @@ const About = () => {
                 </div>
               </div>
             </div>
-          </div>
+            </div>
+            </SlideRight>
         </section>
 
         {/* Values */}
-        <section className="py-20 bg-gradient-to-br from-secondary/50 to-secondary/30" ref={valuesRef.ref}>
+        <section className="py-20 bg-gradient-to-br from-secondary/50 to-secondary/30 relative" ref={valuesRef.ref}>
+          <AIHexagonGrid className="opacity-20" />
           <div className="container mx-auto px-6">
             <div className="text-center mb-16">
               <h2 className="text-3xl md:text-4xl font-bold mb-4">Our Core Values</h2>
@@ -236,9 +246,9 @@ const About = () => {
                 These principles guide everything we do and every decision we make
               </p>
             </div>
-            <div className={`grid md:grid-cols-3 gap-8 transition-all duration-1000 ${
+            <StaggerContainer className={`grid md:grid-cols-3 gap-8 transition-all duration-1000 ${
               valuesRef.isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
-            }`}>
+            }`} staggerDelay={0.15}>
               {[
                 {
                   icon: Users,
@@ -293,7 +303,7 @@ const About = () => {
             <p className="text-muted-foreground">
               Every engagement blends strategic foresight, design thinking, and engineering excellence so transformation is fast, predictable, and inspiring.
             </p>
-          </div>
+            </StaggerContainer>
           <div className={`grid md:grid-cols-2 gap-8 transition-all duration-1000 ${
             differentiatorsRef.isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
           }`}>
