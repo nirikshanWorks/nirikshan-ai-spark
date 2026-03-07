@@ -333,8 +333,9 @@ const Contact = () => {
         </section>
 
         {/* Contact Form & Info */}
-        <section id="contact-form" className="py-20 container mx-auto px-6">
-          <div className="grid lg:grid-cols-2 gap-12 max-w-6xl mx-auto items-start">
+        <section id="contact-form" className="py-20 container mx-auto px-6 relative">
+          <AIFloatingIcons count={5} className="opacity-20" />
+          <div className="grid lg:grid-cols-2 gap-12 max-w-6xl mx-auto items-start relative z-10">
             {/* Contact Form */}
             <Card className="relative z-20 overflow-hidden rounded-4xl border-2 border-border/60 bg-background/95 p-10 shadow-xl shadow-primary/5 transition-all duration-500 hover:border-primary/40">
               <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-accent/10 to-transparent opacity-0 transition-opacity duration-500 hover:opacity-100" aria-hidden="true" />
