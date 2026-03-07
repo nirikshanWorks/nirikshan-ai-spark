@@ -1,16 +1,16 @@
-import { useEffect, useLayoutEffect, useState, useRef } from "react";
-import { Link, useLocation } from "react-router-dom";
-import { Button } from "@/components/ui/button";
-import { Menu, X } from "lucide-react";
 import { ThemeToggle } from "@/components/ThemeToggle";
+import { Button } from "@/components/ui/button";
 import {
-  NavigationMenu,
-  NavigationMenuContent,
-  NavigationMenuItem,
-  NavigationMenuLink,
-  NavigationMenuList,
-  NavigationMenuTrigger,
+    NavigationMenu,
+    NavigationMenuContent,
+    NavigationMenuItem,
+    NavigationMenuLink,
+    NavigationMenuList,
+    NavigationMenuTrigger,
 } from "@/components/ui/navigation-menu";
+import { Menu, X } from "lucide-react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
+import { Link, useLocation } from "react-router-dom";
 
 import { expertiseCategories } from "@/pages/expertise/expertiseData";
 
@@ -121,7 +121,7 @@ export const Navigation = () => {
             {/* Desktop Navigation */}
             <div className="hidden md:flex items-center space-x-1">
               <Link to="/about">
-                <Button variant="ghost" size="sm" className={`text-sm ${isActive("/about") ? "bg-secondary text-foreground" : "text-muted-foreground hover:text-foreground"}`}>
+                <Button variant="ghost" size="sm" className={`text-sm font-bold ${isActive("/about") ? "bg-secondary text-foreground" : "text-muted-foreground hover:text-foreground"}`}>
                   About
                 </Button>
               </Link>
@@ -129,7 +129,7 @@ export const Navigation = () => {
               <NavigationMenu value={desktopMenuValue} onValueChange={setDesktopMenuValue}>
                 <NavigationMenuList>
                   <NavigationMenuItem value="expertise">
-                    <NavigationMenuTrigger className="bg-transparent text-sm text-muted-foreground hover:text-foreground h-9 px-3">
+                    <NavigationMenuTrigger className="bg-transparent text-sm font-bold text-muted-foreground hover:text-foreground h-9 px-3">
                       Expertise
                     </NavigationMenuTrigger>
                     <NavigationMenuContent className="md:w-screen md:max-w-none md:px-0 md:max-h-[75vh] md:overflow-y-auto animate-in slide-in-from-top-4 fade-in duration-300">
@@ -189,7 +189,7 @@ export const Navigation = () => {
 
               {navLinks.slice(1).map((link) => (
                 <Link key={link.path} to={link.path}>
-                  <Button variant="ghost" size="sm" className={`text-sm ${isActive(link.path) ? "bg-secondary text-foreground" : "text-muted-foreground hover:text-foreground"}`}>
+                  <Button variant="ghost" size="sm" className={`text-sm font-bold ${isActive(link.path) ? "bg-secondary text-foreground" : "text-muted-foreground hover:text-foreground"}`}>
                     {link.label}
                   </Button>
                 </Link>
@@ -224,14 +224,14 @@ export const Navigation = () => {
           <div className="space-y-1 pb-[max(env(safe-area-inset-bottom),1rem)]">
             <Link
               to="/about"
-              className="block rounded-lg px-4 py-3 text-base font-medium hover:bg-secondary transition-colors"
+              className="block rounded-lg px-4 py-3 text-base font-bold hover:bg-secondary transition-colors"
               onClick={closeMobileMenu}
             >
               About
             </Link>
 
             <button
-              className="flex w-full items-center justify-between gap-2 rounded-lg px-4 py-3 text-base font-medium hover:bg-secondary transition-colors"
+              className="flex w-full items-center justify-between gap-2 rounded-lg px-4 py-3 text-base font-bold hover:bg-secondary transition-colors"
               onClick={() => setMobileExpertiseOpen((prev) => !prev)}
             >
               Expertise
@@ -270,7 +270,7 @@ export const Navigation = () => {
               <Link
                 key={link.path}
                 to={link.path}
-                className="block rounded-lg px-4 py-3 text-base font-medium hover:bg-secondary transition-colors"
+                className="block rounded-lg px-4 py-3 text-base font-bold hover:bg-secondary transition-colors"
                 onClick={closeMobileMenu}
               >
                 {link.label}
