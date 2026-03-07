@@ -423,6 +423,187 @@ const CampaignIntelligence = () => {
           </div>
         </section>
 
+        {/* Why Nirikshan AI vs Traditional Consulting */}
+        <section className="py-24 bg-secondary/20">
+          <div className="container mx-auto px-6">
+            <motion.div
+              className="max-w-4xl mx-auto mb-16"
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.7 }}
+            >
+              <Badge className="mb-4 bg-primary/10 text-primary border-primary/20">
+                Why Nirikshan AI
+              </Badge>
+              <h2 className="text-3xl md:text-5xl font-bold mb-6">
+                The AI-Powered Alternative to{" "}
+                <span className="text-gradient">Traditional Political Consulting</span>
+              </h2>
+              <p className="text-muted-foreground text-lg leading-relaxed">
+                Traditional political consulting firms such as Indian Political Action Committee rely heavily on large teams, manual surveys, and human-driven strategy. Nirikshan AI brings a technology-first approach, using artificial intelligence, real-time analytics, and intelligent monitoring systems to make campaign decisions faster, smarter, and more scalable.
+              </p>
+            </motion.div>
+
+            <div className="grid md:grid-cols-2 gap-8 max-w-6xl mx-auto">
+              {[
+                {
+                  num: "01",
+                  title: "AI Instead of Guesswork",
+                  traditional: "Traditional consulting depends on manual surveys and strategist intuition.",
+                  color: "from-violet-500 to-purple-600",
+                  features: [
+                    "AI-driven sentiment analysis",
+                    "Real-time public opinion monitoring",
+                    "Issue detection using machine learning",
+                    "Predictive analytics for campaign trends",
+                  ],
+                  takeaway: "Decisions are based on data patterns, not assumptions.",
+                },
+                {
+                  num: "02",
+                  title: "Real-Time Campaign Intelligence",
+                  traditional: "Traditional campaigns often rely on weekly reports or delayed field feedback.",
+                  color: "from-blue-500 to-cyan-500",
+                  features: [
+                    "Live dashboards showing campaign performance",
+                    "Real-time social media sentiment tracking",
+                    "Field activity monitoring from multiple regions",
+                    "Instant insights for leadership teams",
+                  ],
+                  takeaway: "Campaign leaders can adjust strategy instantly instead of waiting days or weeks.",
+                },
+                {
+                  num: "03",
+                  title: "AI-Powered Ground Intelligence",
+                  traditional: "Traditional firms deploy large field teams to collect information manually.",
+                  color: "from-emerald-500 to-teal-500",
+                  features: [
+                    "Mobile apps for volunteer data collection",
+                    "AI analysis of ground-level feedback",
+                    "Geo-tagged reporting from field workers",
+                    "Automated campaign activity tracking",
+                  ],
+                  takeaway: "This creates accurate grassroots insights at scale.",
+                },
+                {
+                  num: "04",
+                  title: "Advanced Digital Influence Monitoring",
+                  traditional: "Traditional consulting firms mainly manage social media marketing manually.",
+                  color: "from-orange-500 to-rose-500",
+                  features: [
+                    "AI-based narrative tracking",
+                    "Viral trend detection",
+                    "Audience segmentation analysis",
+                    "Campaign performance monitoring across platforms",
+                  ],
+                  takeaway: "Identify emerging narratives before they dominate public discourse.",
+                },
+              ].map((item, idx) => (
+                <motion.div
+                  key={item.num}
+                  initial={{ opacity: 0, y: 30 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, margin: "-50px" }}
+                  transition={{ duration: 0.6, delay: idx * 0.1 }}
+                >
+                  <Card className="h-full p-8 border border-border hover:border-primary/30 transition-all duration-500 hover:shadow-xl group relative overflow-hidden">
+                    <div className={`absolute -top-16 -right-16 w-32 h-32 bg-gradient-to-br ${item.color} rounded-full blur-3xl opacity-10 group-hover:opacity-25 transition-opacity duration-700`} />
+                    <div className="relative z-10 space-y-5">
+                      <div className="flex items-center gap-3">
+                        <span className={`text-3xl font-black bg-gradient-to-r ${item.color} bg-clip-text text-transparent`}>
+                          {item.num}
+                        </span>
+                        <h3 className="text-xl font-bold">{item.title}</h3>
+                      </div>
+                      <p className="text-sm text-muted-foreground italic border-l-2 border-muted-foreground/30 pl-4">
+                        {item.traditional}
+                      </p>
+                      <div>
+                        <p className="text-xs font-bold uppercase tracking-[0.2em] text-primary mb-3">Nirikshan AI approach:</p>
+                        <ul className="space-y-2">
+                          {item.features.map((f) => (
+                            <li key={f} className="flex items-start gap-2 text-sm text-muted-foreground">
+                              <CheckCircle2 className="text-primary mt-0.5 shrink-0" size={15} />
+                              {f}
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                      <div className="rounded-xl bg-primary/5 border border-primary/10 p-4">
+                        <p className="text-sm font-medium text-foreground">💡 {item.takeaway}</p>
+                      </div>
+                    </div>
+                  </Card>
+                </motion.div>
+              ))}
+            </div>
+
+            {/* Integrated Platform Card */}
+            <motion.div
+              className="max-w-6xl mx-auto mt-8"
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.7 }}
+            >
+              <Card className="p-8 md:p-12 border border-border bg-gradient-to-br from-secondary/50 to-background relative overflow-hidden">
+                <div className="absolute -bottom-20 -left-20 w-48 h-48 bg-gradient-to-br from-indigo-500 to-blue-600 rounded-full blur-3xl opacity-10" />
+                <div className="relative z-10 grid md:grid-cols-2 gap-8 items-center">
+                  <div className="space-y-4">
+                    <span className="text-3xl font-black bg-gradient-to-r from-indigo-500 to-blue-600 bg-clip-text text-transparent">05</span>
+                    <h3 className="text-2xl font-bold">Integrated AI Technology Platform</h3>
+                    <p className="text-sm text-muted-foreground italic border-l-2 border-muted-foreground/30 pl-4">
+                      Most consulting firms operate through fragmented tools and manual coordination.
+                    </p>
+                    <p className="text-xs font-bold uppercase tracking-[0.2em] text-primary">Nirikshan AI provides a unified platform:</p>
+                    <ul className="space-y-2">
+                      {[
+                        "Campaign analytics dashboards",
+                        "Volunteer management systems",
+                        "Survey and feedback platforms",
+                        "AI-powered public sentiment monitoring",
+                      ].map((f) => (
+                        <li key={f} className="flex items-start gap-2 text-sm text-muted-foreground">
+                          <CheckCircle2 className="text-primary mt-0.5 shrink-0" size={15} />
+                          {f}
+                        </li>
+                      ))}
+                    </ul>
+                    <div className="rounded-xl bg-primary/5 border border-primary/10 p-4">
+                      <p className="text-sm font-medium text-foreground">💡 Everything runs inside a single technology ecosystem designed for large-scale campaigns.</p>
+                    </div>
+                  </div>
+                  <div className="flex flex-col items-center justify-center text-center space-y-6">
+                    <h3 className="text-2xl md:text-3xl font-bold">
+                      The Future of Campaign Strategy
+                    </h3>
+                    <p className="text-muted-foreground text-sm leading-relaxed max-w-md">
+                      Modern campaigns are no longer driven only by speeches and rallies. They are driven by data, intelligence, and real-time decision systems.
+                    </p>
+                    <div className="flex flex-wrap justify-center gap-3">
+                      {[
+                        "Artificial Intelligence",
+                        "Data Analytics",
+                        "Ground Intelligence",
+                        "Digital Monitoring",
+                        "Technology Platforms",
+                      ].map((tag) => (
+                        <Badge key={tag} variant="secondary" className="bg-primary/10 text-primary border-primary/20 px-4 py-1.5">
+                          {tag}
+                        </Badge>
+                      ))}
+                    </div>
+                    <p className="text-sm text-muted-foreground leading-relaxed max-w-md">
+                      Nirikshan AI represents the next generation of campaign intelligence — helping organizations understand people, predict trends, and execute smarter campaigns.
+                    </p>
+                  </div>
+                </div>
+              </Card>
+            </motion.div>
+          </div>
+        </section>
+
         {/* CTA */}
         <section className="relative overflow-hidden py-24">
           <div className="absolute inset-0 bg-gradient-to-br from-indigo-900 via-slate-900 to-slate-950" />
