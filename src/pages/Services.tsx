@@ -5,6 +5,10 @@ import { Card } from "@/components/ui/card";
 import { HeroParticles } from "@/components/HeroParticles";
 import { FloatingElements } from "@/components/FloatingElements";
 import { ProductCarousel3D } from "@/components/ProductCarousel3D";
+import { AICircuitLines } from "@/components/AICircuitLines";
+import { AIFloatingIcons } from "@/components/AIFloatingIcons";
+import { AIHexagonGrid } from "@/components/AIHexagonGrid";
+import { FadeUp, SlideLeft, SlideRight, StaggerContainer, StaggerItem } from "@/components/ScrollAnimations";
 import { 
   Brain, 
   Eye, 
@@ -420,9 +424,12 @@ const ServiceDetail = ({ service, index }: { service: typeof servicesData[0], in
   const contentRef = useScrollAnimation(0.2);
 
   return (
-    <section className={`py-20 ${index % 2 === 0 ? "bg-background" : "bg-secondary/30"}`}>
+    <section className={`py-20 ${index % 2 === 0 ? "bg-background" : "bg-secondary/30"} relative`}>
       <div className="container mx-auto px-6" ref={contentRef.ref}>
-        <div className={`grid md:grid-cols-2 gap-12 items-center transition-all duration-1000 ${
+        {index % 3 === 0 && <AICircuitLines className="opacity-15" />}
+        {index % 3 === 1 && <AIHexagonGrid className="opacity-15" />}
+        {index % 3 === 2 && <AIFloatingIcons count={4} className="opacity-30" />}
+        <div className={`grid md:grid-cols-2 gap-12 items-center transition-all duration-1000 relative z-10 ${
           contentRef.isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
         }`}>
           {/* Left side - Icon and description */}
@@ -457,7 +464,7 @@ const ServiceDetail = ({ service, index }: { service: typeof servicesData[0], in
           {/* Right side - Benefits and Use Cases with 3D effects */}
           <div className={index % 2 === 1 ? "order-1" : ""}>
             {/* Benefits Card */}
-            <div className="p-6 mb-6 rounded-2xl tilt-card glass-card border border-primary/10">
+            <div className="p-6 mb-6 rounded-2xl tilt-card glass-card border border-primary/10 ai-glow-hover">
               <h3 className="text-xl font-semibold mb-4 flex items-center gap-2">
                 <TrendingUp size={20} className="text-primary" />
                 Benefits
@@ -473,7 +480,7 @@ const ServiceDetail = ({ service, index }: { service: typeof servicesData[0], in
             </div>
 
             {/* Use Cases Card */}
-            <div className="p-6 rounded-2xl tilt-card glass-card border border-accent/10">
+            <div className="p-6 rounded-2xl tilt-card glass-card border border-accent/10 ai-glow-hover">
               <h3 className="text-xl font-semibold mb-4">Real-World Applications</h3>
               <ul className="space-y-3">
                 {service.useCases.map((useCase, idx) => (
@@ -537,15 +544,16 @@ const Services = () => {
         </section>
 
         {/* 3D Product Carousel */}
-        <section className="py-16 bg-gradient-to-b from-background via-secondary/20 to-background">
-          <div className="container mx-auto px-6">
-            <div className="text-center mb-8">
+        <section className="py-16 bg-gradient-to-b from-background via-secondary/20 to-background relative">
+          <AIHexagonGrid className="opacity-20" />
+          <div className="container mx-auto px-6 relative z-10">
+            <FadeUp className="text-center mb-8">
               <h2 className="text-3xl md:text-4xl font-bold mb-4">Explore Our Solutions</h2>
               <div className="h-1 w-16 bg-gradient-to-r from-primary to-accent mx-auto rounded-full mb-4" />
               <p className="text-muted-foreground max-w-2xl mx-auto">
                 Interactive 3D showcase of our core technology offerings
               </p>
-            </div>
+            </FadeUp>
             <ProductCarousel3D
               items={servicesData.slice(0, 6).map((service, idx) => ({
                 icon: service.icon,
@@ -572,11 +580,12 @@ const Services = () => {
 
         {/* CTA Section */}
         <section className="py-20 relative overflow-hidden">
-          <div className="absolute inset-0 bg-gradient-to-br from-blue-500/10 via-transparent to-purple-500/10"></div>
+          <AICircuitLines className="opacity-20" />
+          <div className="absolute inset-0 bg-gradient-to-br from-primary/10 via-transparent to-accent/10"></div>
           <div className="container mx-auto px-6 relative z-10 text-center">
-            <div className="max-w-3xl mx-auto">
+            <FadeUp className="max-w-3xl mx-auto">
               <h2 className="text-3xl md:text-4xl font-bold mb-4">Ready to Transform Your Business?</h2>
-              <div className="h-1 w-16 bg-gradient-to-r from-blue-500 to-purple-500 mx-auto rounded-full mb-6"></div>
+              <div className="h-1 w-16 bg-gradient-to-r from-primary to-accent mx-auto rounded-full mb-6"></div>
               <p className="text-lg text-muted-foreground mb-10">
                 Let's discuss how our services can help you achieve your business goals and drive innovation
               </p>
@@ -593,7 +602,7 @@ const Services = () => {
                   </Button>
                 </Link>
               </div>
-            </div>
+            </FadeUp>
           </div>
         </section>
       </main>

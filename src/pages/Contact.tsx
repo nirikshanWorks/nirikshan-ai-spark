@@ -2,6 +2,9 @@ import { FloatingElements } from "@/components/FloatingElements";
 import { Footer } from "@/components/Footer";
 import { HeroParticles } from "@/components/HeroParticles";
 import { Navigation } from "@/components/Navigation";
+import { AICircuitLines } from "@/components/AICircuitLines";
+import { AIFloatingIcons } from "@/components/AIFloatingIcons";
+import { FadeUp, SlideLeft, SlideRight } from "@/components/ScrollAnimations";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -269,7 +272,8 @@ const Contact = () => {
       <main className="pt-16">
         {/* Hero with particles */}
         <section className="relative overflow-hidden py-28">
-          <div className="absolute inset-0 bg-gradient-to-br from-indigo-900 via-slate-900 to-slate-950" aria-hidden="true" />
+          <div className="absolute inset-0 bg-gradient-to-br from-primary/20 via-background to-accent/10" aria-hidden="true" />
+          <AICircuitLines className="opacity-30" />
           
           {/* Particle effects */}
           <HeroParticles />
@@ -329,8 +333,9 @@ const Contact = () => {
         </section>
 
         {/* Contact Form & Info */}
-        <section id="contact-form" className="py-20 container mx-auto px-6">
-          <div className="grid lg:grid-cols-2 gap-12 max-w-6xl mx-auto items-start">
+        <section id="contact-form" className="py-20 container mx-auto px-6 relative">
+          <AIFloatingIcons count={5} className="opacity-20" />
+          <div className="grid lg:grid-cols-2 gap-12 max-w-6xl mx-auto items-start relative z-10">
             {/* Contact Form */}
             <Card className="relative z-20 overflow-hidden rounded-4xl border-2 border-border/60 bg-background/95 p-10 shadow-xl shadow-primary/5 transition-all duration-500 hover:border-primary/40">
               <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-accent/10 to-transparent opacity-0 transition-opacity duration-500 hover:opacity-100" aria-hidden="true" />

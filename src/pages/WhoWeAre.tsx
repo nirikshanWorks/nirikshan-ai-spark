@@ -7,6 +7,10 @@ import { Footer } from "@/components/Footer";
 import { Navigation } from "@/components/Navigation";
 import { Button } from "@/components/ui/button";
 import { useScrollAnimation } from "@/hooks/use-scroll-animation";
+import { AICircuitLines } from "@/components/AICircuitLines";
+import { AIFloatingIcons } from "@/components/AIFloatingIcons";
+import { AIHexagonGrid } from "@/components/AIHexagonGrid";
+import { FadeUp, SlideLeft, SlideRight, StaggerContainer, StaggerItem } from "@/components/ScrollAnimations";
 import {
   ArrowRight,
   ArrowUp,
@@ -149,11 +153,12 @@ const WhoWeAre = () => {
 
         <section
           id="our-story"
-          className="py-20 bg-gradient-to-b from-background via-secondary/20 to-background"
+          className="py-20 bg-gradient-to-b from-background via-secondary/20 to-background relative"
           ref={storyRef.ref}
         >
+          <AICircuitLines className="opacity-15" />
           <div
-            className={`container mx-auto px-6 grid gap-12 md:grid-cols-[1.2fr,0.8fr] items-center transition-all duration-1000 ${
+            className={`container mx-auto px-6 grid gap-12 md:grid-cols-[1.2fr,0.8fr] items-center transition-all duration-1000 relative z-10 ${
               storyRef.isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
             }`}
           >
@@ -231,39 +236,38 @@ const WhoWeAre = () => {
 
         <section className="py-20 bg-secondary/20" ref={valuesRef.ref}>
           <div className="container mx-auto px-6">
-            <div className="text-center mb-14">
+            <FadeUp className="text-center mb-14">
               <h2 className="text-3xl md:text-4xl font-bold mb-4">Values that shape our culture</h2>
               <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
                 These principles keep our teams aligned, our research ethical, and our collaborations purposeful.
               </p>
-            </div>
-            <div
-              className={`grid gap-6 md:grid-cols-2 lg:grid-cols-3 transition-all duration-1000 ${
+            </FadeUp>
+            <StaggerContainer className={`grid gap-6 md:grid-cols-2 lg:grid-cols-3 transition-all duration-1000 ${
                 valuesRef.isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
-              }`}
-            >
+              }`} staggerDelay={0.12}>
               {values.map((value) => (
+                <StaggerItem key={value.title}>
                 <div
-                  key={value.title}
-                  className="group p-6 rounded-3xl border border-border bg-background/80 backdrop-blur hover:border-indigo-400/60 hover:-translate-y-1 transition-all duration-300"
+                  className="group p-6 rounded-3xl border border-border bg-card backdrop-blur hover:border-primary/60 hover:-translate-y-1 transition-all duration-300 ai-glow-hover"
                 >
                   <value.icon className="text-indigo-500 mb-4" size={28} />
                   <h3 className="text-xl font-semibold mb-2">{value.title}</h3>
                   <p className="text-muted-foreground text-sm">{value.description}</p>
                 </div>
+                </StaggerItem>
               ))}
-            </div>
+            </StaggerContainer>
           </div>
         </section>
 
         <section className="py-20" ref={leadershipRef.ref}>
           <div className="container mx-auto px-6">
-            <div className="text-center mb-14">
+            <FadeUp className="text-center mb-14">
               <h2 className="text-3xl md:text-4xl font-bold mb-4">Leadership that inspires</h2>
               <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
                 Meet the founders and leaders steering Nirikshan AI towards a future of responsible technological advancement.
               </p>
-            </div>
+            </FadeUp>
             <div
               className={`grid gap-8 grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 transition-all duration-1000 max-w-6xl mx-auto justify-items-center ${
                 leadershipRef.isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"

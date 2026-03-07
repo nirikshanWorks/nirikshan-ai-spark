@@ -5,6 +5,10 @@ import { useScrollAnimation } from "@/hooks/use-scroll-animation";
 import GlobeSection from "@/components/Globe";
 import { HeroParticles } from "@/components/HeroParticles";
 import { FloatingElements } from "@/components/FloatingElements";
+import { AICircuitLines } from "@/components/AICircuitLines";
+import { AIFloatingIcons } from "@/components/AIFloatingIcons";
+import { AIHexagonGrid } from "@/components/AIHexagonGrid";
+import { FadeUp, SlideLeft, SlideRight, StaggerContainer, StaggerItem, ScaleUp } from "@/components/ScrollAnimations";
 import {
   ArrowRight,
   Award,
@@ -181,10 +185,12 @@ const About = () => {
     <script dangerouslySetInnerHTML={{__html: `document.title = "About — Nirikshan AI | OpenCV, Generative & Agentic AI"; const md=document.querySelector('meta[name=\"description\"]'); if(md){md.setAttribute('content','At Nirikshan AI we specialize in OpenCV, Generative AI, and Agentic AI — crafting intelligent systems that combine vision, reasoning, and autonomy.');}`}} />
 
         {/* Mission & Vision */}
-        <section className="py-20 container mx-auto px-6" ref={missionRef.ref}>
-          <div className={`grid md:grid-cols-2 gap-12 transition-all duration-1000 ${
+        <section className="py-20 container mx-auto px-6 relative" ref={missionRef.ref}>
+          <AICircuitLines className="opacity-20" />
+          <div className={`grid md:grid-cols-2 gap-12 transition-all duration-1000 relative z-10 ${
             missionRef.isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
           }`}>
+            <SlideLeft>
             <div className="space-y-6 group hover:translate-x-2 transition-transform duration-300">
               <div className="flex items-start space-x-4">
                 <div className="w-14 h-14 rounded-xl gradient-primary flex items-center justify-center flex-shrink-0 shadow-lg group-hover:shadow-xl transition-shadow">
@@ -204,6 +210,8 @@ const About = () => {
                 </div>
               </div>
             </div>
+            </SlideLeft>
+            <SlideRight>
             <div className="space-y-6 group hover:translate-x-2 transition-transform duration-300">
               <div className="flex items-start space-x-4">
                 <div className="w-14 h-14 rounded-xl gradient-primary flex items-center justify-center flex-shrink-0 shadow-lg group-hover:shadow-xl transition-shadow">
@@ -223,22 +231,24 @@ const About = () => {
                 </div>
               </div>
             </div>
+            </SlideRight>
           </div>
         </section>
 
         {/* Values */}
-        <section className="py-20 bg-gradient-to-br from-secondary/50 to-secondary/30" ref={valuesRef.ref}>
+        <section className="py-20 bg-gradient-to-br from-secondary/50 to-secondary/30 relative" ref={valuesRef.ref}>
+          <AIHexagonGrid className="opacity-20" />
           <div className="container mx-auto px-6">
-            <div className="text-center mb-16">
+            <FadeUp className="text-center mb-16">
               <h2 className="text-3xl md:text-4xl font-bold mb-4">Our Core Values</h2>
-              <div className="h-1 w-16 bg-gradient-to-r from-blue-500 to-purple-500 mx-auto rounded-full mb-4"></div>
+              <div className="h-1 w-16 bg-gradient-to-r from-primary to-accent mx-auto rounded-full mb-4"></div>
               <p className="text-muted-foreground max-w-2xl mx-auto">
                 These principles guide everything we do and every decision we make
               </p>
-            </div>
-            <div className={`grid md:grid-cols-3 gap-8 transition-all duration-1000 ${
+            </FadeUp>
+            <StaggerContainer className={`grid md:grid-cols-3 gap-8 transition-all duration-1000 ${
               valuesRef.isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
-            }`}>
+            }`} staggerDelay={0.15}>
               {[
                 {
                   icon: Users,
@@ -256,9 +266,9 @@ const About = () => {
                   desc: "We stay at the forefront of technology trends and AI advancements. By continuously exploring new methodologies and tools, we create forward-thinking solutions that keep our partners ahead of the competition."
                 }
               ].map((value, idx) => (
+                <StaggerItem key={idx}>
                 <div
-                  key={idx}
-                  className="group relative p-8 bg-white dark:bg-slate-800/50 rounded-2xl border border-transparent hover:border-primary/30 transition-all duration-500 tilt-card glass-card"
+                  className="group relative p-8 bg-card rounded-2xl border border-transparent hover:border-primary/30 transition-all duration-500 tilt-card glass-card ai-glow-hover"
                 >
                   {/* 3D glow effect */}
                   <div className="absolute -inset-1 bg-gradient-to-r from-primary/20 via-accent/20 to-primary/20 rounded-2xl blur-xl opacity-0 group-hover:opacity-60 transition-opacity duration-500" />
@@ -276,16 +286,16 @@ const About = () => {
                   {/* Animated bottom border */}
                   <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-0 h-1 bg-gradient-to-r from-primary to-accent rounded-full group-hover:w-16 transition-all duration-500" />
                 </div>
+                </StaggerItem>
               ))}
-            </div>
+            </StaggerContainer>
           </div>
         </section>
 
         {/* Differentiators */}
-        <section className="py-20 container mx-auto px-6" ref={differentiatorsRef.ref}>
-          <div className={`max-w-3xl mx-auto text-center mb-16 transition-all duration-1000 ${
-            differentiatorsRef.isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
-          }`}>
+        <section className="py-20 container mx-auto px-6 relative" ref={differentiatorsRef.ref}>
+          <AIFloatingIcons count={5} className="opacity-40" />
+          <FadeUp className={`max-w-3xl mx-auto text-center mb-16`}>
             <span className="inline-flex items-center gap-2 rounded-full bg-primary/10 px-4 py-2 text-sm font-semibold text-primary mb-4">
               <Sparkles className="h-4 w-4" /> Why Partners Choose Us
             </span>
@@ -293,7 +303,7 @@ const About = () => {
             <p className="text-muted-foreground">
               Every engagement blends strategic foresight, design thinking, and engineering excellence so transformation is fast, predictable, and inspiring.
             </p>
-          </div>
+          </FadeUp>
           <div className={`grid md:grid-cols-2 gap-8 transition-all duration-1000 ${
             differentiatorsRef.isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
           }`}>
