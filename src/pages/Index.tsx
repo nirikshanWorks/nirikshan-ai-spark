@@ -1,6 +1,12 @@
 import { useEffect, useRef, useState } from "react";
+import { motion } from "framer-motion";
 import { Navigation } from "@/components/Navigation";
 import { Footer } from "@/components/Footer";
+import { Button } from "@/components/ui/button";
+import { AICircuitLines } from "@/components/AICircuitLines";
+import { AIFloatingIcons } from "@/components/AIFloatingIcons";
+import { AIHexagonGrid } from "@/components/AIHexagonGrid";
+import { FadeUp, SlideLeft, SlideRight, StaggerContainer, StaggerItem, ScaleUp, Counter } from "@/components/ScrollAnimations";
 import { Button } from "@/components/ui/button";
 import {
   ArrowRight, Brain, Eye, Bot, Building2, Activity,
@@ -195,6 +201,8 @@ const Index = () => {
       <main className="relative z-10">
         {/* ── HOLI HERO BANNER ── */}
         <section className="relative overflow-hidden pt-24 pb-20 md:pt-36 md:pb-28">
+          <AICircuitLines className="opacity-40" />
+          <AIFloatingIcons count={8} />
           {/* Colorful background blobs */}
           <div className="absolute inset-0 overflow-hidden" aria-hidden="true">
             <div className="absolute top-10 left-10 w-[400px] h-[400px] rounded-full blur-[100px] animate-pulse" style={{ background: `${holiColors[0]}20` }} />
@@ -266,15 +274,17 @@ const Index = () => {
         <section className="py-20 md:py-28" style={{ background: `linear-gradient(180deg, transparent, ${holiColors[0]}06, ${holiColors[4]}06, transparent)` }}>
           <div className="container mx-auto px-6">
             <div className="text-center mb-16">
+            <FadeUp>
               <p className="text-sm font-semibold uppercase tracking-widest mb-3" style={{ color: holiColors[1] }}>What We Do</p>
               <h2 className="text-3xl md:text-4xl font-bold mb-4">Complex Problems. <span style={{ color: holiColors[4] }}>Intelligent</span> Solutions.</h2>
               <p className="text-muted-foreground max-w-2xl mx-auto text-lg">
                 Enterprises drown in unstructured data. We transform it into intelligence that drives action.
               </p>
-            </div>
+            </FadeUp>
 
             <div className="grid md:grid-cols-2 gap-8 max-w-5xl mx-auto">
-              <HoliCard holiColor={holiColors[7]} className="p-8 rounded-xl border border-border bg-card space-y-6">
+            <SlideLeft delay={0.1}>
+            <HoliCard holiColor={holiColors[7]} className="p-8 rounded-xl border border-border bg-card space-y-6">
                 <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-sm font-medium" style={{ background: `${holiColors[7]}18`, color: holiColors[7] }}>
                   The Challenge
                 </div>
@@ -287,7 +297,9 @@ const Index = () => {
                   ))}
                 </ul>
               </HoliCard>
+              </SlideLeft>
 
+              <SlideRight delay={0.2}>
               <HoliCard holiColor={holiColors[3]} className="p-8 rounded-xl border border-border bg-card space-y-6">
                 <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-sm font-medium" style={{ background: `${holiColors[3]}18`, color: holiColors[3] }}>
                   Our AI Solution
@@ -306,47 +318,56 @@ const Index = () => {
                   ))}
                 </ul>
               </HoliCard>
+              </SlideRight>
             </div>
           </div>
         </section>
 
         {/* ── 3. Capabilities ── */}
-        <section className="py-20 md:py-28">
+        <section className="py-20 md:py-28 relative">
+          <AIHexagonGrid className="opacity-30" />
           <div className="container mx-auto px-6">
             <div className="text-center mb-16">
+            <FadeUp>
               <p className="text-sm font-semibold uppercase tracking-widest mb-3" style={{ color: holiColors[6] }}>Core Capabilities</p>
               <h2 className="text-3xl md:text-4xl font-bold mb-4">Intelligence Across <span style={{ color: holiColors[5] }}>Every</span> Dimension</h2>
               <p className="text-muted-foreground max-w-2xl mx-auto text-lg">Three pillars of AI that cover the full spectrum of enterprise automation.</p>
-            </div>
+            </FadeUp>
 
-            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-8 max-w-5xl mx-auto">
+            <StaggerContainer className="grid sm:grid-cols-2 lg:grid-cols-3 gap-8 max-w-5xl mx-auto" staggerDelay={0.15}>
               {capabilities.map((cap) => (
-                <HoliCard key={cap.title} holiColor={cap.holi} className="group p-8 rounded-xl border bg-card hover:-translate-y-2 transition-transform duration-300">
+                <StaggerItem key={cap.title}>
+                <HoliCard holiColor={cap.holi} className="group p-8 rounded-xl border bg-card hover:-translate-y-2 transition-transform duration-300 ai-border-glow">
                   <div className="w-12 h-12 rounded-xl flex items-center justify-center mb-5 transition-colors" style={{ background: `${cap.holi}18` }}>
                     <cap.icon className="w-6 h-6" style={{ color: cap.holi }} />
                   </div>
                   <h3 className="text-xl font-semibold mb-3">{cap.title}</h3>
                   <p className="text-muted-foreground leading-relaxed">{cap.desc}</p>
                 </HoliCard>
+                </StaggerItem>
               ))}
-            </div>
+            </StaggerContainer>
           </div>
         </section>
 
         <HoliDivider />
 
         {/* ── 4. Use Cases ── */}
-        <section className="py-20 md:py-28" style={{ background: `linear-gradient(180deg, transparent, ${holiColors[6]}05, ${holiColors[3]}05, transparent)` }}>
-          <div className="container mx-auto px-6">
+        <section className="py-20 md:py-28 relative" style={{ background: `linear-gradient(180deg, transparent, ${holiColors[6]}05, ${holiColors[3]}05, transparent)` }}>
+          <AICircuitLines className="opacity-20" />
+          <div className="container mx-auto px-6 relative z-10">
+            <FadeUp>
             <div className="text-center mb-16">
               <p className="text-sm font-semibold uppercase tracking-widest mb-3" style={{ color: holiColors[5] }}>Use Cases</p>
               <h2 className="text-3xl md:text-4xl font-bold mb-4">Real-World <span style={{ color: holiColors[1] }}>Applications</span></h2>
               <p className="text-muted-foreground max-w-2xl mx-auto text-lg">Measurable outcomes across industries and domains.</p>
             </div>
+            </FadeUp>
 
-            <div className="grid sm:grid-cols-2 gap-6 max-w-5xl mx-auto">
+            <StaggerContainer className="grid sm:grid-cols-2 gap-6 max-w-5xl mx-auto" staggerDelay={0.12}>
               {useCases.map((uc) => (
-                <HoliCard key={uc.title} holiColor={uc.holi} className="relative p-6 rounded-xl border bg-card overflow-hidden group hover:-translate-y-1 transition-transform duration-300">
+                <StaggerItem key={uc.title}>
+                <HoliCard holiColor={uc.holi} className="relative p-6 rounded-xl border bg-card overflow-hidden group hover:-translate-y-1 transition-transform duration-300 ai-border-glow">
                   <div className="relative">
                     <div className="w-10 h-10 rounded-lg flex items-center justify-center mb-4" style={{ background: `${uc.holi}18` }}>
                       <uc.icon className="w-5 h-5" style={{ color: uc.holi }} />
@@ -355,8 +376,9 @@ const Index = () => {
                     <p className="text-sm text-muted-foreground leading-relaxed">{uc.desc}</p>
                   </div>
                 </HoliCard>
+                </StaggerItem>
               ))}
-            </div>
+            </StaggerContainer>
           </div>
         </section>
 
