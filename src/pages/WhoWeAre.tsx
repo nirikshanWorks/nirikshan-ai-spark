@@ -248,11 +248,9 @@ const WhoWeAre = () => {
             <StaggerContainer className={`grid gap-6 md:grid-cols-2 lg:grid-cols-3 transition-all duration-1000 ${
                 valuesRef.isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
               }`} staggerDelay={0.12}>
-              }`}
               {values.map((value) => (
                 <StaggerItem key={value.title}>
                 <div
-                  key={value.title}
                   className="group p-6 rounded-3xl border border-border bg-card backdrop-blur hover:border-primary/60 hover:-translate-y-1 transition-all duration-300 ai-glow-hover"
                 >
                   <value.icon className="text-indigo-500 mb-4" size={28} />
