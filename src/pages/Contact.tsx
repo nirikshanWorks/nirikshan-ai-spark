@@ -671,10 +671,11 @@ const Contact = () => {
                         </div>
                         
                         <div className="space-y-1">
-                          <h4 className="text-sm font-semibold text-foreground">Chair Office - Dehradun</h4>
+                          <h4 className="text-sm font-semibold text-foreground">Chair Office - Kolkata</h4>
                           <p className="text-sm text-muted-foreground leading-relaxed">
-                            Keenal Road,<br />
-                            Vikasnagar, Dehradun, Uttarakhand
+                            69, S K Deb Road,<br />
+                            Ujjas Condovelle, Building 20,<br />
+                            Flat 101, Kolkata - 700048
                           </p>
                         </div>
                       </div>
