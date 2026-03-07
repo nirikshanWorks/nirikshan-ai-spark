@@ -231,21 +231,21 @@ const About = () => {
                 </div>
               </div>
             </div>
-            </div>
             </SlideRight>
+          </div>
         </section>
 
         {/* Values */}
         <section className="py-20 bg-gradient-to-br from-secondary/50 to-secondary/30 relative" ref={valuesRef.ref}>
           <AIHexagonGrid className="opacity-20" />
           <div className="container mx-auto px-6">
-            <div className="text-center mb-16">
+            <FadeUp className="text-center mb-16">
               <h2 className="text-3xl md:text-4xl font-bold mb-4">Our Core Values</h2>
-              <div className="h-1 w-16 bg-gradient-to-r from-blue-500 to-purple-500 mx-auto rounded-full mb-4"></div>
+              <div className="h-1 w-16 bg-gradient-to-r from-primary to-accent mx-auto rounded-full mb-4"></div>
               <p className="text-muted-foreground max-w-2xl mx-auto">
                 These principles guide everything we do and every decision we make
               </p>
-            </div>
+            </FadeUp>
             <StaggerContainer className={`grid md:grid-cols-3 gap-8 transition-all duration-1000 ${
               valuesRef.isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
             }`} staggerDelay={0.15}>
@@ -266,9 +266,9 @@ const About = () => {
                   desc: "We stay at the forefront of technology trends and AI advancements. By continuously exploring new methodologies and tools, we create forward-thinking solutions that keep our partners ahead of the competition."
                 }
               ].map((value, idx) => (
+                <StaggerItem key={idx}>
                 <div
-                  key={idx}
-                  className="group relative p-8 bg-white dark:bg-slate-800/50 rounded-2xl border border-transparent hover:border-primary/30 transition-all duration-500 tilt-card glass-card"
+                  className="group relative p-8 bg-card rounded-2xl border border-transparent hover:border-primary/30 transition-all duration-500 tilt-card glass-card ai-glow-hover"
                 >
                   {/* 3D glow effect */}
                   <div className="absolute -inset-1 bg-gradient-to-r from-primary/20 via-accent/20 to-primary/20 rounded-2xl blur-xl opacity-0 group-hover:opacity-60 transition-opacity duration-500" />
@@ -286,8 +286,9 @@ const About = () => {
                   {/* Animated bottom border */}
                   <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-0 h-1 bg-gradient-to-r from-primary to-accent rounded-full group-hover:w-16 transition-all duration-500" />
                 </div>
+                </StaggerItem>
               ))}
-            </div>
+            </StaggerContainer>
           </div>
         </section>
 
