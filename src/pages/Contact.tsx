@@ -2,6 +2,9 @@ import { FloatingElements } from "@/components/FloatingElements";
 import { Footer } from "@/components/Footer";
 import { HeroParticles } from "@/components/HeroParticles";
 import { Navigation } from "@/components/Navigation";
+import { AICircuitLines } from "@/components/AICircuitLines";
+import { AIFloatingIcons } from "@/components/AIFloatingIcons";
+import { FadeUp, SlideLeft, SlideRight } from "@/components/ScrollAnimations";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -269,7 +272,8 @@ const Contact = () => {
       <main className="pt-16">
         {/* Hero with particles */}
         <section className="relative overflow-hidden py-28">
-          <div className="absolute inset-0 bg-gradient-to-br from-indigo-900 via-slate-900 to-slate-950" aria-hidden="true" />
+          <div className="absolute inset-0 bg-gradient-to-br from-primary/20 via-background to-accent/10" aria-hidden="true" />
+          <AICircuitLines className="opacity-30" />
           
           {/* Particle effects */}
           <HeroParticles />
