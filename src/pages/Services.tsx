@@ -602,13 +602,13 @@ const Services = () => {
                   </Button>
                 </Link>
               </div>
-            </div>
+            </FadeUp>
           </div>
         </section>
       </main>
 
       <Footer />
-            </FadeUp>
+    </div>
   );
 };
 
