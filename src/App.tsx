@@ -33,6 +33,7 @@ const AdminCertificates = lazy(() => import("./pages/admin/Certificates"));
 const AdminHRManagement = lazy(() => import("./pages/admin/HRManagement"));
 const EmployeeLogin = lazy(() => import("./pages/employee/Login"));
 const EmployeeDashboard = lazy(() => import("./pages/employee/Dashboard"));
+const CampaignIntelligence = lazy(() => import("./pages/CampaignIntelligence"));
 const NotFound = lazy(() => import("./pages/NotFound"));
 
 const queryClient = new QueryClient();
@@ -77,6 +78,7 @@ const AnimatedRoutes = () => {
         <Route path="/admin/hr" element={<PageTransition><AdminHRManagement /></PageTransition>} />
         <Route path="/employee/login" element={<PageTransition><EmployeeLogin /></PageTransition>} />
         <Route path="/employee/dashboard" element={<PageTransition><EmployeeDashboard /></PageTransition>} />
+        <Route path="/campaign-intelligence" element={<PageTransition><CampaignIntelligence /></PageTransition>} />
         <Route path="*" element={<PageTransition><NotFound /></PageTransition>} />
       </Routes>
     </AnimatePresence>
