@@ -112,17 +112,9 @@ export const Navigation = () => {
 
   const handleExpandableTabChange = (index: number | null) => {
     if (index === null) return;
-    const nonSepTabs = expandableNavTabs.filter((t) => !("type" in t && t.type === "separator"));
-    let count = 0;
-    for (let i = 0; i < expandableNavTabs.length; i++) {
-      const tab = expandableNavTabs[i];
-      if ("type" in tab && tab.type === "separator") continue;
-      if (count === index) break;
-      count++;
-    }
-    const target = nonSepTabs[count];
-    if (target && "path" in target && target.path) {
-      navigate(target.path);
+    const tab = expandableNavTabs[index];
+    if (tab && "path" in tab && tab.path) {
+      navigate(tab.path);
     }
   };
 
