@@ -207,10 +207,7 @@ const WhoWeAre = () => {
           className="py-16"
           ref={missionRef.ref}
         >
-          <div
-            className="container mx-auto px-6 grid gap-10 md:grid-cols-2 items-center"
-          >
-          >
+          <div className="container mx-auto px-6 grid gap-10 md:grid-cols-2 items-center">
             <div className="p-8 rounded-3xl bg-gradient-to-br from-indigo-600/10 via-purple-500/10 to-blue-500/10 border border-border">
               <div className="flex items-center gap-4 mb-6">
                 <Focus className="text-indigo-500" size={32} />
