@@ -1,4 +1,5 @@
 import { Navigation } from "@/components/Navigation";
+import mockupProjects from "@/assets/mockup-projects.jpg";
 import { Footer } from "@/components/Footer";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
