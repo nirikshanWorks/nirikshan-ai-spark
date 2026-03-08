@@ -6,6 +6,11 @@ import wwaTeamVideo from "@/assets/wwa-team.mp4";
 import { Footer } from "@/components/Footer";
 import { Navigation } from "@/components/Navigation";
 import { Button } from "@/components/ui/button";
+import {
+  AnimatedProfileCard,
+  ProfileCardContent,
+  SocialLink,
+} from "@/components/ui/animated-profile-card";
 import { useScrollAnimation } from "@/hooks/use-scroll-animation";
 import { AICircuitLines } from "@/components/AICircuitLines";
 import { AIFloatingIcons } from "@/components/AIFloatingIcons";
