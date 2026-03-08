@@ -6,6 +6,11 @@ import wwaTeamVideo from "@/assets/wwa-team.mp4";
 import { Footer } from "@/components/Footer";
 import { Navigation } from "@/components/Navigation";
 import { Button } from "@/components/ui/button";
+import {
+  AnimatedProfileCard,
+  ProfileCardContent,
+  SocialLink,
+} from "@/components/ui/animated-profile-card";
 import { useScrollAnimation } from "@/hooks/use-scroll-animation";
 import { AICircuitLines } from "@/components/AICircuitLines";
 import { AIFloatingIcons } from "@/components/AIFloatingIcons";
@@ -273,40 +278,45 @@ const WhoWeAre = () => {
                 leadershipRef.isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
               }`}
             >
-              {leadership.map((member) => (
-                <div
-                  key={member.name}
-                  className="group relative w-full max-w-md overflow-hidden rounded-3xl border border-border bg-background shadow-sm hover:shadow-2xl transition-all duration-300"
-                >
-                  <div className="relative h-80 overflow-hidden">
-                    <img
-                      src={member.image}
-                      alt={member.name}
-                      className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-slate-900/80 via-slate-900/0 to-transparent" aria-hidden="true" />
-                    <div className="absolute bottom-4 left-4 right-4 text-white">
-                      <h3 className="text-xl font-semibold">{member.name}</h3>
-                      <p className="text-sm text-white/80">{member.role}</p>
-                    </div>
-                  </div>
-                  <div className="p-6">
-                    <p className="text-sm text-muted-foreground leading-relaxed">{member.bio}</p>
-                    {member.linkedin && (
-                      <div className="mt-4">
-                        <a
-                          href={member.linkedin}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="inline-flex items-center gap-2 text-sm font-medium text-indigo-600 hover:text-indigo-700"
-                        >
-                          <Linkedin size={16} /> Connect on LinkedIn
-                        </a>
-                      </div>
-                    )}
-                  </div>
-                </div>
-              ))}
+              {leadership.map((member) => {
+                const initials = member.name.split(' ').map(n => n[0]).join('');
+                const socials: SocialLink[] = member.linkedin
+                  ? [{ id: 'linkedin', url: member.linkedin, label: 'LinkedIn', icon: <Linkedin size={18} /> }]
+                  : [];
+
+                return (
+                  <AnimatedProfileCard
+                    key={member.name}
+                    accentColor="hsl(var(--primary))"
+                    baseCard={
+                      <ProfileCardContent
+                        name={member.name}
+                        location={member.role}
+                        bio={member.bio}
+                        avatarSrc={member.image}
+                        avatarFallback={initials}
+                        socials={socials}
+                      />
+                    }
+                    overlayCard={
+                      <ProfileCardContent
+                        variant="on-accent"
+                        name={member.name}
+                        location={member.role}
+                        bio={member.bio}
+                        avatarSrc={member.image}
+                        avatarFallback={initials}
+                        showAvatar={false}
+                        socials={socials}
+                        titleStyle={{ color: 'var(--primary-foreground)' }}
+                        descriptionClassName="text-primary-foreground/80"
+                        bioClassName="text-primary-foreground/80"
+                        footerClassName="text-primary-foreground"
+                      />
+                    }
+                  />
+                );
+              })}
             </div>
           </div>
         </section>
