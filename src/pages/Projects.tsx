@@ -8,6 +8,7 @@ import { AIWaveField } from "@/components/AIWaveField";
 import { AI3DOrb } from "@/components/AI3DOrb";
 import { AIDataStream } from "@/components/AIDataStream";
 import { FadeUp, SlideLeft, SlideRight, StaggerContainer, StaggerItem } from "@/components/ScrollAnimations";
+import { ContainerScroll } from "@/components/ui/container-scroll-animation";
 import {
   ArrowRight, ExternalLink, Calendar, MapPin, Zap, CheckCircle,
   Brain, Eye, Code, Smartphone, BarChart3, Shield, Layers, Globe,
