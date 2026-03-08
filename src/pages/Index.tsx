@@ -63,7 +63,7 @@ const Index = () => {
   const partnersContainerRef = useRef<HTMLDivElement | null>(null);
   const isPartnersHoveringRef = useRef(false);
 
-  useEffect(() => {}, []);
+  
 
   useEffect(() => {
     const container = partnersContainerRef.current;
