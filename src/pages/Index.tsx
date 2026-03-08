@@ -1,12 +1,15 @@
-import { useEffect, useRef, lazy, Suspense } from "react";
+import { useEffect, useRef } from "react";
 import { Navigation } from "@/components/Navigation";
 import { Footer } from "@/components/Footer";
 import { Button } from "@/components/ui/button";
 import { AICircuitLines } from "@/components/AICircuitLines";
+import { AIFloatingIcons } from "@/components/AIFloatingIcons";
 import { AIHexagonGrid } from "@/components/AIHexagonGrid";
+import { AI3DOrb } from "@/components/AI3DOrb";
 import { AI3DCube } from "@/components/AI3DCube";
 import { AIWaveField } from "@/components/AIWaveField";
 import { AIParticleRing } from "@/components/AIParticleRing";
+import { AIDataStream } from "@/components/AIDataStream";
 import { AnimatedGridBg } from "@/components/AnimatedGridBg";
 import { FadeUp, SlideLeft, SlideRight, StaggerContainer, StaggerItem } from "@/components/ScrollAnimations";
 import {
@@ -15,8 +18,6 @@ import {
   Lightbulb, Code2, Rocket, Quote,
 } from "lucide-react";
 import { Link } from "react-router-dom";
-
-const Hero3DScene = lazy(() => import("@/components/Hero3DScene"));
 
 /* ─── Data ─── */
 const capabilities = [
