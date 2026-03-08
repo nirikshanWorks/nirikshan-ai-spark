@@ -207,7 +207,7 @@ export const Navigation = () => {
 
             {/* Mobile Menu Button */}
             <div className="md:hidden flex items-center gap-2">
-              <ThemeToggle />
+              <SwitchToggleThemeDemo />
               <button onClick={toggleMobileMenu} aria-expanded={mobileMenuOpen} aria-controls="mobile-navigation" className="p-2 relative z-[80]">
                 {mobileMenuOpen ? <X size={22} /> : <Menu size={22} />}
               </button>
