@@ -11,6 +11,7 @@ import { AuthProvider } from "@/hooks/useAuth";
 import { Chatbot } from "@/components/Chatbot/Chatbot";
 import { PageTransition } from "@/components/PageTransition";
 import { EyeLoader, EyeLoaderInline } from "@/components/EyeLoader";
+import { MouseColorSplatter } from "@/components/MouseColorSplatter";
 
 const Index = lazy(() => import("./pages/Index"));
 const About = lazy(() => import("./pages/About"));
