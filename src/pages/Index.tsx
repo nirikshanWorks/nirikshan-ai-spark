@@ -14,6 +14,7 @@ import { AnimatedGridBg } from "@/components/AnimatedGridBg";
 import { TypingText } from "@/components/TypingText";
 import { FadeUp, SlideLeft, SlideRight, StaggerContainer, StaggerItem } from "@/components/ScrollAnimations";
 import { ContainerScroll } from "@/components/ui/container-scroll-animation";
+import { InfiniteTextMarquee } from "@/components/ui/infinite-text-marquee";
 import {
   ArrowRight, Brain, Eye, Bot, Building2, Activity,
   TrendingUp, FileText, CheckCircle2,
@@ -404,6 +405,10 @@ const Index = () => {
           </div>
         </section>
       </main>
+
+      <section className="py-8 overflow-hidden">
+        <InfiniteTextMarquee text="Nirikshan AI" link="/contact" speed={25} tooltipText="Let's Build Together 🚀" fontSize="6rem" />
+      </section>
 
       <Footer />
     </div>
