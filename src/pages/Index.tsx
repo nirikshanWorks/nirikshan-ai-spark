@@ -6,6 +6,12 @@ import { Button } from "@/components/ui/button";
 import { AICircuitLines } from "@/components/AICircuitLines";
 import { AIFloatingIcons } from "@/components/AIFloatingIcons";
 import { AIHexagonGrid } from "@/components/AIHexagonGrid";
+import { AI3DOrb } from "@/components/AI3DOrb";
+import { AI3DCube } from "@/components/AI3DCube";
+import { AIWaveField } from "@/components/AIWaveField";
+import { AIParticleRing } from "@/components/AIParticleRing";
+import { AIDataStream } from "@/components/AIDataStream";
+import { AnimatedGridBg } from "@/components/AnimatedGridBg";
 import { FadeUp, SlideLeft, SlideRight, StaggerContainer, StaggerItem, ScaleUp, Counter } from "@/components/ScrollAnimations";
 import {
   ArrowRight, Brain, Eye, Bot, Building2, Activity,
@@ -202,6 +208,11 @@ const Index = () => {
         <section className="relative overflow-hidden pt-24 pb-20 md:pt-36 md:pb-28">
           <AICircuitLines className="opacity-40" />
           <AIFloatingIcons count={8} />
+          <AIDataStream className="opacity-20" />
+          {/* 3D Orb decoration */}
+          <div className="absolute -right-10 top-20 opacity-30 hidden lg:block">
+            <AI3DOrb size={250} />
+          </div>
           {/* Colorful background blobs */}
           <div className="absolute inset-0 overflow-hidden" aria-hidden="true">
             <div className="absolute top-10 left-10 w-[400px] h-[400px] rounded-full blur-[100px] animate-pulse" style={{ background: `${holiColors[0]}20` }} />
@@ -324,6 +335,11 @@ const Index = () => {
         {/* ── 3. Capabilities ── */}
         <section className="py-20 md:py-28 relative">
           <AIHexagonGrid className="opacity-30" />
+          <AIWaveField className="opacity-20" />
+          {/* Floating 3D cube */}
+          <div className="absolute left-6 top-1/2 -translate-y-1/2 opacity-20 hidden xl:block">
+            <AI3DCube size={100} />
+          </div>
            <div className="container mx-auto px-6">
             <FadeUp className="text-center mb-16">
               <p className="text-sm font-semibold uppercase tracking-widest mb-3" style={{ color: holiColors[6] }}>Core Capabilities</p>
@@ -352,6 +368,11 @@ const Index = () => {
         {/* ── 4. Use Cases ── */}
         <section className="py-20 md:py-28 relative" style={{ background: `linear-gradient(180deg, transparent, ${holiColors[6]}05, ${holiColors[3]}05, transparent)` }}>
           <AICircuitLines className="opacity-20" />
+          <AnimatedGridBg className="opacity-15" />
+          {/* Particle ring decoration */}
+          <div className="absolute -right-20 top-10 opacity-15 hidden xl:block">
+            <AIParticleRing size={200} particleCount={30} />
+          </div>
           <div className="container mx-auto px-6 relative z-10">
             <FadeUp>
             <div className="text-center mb-16">
@@ -380,7 +401,8 @@ const Index = () => {
         </section>
 
         {/* ── 5. Trust & Proof ── */}
-        <section className="py-20 md:py-28">
+        <section className="py-20 md:py-28 relative">
+          <AIWaveField className="opacity-10" />
           <div className="container mx-auto px-6">
             <div className="text-center mb-16">
               <p className="text-sm font-semibold uppercase tracking-widest mb-3" style={{ color: holiColors[0] }}>Trust & Proof</p>
@@ -439,8 +461,13 @@ const Index = () => {
         </section>
 
         {/* ── 6. How We Work ── */}
-        <section className="py-20 md:py-28" style={{ background: `linear-gradient(180deg, transparent, ${holiColors[1]}06, ${holiColors[8]}06, transparent)` }}>
-          <div className="container mx-auto px-6">
+        <section className="py-20 md:py-28 relative" style={{ background: `linear-gradient(180deg, transparent, ${holiColors[1]}06, ${holiColors[8]}06, transparent)` }}>
+          <AIHexagonGrid className="opacity-15" />
+          {/* 3D Cube decoration */}
+          <div className="absolute right-10 bottom-10 opacity-20 hidden lg:block">
+            <AI3DCube size={80} />
+          </div>
+          <div className="container mx-auto px-6 relative z-10">
             <div className="text-center mb-16">
               <p className="text-sm font-semibold uppercase tracking-widest mb-3" style={{ color: holiColors[8] }}>Our Process</p>
               <h2 className="text-3xl md:text-4xl font-bold mb-4">How We <span style={{ color: holiColors[6] }}>Work</span></h2>
