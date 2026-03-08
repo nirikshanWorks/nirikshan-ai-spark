@@ -1,3 +1,4 @@
+import { SEO } from "@/components/SEO";
 import { Navigation } from "@/components/Navigation";
 import { SentimentAnalysisDemo } from "@/components/SentimentAnalysisDemo";
 import { Footer } from "@/components/Footer";
