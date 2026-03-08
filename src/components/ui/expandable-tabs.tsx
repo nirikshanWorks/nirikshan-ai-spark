@@ -84,10 +84,11 @@ export function ExpandableTabs({
           return <SeparatorEl key={`separator-${index}`} />;
         }
 
-        const Icon = tab.icon;
+        const t = tab as Tab;
+        const Icon = t.icon;
         return (
           <motion.button
-            key={tab.title}
+            key={t.title}
             variants={buttonVariants}
             initial={false}
             animate="animate"
