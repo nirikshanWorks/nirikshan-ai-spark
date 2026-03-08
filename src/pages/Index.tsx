@@ -406,6 +406,10 @@ const Index = () => {
         </section>
       </main>
 
+      <section className="py-8 overflow-hidden">
+        <InfiniteTextMarquee text="Nirikshan AI" link="/contact" speed={25} tooltipText="Let's Build Together 🚀" fontSize="6rem" />
+      </section>
+
       <Footer />
     </div>
   );
