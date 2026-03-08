@@ -9,9 +9,10 @@ import {
     NavigationMenuList,
     NavigationMenuTrigger,
 } from "@/components/ui/navigation-menu";
-import { Menu, X } from "lucide-react";
+import { ExpandableTabs } from "@/components/ui/expandable-tabs";
+import { Menu, X, Info, FolderKanban, BookOpen, Brain, Briefcase, Users, Lightbulb, Mail } from "lucide-react";
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 
 import { expertiseCategories } from "@/pages/expertise/expertiseData";
 
@@ -23,6 +24,19 @@ const navigationCategories = expertiseCategories.map((category) => ({
     href: `/expertise/${category.slug}/${service.slug}`,
   })),
 }));
+
+const expandableNavTabs = [
+  { title: "About", icon: Info, path: "/about" },
+  { title: "Expertise", icon: Lightbulb, path: "/expertise" },
+  { title: "Projects", icon: FolderKanban, path: "/projects" },
+  { type: "separator" as const },
+  { title: "Case Studies", icon: BookOpen, path: "/case-studies" },
+  { title: "AICI", icon: Brain, path: "/campaign-intelligence" },
+  { type: "separator" as const },
+  { title: "Careers", icon: Briefcase, path: "/careers" },
+  { title: "Who We Are", icon: Users, path: "/who-we-are" },
+  { title: "Contact", icon: Mail, path: "/contact" },
+];
 
 const navLinks = [
   { label: "About", path: "/about" },
@@ -36,14 +50,11 @@ const navLinks = [
 export const Navigation = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [mobileExpertiseOpen, setMobileExpertiseOpen] = useState(false);
-  const [desktopMenuValue, setDesktopMenuValue] = useState<string | undefined>(undefined);
   const [scrolled, setScrolled] = useState(false);
-  const desktopMenuOpen = Boolean(desktopMenuValue);
   const navRef = useRef<HTMLElement | null>(null);
   const [headerHeight, setHeaderHeight] = useState(0);
   const location = useLocation();
-
-  const isActive = (path: string) => location.pathname === path;
+  const navigate = useNavigate();
 
   const toggleMobileMenu = () => {
     setMobileMenuOpen((prev) => {
@@ -65,14 +76,14 @@ export const Navigation = () => {
   }, []);
 
   useEffect(() => {
-    if (mobileMenuOpen || desktopMenuOpen) {
+    if (mobileMenuOpen) {
       const orig = document.body.style.overflow;
       document.body.style.overflow = "hidden";
       return () => { document.body.style.overflow = orig; };
     }
     document.body.style.overflow = "";
     return undefined;
-  }, [mobileMenuOpen, desktopMenuOpen]);
+  }, [mobileMenuOpen]);
 
   useLayoutEffect(() => {
     const update = () => {
@@ -92,9 +103,27 @@ export const Navigation = () => {
     };
   }, []);
 
-  useEffect(() => {
-    setDesktopMenuValue(undefined);
-  }, [location.pathname]);
+  const handleExpandableTabChange = (index: number | null) => {
+    if (index === null) return;
+    // Filter to only non-separator tabs to find the right path
+    const nonSepTabs = expandableNavTabs.filter((t) => !("type" in t && t.type === "separator"));
+    // Map the visual index back — count separators before this index
+    let nonSepIndex = 0;
+    let count = 0;
+    for (let i = 0; i < expandableNavTabs.length; i++) {
+      const tab = expandableNavTabs[i];
+      if ("type" in tab && tab.type === "separator") continue;
+      if (count === index) {
+        nonSepIndex = count;
+        break;
+      }
+      count++;
+    }
+    const target = nonSepTabs[nonSepIndex];
+    if (target && "path" in target && target.path) {
+      navigate(target.path);
+    }
+  };
 
   return (
     <>
@@ -109,7 +138,7 @@ export const Navigation = () => {
         <div className="mx-auto flex w-full max-w-7xl items-center justify-between px-4 sm:px-6">
           <div className="flex h-16 w-full items-center justify-between">
             {/* Logo */}
-            <Link to="/" className="flex items-center space-x-3 group">
+            <Link to="/" className="flex items-center space-x-3 group shrink-0">
               <img
                 src="/Nirikshan_AI_Logo_new-removebg-preview.png"
                 alt="Nirikshan AI Pvt. Ltd."
@@ -120,92 +149,21 @@ export const Navigation = () => {
               </div>
             </Link>
 
-            {/* Desktop Navigation */}
-            <div className="hidden md:flex items-center space-x-1">
-              <Link to="/about">
-                <Button variant="ghost" size="sm" className={`text-sm font-bold ${isActive("/about") ? "bg-secondary text-foreground" : "text-muted-foreground hover:text-foreground"}`}>
-                  About
-                </Button>
-              </Link>
-
-              <NavigationMenu value={desktopMenuValue} onValueChange={setDesktopMenuValue}>
-                <NavigationMenuList>
-                  <NavigationMenuItem value="expertise">
-                    <NavigationMenuTrigger className="bg-transparent text-sm font-bold text-muted-foreground hover:text-foreground h-9 px-3">
-                      Expertise
-                    </NavigationMenuTrigger>
-                    <NavigationMenuContent className="md:w-screen md:max-w-none md:px-0 md:max-h-[75vh] md:overflow-y-auto animate-in slide-in-from-top-4 fade-in duration-300">
-                      <div className="w-full px-4 py-6 md:px-10 lg:px-20 space-y-6">
-                        <div className="flex flex-col items-start justify-between gap-4 rounded-xl border border-border bg-secondary/50 p-6 md:flex-row md:items-center">
-                          <div className="space-y-2">
-                            <span className="text-xs font-semibold uppercase tracking-[0.25em] text-muted-foreground">
-                              Explore Our Expertise
-                            </span>
-                            <h3 className="text-2xl font-semibold text-foreground">
-                              Tailored solutions across industries and capabilities.
-                            </h3>
-                          </div>
-                          <Link to="/expertise" className="shrink-0">
-                            <Button variant="outline" className="border-primary text-primary hover:bg-primary hover:text-primary-foreground">
-                              View all expertise
-                            </Button>
-                          </Link>
-                        </div>
-
-                        <div className="grid grid-cols-1 gap-6 md:grid-cols-3 lg:grid-cols-4">
-                          {navigationCategories.map((category, index) => (
-                            <div
-                              key={category.title}
-                              className="group space-y-3 rounded-xl border border-border bg-card p-5 transition-all duration-300 hover:border-primary/40 hover:shadow-md hover:-translate-y-1 animate-in fade-in slide-in-from-bottom-2"
-                              style={{ animationDelay: `${index * 50}ms` }}
-                            >
-                              <Link
-                                to={`/expertise/${category.slug}`}
-                                className="flex items-center gap-2 font-bold text-sm tracking-wider text-gradient transition-opacity group-hover:opacity-80"
-                              >
-                                {category.title}
-                                <span className="h-px flex-1 bg-gradient-to-r from-primary/40 to-transparent" />
-                              </Link>
-                              <ul className="space-y-2">
-                                {category.items.map((item) => (
-                                  <li key={item.title}>
-                                    <NavigationMenuLink asChild>
-                                      <Link
-                                        to={item.href}
-                                        className="block rounded-md px-2 py-1 text-sm text-muted-foreground transition-colors duration-200 hover:bg-primary/10 hover:text-primary"
-                                      >
-                                        {item.title}
-                                      </Link>
-                                    </NavigationMenuLink>
-                                  </li>
-                                ))}
-                              </ul>
-                            </div>
-                          ))}
-                        </div>
-                      </div>
-                    </NavigationMenuContent>
-                  </NavigationMenuItem>
-                </NavigationMenuList>
-              </NavigationMenu>
-
-              {navLinks.slice(1).map((link) => (
-                <Link key={link.path} to={link.path}>
-                  <Button variant="ghost" size="sm" className={`text-sm font-bold ${isActive(link.path) ? "bg-secondary text-foreground" : "text-muted-foreground hover:text-foreground"}`}>
-                    {link.label}
-                  </Button>
-                </Link>
-              ))}
-
+            {/* Desktop Navigation — ExpandableTabs */}
+            <div className="hidden lg:flex items-center gap-3">
+              <ExpandableTabs
+                tabs={expandableNavTabs.map((t) => {
+                  if ("type" in t && t.type === "separator") return { type: "separator" as const };
+                  return { title: t.title!, icon: t.icon! };
+                })}
+                onChange={handleExpandableTabChange}
+                className="border-border/50 bg-background/60 backdrop-blur-sm shadow-none"
+              />
               <SwitchToggleThemeDemo />
-
-              <Link to="/contact">
-                <Button23 label="Get in Touch" className="ml-3 text-xs px-6 py-2 border-primary/30 bg-primary/10 text-primary hover:bg-primary hover:text-primary-foreground" />
-              </Link>
             </div>
 
             {/* Mobile Menu Button */}
-            <div className="md:hidden flex items-center gap-2">
+            <div className="lg:hidden flex items-center gap-2">
               <SwitchToggleThemeDemo />
               <button onClick={toggleMobileMenu} aria-expanded={mobileMenuOpen} aria-controls="mobile-navigation" className="p-2 relative z-[80]">
                 {mobileMenuOpen ? <X size={22} /> : <Menu size={22} />}
@@ -215,11 +173,11 @@ export const Navigation = () => {
         </div>
       </nav>
 
-      {/* Mobile Navigation — rendered OUTSIDE nav to avoid overflow clipping */}
+      {/* Mobile Navigation */}
       {mobileMenuOpen && (
         <div
           id="mobile-navigation"
-          className="fixed inset-x-0 top-16 bottom-0 z-[70] overflow-y-auto bg-background backdrop-blur-xl px-5 py-5 md:hidden border-t border-border animate-in fade-in slide-in-from-top-2 duration-200"
+          className="fixed inset-x-0 top-16 bottom-0 z-[70] overflow-y-auto bg-background backdrop-blur-xl px-5 py-5 lg:hidden border-t border-border animate-in fade-in slide-in-from-top-2 duration-200"
         >
           <div className="space-y-1 pb-[max(env(safe-area-inset-bottom),1rem)]">
             <Link
