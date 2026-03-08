@@ -2,6 +2,9 @@ import { SEO } from "@/components/SEO";
 import React from "react";
 import { LogoCarousel, type Logo } from "@/components/ui/logo-carousel";
 import mockupDashboard from "@/assets/mockup-ai-dashboard.jpg";
+import partnerMadapet from "@/assets/partners/madapet.png";
+import partnerVB from "@/assets/partners/vb.png";
+import partnerMDJKS from "@/assets/partners/mdjks.png";
 import { Navigation } from "@/components/Navigation";
 import { Footer } from "@/components/Footer";
 import { Button } from "@/components/ui/button";
@@ -54,11 +57,13 @@ const makeImgLogo = (src: string, alt: string) => {
 };
 
 const partnerLogos: Logo[] = [
-  { name: "Madapet", id: 1, img: makeImgLogo("https://res.cloudinary.com/dch0uyw8e/image/upload/v1760830199/LOGO_8_8_kkuti6.jpg", "Madapet") },
+  { name: "Madapet", id: 1, img: makeImgLogo(partnerMadapet, "Madapet") },
   { name: "Mangosorange Agritech", id: 2, img: makeImgLogo("https://mangosorange.co.in/assets/img/MOLogo.png", "Mangosorange Agritech") },
   { name: "Motherson", id: 3, img: makeImgLogo("https://apn-portal.my.salesforce.com/servlet/servlet.ImageServer?id=0150h0000055wCcAAI&oid=00DE0000000c48tMAA", "Motherson") },
   { name: "Ranayara Pvt Ltd", id: 4, img: makeImgLogo("https://5.imimg.com/data5/NSDMERP/Board/2023/5/308937129/NE/QI/NP/155783236/155783236-board-1684400723760.jpg", "Ranayara Pvt Ltd") },
   { name: "YMCA University", id: 5, img: makeImgLogo("https://upload.wikimedia.org/wikipedia/en/a/ae/J.C._Bose_University_of_Science_and_Technology%2C_YMCA_logo.png", "YMCA University") },
+  { name: "VB Group", id: 6, img: makeImgLogo(partnerVB, "VB Group") },
+  { name: "Manorama Dabral Jan Kalyan Samiti", id: 7, img: makeImgLogo(partnerMDJKS, "Manorama Dabral Jan Kalyan Samiti") },
 ];
 
 const processSteps = [
@@ -334,7 +339,7 @@ const Index = () => {
 
             {/* Client logos */}
             <FadeUp>
-              <LogoCarousel columnCount={5} logos={partnerLogos} />
+              <LogoCarousel columnCount={7} logos={partnerLogos} />
             </FadeUp>
           </div>
         </section>
