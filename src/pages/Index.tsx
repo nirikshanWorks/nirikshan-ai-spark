@@ -1,4 +1,5 @@
 import { useEffect, useRef } from "react";
+import mockupDashboard from "@/assets/mockup-ai-dashboard.jpg";
 import { Navigation } from "@/components/Navigation";
 import { Footer } from "@/components/Footer";
 import { Button } from "@/components/ui/button";
@@ -155,7 +156,7 @@ const Index = () => {
             }
           >
             <img
-              src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=1200&q=80"
+              src={mockupDashboard}
               alt="AI Analytics Dashboard"
               className="w-full h-full object-cover object-left-top rounded-2xl"
             />

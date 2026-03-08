@@ -1,4 +1,5 @@
 import { Navigation } from "@/components/Navigation";
+import mockupProjects from "@/assets/mockup-projects.jpg";
 import { Footer } from "@/components/Footer";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -220,7 +221,7 @@ const Projects = () => {
             }
           >
             <img
-              src="https://images.unsplash.com/photo-1555949963-aa79dcee981c?w=1200&q=80"
+              src={mockupProjects}
               alt="AI Innovation Projects"
               className="w-full h-full object-cover object-left-top rounded-2xl"
             />

@@ -1,4 +1,5 @@
 import { Footer } from "@/components/Footer";
+import mockupTeam from "@/assets/mockup-team.jpg";
 import { Navigation } from "@/components/Navigation";
 import { Button } from "@/components/ui/button";
 import { useScrollAnimation } from "@/hooks/use-scroll-animation";
@@ -201,7 +202,7 @@ const About = () => {
             }
           >
             <img
-              src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=1200&q=80"
+              src={mockupTeam}
               alt="Nirikshan AI Team"
               className="w-full h-full object-cover object-top rounded-2xl"
             />
