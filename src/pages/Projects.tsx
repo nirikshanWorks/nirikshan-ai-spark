@@ -221,7 +221,7 @@ const Projects = () => {
             }
           >
             <img
-              src="https://images.unsplash.com/photo-1555949963-aa79dcee981c?w=1200&q=80"
+              src={mockupProjects}
               alt="AI Innovation Projects"
               className="w-full h-full object-cover object-left-top rounded-2xl"
             />

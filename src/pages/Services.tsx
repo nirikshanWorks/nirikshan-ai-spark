@@ -580,7 +580,7 @@ const Services = () => {
             }
           >
             <img
-              src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=1200&q=80"
+              src={mockupServices}
               alt="Technology Solutions Dashboard"
               className="w-full h-full object-cover object-left-top rounded-2xl"
             />
