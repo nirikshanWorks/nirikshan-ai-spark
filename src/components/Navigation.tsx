@@ -152,8 +152,8 @@ export const Navigation = () => {
             {/* Desktop Navigation — ExpandableTabs */}
             <div className="hidden lg:flex items-center gap-3">
               <ExpandableTabs
-                tabs={expandableNavTabs.map((t) => {
-                  if ("type" in t && t.type === "separator") return { type: "separator" as const };
+                tabs={expandableNavTabs.map((t): { type: "separator" } | { title: string; icon: typeof Info } => {
+                  if ("type" in t && t.type === "separator") return { type: "separator" };
                   return { title: t.title!, icon: t.icon! };
                 })}
                 onChange={handleExpandableTabChange}
