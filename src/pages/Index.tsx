@@ -10,6 +10,7 @@ import { AIParticleRing } from "@/components/AIParticleRing";
 import { SplineScene } from "@/components/ui/splite";
 import { Spotlight } from "@/components/ui/spotlight";
 import { AnimatedGridBg } from "@/components/AnimatedGridBg";
+import { TypingText } from "@/components/TypingText";
 import { FadeUp, SlideLeft, SlideRight, StaggerContainer, StaggerItem } from "@/components/ScrollAnimations";
 import {
   ArrowRight, Brain, Eye, Bot, Building2, Activity,
