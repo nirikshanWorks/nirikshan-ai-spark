@@ -1,15 +1,12 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, lazy, Suspense } from "react";
 import { Navigation } from "@/components/Navigation";
 import { Footer } from "@/components/Footer";
 import { Button } from "@/components/ui/button";
 import { AICircuitLines } from "@/components/AICircuitLines";
-import { AIFloatingIcons } from "@/components/AIFloatingIcons";
 import { AIHexagonGrid } from "@/components/AIHexagonGrid";
-import { AI3DOrb } from "@/components/AI3DOrb";
 import { AI3DCube } from "@/components/AI3DCube";
 import { AIWaveField } from "@/components/AIWaveField";
 import { AIParticleRing } from "@/components/AIParticleRing";
-import { AIDataStream } from "@/components/AIDataStream";
 import { AnimatedGridBg } from "@/components/AnimatedGridBg";
 import { FadeUp, SlideLeft, SlideRight, StaggerContainer, StaggerItem } from "@/components/ScrollAnimations";
 import {
@@ -18,6 +15,8 @@ import {
   Lightbulb, Code2, Rocket, Quote,
 } from "lucide-react";
 import { Link } from "react-router-dom";
+
+const Hero3DScene = lazy(() => import("@/components/Hero3DScene"));
 
 /* ─── Data ─── */
 const capabilities = [
@@ -87,54 +86,41 @@ const Index = () => {
 
       <main className="relative z-10">
         {/* ── HERO ── */}
-        <section className="relative overflow-hidden pt-24 pb-20 md:pt-36 md:pb-28">
-          <AICircuitLines className="opacity-40" />
-          <AIFloatingIcons count={8} />
-          <AIDataStream className="opacity-20" />
-          <div className="absolute -right-10 top-20 opacity-30 hidden lg:block">
-            <AI3DOrb size={250} />
-          </div>
-          {/* Gradient blobs */}
-          <div className="absolute inset-0 overflow-hidden" aria-hidden="true">
-            <div className="absolute top-10 left-10 w-[400px] h-[400px] rounded-full blur-[100px] animate-pulse bg-primary/10" />
-            <div className="absolute top-40 right-10 w-[350px] h-[350px] rounded-full blur-[100px] animate-pulse bg-accent/10" style={{ animationDelay: "1s" }} />
-            <div className="absolute bottom-10 left-1/3 w-[300px] h-[300px] rounded-full blur-[100px] animate-pulse bg-primary/8" style={{ animationDelay: "2s" }} />
-          </div>
+        <section className="relative overflow-hidden" style={{ height: "100vh", minHeight: 600 }}>
+          <Suspense fallback={<div className="absolute inset-0" style={{ background: "#0B0F19" }} />}>
+            <Hero3DScene />
+          </Suspense>
 
-          <div className="relative container mx-auto px-6">
-            <div className="max-w-4xl mx-auto text-center space-y-8">
-              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 border border-primary/20 text-sm font-medium text-primary">
-                <Brain className="w-4 h-4" />
-                AI-Powered Enterprise Solutions
-              </div>
+          {/* Overlay text */}
+          <div className="relative z-10 flex flex-col items-center justify-center h-full px-6 text-center pointer-events-none">
+            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 border border-white/10 text-sm font-medium text-cyan-300 mb-6 pointer-events-auto">
+              <Brain className="w-4 h-4" />
+              AI-Powered Enterprise Solutions
+            </div>
 
-              <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold leading-[1.08] tracking-tight">
-                AI That Sees, Understands, and Acts for{" "}
-                <span className="text-gradient">
-                  Real-World Business Impact
-                </span>
-              </h1>
+            <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold leading-[1.08] tracking-tight text-white mb-4">
+              NIRIKSHAN AI
+            </h1>
 
-              <p className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto leading-relaxed">
-                Generative AI, Computer Vision & Agentic Solutions that transform data into actionable insights.
-              </p>
+            <p className="text-lg md:text-xl text-gray-300 max-w-2xl mx-auto leading-relaxed mb-8">
+              Turning Vision into Intelligence — Generative AI, Computer Vision & Agentic Solutions that transform data into actionable insights.
+            </p>
 
-              <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-2">
-                <Link to="/contact">
-                  <Button
-                    size="lg"
-                    className="gradient-primary text-primary-foreground px-8 h-12 text-base font-semibold w-full sm:w-auto border-0"
-                  >
-                    Request Demo
-                    <ArrowRight className="ml-2 w-5 h-5" />
-                  </Button>
-                </Link>
-                <Link to="/expertise">
-                  <Button size="lg" variant="outline" className="h-12 px-8 text-base border-border hover:bg-secondary w-full sm:w-auto">
-                    View Capabilities
-                  </Button>
-                </Link>
-              </div>
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pointer-events-auto">
+              <Link to="/expertise">
+                <Button
+                  size="lg"
+                  className="bg-cyan-500 hover:bg-cyan-400 text-black px-8 h-12 text-base font-semibold w-full sm:w-auto border-0"
+                >
+                  Explore AI Solutions
+                  <ArrowRight className="ml-2 w-5 h-5" />
+                </Button>
+              </Link>
+              <Link to="/contact">
+                <Button size="lg" variant="outline" className="h-12 px-8 text-base border-white/20 text-white hover:bg-white/10 w-full sm:w-auto">
+                  Request Demo
+                </Button>
+              </Link>
             </div>
           </div>
         </section>
