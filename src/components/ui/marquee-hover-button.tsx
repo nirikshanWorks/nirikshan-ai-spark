@@ -2,9 +2,11 @@ import * as React from "react";
 import { motion } from "motion/react";
 import { cn } from "@/lib/utils";
 
-export type Button23Props = React.ButtonHTMLAttributes<HTMLButtonElement> & {
+export type Button23Props = {
   label?: string;
   className?: string;
+  disabled?: boolean;
+  onClick?: () => void;
 };
 
 export const Button23: React.FC<Button23Props> = ({
