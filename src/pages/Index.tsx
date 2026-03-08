@@ -10,6 +10,7 @@ import { AIParticleRing } from "@/components/AIParticleRing";
 import { SplineScene } from "@/components/ui/splite";
 import { Spotlight } from "@/components/ui/spotlight";
 import { AnimatedGridBg } from "@/components/AnimatedGridBg";
+import { TypingText } from "@/components/TypingText";
 import { FadeUp, SlideLeft, SlideRight, StaggerContainer, StaggerItem } from "@/components/ScrollAnimations";
 import {
   ArrowRight, Brain, Eye, Bot, Building2, Activity,
@@ -131,7 +132,7 @@ const Index = () => {
                   />
                   <div className="absolute bottom-6 left-1/2 -translate-x-1/2 px-5 py-2.5 rounded-full bg-primary/90 backdrop-blur-sm border border-primary-foreground/20 shadow-lg">
                     <p className="text-primary-foreground text-sm font-semibold tracking-wide whitespace-nowrap">
-                      👋 Hello From Nirikshan AI
+                      <TypingText text="👋 Hello From Nirikshan AI" />
                     </p>
                   </div>
                 </div>
