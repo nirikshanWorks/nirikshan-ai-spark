@@ -69,28 +69,6 @@ const processSteps = [
 ];
 
 const Index = () => {
-  const partnersContainerRef = useRef<HTMLDivElement | null>(null);
-  const isPartnersHoveringRef = useRef(false);
-
-  
-
-  useEffect(() => {
-    const container = partnersContainerRef.current;
-    if (!container) return;
-    let raf: number;
-    const speed = 0.5;
-    const loop = () => {
-      if (!isPartnersHoveringRef.current) {
-        container.scrollLeft += speed;
-        if (container.scrollLeft >= container.scrollWidth / 2) container.scrollLeft = 0;
-      }
-      raf = requestAnimationFrame(loop);
-    };
-    raf = requestAnimationFrame(loop);
-    return () => cancelAnimationFrame(raf);
-  }, []);
-
-  const duplicatedPartners = [...partners, ...partners];
 
   return (
     <div className="min-h-screen bg-background relative">
