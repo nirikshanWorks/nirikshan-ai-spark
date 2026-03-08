@@ -89,6 +89,33 @@ const Index = () => {
         title="Nirikshan AI | AI & Machine Learning Solutions for Business Innovation"
         description="Nirikshan AI delivers advanced Generative AI, Computer Vision, and Agentic AI solutions. Accelerate business innovation through intelligent automation and data-driven insights."
         canonical="https://nirikshanai.com/"
+        jsonLd={{
+          "@context": "https://schema.org",
+          "@graph": [
+            {
+              "@type": "Organization",
+              name: "Nirikshan AI Private Limited",
+              alternateName: "Nirikshan AI",
+              url: "https://nirikshanai.com",
+              logo: "https://nirikshanai.com/nirikshan-ai-logo.png",
+              sameAs: [
+                "https://www.linkedin.com/company/nirikshan-ai/",
+                "https://www.instagram.com/nirikshan.ai/"
+              ],
+              contactPoint: {
+                "@type": "ContactPoint",
+                telephone: "+91-9410-992204",
+                contactType: "sales",
+                email: "info@nirikshanai.com"
+              }
+            },
+            {
+              "@type": "WebSite",
+              name: "Nirikshan AI",
+              url: "https://nirikshanai.com"
+            }
+          ]
+        }}
       />
       <Navigation />
 
