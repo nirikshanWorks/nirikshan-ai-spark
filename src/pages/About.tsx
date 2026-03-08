@@ -12,6 +12,7 @@ import { AI3DOrb } from "@/components/AI3DOrb";
 import { AIWaveField } from "@/components/AIWaveField";
 import { AIParticleRing } from "@/components/AIParticleRing";
 import { AI3DCube } from "@/components/AI3DCube";
+import { AIDataStream } from "@/components/AIDataStream";
 import { AnimatedGridBg } from "@/components/AnimatedGridBg";
 import { FadeUp, SlideLeft, SlideRight, StaggerContainer, StaggerItem, ScaleUp } from "@/components/ScrollAnimations";
 import {
