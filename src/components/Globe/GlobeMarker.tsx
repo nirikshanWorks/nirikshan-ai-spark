@@ -8,9 +8,10 @@ interface GlobeMarkerProps {
   label: string;
   type: 'headquarters' | 'office' | 'client';
   description?: string;
+  onClick?: () => void;
 }
 
-const GlobeMarker = ({ position, label, type, description }: GlobeMarkerProps) => {
+const GlobeMarker = ({ position, label, type, description, onClick }: GlobeMarkerProps) => {
   const markerRef = useRef<THREE.Group>(null);
   const [hovered, setHovered] = useState(false);
   const pulseRef = useRef<THREE.Mesh>(null);
@@ -66,18 +67,19 @@ const GlobeMarker = ({ position, label, type, description }: GlobeMarkerProps) =
         </mesh>
       )}
       
-      {/* Core marker */}
+      {/* Core marker - clickable */}
       <mesh
-        onPointerOver={() => setHovered(true)}
-        onPointerOut={() => setHovered(false)}
+        onPointerOver={(e) => { e.stopPropagation(); setHovered(true); document.body.style.cursor = 'pointer'; }}
+        onPointerOut={() => { setHovered(false); document.body.style.cursor = 'auto'; }}
+        onClick={(e) => { e.stopPropagation(); onClick?.(); }}
       >
         <sphereGeometry args={[isHeadquarters ? 0.025 : 0.018, 16, 16]} />
-        <meshBasicMaterial color={color} />
+        <meshBasicMaterial color={hovered ? glowColor : color} />
       </mesh>
 
       {/* Light beam for headquarters */}
       {isHeadquarters && (
-        <mesh ref={beamRef} position={[0, 0.08, 0]} rotation={[0, 0, 0]}>
+        <mesh ref={beamRef} position={[0, 0.08, 0]}>
           <cylinderGeometry args={[0.003, 0.015, 0.15, 8]} />
           <meshBasicMaterial color={color} transparent opacity={0.6} />
         </mesh>
@@ -91,7 +93,7 @@ const GlobeMarker = ({ position, label, type, description }: GlobeMarkerProps) =
         </mesh>
       )}
 
-      {/* Tooltip */}
+      {/* Tooltip on hover */}
       {hovered && (
         <Html distanceFactor={2.5} style={{ pointerEvents: 'none' }}>
           <div 
@@ -103,15 +105,13 @@ const GlobeMarker = ({ position, label, type, description }: GlobeMarkerProps) =
             }}
           >
             <p className="text-sm font-bold text-white">{label}</p>
-            <p 
-              className="text-xs mt-1 capitalize font-medium"
-              style={{ color }}
-            >
-              {type === 'headquarters' ? '🏢 Headquarters' : type === 'office' ? '🏛️ Regional Office' : '🤝 Client'}
+            <p className="text-xs mt-1 capitalize font-medium" style={{ color }}>
+              {type === 'headquarters' ? '🏢 Headquarters' : type === 'office' ? '🏛️ Chair Office' : '🤝 Client'}
             </p>
             {description && (
               <p className="text-xs text-gray-400 mt-1">{description}</p>
             )}
+            <p className="text-[10px] text-gray-500 mt-2">Click for details →</p>
           </div>
         </Html>
       )}
