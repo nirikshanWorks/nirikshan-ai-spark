@@ -47,7 +47,7 @@ export const MouseColorSplatter = () => {
         const size = p.alpha * 6;
         ctx.beginPath();
         ctx.arc(p.x, p.y, size, 0, Math.PI * 2);
-        ctx.fillStyle = `hsla(210, 80%, 65%, ${p.alpha * 0.5})`;
+        ctx.fillStyle = `hsla(0, 70%, 36%, ${p.alpha * 0.5})`;
         ctx.fill();
       }
       trailRef.current = trailRef.current.filter((p) => p.alpha > 0);
@@ -55,8 +55,8 @@ export const MouseColorSplatter = () => {
       // Glow at cursor
       const { x, y } = mouseRef.current;
       const grd = ctx.createRadialGradient(x, y, 0, x, y, 18);
-      grd.addColorStop(0, "hsla(210, 80%, 70%, 0.35)");
-      grd.addColorStop(1, "hsla(210, 80%, 70%, 0)");
+      grd.addColorStop(0, "hsla(0, 70%, 36%, 0.35)");
+      grd.addColorStop(1, "hsla(0, 70%, 36%, 0)");
       ctx.beginPath();
       ctx.arc(x, y, 18, 0, Math.PI * 2);
       ctx.fillStyle = grd;
