@@ -1,4 +1,4 @@
-import { ThemeToggle } from "@/components/ThemeToggle";
+import SwitchToggleThemeDemo from "@/components/ui/toggle-theme";
 import { Button } from "@/components/ui/button";
 import {
     NavigationMenu,
@@ -196,7 +196,7 @@ export const Navigation = () => {
                 </Link>
               ))}
 
-              <ThemeToggle />
+              <SwitchToggleThemeDemo />
 
               <Link to="/contact">
                 <Button size="sm" className="ml-3 gradient-primary text-primary-foreground font-medium">
@@ -207,7 +207,7 @@ export const Navigation = () => {
 
             {/* Mobile Menu Button */}
             <div className="md:hidden flex items-center gap-2">
-              <ThemeToggle />
+              <SwitchToggleThemeDemo />
               <button onClick={toggleMobileMenu} aria-expanded={mobileMenuOpen} aria-controls="mobile-navigation" className="p-2 relative z-[80]">
                 {mobileMenuOpen ? <X size={22} /> : <Menu size={22} />}
               </button>
