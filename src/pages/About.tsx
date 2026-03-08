@@ -188,6 +188,26 @@ const About = () => {
           </div>
         </section>
 
+        {/* Scroll Animation Showcase */}
+        <section className="bg-secondary/10">
+          <ContainerScroll
+            titleComponent={
+              <div className="text-center">
+                <p className="text-sm font-semibold uppercase tracking-widest text-primary mb-3">Who We Are</p>
+                <h2 className="text-3xl md:text-5xl font-bold">
+                  Crafting <span className="text-gradient">Intelligent</span> Systems
+                </h2>
+              </div>
+            }
+          >
+            <img
+              src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=1200&q=80"
+              alt="Nirikshan AI Team"
+              className="w-full h-full object-cover object-top rounded-2xl"
+            />
+          </ContainerScroll>
+        </section>
+
     {/* SEO meta update for About */}
     <script dangerouslySetInnerHTML={{__html: `document.title = "About — Nirikshan AI | OpenCV, Generative & Agentic AI"; const md=document.querySelector('meta[name=\"description\"]'); if(md){md.setAttribute('content','At Nirikshan AI we specialize in OpenCV, Generative AI, and Agentic AI — crafting intelligent systems that combine vision, reasoning, and autonomy.');}`}} />
 

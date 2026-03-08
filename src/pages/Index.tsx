@@ -142,6 +142,26 @@ const Index = () => {
           </div>
         </section>
 
+        {/* ── Scroll Animation Showcase ── */}
+        <section className="bg-secondary/20">
+          <ContainerScroll
+            titleComponent={
+              <div className="text-center">
+                <p className="text-sm font-semibold uppercase tracking-widest text-primary mb-3">AI Dashboard</p>
+                <h2 className="text-3xl md:text-5xl font-bold">
+                  Experience <span className="text-gradient">Intelligent</span> Analytics
+                </h2>
+              </div>
+            }
+          >
+            <img
+              src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=1200&q=80"
+              alt="AI Analytics Dashboard"
+              className="w-full h-full object-cover object-left-top rounded-2xl"
+            />
+          </ContainerScroll>
+        </section>
+
         {/* ── 2. Problem → Solution ── */}
         <section className="py-20 md:py-28 bg-secondary/30">
           <div className="container mx-auto px-6">

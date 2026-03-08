@@ -566,6 +566,26 @@ const Services = () => {
           </div>
         </section>
 
+        {/* Scroll Animation Showcase */}
+        <section className="bg-secondary/10">
+          <ContainerScroll
+            titleComponent={
+              <div className="text-center">
+                <p className="text-sm font-semibold uppercase tracking-widest text-primary mb-3">Our Platform</p>
+                <h2 className="text-3xl md:text-5xl font-bold">
+                  Full-Stack <span className="text-gradient">Technology</span> Solutions
+                </h2>
+              </div>
+            }
+          >
+            <img
+              src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=1200&q=80"
+              alt="Technology Solutions Dashboard"
+              className="w-full h-full object-cover object-left-top rounded-2xl"
+            />
+          </ContainerScroll>
+        </section>
+
         {/* 3D Product Carousel */}
         <section className="py-16 bg-gradient-to-b from-background via-secondary/20 to-background relative">
           <AIHexagonGrid className="opacity-20" />
