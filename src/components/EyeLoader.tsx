@@ -5,9 +5,9 @@ export const EyeLoader = ({ onComplete }: { onComplete?: () => void }) => {
   const [phase, setPhase] = useState<"closed" | "opening" | "open">("closed");
 
   useEffect(() => {
-    const t1 = setTimeout(() => setPhase("opening"), 400);
-    const t2 = setTimeout(() => setPhase("open"), 1600);
-    const t3 = setTimeout(() => onComplete?.(), 2200);
+    const t1 = setTimeout(() => setPhase("opening"), 300);
+    const t2 = setTimeout(() => setPhase("open"), 1800);
+    const t3 = setTimeout(() => onComplete?.(), 2300);
     return () => {
       clearTimeout(t1);
       clearTimeout(t2);
@@ -19,173 +19,115 @@ export const EyeLoader = ({ onComplete }: { onComplete?: () => void }) => {
     <AnimatePresence>
       {phase !== "open" && (
         <motion.div
-          className="fixed inset-0 z-[100] flex items-center justify-center bg-background"
+          className="fixed inset-0 z-[100] flex flex-col items-center justify-center bg-background"
           exit={{ opacity: 0 }}
           transition={{ duration: 0.5, ease: "easeInOut" }}
         >
-          <div className="relative w-40 h-40 sm:w-52 sm:h-52 flex items-center justify-center">
-            {/* Eye shape container */}
-            <svg
-              viewBox="0 0 200 120"
-              className="w-full h-full"
-              xmlns="http://www.w3.org/2000/svg"
+          {/* Eye container */}
+          <div className="relative w-48 h-28 sm:w-64 sm:h-36">
+            {/* Eye outline shape */}
+            <div
+              className="absolute inset-0 flex items-center justify-center overflow-hidden"
+              style={{
+                borderRadius: "50% / 50%",
+              }}
             >
-              {/* Upper eyelid */}
-              <motion.path
-                d="M 10 60 Q 100 60 190 60"
-                fill="hsl(var(--primary))"
-                initial={{ d: "M 10 60 Q 100 60 190 60" }}
-                animate={
-                  phase === "opening"
-                    ? { d: "M 10 60 Q 100 -10 190 60" }
-                    : { d: "M 10 60 Q 100 60 190 60" }
-                }
-                transition={{ duration: 0.8, ease: "easeInOut" }}
-              />
-              {/* Lower eyelid */}
-              <motion.path
-                d="M 10 60 Q 100 60 190 60"
-                fill="hsl(var(--primary))"
-                initial={{ d: "M 10 60 Q 100 60 190 60" }}
-                animate={
-                  phase === "opening"
-                    ? { d: "M 10 60 Q 100 130 190 60" }
-                    : { d: "M 10 60 Q 100 60 190 60" }
-                }
-                transition={{ duration: 0.8, ease: "easeInOut" }}
-              />
-
-              {/* Eye white (sclera) - revealed as lids open */}
-              <motion.ellipse
-                cx="100"
-                cy="60"
-                rx="80"
-                ry="0"
-                fill="hsl(var(--card))"
-                initial={{ ry: 0 }}
-                animate={phase === "opening" ? { ry: 35 } : { ry: 0 }}
-                transition={{ duration: 0.8, ease: "easeInOut" }}
+              {/* Sclera (white of eye) */}
+              <motion.div
+                className="absolute inset-0 bg-card border-2 border-primary/30"
+                style={{ borderRadius: "50% / 50%" }}
+                initial={{ scaleY: 0 }}
+                animate={phase === "opening" ? { scaleY: 1 } : { scaleY: 0 }}
+                transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
               />
 
               {/* Iris */}
-              <motion.circle
-                cx="100"
-                cy="60"
-                r="0"
-                fill="hsl(var(--primary))"
-                initial={{ r: 0, opacity: 0 }}
-                animate={
-                  phase === "opening"
-                    ? { r: 22, opacity: 1 }
-                    : { r: 0, opacity: 0 }
-                }
+              <motion.div
+                className="absolute w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-primary"
+                initial={{ scale: 0 }}
+                animate={phase === "opening" ? { scale: 1 } : { scale: 0 }}
                 transition={{ duration: 0.6, delay: 0.3, ease: "easeOut" }}
-              />
+              >
+                {/* Iris inner ring */}
+                <div className="absolute inset-1 rounded-full border-2 border-primary-foreground/20" />
 
-              {/* Iris gradient ring */}
-              <motion.circle
-                cx="100"
-                cy="60"
-                r="0"
-                fill="none"
-                stroke="hsl(var(--primary) / 0.5)"
-                strokeWidth="4"
-                initial={{ r: 0, opacity: 0 }}
-                animate={
-                  phase === "opening"
-                    ? { r: 18, opacity: 1 }
-                    : { r: 0, opacity: 0 }
-                }
-                transition={{ duration: 0.6, delay: 0.35, ease: "easeOut" }}
-              />
+                {/* Pupil */}
+                <motion.div
+                  className="absolute inset-0 m-auto w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-foreground"
+                  initial={{ scale: 0 }}
+                  animate={phase === "opening" ? { scale: 1 } : { scale: 0 }}
+                  transition={{ duration: 0.4, delay: 0.5, ease: "easeOut" }}
+                >
+                  {/* Light reflection */}
+                  <div className="absolute top-1 right-1 w-2.5 h-2.5 sm:w-3 sm:h-3 rounded-full bg-white/90" />
+                  <div className="absolute bottom-2 left-1.5 w-1.5 h-1.5 rounded-full bg-white/50" />
+                </motion.div>
+              </motion.div>
+            </div>
 
-              {/* Pupil */}
-              <motion.circle
-                cx="100"
-                cy="60"
-                r="0"
-                fill="hsl(var(--foreground))"
-                initial={{ r: 0, opacity: 0 }}
-                animate={
-                  phase === "opening"
-                    ? { r: 10, opacity: 1 }
-                    : { r: 0, opacity: 0 }
-                }
-                transition={{ duration: 0.5, delay: 0.5, ease: "easeOut" }}
-              />
-
-              {/* Light reflection */}
-              <motion.circle
-                cx="108"
-                cy="52"
-                r="0"
-                fill="white"
-                initial={{ r: 0, opacity: 0 }}
-                animate={
-                  phase === "opening"
-                    ? { r: 4, opacity: 0.9 }
-                    : { r: 0, opacity: 0 }
-                }
-                transition={{ duration: 0.3, delay: 0.7, ease: "easeOut" }}
-              />
-
-              {/* Second smaller reflection */}
-              <motion.circle
-                cx="93"
-                cy="67"
-                r="0"
-                fill="white"
-                initial={{ r: 0, opacity: 0 }}
-                animate={
-                  phase === "opening"
-                    ? { r: 2, opacity: 0.6 }
-                    : { r: 0, opacity: 0 }
-                }
-                transition={{ duration: 0.3, delay: 0.75, ease: "easeOut" }}
-              />
-
-              {/* Scanning line effect */}
-              <motion.line
-                x1="20"
-                y1="60"
-                x2="180"
-                y2="60"
-                stroke="hsl(var(--primary))"
-                strokeWidth="1"
-                strokeOpacity="0.6"
-                initial={{ pathLength: 0, opacity: 0 }}
-                animate={
-                  phase === "opening"
-                    ? { pathLength: 1, opacity: [0, 0.8, 0] }
-                    : { pathLength: 0, opacity: 0 }
-                }
-                transition={{ duration: 1, delay: 0.6, ease: "easeInOut" }}
-              />
-            </svg>
-
-            {/* Pulsing glow behind eye */}
+            {/* Upper eyelid */}
             <motion.div
-              className="absolute inset-0 rounded-full bg-primary/20 blur-2xl"
-              initial={{ scale: 0, opacity: 0 }}
+              className="absolute top-0 left-0 right-0 bg-background z-10 origin-top"
+              style={{ height: "50%" }}
+              initial={{ scaleY: 1 }}
+              animate={phase === "opening" ? { scaleY: 0 } : { scaleY: 1 }}
+              transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+            />
+
+            {/* Lower eyelid */}
+            <motion.div
+              className="absolute bottom-0 left-0 right-0 bg-background z-10 origin-bottom"
+              style={{ height: "50%" }}
+              initial={{ scaleY: 1 }}
+              animate={phase === "opening" ? { scaleY: 0 } : { scaleY: 1 }}
+              transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+            />
+
+            {/* Eyelid edges (lash lines) */}
+            <motion.div
+              className="absolute top-1/2 left-0 right-0 h-0.5 bg-primary/60 z-20 origin-center"
+              initial={{ scaleX: 1, opacity: 1 }}
+              animate={phase === "opening" ? { scaleX: 0, opacity: 0 } : { scaleX: 1, opacity: 1 }}
+              transition={{ duration: 0.6, delay: 0.2, ease: "easeInOut" }}
+            />
+
+            {/* Scanning pulse */}
+            <motion.div
+              className="absolute inset-0 z-30 pointer-events-none"
+              initial={{ opacity: 0 }}
               animate={
                 phase === "opening"
-                  ? { scale: [0, 1.2, 1], opacity: [0, 0.4, 0.2] }
-                  : { scale: 0, opacity: 0 }
+                  ? { opacity: [0, 0.4, 0] }
+                  : { opacity: 0 }
               }
-              transition={{ duration: 1, delay: 0.3 }}
-            />
+              transition={{ duration: 1.2, delay: 0.6 }}
+            >
+              <div className="w-full h-full rounded-full border-2 border-primary/40 animate-ping" />
+            </motion.div>
           </div>
+
+          {/* Glow effect */}
+          <motion.div
+            className="absolute w-48 h-48 sm:w-64 sm:h-64 rounded-full bg-primary/10 blur-3xl pointer-events-none"
+            initial={{ scale: 0, opacity: 0 }}
+            animate={
+              phase === "opening"
+                ? { scale: [0, 1.5, 1.2], opacity: [0, 0.3, 0.15] }
+                : { scale: 0, opacity: 0 }
+            }
+            transition={{ duration: 1, delay: 0.2 }}
+          />
 
           {/* Brand text */}
           <motion.p
-            className="absolute bottom-1/3 text-sm sm:text-base font-semibold tracking-widest uppercase text-muted-foreground"
+            className="mt-8 text-sm sm:text-base font-semibold tracking-[0.2em] uppercase text-muted-foreground"
             initial={{ opacity: 0, y: 10 }}
             animate={
               phase === "opening"
                 ? { opacity: 1, y: 0 }
                 : { opacity: 0, y: 10 }
             }
-            transition={{ duration: 0.5, delay: 0.8 }}
+            transition={{ duration: 0.5, delay: 0.6 }}
           >
             Nirikshan AI
           </motion.p>
@@ -195,43 +137,56 @@ export const EyeLoader = ({ onComplete }: { onComplete?: () => void }) => {
   );
 };
 
-export const EyeLoaderInline = () => (
-  <div className="min-h-screen flex items-center justify-center bg-background">
-    <div className="relative w-32 h-32 flex items-center justify-center">
-      <svg viewBox="0 0 200 120" className="w-full h-full" xmlns="http://www.w3.org/2000/svg">
-        {/* Blinking eye animation */}
-        <ellipse cx="100" cy="60" rx="80" ry="35" fill="hsl(var(--card))" stroke="hsl(var(--primary))" strokeWidth="2" />
-        <circle cx="100" cy="60" r="22" fill="hsl(var(--primary))" />
-        <circle cx="100" cy="60" r="10" fill="hsl(var(--foreground))" />
-        <circle cx="108" cy="52" r="4" fill="white" opacity="0.9" />
+export const EyeLoaderInline = () => {
+  const [blink, setBlink] = useState(false);
 
-        {/* Upper eyelid blink */}
-        <motion.path
-          d="M 10 60 Q 100 -10 190 60"
-          fill="hsl(var(--background))"
-          animate={{
-            d: [
-              "M 10 60 Q 100 -10 190 60",
-              "M 10 60 Q 100 60 190 60",
-              "M 10 60 Q 100 -10 190 60",
-            ],
-          }}
-          transition={{ duration: 2, repeat: Infinity, repeatDelay: 1, ease: "easeInOut" }}
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setBlink(true);
+      setTimeout(() => setBlink(false), 300);
+    }, 2500);
+    return () => clearInterval(interval);
+  }, []);
+
+  return (
+    <div className="min-h-screen flex flex-col items-center justify-center bg-background gap-4">
+      <div className="relative w-32 h-20">
+        {/* Eye shape */}
+        <div
+          className="absolute inset-0 overflow-hidden"
+          style={{ borderRadius: "50% / 50%" }}
+        >
+          <div
+            className="absolute inset-0 bg-card border-2 border-primary/30"
+            style={{ borderRadius: "50% / 50%" }}
+          />
+          {/* Iris */}
+          <div className="absolute inset-0 flex items-center justify-center">
+            <div className="w-12 h-12 rounded-full bg-primary relative">
+              <div className="absolute inset-0 m-auto w-6 h-6 rounded-full bg-foreground">
+                <div className="absolute top-0.5 right-0.5 w-2 h-2 rounded-full bg-white/90" />
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Blinking eyelids */}
+        <motion.div
+          className="absolute top-0 left-0 right-0 bg-background z-10 origin-top"
+          style={{ height: "50%" }}
+          animate={{ scaleY: blink ? 1 : 0 }}
+          transition={{ duration: 0.15, ease: "easeInOut" }}
         />
-        {/* Lower eyelid blink */}
-        <motion.path
-          d="M 10 60 Q 100 130 190 60"
-          fill="hsl(var(--background))"
-          animate={{
-            d: [
-              "M 10 60 Q 100 130 190 60",
-              "M 10 60 Q 100 60 190 60",
-              "M 10 60 Q 100 130 190 60",
-            ],
-          }}
-          transition={{ duration: 2, repeat: Infinity, repeatDelay: 1, ease: "easeInOut" }}
+        <motion.div
+          className="absolute bottom-0 left-0 right-0 bg-background z-10 origin-bottom"
+          style={{ height: "50%" }}
+          animate={{ scaleY: blink ? 1 : 0 }}
+          transition={{ duration: 0.15, ease: "easeInOut" }}
         />
-      </svg>
+      </div>
+      <p className="text-xs font-medium tracking-widest uppercase text-muted-foreground animate-pulse">
+        Loading...
+      </p>
     </div>
-  </div>
-);
+  );
+};
