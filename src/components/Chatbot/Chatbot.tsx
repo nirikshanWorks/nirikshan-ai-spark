@@ -119,7 +119,7 @@ export const Chatbot = () => {
           <div className="gradient-primary text-white p-4 rounded-t-2xl flex items-center justify-between relative z-10">
             <div className="flex items-center gap-3">
               <div className="w-10 h-10 rounded-full bg-white/20 flex items-center justify-center backdrop-blur-sm">
-                <RobotIcon className="w-6 h-6" />
+                <img src={nirikshanLogo} alt="Niri" className="w-6 h-6" />
               </div>
               <div>
                 <h3 className="font-semibold">Niri</h3>
