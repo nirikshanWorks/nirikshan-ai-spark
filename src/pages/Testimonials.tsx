@@ -71,7 +71,8 @@ const Testimonials = () => (
                 </div>
               </CardTransformed>
             ))}
-          </CardsContainer>
+            </CardsContainer>
+          </div>
         </ContainerScroll>
 
         <div className="mt-16 flex flex-col sm:flex-row gap-4 justify-center">
