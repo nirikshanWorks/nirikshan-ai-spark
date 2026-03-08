@@ -227,7 +227,7 @@ export const AnimatedProfileCard = React.forwardRef<
         onMouseLeave={handleMouseLeave}
         {...props}
       >
-        <div className="relative z-0 rounded-xl border border-border bg-card p-2">
+        <div className="relative z-0 rounded-xl border border-border bg-card p-2 h-full">
           {baseCard}
         </div>
 
