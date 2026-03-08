@@ -269,6 +269,11 @@ const Contact = () => {
 
   return (
     <div className="min-h-screen">
+      <SEO
+        title="Contact Us — Get a Free AI Consultation"
+        description="Reach out to Nirikshan AI for a free consultation. Discuss how AI and machine learning can drive growth and innovation in your organization."
+        canonical="https://nirikshanai.com/contact"
+      />
       <Navigation />
       
       <main className="pt-16">

@@ -360,6 +360,11 @@ const Careers = () => {
 
   return (
     <div className="min-h-screen">
+      <SEO
+        title="Careers at Nirikshan AI — Join Our AI Team"
+        description="Join Nirikshan AI and work on cutting-edge AI, ML, and cloud technologies. Explore open positions and grow your career in artificial intelligence."
+        canonical="https://nirikshanai.com/careers"
+      />
       <Navigation />
       
       <main className="pt-16">

@@ -85,6 +85,11 @@ const Index = () => {
 
   return (
     <div className="min-h-screen bg-background relative">
+      <SEO
+        title="Nirikshan AI | AI & Machine Learning Solutions for Business Innovation"
+        description="Nirikshan AI delivers advanced Generative AI, Computer Vision, and Agentic AI solutions. Accelerate business innovation through intelligent automation and data-driven insights."
+        canonical="https://nirikshanai.com/"
+      />
       <Navigation />
 
       <main className="relative z-10">

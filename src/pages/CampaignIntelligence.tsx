@@ -182,6 +182,11 @@ const CampaignIntelligence = () => {
 
   return (
     <div className="min-h-screen bg-background">
+      <SEO
+        title="AI Campaign Intelligence (AICI) — Smart Marketing Analytics"
+        description="Leverage AI-powered campaign intelligence for sentiment analysis, audience insights, and data-driven marketing strategies."
+        canonical="https://nirikshanai.com/campaign-intelligence"
+      />
       <Navigation />
 
       <main className="pt-16">

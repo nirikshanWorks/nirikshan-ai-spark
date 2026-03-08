@@ -529,6 +529,11 @@ const Services = () => {
 
   return (
     <div className="min-h-screen">
+      <SEO
+        title="Our Services — AI, Cloud & Digital Solutions"
+        description="Explore Nirikshan AI's comprehensive services: Generative AI, Computer Vision, .NET, Azure, SAP BTP, QA, and digital transformation."
+        canonical="https://nirikshanai.com/services"
+      />
       <Navigation />
 
       <main className="pt-16">

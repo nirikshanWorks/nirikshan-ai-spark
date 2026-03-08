@@ -112,6 +112,11 @@ const WhoWeAre = () => {
 
   return (
     <div className="min-h-screen bg-background scroll-smooth">
+      <SEO
+        title="Who We Are — Meet the Nirikshan AI Team"
+        description="Meet the leadership team and culture behind Nirikshan AI. Discover our story, mission, and the people driving AI innovation."
+        canonical="https://nirikshanai.com/who-we-are"
+      />
       <Navigation />
 
       <main className="pt-16">

@@ -149,6 +149,11 @@ const Projects = () => {
 
   return (
     <div className="min-h-screen bg-background">
+      <SEO
+        title="Our Projects & Products — AI Solutions Portfolio"
+        description="Explore Nirikshan AI's portfolio of AI-powered projects and products across computer vision, generative AI, and enterprise automation."
+        canonical="https://nirikshanai.com/projects"
+      />
       <Navigation />
 
       <main className="pt-16">
