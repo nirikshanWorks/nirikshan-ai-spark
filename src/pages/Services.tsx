@@ -8,6 +8,11 @@ import { ProductCarousel3D } from "@/components/ProductCarousel3D";
 import { AICircuitLines } from "@/components/AICircuitLines";
 import { AIFloatingIcons } from "@/components/AIFloatingIcons";
 import { AIHexagonGrid } from "@/components/AIHexagonGrid";
+import { AI3DOrb } from "@/components/AI3DOrb";
+import { AI3DCube } from "@/components/AI3DCube";
+import { AIWaveField } from "@/components/AIWaveField";
+import { AIParticleRing } from "@/components/AIParticleRing";
+import { AIDataStream } from "@/components/AIDataStream";
 import { FadeUp, SlideLeft, SlideRight, StaggerContainer, StaggerItem } from "@/components/ScrollAnimations";
 import { 
   Brain, 
@@ -426,9 +431,26 @@ const ServiceDetail = ({ service, index }: { service: typeof servicesData[0], in
   return (
     <section className={`py-20 ${index % 2 === 0 ? "bg-background" : "bg-secondary/30"} relative`}>
       <div className="container mx-auto px-6" ref={contentRef.ref}>
-        {index % 3 === 0 && <AICircuitLines className="opacity-15" />}
-        {index % 3 === 1 && <AIHexagonGrid className="opacity-15" />}
-        {index % 3 === 2 && <AIFloatingIcons count={4} className="opacity-30" />}
+        {index % 4 === 0 && <AICircuitLines className="opacity-15" />}
+        {index % 4 === 1 && <AIHexagonGrid className="opacity-15" />}
+        {index % 4 === 2 && <AIFloatingIcons count={4} className="opacity-30" />}
+        {index % 4 === 3 && <AIWaveField className="opacity-12" />}
+        {/* 3D decorations on alternating sections */}
+        {index % 3 === 0 && (
+          <div className="absolute -right-8 top-1/4 opacity-15 hidden xl:block">
+            <AI3DOrb size={150} />
+          </div>
+        )}
+        {index % 3 === 1 && (
+          <div className="absolute -left-6 bottom-1/4 opacity-15 hidden xl:block">
+            <AI3DCube size={80} />
+          </div>
+        )}
+        {index % 3 === 2 && (
+          <div className="absolute right-10 bottom-10 opacity-12 hidden xl:block">
+            <AIParticleRing size={160} particleCount={20} />
+          </div>
+        )}
         <div className={`grid md:grid-cols-2 gap-12 items-center transition-all duration-1000 relative z-10 ${
           contentRef.isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
         }`}>
@@ -546,6 +568,7 @@ const Services = () => {
         {/* 3D Product Carousel */}
         <section className="py-16 bg-gradient-to-b from-background via-secondary/20 to-background relative">
           <AIHexagonGrid className="opacity-20" />
+          <AIDataStream className="opacity-10" />
           <div className="container mx-auto px-6 relative z-10">
             <FadeUp className="text-center mb-8">
               <h2 className="text-3xl md:text-4xl font-bold mb-4">Explore Our Solutions</h2>

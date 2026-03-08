@@ -8,6 +8,11 @@ import { FloatingElements } from "@/components/FloatingElements";
 import { AICircuitLines } from "@/components/AICircuitLines";
 import { AIFloatingIcons } from "@/components/AIFloatingIcons";
 import { AIHexagonGrid } from "@/components/AIHexagonGrid";
+import { AI3DOrb } from "@/components/AI3DOrb";
+import { AIWaveField } from "@/components/AIWaveField";
+import { AIParticleRing } from "@/components/AIParticleRing";
+import { AI3DCube } from "@/components/AI3DCube";
+import { AnimatedGridBg } from "@/components/AnimatedGridBg";
 import { FadeUp, SlideLeft, SlideRight, StaggerContainer, StaggerItem, ScaleUp } from "@/components/ScrollAnimations";
 import {
   ArrowRight,
@@ -187,6 +192,11 @@ const About = () => {
         {/* Mission & Vision */}
         <section className="py-20 container mx-auto px-6 relative" ref={missionRef.ref}>
           <AICircuitLines className="opacity-20" />
+          <AIWaveField className="opacity-15" />
+          {/* 3D Orb decoration */}
+          <div className="absolute -right-10 top-10 opacity-20 hidden xl:block">
+            <AI3DOrb size={180} />
+          </div>
           <div className={`grid md:grid-cols-2 gap-12 transition-all duration-1000 relative z-10 ${
             missionRef.isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
           }`}>
@@ -238,6 +248,11 @@ const About = () => {
         {/* Values */}
         <section className="py-20 bg-gradient-to-br from-secondary/50 to-secondary/30 relative" ref={valuesRef.ref}>
           <AIHexagonGrid className="opacity-20" />
+          <AnimatedGridBg className="opacity-10" />
+          {/* Floating cube */}
+          <div className="absolute left-8 bottom-20 opacity-20 hidden lg:block">
+            <AI3DCube size={90} />
+          </div>
           <div className="container mx-auto px-6">
             <FadeUp className="text-center mb-16">
               <h2 className="text-3xl md:text-4xl font-bold mb-4">Our Core Values</h2>
@@ -295,6 +310,10 @@ const About = () => {
         {/* Differentiators */}
         <section className="py-20 container mx-auto px-6 relative" ref={differentiatorsRef.ref}>
           <AIFloatingIcons count={5} className="opacity-40" />
+          {/* Particle ring */}
+          <div className="absolute -left-16 top-1/3 opacity-15 hidden xl:block">
+            <AIParticleRing size={220} particleCount={25} />
+          </div>
           <FadeUp className={`max-w-3xl mx-auto text-center mb-16`}>
             <span className="inline-flex items-center gap-2 rounded-full bg-primary/10 px-4 py-2 text-sm font-semibold text-primary mb-4">
               <Sparkles className="h-4 w-4" /> Why Partners Choose Us
@@ -354,7 +373,8 @@ const About = () => {
         </section>
 
         {/* Milestones */}
-        <section className="py-20 bg-gradient-to-br from-primary/5 via-secondary/20 to-transparent" ref={timelineRef.ref}>
+        <section className="py-20 bg-gradient-to-br from-primary/5 via-secondary/20 to-transparent relative" ref={timelineRef.ref}>
+          <AIDataStream className="opacity-15" />
           <div className="container mx-auto px-6">
             <div className={`text-center mb-16 transition-all duration-1000 ${
               timelineRef.isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
