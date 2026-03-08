@@ -274,9 +274,8 @@ const WhoWeAre = () => {
               </p>
             </FadeUp>
             <div
-              className={`grid gap-8 grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 transition-all duration-1000 max-w-6xl mx-auto justify-items-center ${
-                leadershipRef.isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
-              }`}
+              className="grid gap-8 grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 max-w-6xl mx-auto justify-items-center"
+            >
             >
               {leadership.map((member) => {
                 const initials = member.name.split(' ').map(n => n[0]).join('');
