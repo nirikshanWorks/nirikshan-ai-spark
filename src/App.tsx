@@ -96,6 +96,7 @@ const App = () => {
                 <AnimatedRoutes />
               </Suspense>
               <Chatbot />
+              <MouseColorSplatter />
             </AuthProvider>
           </BrowserRouter>
         </TooltipProvider>
