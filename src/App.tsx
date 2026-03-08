@@ -39,16 +39,7 @@ const NotFound = lazy(() => import("./pages/NotFound"));
 
 const queryClient = new QueryClient();
 
-const PageLoader = () => (
-  <div className="min-h-screen flex items-center justify-center">
-    <div className="relative">
-      <div className="animate-spin rounded-full h-16 w-16 border-4 border-primary/20 border-t-primary"></div>
-      <div className="absolute inset-0 flex items-center justify-center">
-        <div className="w-8 h-8 rounded-full bg-primary/10 animate-pulse"></div>
-      </div>
-    </div>
-  </div>
-);
+const PageLoader = () => <EyeLoaderInline />;
 
 const AnimatedRoutes = () => {
   const location = useLocation();
