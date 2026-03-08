@@ -1,4 +1,4 @@
-import { ThemeToggle } from "@/components/ThemeToggle";
+import SwitchToggleThemeDemo from "@/components/ui/toggle-theme";
 import { Button } from "@/components/ui/button";
 import {
     NavigationMenu,
