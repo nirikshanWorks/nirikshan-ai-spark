@@ -339,7 +339,7 @@ const Index = () => {
 
             {/* Client logos */}
             <FadeUp>
-              <LogoCarousel columnCount={5} logos={partnerLogos} />
+              <LogoCarousel columnCount={7} logos={partnerLogos} />
             </FadeUp>
           </div>
         </section>
