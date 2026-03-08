@@ -113,7 +113,7 @@ export function ExpandableTabs({
                   transition={transition}
                   className="overflow-hidden"
                 >
-                  {tab.title}
+                  {t.title}
                 </motion.span>
               )}
             </AnimatePresence>
