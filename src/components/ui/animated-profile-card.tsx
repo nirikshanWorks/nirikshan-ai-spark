@@ -110,7 +110,7 @@ export const ProfileCardContent = React.forwardRef<
           </CardTitle>
         </CardHeader>
 
-        <CardContent>
+        <CardContent className="flex-1">
           <p
             className={cn(
               'text-sm leading-relaxed',
