@@ -1,5 +1,5 @@
 import { SEO } from "@/components/SEO";
-import { useEffect, useRef } from "react";
+import { useRef } from "react";
 import mockupDashboard from "@/assets/mockup-ai-dashboard.jpg";
 import { Navigation } from "@/components/Navigation";
 import { Footer } from "@/components/Footer";
