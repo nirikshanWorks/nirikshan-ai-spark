@@ -317,9 +317,7 @@ const WhoWeAre = () => {
 
         <section className="py-20 bg-secondary/30" ref={cardsRef.ref}>
           <div className="container mx-auto px-6">
-            <div className={`text-center mb-14 transition-all duration-1000 ${
-              cardsRef.isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"
-            }`}>
+            <div className="text-center mb-14">
               <h2 className="text-3xl md:text-4xl font-bold mb-4">Explore Our Impact</h2>
               <p className="text-lg text-muted-foreground max-w-3xl mx-auto">
                 Dive deeper into the stories, milestones, and opportunities that define Nirikshan AI.
