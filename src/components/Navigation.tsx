@@ -32,6 +32,7 @@ const expandableNavTabs = [
   { title: "Case Studies", icon: BookOpen, path: "/case-studies" },
   { title: "AICI", icon: Brain, path: "/campaign-intelligence" },
   { type: "separator" as const },
+  { title: "Blog", icon: BookOpen, path: "/blog" },
   { title: "Careers", icon: Briefcase, path: "/careers" },
   { title: "Who We Are", icon: Users, path: "/who-we-are" },
   { title: "Contact", icon: Mail, path: "/contact" },
