@@ -258,3 +258,18 @@
     background: linear-gradient(135deg, hsl(222 32% 9% / 0.9), hsl(239 84% 67% / 0.15));
   }
 }
+
+/* ─── Button23 Marquee Hover ─── */
+@keyframes btn23-marquee-keyframes {
+  0% { transform: translateX(var(--start, 100%)); }
+  100% { transform: translateX(var(--end, -100%)); }
+}
+
+.btn23-wrapper:hover .btn23-text {
+  opacity: 0;
+}
+
+.btn23-wrapper:hover .btn23-marquee {
+  opacity: 1;
+  animation: btn23-marquee-keyframes 1.5s linear infinite;
+}
