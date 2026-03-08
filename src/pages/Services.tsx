@@ -14,6 +14,7 @@ import { AIWaveField } from "@/components/AIWaveField";
 import { AIParticleRing } from "@/components/AIParticleRing";
 import { AIDataStream } from "@/components/AIDataStream";
 import { FadeUp, SlideLeft, SlideRight, StaggerContainer, StaggerItem } from "@/components/ScrollAnimations";
+import { ContainerScroll } from "@/components/ui/container-scroll-animation";
 import { 
   Brain, 
   Eye, 
