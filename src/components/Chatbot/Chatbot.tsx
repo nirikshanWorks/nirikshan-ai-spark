@@ -103,7 +103,7 @@ export const Chatbot = () => {
           className="fixed bottom-6 right-6 h-14 w-14 rounded-full shadow-lg gradient-primary hover:scale-110 transition-all duration-300 z-50 group"
           size="icon"
         >
-          <RobotIcon className="w-7 h-7 group-hover:scale-110 transition-transform" />
+          <img src={nirikshanLogo} alt="Niri" className="w-7 h-7" />
         </Button>
       )}
 
