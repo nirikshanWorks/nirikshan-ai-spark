@@ -333,22 +333,9 @@ const Index = () => {
             </FadeUp>
 
             {/* Client logos */}
-            <div
-              className="overflow-hidden"
-              ref={partnersContainerRef}
-              onMouseEnter={() => { isPartnersHoveringRef.current = true; }}
-              onMouseLeave={() => { isPartnersHoveringRef.current = false; }}
-            >
-              <div className="flex gap-8 min-w-max items-center">
-                {duplicatedPartners.map((p, i) => (
-                  <div key={`${p.name}-${i}`} className="w-40 flex-shrink-0">
-                    <div className="h-24 w-full bg-card border border-border rounded-xl flex items-center justify-center p-4 transition-all duration-300 hover:scale-105 ai-border-glow">
-                      <img src={p.logo} alt={p.name} className="max-h-full max-w-full object-contain" loading="lazy" />
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
+            <FadeUp>
+              <LogoCarousel columnCount={5} logos={partnerLogos} />
+            </FadeUp>
           </div>
         </section>
 
