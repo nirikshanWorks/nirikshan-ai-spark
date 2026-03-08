@@ -71,7 +71,7 @@ const leadership = [
   },
   {
     name: "Anshul",
-    role: "Co-Founder & COO",
+    role: "Director – Technical",
     bio: "Anshul, Co-Founder & COO of Nirikshan AI, spearheads technical strategy and system design, translating complex requirements into scalable, production-ready platforms.",
     image: anshulImage,
     linkedin: "https://www.linkedin.com/in/anshultech1"
