@@ -1,3 +1,4 @@
+import { SEO } from "@/components/SEO";
 import { Navigation } from "@/components/Navigation";
 import mockupProjects from "@/assets/mockup-projects.jpg";
 import { Footer } from "@/components/Footer";
