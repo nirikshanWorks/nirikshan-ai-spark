@@ -1,42 +1,16 @@
 import { Navigation } from "@/components/Navigation";
 import { Footer } from "@/components/Footer";
-import { Quote, ArrowRight, Sparkles, Lightbulb, Bot, Rocket, HeartHandshake, CircuitBoard, Star } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { testimonials } from "./whoWeAreContent";
-
-const accentStyles = [
-  {
-    Icon: Sparkles,
-    gradient: "from-indigo-500/20 via-purple-500/10 to-blue-500/20",
-    accent: "text-indigo-500"
-  },
-  {
-    Icon: Lightbulb,
-    gradient: "from-amber-500/20 via-orange-400/10 to-pink-500/20",
-    accent: "text-amber-500"
-  },
-  {
-    Icon: Bot,
-    gradient: "from-emerald-500/20 via-teal-400/10 to-cyan-500/20",
-    accent: "text-emerald-500"
-  },
-  {
-    Icon: Rocket,
-    gradient: "from-purple-500/20 via-violet-500/10 to-indigo-500/20",
-    accent: "text-purple-500"
-  },
-  {
-    Icon: HeartHandshake,
-    gradient: "from-rose-500/20 via-red-400/10 to-orange-500/20",
-    accent: "text-rose-500"
-  },
-  {
-    Icon: CircuitBoard,
-    gradient: "from-blue-500/20 via-cyan-400/10 to-sky-500/20",
-    accent: "text-blue-500"
-  }
-];
+import {
+  ContainerScroll,
+  CardsContainer,
+  CardTransformed,
+  ReviewStars,
+} from "@/components/ui/animated-cards-stack";
+import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 
 const Testimonials = () => (
   <div className="relative min-h-screen overflow-hidden bg-background text-foreground">
@@ -54,8 +28,8 @@ const Testimonials = () => (
     </div>
     <main className="relative z-20 pt-16 pb-20">
       <section className="container mx-auto px-6 py-16">
-        <div className="max-w-4xl mx-auto text-center mb-14">
-          <span className="text-xs md:text-sm font-semibold uppercase tracking-[0.3em] text-indigo-500 block mb-4">
+        <div className="max-w-4xl mx-auto text-center mb-8">
+          <span className="text-xs md:text-sm font-semibold uppercase tracking-[0.3em] text-primary block mb-4">
             Authentic Voices
           </span>
           <h1 className="text-4xl md:text-5xl font-bold mb-6">Real Stories. Real Impact.</h1>
@@ -64,46 +38,41 @@ const Testimonials = () => (
           </p>
         </div>
 
-        <div className="grid gap-8 md:grid-cols-2 xl:grid-cols-3">
-          {testimonials.map((testimonial, index) => {
-            const accent = accentStyles[index % accentStyles.length];
-            const AccentIcon = accent.Icon;
-
-            return (
-              <article
+        <ContainerScroll className="h-[250vh]">
+          <CardsContainer className="h-screen sticky top-0 w-full max-w-lg mx-auto" style={{ height: "420px" }}>
+            {testimonials.map((testimonial, index) => (
+              <CardTransformed
                 key={testimonial.name}
-                className="group relative rounded-3xl p-[1px] bg-gradient-to-br from-indigo-500/10 via-transparent to-purple-500/10 transition-all duration-500 hover:shadow-2xl hover:scale-[1.01]"
+                index={index}
+                arrayLength={testimonials.length}
+                variant="light"
+                incrementY={12}
+                incrementZ={8}
+                className="w-full max-w-lg"
+                style={{ width: "100%", height: "380px" }}
               >
-                <div className={`absolute inset-0 rounded-3xl bg-gradient-to-br ${accent.gradient} opacity-0 group-hover:opacity-100 transition-opacity duration-500`} aria-hidden="true" />
-                <div className="relative h-full rounded-[calc(1.5rem-2px)] bg-background/95 backdrop-blur py-8 px-8 border border-violet-400/40 group-hover:border-violet-400/70 transition-all duration-500">
-                  <div className="flex items-center justify-between mb-4">
-                    <AccentIcon size={26} className={`${accent.accent}`} />
-                    <Quote className="w-10 h-10 text-muted-foreground/20 group-hover:text-muted-foreground/40 transition-colors" />
-                  </div>
-                  <div className="mb-5 flex items-center gap-1 text-amber-400">
-                    {Array.from({ length: 5 }).map((_, starIndex) => (
-                      <Star key={starIndex} size={16} className="fill-current" fill="currentColor" />
-                    ))}
-                  </div>
-                  <p className="text-muted-foreground mb-7 text-sm leading-relaxed">
-                    “{testimonial.quote}”
+                <div className="flex flex-col items-center text-center gap-4 w-full">
+                  <ReviewStars rating={5} className="text-primary" />
+                  <p className="text-sm text-muted-foreground leading-relaxed px-2">
+                    "{testimonial.quote}"
                   </p>
-                  <div className="flex items-center gap-4">
-                    <img
-                      src={testimonial.image}
-                      alt={testimonial.name}
-                      className="w-12 h-12 rounded-full object-cover ring-2 ring-border/70 group-hover:ring-transparent group-hover:shadow-[0_0_0_4px_rgba(99,102,241,0.15)] transition-all"
-                    />
-                    <div className="text-left">
-                      <p className="font-semibold text-foreground">{testimonial.name}</p>
-                      <p className="text-xs text-muted-foreground uppercase tracking-wide">{testimonial.role}</p>
-                    </div>
+                </div>
+                <div className="flex items-center gap-3">
+                  <Avatar className="!size-12 border border-border">
+                    <AvatarImage src={testimonial.image} alt={testimonial.name} />
+                    <AvatarFallback>
+                      {testimonial.name.split(" ").map((n) => n[0]).join("")}
+                    </AvatarFallback>
+                  </Avatar>
+                  <div className="text-left">
+                    <p className="font-semibold text-sm text-foreground">{testimonial.name}</p>
+                    <p className="text-xs text-muted-foreground">{testimonial.role}</p>
                   </div>
                 </div>
-              </article>
-            );
-          })}
-        </div>
+              </CardTransformed>
+            ))}
+          </CardsContainer>
+        </ContainerScroll>
 
         <div className="mt-16 flex flex-col sm:flex-row gap-4 justify-center">
           <Link to="/case-studies">
