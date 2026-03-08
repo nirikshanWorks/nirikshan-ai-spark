@@ -141,7 +141,7 @@ export const Navigation = () => {
               <img
                 src="/nirikshan-ai-logo.png"
                 alt="Nirikshan AI Pvt. Ltd."
-                className="h-9 w-auto transition-transform duration-300 group-hover:scale-105"
+                className="h-12 w-auto transition-transform duration-300 group-hover:scale-105"
               />
               <div className="text-lg font-bold text-foreground">
                 Nirikshan <span className="text-gradient">AI</span>

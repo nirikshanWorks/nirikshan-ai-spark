@@ -9,7 +9,7 @@ export const Footer = () => {
           {/* Company Info */}
           <div className="space-y-4">
             <div className="flex items-center gap-3">
-              <img src="/nirikshan-ai-logo.png" alt="Nirikshan AI" className="h-8 w-auto" />
+              <img src="/nirikshan-ai-logo.png" alt="Nirikshan AI" className="h-11 w-auto" />
               <h3 className="text-lg font-bold">
                 Nirikshan <span className="text-gradient">AI</span>
               </h3>
