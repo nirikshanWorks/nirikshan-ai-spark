@@ -405,7 +405,7 @@ export const AttendanceHistory = ({
       const pageHeight = doc.internal.pageSize.getHeight();
       
       // Load logo
-      const logoUrl = '/Nirikshan_AI_Logo_new-removebg-preview.png';
+      const logoUrl = '/nirikshan-ai-logo.png';
       
       try {
         const img = new Image();

@@ -8,9 +8,12 @@ export const Footer = () => {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           {/* Company Info */}
           <div className="space-y-4">
-            <h3 className="text-lg font-bold">
-              Nirikshan <span className="text-gradient">AI</span>
-            </h3>
+            <div className="flex items-center gap-3">
+              <img src="/nirikshan-ai-logo.png" alt="Nirikshan AI" className="h-8 w-auto" />
+              <h3 className="text-lg font-bold">
+                Nirikshan <span className="text-gradient">AI</span>
+              </h3>
+            </div>
             <p className="text-sm text-muted-foreground leading-relaxed">
               AI & Machine Learning solutions that turn complex data into actionable business insight. Specializing in Generative AI, Computer Vision, and Agentic AI.
             </p>

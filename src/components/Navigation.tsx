@@ -139,7 +139,7 @@ export const Navigation = () => {
             {/* Logo */}
             <Link to="/" className="flex items-center space-x-3 group shrink-0">
               <img
-                src="/Nirikshan_AI_Logo_new-removebg-preview.png"
+                src="/nirikshan-ai-logo.png"
                 alt="Nirikshan AI Pvt. Ltd."
                 className="h-9 w-auto transition-transform duration-300 group-hover:scale-105"
               />
