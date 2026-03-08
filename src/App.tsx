@@ -10,6 +10,7 @@ import ScrollToTop from "@/components/ScrollToTop";
 import { AuthProvider } from "@/hooks/useAuth";
 import { Chatbot } from "@/components/Chatbot/Chatbot";
 import { PageTransition } from "@/components/PageTransition";
+import { EyeLoader, EyeLoaderInline } from "@/components/EyeLoader";
 
 const Index = lazy(() => import("./pages/Index"));
 const About = lazy(() => import("./pages/About"));
