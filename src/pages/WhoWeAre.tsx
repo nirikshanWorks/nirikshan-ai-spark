@@ -4,6 +4,7 @@ import rajeshImage from "@/assets/team/rajesh-dabral.jpg";
 import vikramImage from "@/assets/team/vikram-biyani.jpg";
 import wwaTeamVideo from "@/assets/wwa-team.mp4";
 import { Footer } from "@/components/Footer";
+import { SEO } from "@/components/SEO";
 import { Navigation } from "@/components/Navigation";
 import { Button } from "@/components/ui/button";
 import {
