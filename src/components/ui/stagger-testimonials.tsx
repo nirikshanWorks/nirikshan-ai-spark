@@ -30,10 +30,10 @@ const TestimonialCard: React.FC<TestimonialCardProps> = ({
     <div
       onClick={() => handleMove(position)}
       className={cn(
-        "absolute left-1/2 top-1/2 cursor-pointer border-2 p-8 transition-all duration-500 ease-in-out",
+        "absolute left-1/2 top-1/2 cursor-pointer border-2 p-6 sm:p-8 transition-all duration-500 ease-in-out",
         isCenter
-          ? "z-10 bg-primary text-primary-foreground border-primary"
-          : "z-0 bg-card text-card-foreground border-border hover:border-primary/50"
+          ? "z-10 bg-primary text-primary-foreground border-primary animate-fade-in"
+          : "z-0 bg-card text-card-foreground border-border hover:border-primary/50 opacity-80"
       )}
       style={{
         width: cardSize,
@@ -51,14 +51,16 @@ const TestimonialCard: React.FC<TestimonialCardProps> = ({
       <img
         src={testimonial.imgSrc}
         alt={testimonial.by}
-        className="absolute right-4 top-4 h-14 w-14 rounded-full object-cover"
+        className="absolute right-4 top-4 h-12 w-12 sm:h-14 sm:w-14 rounded-full object-cover border-2 border-background/30"
       />
-      <p className="my-2 text-base italic">
-        "{testimonial.testimonial}"
-      </p>
-      <p className="text-sm font-medium">
-        - {testimonial.by}
-      </p>
+      <div className="flex flex-col justify-between h-full pt-2">
+        <p className="my-2 text-sm sm:text-base italic leading-relaxed line-clamp-5 sm:line-clamp-none">
+          "{testimonial.testimonial}"
+        </p>
+        <p className="text-xs sm:text-sm font-medium mt-auto">
+          - {testimonial.by}
+        </p>
+      </div>
     </div>
   );
 };
@@ -92,7 +94,7 @@ export const StaggerTestimonials: React.FC<StaggerTestimonialsProps> = ({ testim
   useEffect(() => {
     const updateSize = () => {
       const { matches } = window.matchMedia("(min-width: 640px)");
-      setCardSize(matches ? 365 : 290);
+      setCardSize(matches ? 365 : 280);
     };
     updateSize();
     window.addEventListener("resize", updateSize);
@@ -100,7 +102,7 @@ export const StaggerTestimonials: React.FC<StaggerTestimonialsProps> = ({ testim
   }, []);
 
   return (
-    <div className="relative w-full overflow-hidden py-24">
+    <div className="relative w-full overflow-hidden" style={{ height: `${cardSize + 180}px` }}>
       {testimonialsList.map((testimonial, index) => {
         const position = testimonialsList.length % 2
           ? index - (testimonialsList.length + 1) / 2
@@ -115,11 +117,11 @@ export const StaggerTestimonials: React.FC<StaggerTestimonialsProps> = ({ testim
           />
         );
       })}
-      <div className="absolute bottom-4 left-1/2 flex -translate-x-1/2 gap-8">
+      <div className="absolute bottom-6 left-1/2 flex -translate-x-1/2 gap-6">
         <button
           onClick={() => handleMove(-1)}
           className={cn(
-            "flex h-14 w-14 items-center justify-center text-2xl transition-colors",
+            "flex h-12 w-12 sm:h-14 sm:w-14 items-center justify-center rounded-md transition-colors",
             "bg-background border-2 border-border hover:bg-primary hover:text-primary-foreground",
             "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
           )}
@@ -130,7 +132,7 @@ export const StaggerTestimonials: React.FC<StaggerTestimonialsProps> = ({ testim
         <button
           onClick={() => handleMove(1)}
           className={cn(
-            "flex h-14 w-14 items-center justify-center text-2xl transition-colors",
+            "flex h-12 w-12 sm:h-14 sm:w-14 items-center justify-center rounded-md transition-colors",
             "bg-background border-2 border-border hover:bg-primary hover:text-primary-foreground",
             "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
           )}
