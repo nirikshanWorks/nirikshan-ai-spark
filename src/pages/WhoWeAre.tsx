@@ -291,7 +291,7 @@ const WhoWeAre = () => {
                         bio={member.bio}
                         avatarSrc={member.image}
                         avatarFallback={initials}
-                        showAvatar={false}
+                        showAvatar={true}
                         socials={socials}
                         titleStyle={{ color: 'var(--primary-foreground)' }}
                         descriptionClassName="text-primary-foreground/80"
