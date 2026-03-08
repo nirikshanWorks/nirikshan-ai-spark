@@ -161,12 +161,7 @@ const WhoWeAre = () => {
           className="py-20 bg-gradient-to-b from-background via-secondary/20 to-background relative"
           ref={storyRef.ref}
         >
-          <AICircuitLines className="opacity-15" />
-          <div
-            className={`container mx-auto px-6 grid gap-12 md:grid-cols-[1.2fr,0.8fr] items-center transition-all duration-1000 relative z-10 ${
-              storyRef.isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
-            }`}
-          >
+          <div className="container mx-auto px-6 grid gap-12 md:grid-cols-[1.2fr,0.8fr] items-center relative z-10">
             <div className="space-y-6">
               <h2 className="text-3xl md:text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-indigo-500 via-purple-500 to-blue-500">
                 Born from curiosity, built for impact
@@ -212,11 +207,7 @@ const WhoWeAre = () => {
           className="py-16"
           ref={missionRef.ref}
         >
-          <div
-            className={`container mx-auto px-6 grid gap-10 md:grid-cols-2 items-center transition-all duration-1000 ${
-              missionRef.isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
-            }`}
-          >
+          <div className="container mx-auto px-6 grid gap-10 md:grid-cols-2 items-center">
             <div className="p-8 rounded-3xl bg-gradient-to-br from-indigo-600/10 via-purple-500/10 to-blue-500/10 border border-border">
               <div className="flex items-center gap-4 mb-6">
                 <Focus className="text-indigo-500" size={32} />
@@ -247,9 +238,7 @@ const WhoWeAre = () => {
                 These principles keep our teams aligned, our research ethical, and our collaborations purposeful.
               </p>
             </FadeUp>
-            <StaggerContainer className={`grid gap-6 md:grid-cols-2 lg:grid-cols-3 transition-all duration-1000 ${
-                valuesRef.isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
-              }`} staggerDelay={0.12}>
+            <StaggerContainer className="grid gap-6 md:grid-cols-2 lg:grid-cols-3" staggerDelay={0.12}>
               {values.map((value) => (
                 <StaggerItem key={value.title}>
                 <div
@@ -273,11 +262,7 @@ const WhoWeAre = () => {
                 Meet the founders and leaders steering Nirikshan AI towards a future of responsible technological advancement.
               </p>
             </FadeUp>
-            <div
-              className={`grid gap-8 grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 transition-all duration-1000 max-w-6xl mx-auto justify-items-center ${
-                leadershipRef.isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
-              }`}
-            >
+            <div className="grid gap-8 grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 max-w-6xl mx-auto justify-items-center">
               {leadership.map((member) => {
                 const initials = member.name.split(' ').map(n => n[0]).join('');
                 const socials: SocialLink[] = member.linkedin
@@ -306,7 +291,7 @@ const WhoWeAre = () => {
                         bio={member.bio}
                         avatarSrc={member.image}
                         avatarFallback={initials}
-                        showAvatar={false}
+                        showAvatar={true}
                         socials={socials}
                         titleStyle={{ color: 'var(--primary-foreground)' }}
                         descriptionClassName="text-primary-foreground/80"
@@ -323,19 +308,13 @@ const WhoWeAre = () => {
 
         <section className="py-20 bg-secondary/30" ref={cardsRef.ref}>
           <div className="container mx-auto px-6">
-            <div className={`text-center mb-14 transition-all duration-1000 ${
-              cardsRef.isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"
-            }`}>
+            <div className="text-center mb-14">
               <h2 className="text-3xl md:text-4xl font-bold mb-4">Explore Our Impact</h2>
               <p className="text-lg text-muted-foreground max-w-3xl mx-auto">
                 Dive deeper into the stories, milestones, and opportunities that define Nirikshan AI.
               </p>
             </div>
-            <div
-              className={`grid gap-6 md:grid-cols-3 transition-all duration-1000 ${
-                cardsRef.isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
-              }`}
-            >
+            <div className="grid gap-6 md:grid-cols-3">
               <Link
                 to="/testimonials"
                 className="group p-8 rounded-3xl border border-border bg-background/80 backdrop-blur hover:-translate-y-2 hover:border-indigo-500/50 hover:shadow-xl transition-all duration-300"

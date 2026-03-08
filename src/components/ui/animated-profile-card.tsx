@@ -84,9 +84,9 @@ export const ProfileCardContent = React.forwardRef<
               showAvatar ? 'opacity-100' : 'opacity-0'
             )}
           >
-            <Avatar className="h-16 w-16 ring-2 ring-offset-2 ring-offset-background ring-primary">
-              <AvatarImage src={avatarSrc} alt={name} />
-              <AvatarFallback>{avatarFallback}</AvatarFallback>
+            <Avatar className="h-20 w-20 ring-2 ring-offset-2 ring-offset-background ring-primary">
+              <AvatarImage src={avatarSrc} alt={name} className="object-cover" />
+              <AvatarFallback className="text-lg">{avatarFallback}</AvatarFallback>
             </Avatar>
           </div>
 
