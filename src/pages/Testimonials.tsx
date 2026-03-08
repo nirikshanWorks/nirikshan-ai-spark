@@ -16,6 +16,11 @@ const staggerData: StaggerTestimonial[] = testimonials.map((t, i) => ({
 
 const Testimonials = () => (
   <div className="relative min-h-screen overflow-hidden bg-background text-foreground">
+    <SEO
+      title="Client Testimonials — What Our Partners Say"
+      description="Hear from businesses that have transformed with Nirikshan AI's solutions. Real feedback from real clients."
+      canonical="https://nirikshanai.com/testimonials"
+    />
     <video
       className="pointer-events-none absolute left-1/2 top-1/2 min-h-full min-w-full w-auto h-auto -translate-x-1/2 -translate-y-1/2 object-cover"
       autoPlay

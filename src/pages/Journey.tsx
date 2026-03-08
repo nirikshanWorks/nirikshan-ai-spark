@@ -101,6 +101,11 @@ const Journey = () => {
 
   return (
     <div className="relative min-h-screen overflow-hidden bg-gradient-to-b from-slate-900 via-slate-800 to-slate-900 text-foreground">
+      <SEO
+        title="Our Journey — Nirikshan AI Timeline"
+        description="Follow Nirikshan AI's journey from inception to becoming a leading AI solutions provider."
+        canonical="https://nirikshanai.com/journey"
+      />
       <video
         className="pointer-events-none absolute inset-0 z-0 h-full w-full object-cover opacity-30"
         autoPlay

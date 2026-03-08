@@ -54,6 +54,11 @@ const sections: Section[] = [
 
 const Terms = () => (
   <div className="min-h-screen bg-background">
+    <SEO
+      title="Terms of Service — Nirikshan AI"
+      description="Review the terms and conditions for using Nirikshan AI's website and services."
+      canonical="https://nirikshanai.com/terms"
+    />
     <Navigation />
     <main className="pt-16 pb-20">
       <section className="container mx-auto px-6 py-16">
