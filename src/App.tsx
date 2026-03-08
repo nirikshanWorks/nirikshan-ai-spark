@@ -85,25 +85,29 @@ const App = () => {
   const handleLoaderComplete = useCallback(() => setAppReady(true), []);
 
   return (
-    <QueryClientProvider client={queryClient}>
-      <ThemeProvider attribute="class" defaultTheme="light" enableSystem>
-        <TooltipProvider>
-          {!appReady && <EyeLoader onComplete={handleLoaderComplete} />}
-          <Toaster />
-          <Sonner />
-          <BrowserRouter>
-            <AuthProvider>
-              <ScrollToTop />
-              <Suspense fallback={<PageLoader />}>
-                <AnimatedRoutes />
-              </Suspense>
-              <Chatbot />
-              <MouseColorSplatter />
-            </AuthProvider>
-          </BrowserRouter>
-        </TooltipProvider>
-      </ThemeProvider>
-    </QueryClientProvider>
+    <HelmetProvider>
+      <QueryClientProvider client={queryClient}>
+        <ThemeProvider attribute="class" defaultTheme="light" enableSystem>
+          <TooltipProvider>
+            <ErrorBoundary>
+              {!appReady && <EyeLoader onComplete={handleLoaderComplete} />}
+              <Toaster />
+              <Sonner />
+              <BrowserRouter>
+                <AuthProvider>
+                  <ScrollToTop />
+                  <Suspense fallback={<PageLoader />}>
+                    <AnimatedRoutes />
+                  </Suspense>
+                  <Chatbot />
+                  <MouseColorSplatter />
+                </AuthProvider>
+              </BrowserRouter>
+            </ErrorBoundary>
+          </TooltipProvider>
+        </ThemeProvider>
+      </QueryClientProvider>
+    </HelmetProvider>
   );
 };
 
