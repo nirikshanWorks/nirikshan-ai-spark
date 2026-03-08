@@ -1,0 +1,313 @@
+"use client";
+
+import { useRef, useState, useMemo } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import DottedMap from "dotted-map";
+import { useTheme } from "next-themes";
+
+interface MapProps {
+  dots?: Array<{
+    start: { lat: number; lng: number; label?: string };
+    end: { lat: number; lng: number; label?: string };
+  }>;
+  lineColor?: string;
+  showLabels?: boolean;
+  labelClassName?: string;
+  animationDuration?: number;
+  loop?: boolean;
+}
+
+export function WorldMap({
+  dots = [],
+  lineColor = "#0ea5e9",
+  showLabels = true,
+  labelClassName = "text-sm",
+  animationDuration = 2,
+  loop = true,
+}: MapProps) {
+  const svgRef = useRef<SVGSVGElement>(null);
+  const [hoveredLocation, setHoveredLocation] = useState<string | null>(null);
+  const { theme } = useTheme();
+
+  const map = useMemo(
+    () => new DottedMap({ height: 100, grid: "diagonal" }),
+    []
+  );
+
+  const svgMap = useMemo(
+    () =>
+      map.getSVG({
+        radius: 0.22,
+        color: theme === "dark" ? "#FFFFFF40" : "#00000040",
+        shape: "circle",
+        backgroundColor: theme === "dark" ? "black" : "white",
+      }),
+    [map, theme]
+  );
+
+  const projectPoint = (lat: number, lng: number) => {
+    const x = (lng + 180) * (800 / 360);
+    const y = (90 - lat) * (400 / 180);
+    return { x, y };
+  };
+
+  const createCurvedPath = (
+    start: { x: number; y: number },
+    end: { x: number; y: number }
+  ) => {
+    const midX = (start.x + end.x) / 2;
+    const midY = Math.min(start.y, end.y) - 50;
+    return `M ${start.x} ${start.y} Q ${midX} ${midY} ${end.x} ${end.y}`;
+  };
+
+  const staggerDelay = 0.3;
+  const totalAnimationTime = dots.length * staggerDelay + animationDuration;
+  const pauseTime = 2;
+  const fullCycleDuration = totalAnimationTime + pauseTime;
+
+  return (
+    <div className="w-full aspect-[2/1] rounded-lg relative font-sans">
+      <img
+        src={`data:image/svg+xml;utf8,${encodeURIComponent(svgMap)}`}
+        className="h-full w-full pointer-events-none select-none"
+        alt="world map"
+        draggable={false}
+      />
+      <svg
+        ref={svgRef}
+        viewBox="0 0 800 400"
+        className="w-full h-full absolute inset-0 pointer-events-none select-none"
+      >
+        <defs>
+          <linearGradient id="path-gradient" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%" stopColor="white" stopOpacity="0" />
+            <stop offset="5%" stopColor={lineColor} stopOpacity="1" />
+            <stop offset="95%" stopColor={lineColor} stopOpacity="1" />
+            <stop offset="100%" stopColor="white" stopOpacity="0" />
+          </linearGradient>
+
+          <filter id="glow">
+            <feGaussianBlur stdDeviation="2" result="coloredBlur" />
+            <feMerge>
+              <feMergeNode in="coloredBlur" />
+              <feMergeNode in="SourceGraphic" />
+            </feMerge>
+          </filter>
+        </defs>
+
+        {dots.map((dot, i) => {
+          const startPoint = projectPoint(dot.start.lat, dot.start.lng);
+          const endPoint = projectPoint(dot.end.lat, dot.end.lng);
+          const startTime = (i * staggerDelay) / fullCycleDuration;
+          const endTime =
+            (i * staggerDelay + animationDuration) / fullCycleDuration;
+          const resetTime = totalAnimationTime / fullCycleDuration;
+
+          return (
+            <g key={`path-${i}`}>
+              <motion.path
+                d={createCurvedPath(startPoint, endPoint)}
+                fill="none"
+                stroke="url(#path-gradient)"
+                strokeWidth="1"
+                filter="url(#glow)"
+                initial={{ pathLength: 0, opacity: 0 }}
+                animate={{ pathLength: 1, opacity: 1 }}
+                transition={{
+                  pathLength: {
+                    delay: i * staggerDelay,
+                    duration: animationDuration,
+                    ease: "easeOut",
+                  },
+                  opacity: { delay: i * staggerDelay, duration: 0.5 },
+                }}
+              />
+              {loop && (
+                <motion.path
+                  d={createCurvedPath(startPoint, endPoint)}
+                  fill="none"
+                  stroke="url(#path-gradient)"
+                  strokeWidth="1"
+                  filter="url(#glow)"
+                  initial={{ pathLength: 0, opacity: 0 }}
+                  animate={{ pathLength: [0, 1], opacity: [0, 1, 1, 0] }}
+                  transition={{
+                    pathLength: {
+                      delay: i * staggerDelay,
+                      duration: animationDuration,
+                      ease: "easeOut",
+                      repeat: Infinity,
+                      repeatDelay: fullCycleDuration - animationDuration,
+                    },
+                    opacity: {
+                      delay: i * staggerDelay,
+                      duration: animationDuration,
+                      times: [0, 0.1, 0.9, 1],
+                      repeat: Infinity,
+                      repeatDelay: fullCycleDuration - animationDuration,
+                    },
+                  }}
+                />
+              )}
+            </g>
+          );
+        })}
+
+        {dots.map((dot, i) => {
+          const startPoint = projectPoint(dot.start.lat, dot.start.lng);
+          const endPoint = projectPoint(dot.end.lat, dot.end.lng);
+
+          return (
+            <g key={`points-${i}`}>
+              {/* Start Point */}
+              <g>
+                <motion.g
+                  onHoverStart={() =>
+                    setHoveredLocation(dot.start.label || `Location ${i}`)
+                  }
+                  onHoverEnd={() => setHoveredLocation(null)}
+                  className="cursor-pointer"
+                  whileHover={{ scale: 1.2 }}
+                  transition={{ type: "spring", stiffness: 400, damping: 10 }}
+                  style={{ pointerEvents: "auto" }}
+                >
+                  <circle
+                    cx={startPoint.x}
+                    cy={startPoint.y}
+                    r="2"
+                    fill={lineColor}
+                  />
+                  <circle
+                    cx={startPoint.x}
+                    cy={startPoint.y}
+                    r="2"
+                    fill={lineColor}
+                    opacity="0.5"
+                  >
+                    <animate
+                      attributeName="r"
+                      from="2"
+                      to="8"
+                      dur="1.5s"
+                      begin="0s"
+                      repeatCount="indefinite"
+                    />
+                    <animate
+                      attributeName="opacity"
+                      from="0.5"
+                      to="0"
+                      dur="1.5s"
+                      begin="0s"
+                      repeatCount="indefinite"
+                    />
+                  </circle>
+                </motion.g>
+
+                {showLabels && dot.start.label && (
+                  <g>
+                    <foreignObject
+                      x={startPoint.x - 50}
+                      y={startPoint.y - 28}
+                      width="100"
+                      height="24"
+                      style={{ pointerEvents: "none" }}
+                    >
+                      <div className="flex items-center justify-center">
+                        <span
+                          className={`${labelClassName} text-foreground bg-card/80 backdrop-blur-sm px-2 py-0.5 rounded-md border border-border whitespace-nowrap`}
+                          style={{ fontSize: "6px" }}
+                        >
+                          {dot.start.label}
+                        </span>
+                      </div>
+                    </foreignObject>
+                  </g>
+                )}
+              </g>
+
+              {/* End Point */}
+              <g>
+                <motion.g
+                  onHoverStart={() =>
+                    setHoveredLocation(dot.end.label || `Destination ${i}`)
+                  }
+                  onHoverEnd={() => setHoveredLocation(null)}
+                  className="cursor-pointer"
+                  whileHover={{ scale: 1.2 }}
+                  transition={{ type: "spring", stiffness: 400, damping: 10 }}
+                  style={{ pointerEvents: "auto" }}
+                >
+                  <circle
+                    cx={endPoint.x}
+                    cy={endPoint.y}
+                    r="2"
+                    fill={lineColor}
+                  />
+                  <circle
+                    cx={endPoint.x}
+                    cy={endPoint.y}
+                    r="2"
+                    fill={lineColor}
+                    opacity="0.5"
+                  >
+                    <animate
+                      attributeName="r"
+                      from="2"
+                      to="8"
+                      dur="1.5s"
+                      begin="0s"
+                      repeatCount="indefinite"
+                    />
+                    <animate
+                      attributeName="opacity"
+                      from="0.5"
+                      to="0"
+                      dur="1.5s"
+                      begin="0s"
+                      repeatCount="indefinite"
+                    />
+                  </circle>
+                </motion.g>
+
+                {showLabels && dot.end.label && (
+                  <g>
+                    <foreignObject
+                      x={endPoint.x - 50}
+                      y={endPoint.y - 28}
+                      width="100"
+                      height="24"
+                      style={{ pointerEvents: "none" }}
+                    >
+                      <div className="flex items-center justify-center">
+                        <span
+                          className={`${labelClassName} text-foreground bg-card/80 backdrop-blur-sm px-2 py-0.5 rounded-md border border-border whitespace-nowrap`}
+                          style={{ fontSize: "6px" }}
+                        >
+                          {dot.end.label}
+                        </span>
+                      </div>
+                    </foreignObject>
+                  </g>
+                )}
+              </g>
+            </g>
+          );
+        })}
+      </svg>
+
+      {/* Mobile Tooltip */}
+      <AnimatePresence>
+        {hoveredLocation && (
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: 10 }}
+            className="absolute bottom-4 left-1/2 -translate-x-1/2 bg-card text-foreground px-4 py-2 rounded-lg border border-border shadow-lg text-sm"
+          >
+            {hoveredLocation}
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </div>
+  );
+}
