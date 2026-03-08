@@ -70,9 +70,14 @@ export const AIExpertiseSection = () => {
           </div>
           <NeuralNetwork />
           <div className="mt-6 flex flex-col sm:flex-row justify-center gap-3 text-sm">
-            <Link to="/expertise/artificial-intelligence/computer-vision">
+            <Link to="/object-detection-demo">
               <Button variant="outline" size="sm" className="border-primary/40 text-primary hover:bg-primary/10">
-                Explore Computer Vision Demo
+                Try Live Object Detection
+              </Button>
+            </Link>
+            <Link to="/ai-showcase">
+              <Button variant="outline" size="sm" className="border-primary/40 text-primary hover:bg-primary/10">
+                AI Image Comparison
               </Button>
             </Link>
             <Link to="/expertise/artificial-intelligence/generative-ai">
