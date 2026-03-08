@@ -4,13 +4,14 @@ import { ArrowRight } from "lucide-react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { testimonials } from "./whoWeAreContent";
-import {
-  ContainerScroll,
-  CardsContainer,
-  CardTransformed,
-  ReviewStars,
-} from "@/components/ui/animated-cards-stack";
-import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
+import { StaggerTestimonials, type StaggerTestimonial } from "@/components/ui/stagger-testimonials";
+
+const staggerData: StaggerTestimonial[] = testimonials.map((t, i) => ({
+  tempId: i,
+  testimonial: t.quote,
+  by: `${t.name}, ${t.role}`,
+  imgSrc: t.image,
+}));
 
 const Testimonials = () => (
   <div className="relative min-h-screen overflow-hidden bg-background text-foreground">
@@ -38,42 +39,7 @@ const Testimonials = () => (
           </p>
         </div>
 
-        <ContainerScroll className="h-[300vh] md:h-[400vh]">
-          <div className="sticky top-[10vh] h-[80vh] flex items-center justify-center">
-            <CardsContainer className="w-full max-w-[90vw] sm:max-w-md md:max-w-lg mx-auto h-[320px] sm:h-[360px] md:h-[420px]">
-              {testimonials.map((testimonial, index) => (
-                <CardTransformed
-                  key={testimonial.name}
-                  index={index}
-                  arrayLength={testimonials.length}
-                  variant="light"
-                  incrementY={8}
-                  incrementZ={6}
-                  className="w-full h-[280px] sm:h-[320px] md:h-[380px]"
-                >
-                <div className="flex flex-col items-center text-center gap-2 md:gap-4 w-full">
-                  <ReviewStars rating={5} className="text-primary" />
-                  <p className="text-xs md:text-sm text-muted-foreground leading-relaxed px-1 md:px-2 line-clamp-4 md:line-clamp-none">
-                    "{testimonial.quote}"
-                  </p>
-                </div>
-                <div className="flex items-center gap-2 md:gap-3">
-                  <Avatar className="!size-10 md:!size-12 border border-border">
-                    <AvatarImage src={testimonial.image} alt={testimonial.name} />
-                    <AvatarFallback>
-                      {testimonial.name.split(" ").map((n) => n[0]).join("")}
-                    </AvatarFallback>
-                  </Avatar>
-                  <div className="text-left">
-                    <p className="font-semibold text-xs md:text-sm text-foreground">{testimonial.name}</p>
-                    <p className="text-[10px] md:text-xs text-muted-foreground">{testimonial.role}</p>
-                  </div>
-                </div>
-              </CardTransformed>
-            ))}
-            </CardsContainer>
-          </div>
-        </ContainerScroll>
+        <StaggerTestimonials testimonials={staggerData} />
 
         <div className="mt-16 flex flex-col sm:flex-row gap-4 justify-center">
           <Link to="/case-studies">
