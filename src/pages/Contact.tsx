@@ -1,3 +1,4 @@
+
 import { FloatingElements } from "@/components/FloatingElements";
 import { Footer } from "@/components/Footer";
 import { HeroParticles } from "@/components/HeroParticles";
