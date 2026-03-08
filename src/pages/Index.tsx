@@ -63,9 +63,7 @@ const Index = () => {
   const partnersContainerRef = useRef<HTMLDivElement | null>(null);
   const isPartnersHoveringRef = useRef(false);
 
-  useEffect(() => {
-    document.title = "Nirikshan AI — AI & Machine Learning Solutions";
-  }, []);
+  useEffect(() => {}, []);
 
   useEffect(() => {
     const container = partnersContainerRef.current;
