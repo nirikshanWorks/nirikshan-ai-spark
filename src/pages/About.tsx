@@ -1,4 +1,5 @@
 import { Footer } from "@/components/Footer";
+import mockupTeam from "@/assets/mockup-team.jpg";
 import { Navigation } from "@/components/Navigation";
 import { Button } from "@/components/ui/button";
 import { useScrollAnimation } from "@/hooks/use-scroll-animation";
