@@ -222,7 +222,7 @@ export const AnimatedProfileCard = React.forwardRef<
     return (
       <div
         ref={setContainerRef}
-        className={cn('relative w-full max-w-sm cursor-pointer', className)}
+        className={cn('relative w-full max-w-sm cursor-pointer h-full', className)}
         onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}
         {...props}
