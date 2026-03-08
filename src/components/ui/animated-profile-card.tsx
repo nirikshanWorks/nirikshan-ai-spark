@@ -70,7 +70,7 @@ export const ProfileCardContent = React.forwardRef<
       <Card
         ref={ref}
         className={cn(
-          'w-full max-w-sm border-none shadow-none',
+          'w-full max-w-sm border-none shadow-none h-full flex flex-col',
           isOnAccent ? 'bg-transparent' : 'bg-card',
           className
         )}
@@ -110,7 +110,7 @@ export const ProfileCardContent = React.forwardRef<
           </CardTitle>
         </CardHeader>
 
-        <CardContent>
+        <CardContent className="flex-1">
           <p
             className={cn(
               'text-sm leading-relaxed',
@@ -222,12 +222,12 @@ export const AnimatedProfileCard = React.forwardRef<
     return (
       <div
         ref={setContainerRef}
-        className={cn('relative w-full max-w-sm cursor-pointer', className)}
+        className={cn('relative w-full max-w-sm cursor-pointer h-full', className)}
         onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}
         {...props}
       >
-        <div className="relative z-0 rounded-xl border border-border bg-card p-2">
+        <div className="relative z-0 rounded-xl border border-border bg-card p-2 h-full">
           {baseCard}
         </div>
 
