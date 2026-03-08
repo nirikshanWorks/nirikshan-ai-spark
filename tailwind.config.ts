@@ -15,7 +15,8 @@ export default {
     extend: {
       fontFamily: {
         sans: ['Oxanium', 'sans-serif'],
-        heading: ['Oxanium', 'sans-serif'],
+        heading: ['Space Grotesk', 'sans-serif'],
+        display: ['Space Grotesk', 'sans-serif'],
       },
       colors: {
         border: "hsl(var(--border))",
