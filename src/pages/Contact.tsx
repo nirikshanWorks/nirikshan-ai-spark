@@ -285,23 +285,23 @@ const Contact = () => {
           <div className="absolute bottom-[-20%] left-[-10%] h-[360px] w-[360px] rounded-full bg-sky-500/20 blur-3xl opacity-70 animate-float-slow" aria-hidden="true" />
           <div className="relative container mx-auto px-6">
             <div className="mx-auto max-w-4xl text-center space-y-8">
-              <Badge className="inline-flex items-center gap-2 bg-white/10 text-white">
+              <Badge className="inline-flex items-center gap-2 bg-primary/10 text-primary">
                 <Sparkles size={16} /> Partner with our research studio
               </Badge>
-              <h1 className="text-4xl md:text-6xl font-bold text-white leading-tight">
+              <h1 className="text-4xl md:text-6xl font-bold text-foreground leading-tight">
                 Let's design the next intelligent breakthrough together.
               </h1>
-              <p className="text-xl text-white/80 max-w-3xl mx-auto">
+              <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
                 Tell us about your vision and we will bring our applied AI experts, product strategists, and engineering teams to accelerate it safely.
               </p>
               <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-                <Button size="lg" className="gradient-primary shadow-lg shadow-indigo-500/30" asChild>
+                <Button size="lg" className="gradient-primary shadow-lg shadow-primary/30" asChild>
                   <a href="#contact-form">
                     Start a project
                     <ArrowUpRight size={18} />
                   </a>
                 </Button>
-                <Button size="lg" variant="secondary" className="bg-white/10 text-white hover:bg-white/20" asChild>
+                <Button size="lg" variant="outline" asChild>
                   <a href="https://wa.me/919410992204" target="_blank" rel="noopener noreferrer">
                     WhatsApp our team
                     <ArrowUpRight size={18} />
@@ -315,15 +315,15 @@ const Contact = () => {
                 return (
                   <div
                     key={stat.label}
-                    className="relative overflow-hidden rounded-3xl border border-white/10 bg-white/5 px-6 py-8 backdrop-blur transition-all duration-300 hover:-translate-y-1 hover:border-white/30"
+                    className="relative overflow-hidden rounded-3xl border border-border bg-card/80 px-6 py-8 backdrop-blur transition-all duration-300 hover:-translate-y-1 hover:border-primary/40 ai-border-glow"
                   >
-                    <div className="absolute inset-0 bg-gradient-to-br from-white/10 via-primary/10 to-transparent opacity-0 transition-opacity duration-300 hover:opacity-100" aria-hidden="true" />
+                    <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-accent/5 opacity-0 transition-opacity duration-300 hover:opacity-100" aria-hidden="true" />
                     <div className="relative z-10 space-y-3">
-                      <div className="flex items-center gap-3 text-white/80">
+                      <div className="flex items-center gap-3 text-muted-foreground">
                         <Icon size={22} />
                         <span className="text-sm uppercase tracking-[0.2em]">{stat.label}</span>
                       </div>
-                      <p className="text-2xl font-semibold text-white">{stat.value}</p>
+                      <p className="text-2xl font-semibold text-foreground">{stat.value}</p>
                     </div>
                   </div>
                 );
