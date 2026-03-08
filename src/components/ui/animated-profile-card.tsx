@@ -70,7 +70,7 @@ export const ProfileCardContent = React.forwardRef<
       <Card
         ref={ref}
         className={cn(
-          'w-full max-w-sm border-none shadow-none',
+          'w-full max-w-sm border-none shadow-none h-full flex flex-col',
           isOnAccent ? 'bg-transparent' : 'bg-card',
           className
         )}
