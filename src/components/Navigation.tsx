@@ -1,5 +1,6 @@
 import SwitchToggleThemeDemo from "@/components/ui/toggle-theme";
 import { Button } from "@/components/ui/button";
+import { Button23 } from "@/components/ui/marquee-hover-button";
 import {
     NavigationMenu,
     NavigationMenuContent,
@@ -199,9 +200,7 @@ export const Navigation = () => {
               <SwitchToggleThemeDemo />
 
               <Link to="/contact">
-                <Button size="sm" className="ml-3 gradient-primary text-primary-foreground font-medium">
-                  Get in Touch
-                </Button>
+                <Button23 label="Get in Touch" className="ml-3 text-xs px-6 py-2 border-primary/30 bg-primary/10 text-primary hover:bg-primary hover:text-primary-foreground" />
               </Link>
             </div>
 
