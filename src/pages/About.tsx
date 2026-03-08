@@ -2,7 +2,7 @@ import { Footer } from "@/components/Footer";
 import { Navigation } from "@/components/Navigation";
 import { Button } from "@/components/ui/button";
 import { useScrollAnimation } from "@/hooks/use-scroll-animation";
-import GlobeSection from "@/components/Globe";
+import { WorldMap } from "@/components/ui/map";
 import { HeroParticles } from "@/components/HeroParticles";
 import { FloatingElements } from "@/components/FloatingElements";
 import { AICircuitLines } from "@/components/AICircuitLines";
@@ -460,8 +460,32 @@ const About = () => {
           </div>
         </section>
 
-        {/* 3D Globe Section */}
-        <GlobeSection />
+        {/* World Map Section */}
+        <section className="py-20 md:py-28 relative bg-secondary/20">
+          <div className="container mx-auto px-6">
+            <FadeUp className="text-center mb-12">
+              <p className="text-sm font-semibold uppercase tracking-widest text-primary mb-3">Global Presence</p>
+              <h2 className="text-3xl md:text-4xl font-bold mb-4">
+                Our <span className="text-gradient">Worldwide</span> Network
+              </h2>
+              <p className="text-muted-foreground max-w-2xl mx-auto text-lg">
+                Connecting with clients and partners across continents to deliver AI-powered solutions globally.
+              </p>
+            </FadeUp>
+            <div className="max-w-5xl mx-auto rounded-xl border border-border bg-card overflow-hidden p-4">
+              <WorldMap
+                dots={[
+                  { start: { lat: 28.6139, lng: 77.209, label: "New Delhi" }, end: { lat: -26.2041, lng: 28.0473, label: "South Africa" } },
+                  { start: { lat: 28.6139, lng: 77.209, label: "New Delhi" }, end: { lat: 1.3521, lng: 103.8198, label: "Singapore" } },
+                  { start: { lat: 28.6139, lng: 77.209, label: "New Delhi" }, end: { lat: 40.7128, lng: -74.006, label: "New York" } },
+                  { start: { lat: 28.6139, lng: 77.209, label: "New Delhi" }, end: { lat: 51.5074, lng: -0.1278, label: "London" } },
+                  { start: { lat: 28.6139, lng: 77.209, label: "New Delhi" }, end: { lat: 25.2048, lng: 55.2708, label: "Dubai" } },
+                ]}
+                lineColor="hsl(var(--primary))"
+              />
+            </div>
+          </div>
+        </section>
 
         {/* CTA */}
         <section className="py-20 relative overflow-hidden">
