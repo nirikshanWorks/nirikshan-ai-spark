@@ -196,7 +196,7 @@ export const Navigation = () => {
                 </Link>
               ))}
 
-              <ThemeToggle />
+              <SwitchToggleThemeDemo />
 
               <Link to="/contact">
                 <Button size="sm" className="ml-3 gradient-primary text-primary-foreground font-medium">
