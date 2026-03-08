@@ -161,11 +161,9 @@ const WhoWeAre = () => {
           className="py-20 bg-gradient-to-b from-background via-secondary/20 to-background relative"
           ref={storyRef.ref}
         >
-          <AICircuitLines className="opacity-15" />
           <div
-            className={`container mx-auto px-6 grid gap-12 md:grid-cols-[1.2fr,0.8fr] items-center transition-all duration-1000 relative z-10 ${
-              storyRef.isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
-            }`}
+            className="container mx-auto px-6 grid gap-12 md:grid-cols-[1.2fr,0.8fr] items-center relative z-10"
+          >
           >
             <div className="space-y-6">
               <h2 className="text-3xl md:text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-indigo-500 via-purple-500 to-blue-500">
