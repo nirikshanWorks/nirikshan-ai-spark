@@ -1,3 +1,4 @@
+import { SEO } from "@/components/SEO";
 import { Navigation } from "@/components/Navigation";
 import mockupServices from "@/assets/mockup-services-platform.jpg";
 import { Footer } from "@/components/Footer";
@@ -528,6 +529,11 @@ const Services = () => {
 
   return (
     <div className="min-h-screen">
+      <SEO
+        title="Our Services — AI, Cloud & Digital Solutions"
+        description="Explore Nirikshan AI's comprehensive services: Generative AI, Computer Vision, .NET, Azure, SAP BTP, QA, and digital transformation."
+        canonical="https://nirikshanai.com/services"
+      />
       <Navigation />
 
       <main className="pt-16">

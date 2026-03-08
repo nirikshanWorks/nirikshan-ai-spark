@@ -1,3 +1,4 @@
+import { SEO } from "@/components/SEO";
 import { Footer } from "@/components/Footer";
 import { Navigation } from "@/components/Navigation";
 
@@ -66,6 +67,11 @@ const sections: Section[] = [
 
 const Privacy = () => (
   <div className="min-h-screen bg-background">
+    <SEO
+      title="Privacy Policy — Nirikshan AI"
+      description="Read Nirikshan AI's privacy policy. Learn how we collect, use, and protect your personal information."
+      canonical="https://nirikshanai.com/privacy"
+    />
     <Navigation />
     <main className="pt-16 pb-20">
       <section className="container mx-auto px-6 py-16">

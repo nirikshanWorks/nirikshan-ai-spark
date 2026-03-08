@@ -4,6 +4,7 @@ import rajeshImage from "@/assets/team/rajesh-dabral.jpg";
 import vikramImage from "@/assets/team/vikram-biyani.jpg";
 import wwaTeamVideo from "@/assets/wwa-team.mp4";
 import { Footer } from "@/components/Footer";
+import { SEO } from "@/components/SEO";
 import { Navigation } from "@/components/Navigation";
 import { Button } from "@/components/ui/button";
 import {
@@ -111,6 +112,11 @@ const WhoWeAre = () => {
 
   return (
     <div className="min-h-screen bg-background scroll-smooth">
+      <SEO
+        title="Who We Are — Meet the Nirikshan AI Team"
+        description="Meet the leadership team and culture behind Nirikshan AI. Discover our story, mission, and the people driving AI innovation."
+        canonical="https://nirikshanai.com/who-we-are"
+      />
       <Navigation />
 
       <main className="pt-16">

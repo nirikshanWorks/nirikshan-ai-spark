@@ -1,3 +1,4 @@
+import { SEO } from "@/components/SEO";
 import { Navigation } from "@/components/Navigation";
 import { Footer } from "@/components/Footer";
 import { CaseStudyCard } from "@/components/CaseStudyCard";
@@ -80,6 +81,11 @@ const caseStudies = [
 const CaseStudies = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50/20 to-purple-50 dark:from-slate-950 dark:via-slate-900/60 dark:to-slate-900">
+      <SEO
+        title="Case Studies — AI Success Stories"
+        description="Real-world AI case studies from Nirikshan AI. See how we've helped businesses transform with computer vision, generative AI, and intelligent automation."
+        canonical="https://nirikshanai.com/case-studies"
+      />
       <Navigation />
       
       <main className="pt-16">

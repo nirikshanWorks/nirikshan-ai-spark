@@ -1,3 +1,4 @@
+import { SEO } from "@/components/SEO";
 import { Footer } from "@/components/Footer";
 import mockupTeam from "@/assets/mockup-team.jpg";
 import { Navigation } from "@/components/Navigation";
@@ -146,6 +147,11 @@ const About = () => {
 
   return (
     <div className="min-h-screen">
+      <SEO
+        title="About Us — Nirikshan AI"
+        description="Learn about Nirikshan AI's mission, values, and the team driving AI innovation across industries worldwide."
+        canonical="https://nirikshanai.com/about"
+      />
       <Navigation />
       
       <main className="pt-16">
