@@ -14,8 +14,8 @@ export default {
     },
     extend: {
       fontFamily: {
-        sans: ['Arvo', 'serif'],
-        heading: ['Arvo', 'serif'],
+        sans: ['Oxanium', 'sans-serif'],
+        heading: ['Oxanium', 'sans-serif'],
       },
       colors: {
         border: "hsl(var(--border))",
