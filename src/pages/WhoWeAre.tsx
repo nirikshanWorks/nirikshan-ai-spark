@@ -273,10 +273,7 @@ const WhoWeAre = () => {
                 Meet the founders and leaders steering Nirikshan AI towards a future of responsible technological advancement.
               </p>
             </FadeUp>
-            <div
-              className="grid gap-8 grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 max-w-6xl mx-auto justify-items-center"
-            >
-            >
+            <div className="grid gap-8 grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 max-w-6xl mx-auto justify-items-center">
               {leadership.map((member) => {
                 const initials = member.name.split(' ').map(n => n[0]).join('');
                 const socials: SocialLink[] = member.linkedin
