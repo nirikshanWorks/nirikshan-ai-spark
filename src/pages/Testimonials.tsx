@@ -38,19 +38,19 @@ const Testimonials = () => (
           </p>
         </div>
 
-        <ContainerScroll className="h-[180vh] md:h-[250vh]">
-          <CardsContainer className="h-screen sticky top-0 w-full max-w-[90vw] sm:max-w-md md:max-w-lg mx-auto" style={{ height: "clamp(320px, 50vw, 420px)" }}>
-            {testimonials.map((testimonial, index) => (
-              <CardTransformed
-                key={testimonial.name}
-                index={index}
-                arrayLength={testimonials.length}
-                variant="light"
-                incrementY={8}
-                incrementZ={6}
-                className="w-full"
-                style={{ width: "100%", height: "clamp(280px, 48vw, 380px)" }}
-              >
+        <ContainerScroll className="h-[300vh] md:h-[400vh]">
+          <div className="sticky top-[10vh] h-[80vh] flex items-center justify-center">
+            <CardsContainer className="w-full max-w-[90vw] sm:max-w-md md:max-w-lg mx-auto h-[320px] sm:h-[360px] md:h-[420px]">
+              {testimonials.map((testimonial, index) => (
+                <CardTransformed
+                  key={testimonial.name}
+                  index={index}
+                  arrayLength={testimonials.length}
+                  variant="light"
+                  incrementY={8}
+                  incrementZ={6}
+                  className="w-full h-[280px] sm:h-[320px] md:h-[380px]"
+                >
                 <div className="flex flex-col items-center text-center gap-2 md:gap-4 w-full">
                   <ReviewStars rating={5} className="text-primary" />
                   <p className="text-xs md:text-sm text-muted-foreground leading-relaxed px-1 md:px-2 line-clamp-4 md:line-clamp-none">
@@ -71,7 +71,8 @@ const Testimonials = () => (
                 </div>
               </CardTransformed>
             ))}
-          </CardsContainer>
+            </CardsContainer>
+          </div>
         </ContainerScroll>
 
         <div className="mt-16 flex flex-col sm:flex-row gap-4 justify-center">
