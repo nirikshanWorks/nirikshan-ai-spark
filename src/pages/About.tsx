@@ -2,7 +2,7 @@ import { Footer } from "@/components/Footer";
 import { Navigation } from "@/components/Navigation";
 import { Button } from "@/components/ui/button";
 import { useScrollAnimation } from "@/hooks/use-scroll-animation";
-import GlobeSection from "@/components/Globe";
+import { WorldMap } from "@/components/ui/map";
 import { HeroParticles } from "@/components/HeroParticles";
 import { FloatingElements } from "@/components/FloatingElements";
 import { AICircuitLines } from "@/components/AICircuitLines";
