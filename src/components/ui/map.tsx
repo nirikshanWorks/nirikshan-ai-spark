@@ -66,10 +66,10 @@ export function WorldMap({
   const fullCycleDuration = totalAnimationTime + pauseTime;
 
   return (
-    <div className="w-full aspect-[2/1] rounded-lg relative font-sans">
+    <div className="w-full aspect-[2/1] sm:aspect-[2/1] rounded-lg relative font-sans overflow-hidden">
       <img
         src={`data:image/svg+xml;utf8,${encodeURIComponent(svgMap)}`}
-        className="h-full w-full pointer-events-none select-none"
+        className="h-full w-full pointer-events-none select-none object-cover"
         alt="world map"
         draggable={false}
       />

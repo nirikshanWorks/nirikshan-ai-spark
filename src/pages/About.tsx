@@ -462,18 +462,18 @@ const About = () => {
         </section>
 
         {/* World Map Section */}
-        <section className="py-20 md:py-28 relative bg-secondary/20">
-          <div className="container mx-auto px-6">
-            <FadeUp className="text-center mb-12">
-              <p className="text-sm font-semibold uppercase tracking-widest text-primary mb-3">Global Presence</p>
-              <h2 className="text-3xl md:text-4xl font-bold mb-4">
+        <section className="py-12 sm:py-16 md:py-28 relative bg-secondary/20">
+          <div className="container mx-auto px-4 sm:px-6">
+            <FadeUp className="text-center mb-8 sm:mb-12">
+              <p className="text-xs sm:text-sm font-semibold uppercase tracking-widest text-primary mb-2 sm:mb-3">Global Presence</p>
+              <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-3 sm:mb-4">
                 Our <span className="text-gradient">Worldwide</span> Network
               </h2>
-              <p className="text-muted-foreground max-w-2xl mx-auto text-lg">
+              <p className="text-muted-foreground max-w-2xl mx-auto text-sm sm:text-base md:text-lg">
                 Connecting with clients and partners across continents to deliver AI-powered solutions globally.
               </p>
             </FadeUp>
-            <div className="max-w-5xl mx-auto rounded-xl border border-border bg-card overflow-hidden p-4">
+            <div className="max-w-5xl mx-auto rounded-xl border border-border bg-card overflow-hidden p-2 sm:p-4">
               <WorldMap
                 dots={[
                   { start: { lat: 28.6139, lng: 77.209, label: "New Delhi" }, end: { lat: -26.2041, lng: 28.0473, label: "South Africa" } },
@@ -483,6 +483,7 @@ const About = () => {
                   { start: { lat: 28.6139, lng: 77.209, label: "New Delhi" }, end: { lat: 25.2048, lng: 55.2708, label: "Dubai" } },
                 ]}
                 lineColor="hsl(var(--primary))"
+                showLabels={typeof window !== 'undefined' && window.innerWidth > 640}
               />
             </div>
           </div>

@@ -90,36 +90,36 @@ const Index = () => {
       <main className="relative z-10">
         {/* ── HERO ── */}
         <section className="relative overflow-hidden pt-24 pb-8 md:pt-32 md:pb-12">
-          <div className="container mx-auto px-6">
-            <div className="relative w-full rounded-xl border border-border bg-card/80 backdrop-blur overflow-hidden min-h-[500px] md:min-h-[550px]">
+          <div className="container mx-auto px-4 sm:px-6">
+            <div className="relative w-full rounded-xl border border-border bg-card/80 backdrop-blur overflow-hidden">
               <Spotlight className="-top-40 left-0 md:left-60 md:-top-20" size={300} />
               
-              <div className="flex flex-col md:flex-row h-full min-h-[500px] md:min-h-[550px]">
+              <div className="flex flex-col md:flex-row">
                 {/* Left content */}
-                <div className="flex-1 p-8 md:p-12 relative z-10 flex flex-col justify-center">
-                  <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 border border-primary/20 text-sm font-medium text-primary w-fit mb-6">
-                    <Brain className="w-4 h-4" />
+                <div className="flex-1 p-6 sm:p-8 md:p-12 relative z-10 flex flex-col justify-center">
+                  <div className="inline-flex items-center gap-2 px-3 py-1.5 sm:px-4 sm:py-2 rounded-full bg-primary/10 border border-primary/20 text-xs sm:text-sm font-medium text-primary w-fit mb-4 sm:mb-6">
+                    <Brain className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
                     AI-Powered Enterprise Solutions
                   </div>
                   
-                  <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold leading-[1.1] tracking-tight">
+                  <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold leading-[1.1] tracking-tight">
                     AI That Sees, Understands &{" "}
                     <span className="text-gradient">Acts for Impact</span>
                   </h1>
                   
-                  <p className="mt-4 text-muted-foreground max-w-lg text-base md:text-lg leading-relaxed">
+                  <p className="mt-3 sm:mt-4 text-muted-foreground max-w-lg text-sm sm:text-base md:text-lg leading-relaxed">
                     Generative AI, Computer Vision & Agentic Solutions that transform data into actionable insights.
                   </p>
 
-                  <div className="flex flex-col sm:flex-row items-start gap-4 pt-6">
+                  <div className="flex flex-col sm:flex-row items-start gap-3 sm:gap-4 pt-4 sm:pt-6">
                     <Link to="/contact">
-                      <Button size="lg" className="gradient-primary text-primary-foreground px-8 h-12 text-base font-semibold border-0">
+                      <Button size="lg" className="gradient-primary text-primary-foreground px-6 sm:px-8 h-10 sm:h-12 text-sm sm:text-base font-semibold border-0 w-full sm:w-auto">
                         Request Demo
-                        <ArrowRight className="ml-2 w-5 h-5" />
+                        <ArrowRight className="ml-2 w-4 h-4 sm:w-5 sm:h-5" />
                       </Button>
                     </Link>
                     <Link to="/expertise">
-                      <Button size="lg" variant="outline" className="h-12 px-8 text-base border-border hover:bg-secondary">
+                      <Button size="lg" variant="outline" className="h-10 sm:h-12 px-6 sm:px-8 text-sm sm:text-base border-border hover:bg-secondary w-full sm:w-auto">
                         View Capabilities
                       </Button>
                     </Link>
@@ -127,13 +127,13 @@ const Index = () => {
                 </div>
 
                 {/* Right – 3D Spline scene */}
-                <div className="flex-1 relative min-h-[300px] md:min-h-0">
+                <div className="flex-1 relative h-[250px] sm:h-[300px] md:h-auto md:min-h-[450px]">
                   <SplineScene 
                     scene="https://prod.spline.design/kZDDjO5HuC9GJUM2/scene.splinecode"
                     className="w-full h-full"
                   />
-                  <div className="absolute bottom-6 left-1/2 -translate-x-1/2 px-5 py-2.5 rounded-full bg-primary/90 backdrop-blur-sm border border-primary-foreground/20 shadow-lg">
-                    <p className="text-primary-foreground text-sm font-semibold tracking-wide whitespace-nowrap">
+                  <div className="absolute bottom-4 sm:bottom-6 left-1/2 -translate-x-1/2 px-4 sm:px-5 py-2 sm:py-2.5 rounded-full bg-primary/90 backdrop-blur-sm border border-primary-foreground/20 shadow-lg">
+                    <p className="text-primary-foreground text-xs sm:text-sm font-semibold tracking-wide whitespace-nowrap">
                       <TypingText text="👋 Hello From Nirikshan AI" />
                     </p>
                   </div>
