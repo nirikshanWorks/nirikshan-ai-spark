@@ -24,11 +24,11 @@ const GlobeSection = () => {
             Global Reach
           </span>
           <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
-            Powering AI Solutions Worldwide
+            Our Presence Across India & Beyond
           </h2>
           <p className="text-muted-foreground max-w-2xl mx-auto">
-            From our headquarters in Hyderabad, we deliver cutting-edge AI and computer vision 
-            solutions to clients across the globe, transforming industries and driving innovation.
+            With our registered office in Haryana and chair offices in Noida and Kolkata,
+            we deliver AI and computer vision solutions to clients across India and internationally.
           </p>
         </div>
         
@@ -38,17 +38,17 @@ const GlobeSection = () => {
         
         {/* Additional info cards */}
         <div className="grid md:grid-cols-3 gap-6 mt-12">
-          <div className="glass-card p-6 rounded-xl text-center tilt-card">
-            <div className="text-3xl font-bold text-primary mb-2">24/7</div>
-            <div className="text-sm text-muted-foreground">Global Support Coverage</div>
+          <div className="glass-card p-6 rounded-xl text-center">
+            <div className="text-lg font-bold text-primary mb-1">Registered Office</div>
+            <div className="text-sm text-muted-foreground">166A, Village Malra Sarai, Lawan, Mahendragarh - 123029, Haryana</div>
           </div>
-          <div className="glass-card p-6 rounded-xl text-center tilt-card">
-            <div className="text-3xl font-bold text-primary mb-2">99.9%</div>
-            <div className="text-sm text-muted-foreground">Service Uptime</div>
+          <div className="glass-card p-6 rounded-xl text-center">
+            <div className="text-lg font-bold text-primary mb-1">Chair Office — Noida</div>
+            <div className="text-sm text-muted-foreground">14th Avenue, Gaur City, Noida, Uttar Pradesh</div>
           </div>
-          <div className="glass-card p-6 rounded-xl text-center tilt-card">
-            <div className="text-3xl font-bold text-primary mb-2">3</div>
-            <div className="text-sm text-muted-foreground">Regional Offices</div>
+          <div className="glass-card p-6 rounded-xl text-center">
+            <div className="text-lg font-bold text-primary mb-1">Chair Office — Kolkata</div>
+            <div className="text-sm text-muted-foreground">69, S K Deb Road, Ujjas Condovelle, Building 20, Flat 101, Kolkata - 700048</div>
           </div>
         </div>
       </div>
