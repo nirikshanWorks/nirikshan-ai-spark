@@ -323,10 +323,7 @@ const WhoWeAre = () => {
                 Dive deeper into the stories, milestones, and opportunities that define Nirikshan AI.
               </p>
             </div>
-            <div
-              className={`grid gap-6 md:grid-cols-3 transition-all duration-1000 ${
-                cardsRef.isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
-              }`}
+            <div className="grid gap-6 md:grid-cols-3">
             >
               <Link
                 to="/testimonials"
