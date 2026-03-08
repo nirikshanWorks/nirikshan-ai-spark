@@ -1,24 +1,9 @@
 import { useEffect, useRef } from "react";
 
-const holiColors = [
-  "#FF6B9D", "#F97316", "#FACC15", "#4ADE80", "#6366F1",
-  "#22D3EE", "#A855F7", "#F43F5E", "#34D399", "#FB923C",
-];
-
-interface Splat {
-  x: number;
-  y: number;
-  r: number;
-  color: string;
-  alpha: number;
-  born: number;
-}
-
 export const MouseColorSplatter = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const splatsRef = useRef<Splat[]>([]);
-  const mouseRef = useRef({ x: 0, y: 0 });
-  const lastSplatRef = useRef(0);
+  const mouseRef = useRef({ x: -100, y: -100 });
+  const trailRef = useRef<{ x: number; y: number; alpha: number }[]>([]);
   const rafRef = useRef(0);
 
   useEffect(() => {
@@ -36,42 +21,16 @@ export const MouseColorSplatter = () => {
 
     const onMove = (e: MouseEvent) => {
       mouseRef.current = { x: e.clientX, y: e.clientY };
-      const now = Date.now();
-      if (now - lastSplatRef.current > 40) {
-        lastSplatRef.current = now;
-        const count = Math.floor(Math.random() * 3) + 2;
-        for (let i = 0; i < count; i++) {
-          splatsRef.current.push({
-            x: e.clientX + (Math.random() - 0.5) * 30,
-            y: e.clientY + (Math.random() - 0.5) * 30,
-            r: Math.random() * 18 + 6,
-            color: holiColors[Math.floor(Math.random() * holiColors.length)],
-            alpha: 0.6 + Math.random() * 0.3,
-            born: now,
-          });
-        }
-      }
+      trailRef.current.push({ x: e.clientX, y: e.clientY, alpha: 1 });
+      if (trailRef.current.length > 30) trailRef.current.shift();
     };
 
     const onTouch = (e: TouchEvent) => {
       const t = e.touches[0];
       if (!t) return;
       mouseRef.current = { x: t.clientX, y: t.clientY };
-      const now = Date.now();
-      if (now - lastSplatRef.current > 40) {
-        lastSplatRef.current = now;
-        const count = Math.floor(Math.random() * 3) + 2;
-        for (let i = 0; i < count; i++) {
-          splatsRef.current.push({
-            x: t.clientX + (Math.random() - 0.5) * 30,
-            y: t.clientY + (Math.random() - 0.5) * 30,
-            r: Math.random() * 18 + 6,
-            color: holiColors[Math.floor(Math.random() * holiColors.length)],
-            alpha: 0.6 + Math.random() * 0.3,
-            born: now,
-          });
-        }
-      }
+      trailRef.current.push({ x: t.clientX, y: t.clientY, alpha: 1 });
+      if (trailRef.current.length > 30) trailRef.current.shift();
     };
 
     window.addEventListener("mousemove", onMove);
@@ -79,35 +38,29 @@ export const MouseColorSplatter = () => {
 
     const draw = () => {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
-      const now = Date.now();
 
-      // Draw cursor glow
-      const grd = ctx.createRadialGradient(
-        mouseRef.current.x, mouseRef.current.y, 0,
-        mouseRef.current.x, mouseRef.current.y, 25
-      );
-      const cursorColor = holiColors[Math.floor(now / 200) % holiColors.length];
-      grd.addColorStop(0, cursorColor + "55");
-      grd.addColorStop(1, cursorColor + "00");
+      // Draw fading trail
+      for (let i = 0; i < trailRef.current.length; i++) {
+        const p = trailRef.current[i];
+        p.alpha -= 0.025;
+        if (p.alpha <= 0) continue;
+        const size = p.alpha * 6;
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, size, 0, Math.PI * 2);
+        ctx.fillStyle = `hsla(210, 80%, 65%, ${p.alpha * 0.5})`;
+        ctx.fill();
+      }
+      trailRef.current = trailRef.current.filter((p) => p.alpha > 0);
+
+      // Glow at cursor
+      const { x, y } = mouseRef.current;
+      const grd = ctx.createRadialGradient(x, y, 0, x, y, 18);
+      grd.addColorStop(0, "hsla(210, 80%, 70%, 0.35)");
+      grd.addColorStop(1, "hsla(210, 80%, 70%, 0)");
       ctx.beginPath();
-      ctx.arc(mouseRef.current.x, mouseRef.current.y, 25, 0, Math.PI * 2);
+      ctx.arc(x, y, 18, 0, Math.PI * 2);
       ctx.fillStyle = grd;
       ctx.fill();
-
-      // Draw splats
-      splatsRef.current.forEach((s) => {
-        const age = (now - s.born) / 2500; // fade over 2.5s
-        const a = Math.max(0, s.alpha * (1 - age));
-        if (a <= 0) return;
-
-        ctx.beginPath();
-        ctx.arc(s.x, s.y, s.r * (0.8 + age * 0.4), 0, Math.PI * 2);
-        ctx.fillStyle = s.color + Math.floor(a * 255).toString(16).padStart(2, "0");
-        ctx.fill();
-      });
-
-      // Cleanup old splats
-      splatsRef.current = splatsRef.current.filter((s) => now - s.born < 2500);
 
       rafRef.current = requestAnimationFrame(draw);
     };
