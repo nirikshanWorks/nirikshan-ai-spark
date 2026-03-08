@@ -247,9 +247,7 @@ const WhoWeAre = () => {
                 These principles keep our teams aligned, our research ethical, and our collaborations purposeful.
               </p>
             </FadeUp>
-            <StaggerContainer className={`grid gap-6 md:grid-cols-2 lg:grid-cols-3 transition-all duration-1000 ${
-                valuesRef.isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
-              }`} staggerDelay={0.12}>
+            <StaggerContainer className="grid gap-6 md:grid-cols-2 lg:grid-cols-3" staggerDelay={0.12}>
               {values.map((value) => (
                 <StaggerItem key={value.title}>
                 <div
