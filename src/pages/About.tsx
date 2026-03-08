@@ -15,6 +15,7 @@ import { AI3DCube } from "@/components/AI3DCube";
 import { AIDataStream } from "@/components/AIDataStream";
 import { AnimatedGridBg } from "@/components/AnimatedGridBg";
 import { FadeUp, SlideLeft, SlideRight, StaggerContainer, StaggerItem, ScaleUp } from "@/components/ScrollAnimations";
+import { ContainerScroll } from "@/components/ui/container-scroll-animation";
 import {
   ArrowRight,
   Award,
