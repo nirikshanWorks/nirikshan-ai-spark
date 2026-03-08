@@ -56,7 +56,7 @@ export const MouseColorSplatter = () => {
       const { x, y } = mouseRef.current;
       const grd = ctx.createRadialGradient(x, y, 0, x, y, 18);
       grd.addColorStop(0, "hsla(0, 70%, 36%, 0.35)");
-      grd.addColorStop(1, "hsla(210, 80%, 70%, 0)");
+      grd.addColorStop(1, "hsla(0, 70%, 36%, 0)");
       ctx.beginPath();
       ctx.arc(x, y, 18, 0, Math.PI * 2);
       ctx.fillStyle = grd;
