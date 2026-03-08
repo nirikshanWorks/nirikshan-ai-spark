@@ -8,6 +8,7 @@ import { AIWaveField } from "@/components/AIWaveField";
 import { AI3DOrb } from "@/components/AI3DOrb";
 import { AIDataStream } from "@/components/AIDataStream";
 import { FadeUp, SlideLeft, SlideRight, StaggerContainer, StaggerItem } from "@/components/ScrollAnimations";
+import { ContainerScroll } from "@/components/ui/container-scroll-animation";
 import {
   ArrowRight, ExternalLink, Calendar, MapPin, Zap, CheckCircle,
   Brain, Eye, Code, Smartphone, BarChart3, Shield, Layers, Globe,
@@ -204,6 +205,26 @@ const Projects = () => {
               </div>
             </FadeUp>
           </div>
+        </section>
+
+        {/* Scroll Animation Showcase */}
+        <section className="bg-secondary/10">
+          <ContainerScroll
+            titleComponent={
+              <div className="text-center">
+                <p className="text-sm font-semibold uppercase tracking-widest text-primary mb-3">Featured Work</p>
+                <h2 className="text-3xl md:text-5xl font-bold">
+                  AI-Powered <span className="text-gradient">Innovation</span> in Action
+                </h2>
+              </div>
+            }
+          >
+            <img
+              src="https://images.unsplash.com/photo-1555949963-aa79dcee981c?w=1200&q=80"
+              alt="AI Innovation Projects"
+              className="w-full h-full object-cover object-left-top rounded-2xl"
+            />
+          </ContainerScroll>
         </section>
 
         <AnimatePresence mode="wait">

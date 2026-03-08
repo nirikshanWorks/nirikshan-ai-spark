@@ -14,6 +14,7 @@ import { AIWaveField } from "@/components/AIWaveField";
 import { AIParticleRing } from "@/components/AIParticleRing";
 import { AIDataStream } from "@/components/AIDataStream";
 import { FadeUp, SlideLeft, SlideRight, StaggerContainer, StaggerItem } from "@/components/ScrollAnimations";
+import { ContainerScroll } from "@/components/ui/container-scroll-animation";
 import { 
   Brain, 
   Eye, 
@@ -563,6 +564,26 @@ const Services = () => {
               </p>
             </div>
           </div>
+        </section>
+
+        {/* Scroll Animation Showcase */}
+        <section className="bg-secondary/10">
+          <ContainerScroll
+            titleComponent={
+              <div className="text-center">
+                <p className="text-sm font-semibold uppercase tracking-widest text-primary mb-3">Our Platform</p>
+                <h2 className="text-3xl md:text-5xl font-bold">
+                  Full-Stack <span className="text-gradient">Technology</span> Solutions
+                </h2>
+              </div>
+            }
+          >
+            <img
+              src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=1200&q=80"
+              alt="Technology Solutions Dashboard"
+              className="w-full h-full object-cover object-left-top rounded-2xl"
+            />
+          </ContainerScroll>
         </section>
 
         {/* 3D Product Carousel */}
