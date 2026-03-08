@@ -1,7 +1,7 @@
 const fs = require('fs');
 const path = require('path');
 
-const baseUrl = 'https://nirikshanai.in';
+const baseUrl = 'https://nirikshanai.com';
 const outPath = path.join(__dirname, '..', 'public', 'sitemap.xml');
 const expertiseDataPath = path.join(__dirname, '..', 'src', 'pages', 'expertise', 'expertiseData.ts');
 
