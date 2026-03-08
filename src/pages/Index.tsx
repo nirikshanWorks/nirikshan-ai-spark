@@ -2,6 +2,7 @@ import { useEffect, useRef } from "react";
 import { Navigation } from "@/components/Navigation";
 import { Footer } from "@/components/Footer";
 import { Button } from "@/components/ui/button";
+import { AICircuitLines } from "@/components/AICircuitLines";
 import { AIHexagonGrid } from "@/components/AIHexagonGrid";
 import { AI3DCube } from "@/components/AI3DCube";
 import { AIWaveField } from "@/components/AIWaveField";
