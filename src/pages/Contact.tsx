@@ -1,5 +1,6 @@
 
 import { FloatingElements } from "@/components/FloatingElements";
+import { SEO } from "@/components/SEO";
 import { Footer } from "@/components/Footer";
 import { HeroParticles } from "@/components/HeroParticles";
 import { Navigation } from "@/components/Navigation";
