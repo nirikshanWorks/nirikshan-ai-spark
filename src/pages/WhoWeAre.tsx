@@ -324,7 +324,6 @@ const WhoWeAre = () => {
               </p>
             </div>
             <div className="grid gap-6 md:grid-cols-3">
-            >
               <Link
                 to="/testimonials"
                 className="group p-8 rounded-3xl border border-border bg-background/80 backdrop-blur hover:-translate-y-2 hover:border-indigo-500/50 hover:shadow-xl transition-all duration-300"
