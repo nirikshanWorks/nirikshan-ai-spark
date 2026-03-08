@@ -211,9 +211,8 @@ const WhoWeAre = () => {
           ref={missionRef.ref}
         >
           <div
-            className={`container mx-auto px-6 grid gap-10 md:grid-cols-2 items-center transition-all duration-1000 ${
-              missionRef.isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
-            }`}
+            className="container mx-auto px-6 grid gap-10 md:grid-cols-2 items-center"
+          >
           >
             <div className="p-8 rounded-3xl bg-gradient-to-br from-indigo-600/10 via-purple-500/10 to-blue-500/10 border border-border">
               <div className="flex items-center gap-4 mb-6">
