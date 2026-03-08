@@ -38,35 +38,35 @@ const Testimonials = () => (
           </p>
         </div>
 
-        <ContainerScroll className="h-[250vh]">
-          <CardsContainer className="h-screen sticky top-0 w-full max-w-lg mx-auto" style={{ height: "420px" }}>
+        <ContainerScroll className="h-[180vh] md:h-[250vh]">
+          <CardsContainer className="h-screen sticky top-0 w-full max-w-[90vw] sm:max-w-md md:max-w-lg mx-auto" style={{ height: "clamp(320px, 50vw, 420px)" }}>
             {testimonials.map((testimonial, index) => (
               <CardTransformed
                 key={testimonial.name}
                 index={index}
                 arrayLength={testimonials.length}
                 variant="light"
-                incrementY={12}
-                incrementZ={8}
-                className="w-full max-w-lg"
-                style={{ width: "100%", height: "380px" }}
+                incrementY={8}
+                incrementZ={6}
+                className="w-full"
+                style={{ width: "100%", height: "clamp(280px, 48vw, 380px)" }}
               >
-                <div className="flex flex-col items-center text-center gap-4 w-full">
+                <div className="flex flex-col items-center text-center gap-2 md:gap-4 w-full">
                   <ReviewStars rating={5} className="text-primary" />
-                  <p className="text-sm text-muted-foreground leading-relaxed px-2">
+                  <p className="text-xs md:text-sm text-muted-foreground leading-relaxed px-1 md:px-2 line-clamp-4 md:line-clamp-none">
                     "{testimonial.quote}"
                   </p>
                 </div>
-                <div className="flex items-center gap-3">
-                  <Avatar className="!size-12 border border-border">
+                <div className="flex items-center gap-2 md:gap-3">
+                  <Avatar className="!size-10 md:!size-12 border border-border">
                     <AvatarImage src={testimonial.image} alt={testimonial.name} />
                     <AvatarFallback>
                       {testimonial.name.split(" ").map((n) => n[0]).join("")}
                     </AvatarFallback>
                   </Avatar>
                   <div className="text-left">
-                    <p className="font-semibold text-sm text-foreground">{testimonial.name}</p>
-                    <p className="text-xs text-muted-foreground">{testimonial.role}</p>
+                    <p className="font-semibold text-xs md:text-sm text-foreground">{testimonial.name}</p>
+                    <p className="text-[10px] md:text-xs text-muted-foreground">{testimonial.role}</p>
                   </div>
                 </div>
               </CardTransformed>
