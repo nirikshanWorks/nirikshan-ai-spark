@@ -88,7 +88,7 @@ const leadership = [
     role: "Director – Finance",
     bio: "Vikram steers financial strategy and planning, enabling sustainable growth through disciplined fiscal management and strategic investments.",
     image: vikramImage,
-    linkedin: ""
+    linkedin: "https://www.linkedin.com/in/viekram-biyaani-44810817b"
   }
 ];
 
