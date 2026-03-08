@@ -2,14 +2,12 @@ import { useEffect, useRef } from "react";
 import { Navigation } from "@/components/Navigation";
 import { Footer } from "@/components/Footer";
 import { Button } from "@/components/ui/button";
-import { AICircuitLines } from "@/components/AICircuitLines";
-import { AIFloatingIcons } from "@/components/AIFloatingIcons";
 import { AIHexagonGrid } from "@/components/AIHexagonGrid";
-import { AI3DOrb } from "@/components/AI3DOrb";
 import { AI3DCube } from "@/components/AI3DCube";
 import { AIWaveField } from "@/components/AIWaveField";
 import { AIParticleRing } from "@/components/AIParticleRing";
-import { AIDataStream } from "@/components/AIDataStream";
+import { SplineScene } from "@/components/ui/splite";
+import { Spotlight } from "@/components/ui/spotlight";
 import { AnimatedGridBg } from "@/components/AnimatedGridBg";
 import { FadeUp, SlideLeft, SlideRight, StaggerContainer, StaggerItem } from "@/components/ScrollAnimations";
 import {
