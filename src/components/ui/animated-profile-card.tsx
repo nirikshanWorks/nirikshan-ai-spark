@@ -191,7 +191,7 @@ export const AnimatedProfileCard = React.forwardRef<
       [ref]
     );
 
-    const initialClipPath = 'circle(40px at 64px 64px)';
+    const initialClipPath = 'circle(0px at 64px 64px)';
     const hoverClipPath = 'circle(150% at 64px 64px)';
 
     useGSAP(
