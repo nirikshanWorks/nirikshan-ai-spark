@@ -1,5 +1,6 @@
 import { SEO } from "@/components/SEO";
-import { useEffect, useRef } from "react";
+import React from "react";
+import { LogoCarousel, type Logo } from "@/components/ui/logo-carousel";
 import mockupDashboard from "@/assets/mockup-ai-dashboard.jpg";
 import { Navigation } from "@/components/Navigation";
 import { Footer } from "@/components/Footer";
@@ -44,12 +45,20 @@ const trustMetrics = [
   { value: "99.9%", label: "System Uptime" },
 ];
 
-const partners = [
-  { name: "Madapet", logo: "https://res.cloudinary.com/dch0uyw8e/image/upload/v1760830199/LOGO_8_8_kkuti6.jpg" },
-  { name: "Mangosorange Agritech", logo: "https://mangosorange.co.in/assets/img/MOLogo.png" },
-  { name: "Motherson", logo: "https://apn-portal.my.salesforce.com/servlet/servlet.ImageServer?id=0150h0000055wCcAAI&oid=00DE0000000c48tMAA" },
-  { name: "Ranayara Pvt Ltd", logo: "https://5.imimg.com/data5/NSDMERP/Board/2023/5/308937129/NE/QI/NP/155783236/155783236-board-1684400723760.jpg" },
-  { name: "YMCA University", logo: "https://upload.wikimedia.org/wikipedia/en/a/ae/J.C._Bose_University_of_Science_and_Technology%2C_YMCA_logo.png" },
+const makeImgLogo = (src: string, alt: string) => {
+  const ImgComponent = (props: React.ImgHTMLAttributes<HTMLImageElement>) => (
+    <img src={src} alt={alt} loading="lazy" {...props} style={{ objectFit: "contain", width: "100%", height: "100%" }} />
+  );
+  ImgComponent.displayName = `Logo_${alt}`;
+  return ImgComponent;
+};
+
+const partnerLogos: Logo[] = [
+  { name: "Madapet", id: 1, img: makeImgLogo("https://res.cloudinary.com/dch0uyw8e/image/upload/v1760830199/LOGO_8_8_kkuti6.jpg", "Madapet") },
+  { name: "Mangosorange Agritech", id: 2, img: makeImgLogo("https://mangosorange.co.in/assets/img/MOLogo.png", "Mangosorange Agritech") },
+  { name: "Motherson", id: 3, img: makeImgLogo("https://apn-portal.my.salesforce.com/servlet/servlet.ImageServer?id=0150h0000055wCcAAI&oid=00DE0000000c48tMAA", "Motherson") },
+  { name: "Ranayara Pvt Ltd", id: 4, img: makeImgLogo("https://5.imimg.com/data5/NSDMERP/Board/2023/5/308937129/NE/QI/NP/155783236/155783236-board-1684400723760.jpg", "Ranayara Pvt Ltd") },
+  { name: "YMCA University", id: 5, img: makeImgLogo("https://upload.wikimedia.org/wikipedia/en/a/ae/J.C._Bose_University_of_Science_and_Technology%2C_YMCA_logo.png", "YMCA University") },
 ];
 
 const processSteps = [
@@ -60,28 +69,6 @@ const processSteps = [
 ];
 
 const Index = () => {
-  const partnersContainerRef = useRef<HTMLDivElement | null>(null);
-  const isPartnersHoveringRef = useRef(false);
-
-  
-
-  useEffect(() => {
-    const container = partnersContainerRef.current;
-    if (!container) return;
-    let raf: number;
-    const speed = 0.5;
-    const loop = () => {
-      if (!isPartnersHoveringRef.current) {
-        container.scrollLeft += speed;
-        if (container.scrollLeft >= container.scrollWidth / 2) container.scrollLeft = 0;
-      }
-      raf = requestAnimationFrame(loop);
-    };
-    raf = requestAnimationFrame(loop);
-    return () => cancelAnimationFrame(raf);
-  }, []);
-
-  const duplicatedPartners = [...partners, ...partners];
 
   return (
     <div className="min-h-screen bg-background relative">
@@ -346,22 +333,9 @@ const Index = () => {
             </FadeUp>
 
             {/* Client logos */}
-            <div
-              className="overflow-hidden"
-              ref={partnersContainerRef}
-              onMouseEnter={() => { isPartnersHoveringRef.current = true; }}
-              onMouseLeave={() => { isPartnersHoveringRef.current = false; }}
-            >
-              <div className="flex gap-8 min-w-max items-center">
-                {duplicatedPartners.map((p, i) => (
-                  <div key={`${p.name}-${i}`} className="w-40 flex-shrink-0">
-                    <div className="h-24 w-full bg-card border border-border rounded-xl flex items-center justify-center p-4 transition-all duration-300 hover:scale-105 ai-border-glow">
-                      <img src={p.logo} alt={p.name} className="max-h-full max-w-full object-contain" loading="lazy" />
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
+            <FadeUp>
+              <LogoCarousel columnCount={5} logos={partnerLogos} />
+            </FadeUp>
           </div>
         </section>
 
