@@ -1,16 +1,14 @@
 import SwitchToggleThemeDemo from "@/components/ui/toggle-theme";
 import { Button } from "@/components/ui/button";
-import { Button23 } from "@/components/ui/marquee-hover-button";
 import {
-    NavigationMenu,
-    NavigationMenuContent,
-    NavigationMenuItem,
-    NavigationMenuLink,
-    NavigationMenuList,
-    NavigationMenuTrigger,
+  NavigationMenu,
+  NavigationMenuContent,
+  NavigationMenuItem,
+  NavigationMenuLink,
+  NavigationMenuList,
+  NavigationMenuTrigger,
 } from "@/components/ui/navigation-menu";
-import { ExpandableTabs } from "@/components/ui/expandable-tabs";
-import { Menu, X, Info, FolderKanban, BookOpen, Brain, Briefcase, Users, Mail } from "lucide-react";
+import { Menu, X } from "lucide-react";
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 
@@ -24,19 +22,6 @@ const navigationCategories = expertiseCategories.map((category) => ({
     href: `/expertise/${category.slug}/${service.slug}`,
   })),
 }));
-
-const expandableNavTabs = [
-  { title: "About", icon: Info, path: "/about" },
-  { title: "Projects", icon: FolderKanban, path: "/projects" },
-  { type: "separator" as const },
-  { title: "Case Studies", icon: BookOpen, path: "/case-studies" },
-  { title: "AICI", icon: Brain, path: "/campaign-intelligence" },
-  { type: "separator" as const },
-  { title: "Blog", icon: BookOpen, path: "/blog" },
-  { title: "Careers", icon: Briefcase, path: "/careers" },
-  { title: "Who We Are", icon: Users, path: "/who-we-are" },
-  { title: "Contact", icon: Mail, path: "/contact" },
-];
 
 const navLinks = [
   { label: "About", path: "/about" },
@@ -57,7 +42,6 @@ export const Navigation = () => {
   const navRef = useRef<HTMLElement | null>(null);
   const [headerHeight, setHeaderHeight] = useState(0);
   const location = useLocation();
-  const navigate = useNavigate();
 
   const toggleMobileMenu = () => {
     setMobileMenuOpen((prev) => {
@@ -110,14 +94,6 @@ export const Navigation = () => {
     setDesktopMenuValue(undefined);
   }, [location.pathname]);
 
-  const handleExpandableTabChange = (index: number | null) => {
-    if (index === null) return;
-    const tab = expandableNavTabs[index];
-    if (tab && "path" in tab && tab.path) {
-      navigate(tab.path);
-    }
-  };
-
   return (
     <>
       <nav
@@ -135,20 +111,20 @@ export const Navigation = () => {
               <img
                 src="/nirikshan-ai-logo.png"
                 alt="Nirikshan AI Pvt. Ltd."
-                className="h-10 lg:h-16 w-auto transition-transform duration-300 group-hover:scale-105"
+                className="h-10 lg:h-14 w-auto transition-transform duration-300 group-hover:scale-105"
               />
-              <div className="text-lg font-bold text-foreground">
+              <div className="text-lg font-bold font-heading text-foreground">
                 Nirikshan <span className="text-gradient">AI</span>
               </div>
             </Link>
 
             {/* Desktop Navigation */}
-            <div className="hidden lg:flex items-center gap-2">
+            <div className="hidden lg:flex items-center gap-1">
               {/* Expertise Mega Menu */}
               <NavigationMenu value={desktopMenuValue} onValueChange={setDesktopMenuValue}>
                 <NavigationMenuList>
                   <NavigationMenuItem value="expertise">
-                    <NavigationMenuTrigger className="bg-transparent text-sm font-bold text-muted-foreground hover:text-foreground h-9 px-3">
+                    <NavigationMenuTrigger className="bg-transparent text-sm font-medium text-muted-foreground hover:text-foreground h-9 px-3">
                       Expertise
                     </NavigationMenuTrigger>
                     <NavigationMenuContent className="md:w-screen md:max-w-none md:px-0 md:max-h-[75vh] md:overflow-y-auto animate-in slide-in-from-top-4 fade-in duration-300">
@@ -158,7 +134,7 @@ export const Navigation = () => {
                             <span className="text-xs font-semibold uppercase tracking-[0.25em] text-muted-foreground">
                               Explore Our Expertise
                             </span>
-                            <h3 className="text-2xl font-semibold text-foreground">
+                            <h3 className="text-2xl font-semibold font-heading text-foreground">
                               Tailored solutions across industries and capabilities.
                             </h3>
                           </div>
@@ -206,15 +182,26 @@ export const Navigation = () => {
                 </NavigationMenuList>
               </NavigationMenu>
 
-              {/* ExpandableTabs for other nav links */}
-              <ExpandableTabs
-                tabs={expandableNavTabs.map((t): { type: "separator" } | { title: string; icon: typeof Info } => {
-                  if ("type" in t && t.type === "separator") return { type: "separator" };
-                  return { title: t.title!, icon: t.icon! };
-                })}
-                onChange={handleExpandableTabChange}
-                className="border-border/50 bg-background/60 backdrop-blur-sm shadow-none"
-              />
+              {/* Simple nav links */}
+              {navLinks.map((link) => (
+                <Link
+                  key={link.path}
+                  to={link.path}
+                  className={`text-sm font-medium px-3 py-2 rounded-md transition-colors duration-200 ${
+                    location.pathname === link.path
+                      ? "text-primary bg-primary/10"
+                      : "text-muted-foreground hover:text-foreground hover:bg-muted"
+                  }`}
+                >
+                  {link.label}
+                </Link>
+              ))}
+
+              <Link to="/contact" className="ml-2">
+                <Button size="sm" className="gradient-primary text-primary-foreground font-medium">
+                  Contact
+                </Button>
+              </Link>
 
               <SwitchToggleThemeDemo />
             </div>
