@@ -177,7 +177,7 @@ const createEarthTexture = (width = 2048, height = 1024) => {
   // Brighter dots for Nirikshan offices
   const offices = [
     [76.15, 28.08], // Mahendragarh
-    [77.5, 28.47],  // Noida
+    [78.09, 30.38],  // Dehradun
     [88.36, 22.57], // Kolkata
   ];
   offices.forEach(([lon, lat]) => {

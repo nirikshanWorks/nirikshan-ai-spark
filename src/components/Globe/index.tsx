@@ -27,7 +27,7 @@ const GlobeSection = () => {
             Our Presence Across India & Beyond
           </h2>
           <p className="text-muted-foreground max-w-2xl mx-auto">
-            With our registered office in Haryana and chair offices in Noida and Kolkata,
+            With our registered office in Haryana and chair offices in Dehradun and Kolkata,
             we deliver AI and computer vision solutions to clients across India and internationally.
           </p>
         </div>
@@ -43,8 +43,8 @@ const GlobeSection = () => {
             <div className="text-sm text-muted-foreground">166A, Village Malra Sarai, Lawan, Mahendragarh - 123029, Haryana</div>
           </div>
           <div className="glass-card p-6 rounded-xl text-center">
-            <div className="text-lg font-bold text-primary mb-1">Chair Office — Noida</div>
-            <div className="text-sm text-muted-foreground">14th Avenue, Gaur City, Noida, Uttar Pradesh</div>
+            <div className="text-lg font-bold text-primary mb-1">Chair Office — Dehradun</div>
+            <div className="text-sm text-muted-foreground">Sahastradhara Rd, Doon IT Park, Aman Vihar, Dehradun, Uttarakhand 248013</div>
           </div>
           <div className="glass-card p-6 rounded-xl text-center">
             <div className="text-lg font-bold text-primary mb-1">Chair Office — Kolkata</div>
