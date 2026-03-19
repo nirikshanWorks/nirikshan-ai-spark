@@ -37,7 +37,7 @@ const sections: Section[] = [
   {
     title: "6. Governing Law",
     description:
-  "These terms are governed by the laws of India and the jurisdiction of the courts in Noida, Uttar Pradesh. Any disputes will be resolved through good-faith negotiations before legal action is pursued."
+  "These terms are governed by the laws of India and the jurisdiction of the courts in Dehradun, Uttarakhand. Any disputes will be resolved through good-faith negotiations before legal action is pursued."
   },
   {
     title: "7. Updates",
