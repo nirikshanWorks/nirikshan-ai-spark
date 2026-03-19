@@ -37,12 +37,12 @@ const locations: LocationData[] = [
     mapsQuery: '166A+Village+Malra+Sarai+Lawan+Mahendragarh+123029+Haryana+India',
   },
   {
-    lat: 28.4744, lon: 77.504,
-    label: 'Noida, Uttar Pradesh',
+    lat: 30.3782, lon: 78.0882,
+    label: 'Dehradun, Uttarakhand',
     type: 'office',
-    description: 'Chair Office — Noida',
-    fullAddress: '14th Avenue, Gaur City, Noida, Uttar Pradesh, India',
-    mapsQuery: '14th+Avenue+Gaur+City+Noida+Uttar+Pradesh+India',
+    description: 'Chair Office — Dehradun',
+    fullAddress: 'Sahastradhara Rd, Doon IT Park, Aman Vihar, Dehradun, Uttarakhand 248013, India',
+    mapsQuery: 'Sahastradhara+Rd+Doon+IT+Park+Aman+Vihar+Dehradun+Uttarakhand+248013+India',
   },
   {
     lat: 22.5726, lon: 88.3639,
