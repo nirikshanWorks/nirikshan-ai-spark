@@ -27,7 +27,7 @@ const GlobeSection = () => {
             Our Presence Across India & Beyond
           </h2>
           <p className="text-muted-foreground max-w-2xl mx-auto">
-            With our registered office in Haryana and chair offices in Noida and Kolkata,
+            With our registered office in Haryana and chair offices in Dehradun and Kolkata,
             we deliver AI and computer vision solutions to clients across India and internationally.
           </p>
         </div>
