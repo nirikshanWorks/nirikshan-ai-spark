@@ -219,7 +219,7 @@ const Globe3D = () => {
           </div>
           <div className="flex items-center gap-2">
             <div className="w-3 h-3 rounded-full bg-blue-500 shadow-lg shadow-blue-500/50" />
-            <span className="text-xs text-muted-foreground">Chair Offices — Noida & Kolkata</span>
+            <span className="text-xs text-muted-foreground">Chair Offices — Dehradun & Kolkata</span>
           </div>
           <div className="flex items-center gap-2">
             <div className="w-3 h-3 rounded-full bg-amber-500 shadow-lg shadow-amber-500/50" />
