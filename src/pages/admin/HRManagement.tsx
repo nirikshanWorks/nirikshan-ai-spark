@@ -134,6 +134,11 @@ interface JobApplication {
   updated_at: string;
   offer_accepted: boolean | null;
   offer_accepted_at: string | null;
+  salary_expectation: string | null;
+  why_join_startup: string | null;
+  relevant_experience: string | null;
+  availability: string | null;
+  how_did_you_hear: string | null;
 }
 
 interface Holiday {

@@ -349,6 +349,7 @@ const Careers = () => {
       }
 
       // Save application to database with file path (not public URL)
+      const isAgentic = applicationForm.jobAppliedFor === "NAI-AGENTIC-INT-01";
       const { error: dbError } = await supabase
         .from('job_applications')
         .insert({
@@ -360,6 +361,13 @@ const Careers = () => {
           portfolio_link: applicationForm.portfolioLink || null,
           job_applied_for: applicationForm.jobAppliedFor,
           resume_url: filePath,
+          ...(isAgentic ? {
+            salary_expectation: applicationForm.salaryExpectation || null,
+            why_join_startup: applicationForm.whyJoinStartup || null,
+            relevant_experience: applicationForm.relevantExperience || null,
+            availability: applicationForm.availability || null,
+            how_did_you_hear: applicationForm.howDidYouHear || null,
+          } : {}),
         });
 
       if (dbError) {
