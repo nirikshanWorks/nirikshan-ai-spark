@@ -378,6 +378,11 @@ const Careers = () => {
         githubProfile: "",
         portfolioLink: "",
         jobAppliedFor: "",
+        salaryExpectation: "",
+        whyJoinStartup: "",
+        relevantExperience: "",
+        availability: "",
+        howDidYouHear: "",
       });
       setResumeFile(null);
       // Reset file input
