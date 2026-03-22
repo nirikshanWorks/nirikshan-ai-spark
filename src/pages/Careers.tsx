@@ -281,11 +281,18 @@ const Careers = () => {
     githubProfile: "",
     portfolioLink: "",
     jobAppliedFor: "",
+    salaryExpectation: "",
+    whyJoinStartup: "",
+    relevantExperience: "",
+    availability: "",
+    howDidYouHear: "",
   });
   const [resumeFile, setResumeFile] = useState<File | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const handleFormChange = (e: ChangeEvent<HTMLInputElement>) => {
+  const isAgenticRole = applicationForm.jobAppliedFor === "NAI-AGENTIC-INT-01";
+
+  const handleFormChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
     setApplicationForm((prev) => ({ ...prev, [name]: value }));
   };
@@ -371,6 +378,11 @@ const Careers = () => {
         githubProfile: "",
         portfolioLink: "",
         jobAppliedFor: "",
+        salaryExpectation: "",
+        whyJoinStartup: "",
+        relevantExperience: "",
+        availability: "",
+        howDidYouHear: "",
       });
       setResumeFile(null);
       // Reset file input
@@ -751,6 +763,81 @@ const Careers = () => {
                     </SelectContent>
                   </Select>
                 </div>
+
+                {isAgenticRole && (
+                  <>
+                    <div className="grid gap-2">
+                      <label htmlFor="salaryExpectation" className="text-sm font-medium">
+                        What are your salary/stipend expectations? <span className="text-destructive">*</span>
+                      </label>
+                      <Input
+                        id="salaryExpectation"
+                        name="salaryExpectation"
+                        placeholder="e.g., ₹10,000 - ₹15,000/month"
+                        required
+                        value={applicationForm.salaryExpectation}
+                        onChange={handleFormChange}
+                      />
+                    </div>
+
+                    <div className="grid gap-2">
+                      <label htmlFor="whyJoinStartup" className="text-sm font-medium">
+                        Why do you want to join a startup like Nirikshan-AI? <span className="text-destructive">*</span>
+                      </label>
+                      <Textarea
+                        id="whyJoinStartup"
+                        name="whyJoinStartup"
+                        placeholder="Tell us what excites you about working at an early-stage AI startup..."
+                        required
+                        rows={3}
+                        value={applicationForm.whyJoinStartup}
+                        onChange={handleFormChange}
+                      />
+                    </div>
+
+                    <div className="grid gap-2">
+                      <label htmlFor="relevantExperience" className="text-sm font-medium">
+                        Describe any relevant experience with AI agents, LLMs, or automation <span className="text-destructive">*</span>
+                      </label>
+                      <Textarea
+                        id="relevantExperience"
+                        name="relevantExperience"
+                        placeholder="Projects you've built, tools you've used (LangChain, CrewAI, etc.), or problems you've solved..."
+                        required
+                        rows={3}
+                        value={applicationForm.relevantExperience}
+                        onChange={handleFormChange}
+                      />
+                    </div>
+
+                    <div className="grid gap-2">
+                      <label htmlFor="availability" className="text-sm font-medium">
+                        What is your availability? (Start date & hours/week) <span className="text-destructive">*</span>
+                      </label>
+                      <Input
+                        id="availability"
+                        name="availability"
+                        placeholder="e.g., Can start immediately, available 40 hrs/week"
+                        required
+                        value={applicationForm.availability}
+                        onChange={handleFormChange}
+                      />
+                    </div>
+
+                    <div className="grid gap-2">
+                      <label htmlFor="howDidYouHear" className="text-sm font-medium">
+                        How did you hear about this opportunity?
+                      </label>
+                      <Input
+                        id="howDidYouHear"
+                        name="howDidYouHear"
+                        placeholder="e.g., LinkedIn, referral, college placement cell..."
+                        value={applicationForm.howDidYouHear}
+                        onChange={handleFormChange}
+                      />
+                    </div>
+                  </>
+                )}
 
                 <div className="grid gap-2">
                   <label htmlFor="resume" className="text-sm font-medium">
