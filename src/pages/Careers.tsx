@@ -169,6 +169,32 @@ const hiringSteps = [
 
 const jobOpenings = [
   {
+    code: "NAI-AGENTIC-INT-01",
+    title: "Agentic AI Engineer",
+    type: "Internship",
+    location: "Remote / Hybrid",
+    duration: "3–6 Months",
+    stipend: "Performance-based",
+    overview: "Are you excited about building the next generation of AI systems that can think, plan, and act autonomously? This is your chance to work on cutting-edge Agentic AI and real-world problem solving.",
+    responsibilities: [
+      "Building intelligent AI agents using LLMs",
+      "Designing multi-agent systems for real-world use cases",
+      "Integrating APIs, tools, and workflows into AI systems",
+      "Working on automation, decision-making, and reasoning pipelines"
+    ],
+    required: [
+      "Strong basics in Python",
+      "Understanding of AI/ML & LLM concepts",
+      "Hands-on with APIs (OpenAI / other LLMs is a plus)",
+      "Problem-solving mindset + curiosity to learn fast"
+    ],
+    goodToHave: [
+      "Experience with LangChain / CrewAI / AutoGen",
+      "Built any AI-based projects",
+      "Understanding of prompt engineering"
+    ]
+  },
+  {
     code: "NAI-SALES-INT-02",
     title: "Sales Executive",
     type: "Internship",
