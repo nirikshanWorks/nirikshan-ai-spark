@@ -281,11 +281,18 @@ const Careers = () => {
     githubProfile: "",
     portfolioLink: "",
     jobAppliedFor: "",
+    salaryExpectation: "",
+    whyJoinStartup: "",
+    relevantExperience: "",
+    availability: "",
+    howDidYouHear: "",
   });
   const [resumeFile, setResumeFile] = useState<File | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const handleFormChange = (e: ChangeEvent<HTMLInputElement>) => {
+  const isAgenticRole = applicationForm.jobAppliedFor === "NAI-AGENTIC-INT-01";
+
+  const handleFormChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
     setApplicationForm((prev) => ({ ...prev, [name]: value }));
   };
