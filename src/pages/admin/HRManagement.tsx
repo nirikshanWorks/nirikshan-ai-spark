@@ -2941,11 +2941,13 @@ const AdminHRManagement = () => {
                   </Button>
                 )}
                 {selectedApplication.resume_url && (
-                  <Button variant="outline" size="sm" asChild>
-                    <a href={selectedApplication.resume_url} target="_blank" rel="noopener noreferrer">
-                      <FileText className="h-4 w-4 mr-2" />
-                      Resume
-                    </a>
+                  <Button variant="outline" size="sm" onClick={async () => {
+                    const { data } = await supabase.storage.from('resumes').createSignedUrl(selectedApplication.resume_url, 300);
+                    if (data?.signedUrl) window.open(data.signedUrl, '_blank');
+                    else toast.error('Failed to generate resume link');
+                  }}>
+                    <FileText className="h-4 w-4 mr-2" />
+                    Resume
                   </Button>
                 )}
               </div>
