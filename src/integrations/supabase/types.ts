@@ -163,9 +163,11 @@ export type Database = {
       job_applications: {
         Row: {
           acceptance_token: string | null
+          availability: string | null
           created_at: string
           email: string
           github_profile: string
+          how_did_you_hear: string | null
           id: string
           job_applied_for: string
           linkedin_profile: string
@@ -174,15 +176,20 @@ export type Database = {
           offer_accepted_at: string | null
           phone_number: string
           portfolio_link: string | null
+          relevant_experience: string | null
           resume_url: string
+          salary_expectation: string | null
           status: string | null
           updated_at: string
+          why_join_startup: string | null
         }
         Insert: {
           acceptance_token?: string | null
+          availability?: string | null
           created_at?: string
           email: string
           github_profile: string
+          how_did_you_hear?: string | null
           id?: string
           job_applied_for: string
           linkedin_profile: string
@@ -191,15 +198,20 @@ export type Database = {
           offer_accepted_at?: string | null
           phone_number: string
           portfolio_link?: string | null
+          relevant_experience?: string | null
           resume_url: string
+          salary_expectation?: string | null
           status?: string | null
           updated_at?: string
+          why_join_startup?: string | null
         }
         Update: {
           acceptance_token?: string | null
+          availability?: string | null
           created_at?: string
           email?: string
           github_profile?: string
+          how_did_you_hear?: string | null
           id?: string
           job_applied_for?: string
           linkedin_profile?: string
@@ -208,9 +220,12 @@ export type Database = {
           offer_accepted_at?: string | null
           phone_number?: string
           portfolio_link?: string | null
+          relevant_experience?: string | null
           resume_url?: string
+          salary_expectation?: string | null
           status?: string | null
           updated_at?: string
+          why_join_startup?: string | null
         }
         Relationships: []
       }

@@ -134,6 +134,11 @@ interface JobApplication {
   updated_at: string;
   offer_accepted: boolean | null;
   offer_accepted_at: string | null;
+  salary_expectation: string | null;
+  why_join_startup: string | null;
+  relevant_experience: string | null;
+  availability: string | null;
+  how_did_you_hear: string | null;
 }
 
 interface Holiday {
@@ -1684,11 +1689,13 @@ const AdminHRManagement = () => {
                                         <Button
                                           variant="ghost"
                                           size="sm"
-                                          asChild
+                                          onClick={async () => {
+                                            const { data } = await supabase.storage.from('resumes').createSignedUrl(app.resume_url, 300);
+                                            if (data?.signedUrl) window.open(data.signedUrl, '_blank');
+                                            else toast.error('Failed to generate resume link');
+                                          }}
                                         >
-                                          <a href={app.resume_url} target="_blank" rel="noopener noreferrer">
-                                            <ExternalLink className="h-4 w-4" />
-                                          </a>
+                                          <ExternalLink className="h-4 w-4" />
                                         </Button>
                                       )}
                                       
@@ -2907,6 +2914,43 @@ const AdminHRManagement = () => {
                   </div>
                 )}
               </div>
+
+              {/* Extra Agentic AI fields */}
+              {(selectedApplication.salary_expectation || selectedApplication.why_join_startup || selectedApplication.relevant_experience || selectedApplication.availability || selectedApplication.how_did_you_hear) && (
+                <div className="bg-muted/50 p-4 rounded-lg space-y-3">
+                  <h4 className="text-sm font-semibold text-foreground">Additional Responses</h4>
+                  {selectedApplication.salary_expectation && (
+                    <div>
+                      <span className="text-xs text-muted-foreground">Salary Expectation:</span>
+                      <p className="text-sm">{selectedApplication.salary_expectation}</p>
+                    </div>
+                  )}
+                  {selectedApplication.why_join_startup && (
+                    <div>
+                      <span className="text-xs text-muted-foreground">Why Join Startup:</span>
+                      <p className="text-sm">{selectedApplication.why_join_startup}</p>
+                    </div>
+                  )}
+                  {selectedApplication.relevant_experience && (
+                    <div>
+                      <span className="text-xs text-muted-foreground">Relevant Experience:</span>
+                      <p className="text-sm">{selectedApplication.relevant_experience}</p>
+                    </div>
+                  )}
+                  {selectedApplication.availability && (
+                    <div>
+                      <span className="text-xs text-muted-foreground">Availability:</span>
+                      <p className="text-sm">{selectedApplication.availability}</p>
+                    </div>
+                  )}
+                  {selectedApplication.how_did_you_hear && (
+                    <div>
+                      <span className="text-xs text-muted-foreground">How Did You Hear:</span>
+                      <p className="text-sm">{selectedApplication.how_did_you_hear}</p>
+                    </div>
+                  )}
+                </div>
+              )}
               
               <div className="flex flex-wrap gap-2">
                 {selectedApplication.linkedin_profile && (
@@ -2934,11 +2978,13 @@ const AdminHRManagement = () => {
                   </Button>
                 )}
                 {selectedApplication.resume_url && (
-                  <Button variant="outline" size="sm" asChild>
-                    <a href={selectedApplication.resume_url} target="_blank" rel="noopener noreferrer">
-                      <FileText className="h-4 w-4 mr-2" />
-                      Resume
-                    </a>
+                  <Button variant="outline" size="sm" onClick={async () => {
+                    const { data } = await supabase.storage.from('resumes').createSignedUrl(selectedApplication.resume_url, 300);
+                    if (data?.signedUrl) window.open(data.signedUrl, '_blank');
+                    else toast.error('Failed to generate resume link');
+                  }}>
+                    <FileText className="h-4 w-4 mr-2" />
+                    Resume
                   </Button>
                 )}
               </div>
