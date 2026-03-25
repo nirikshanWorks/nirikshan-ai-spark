@@ -1,19 +1,19 @@
-import { lazy, Suspense, useState, useCallback } from "react";
-import { Toaster } from "@/components/ui/toaster";
-import { Toaster as Sonner } from "@/components/ui/sonner";
-import { TooltipProvider } from "@/components/ui/tooltip";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
-import { ThemeProvider } from "next-themes";
-import { HelmetProvider } from "react-helmet-async";
-import { AnimatePresence } from "framer-motion";
-import ScrollToTop from "@/components/ScrollToTop";
-import { AuthProvider } from "@/hooks/useAuth";
 import { Chatbot } from "@/components/Chatbot/Chatbot";
-import { PageTransition } from "@/components/PageTransition";
+import { ErrorBoundary } from "@/components/ErrorBoundary";
 import { EyeLoader, EyeLoaderInline } from "@/components/EyeLoader";
 import { MouseColorSplatter } from "@/components/MouseColorSplatter";
-import { ErrorBoundary } from "@/components/ErrorBoundary";
+import { PageTransition } from "@/components/PageTransition";
+import ScrollToTop from "@/components/ScrollToTop";
+import { Toaster as Sonner } from "@/components/ui/sonner";
+import { Toaster } from "@/components/ui/toaster";
+import { TooltipProvider } from "@/components/ui/tooltip";
+import { AuthProvider } from "@/hooks/useAuth";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { AnimatePresence } from "framer-motion";
+import { ThemeProvider } from "next-themes";
+import { lazy, Suspense, useCallback, useState } from "react";
+import { HelmetProvider } from "react-helmet-async";
+import { BrowserRouter, Route, Routes, useLocation } from "react-router-dom";
 
 const Index = lazy(() => import("./pages/Index"));
 const About = lazy(() => import("./pages/About"));
@@ -28,6 +28,7 @@ const Careers = lazy(() => import("./pages/Careers"));
 const Contact = lazy(() => import("./pages/Contact"));
 const Privacy = lazy(() => import("./pages/Privacy"));
 const Terms = lazy(() => import("./pages/Terms"));
+const ManormaTerms = lazy(() => import("./pages/ManormaTerms"));
 const Testimonials = lazy(() => import("./pages/Testimonials"));
 const Journey = lazy(() => import("./pages/Journey"));
 const Applications = lazy(() => import("./pages/Applications"));
@@ -70,6 +71,7 @@ const AnimatedRoutes = () => {
         <Route path="/applications" element={<PageTransition><Applications /></PageTransition>} />
         <Route path="/privacy" element={<PageTransition><Privacy /></PageTransition>} />
         <Route path="/terms" element={<PageTransition><Terms /></PageTransition>} />
+        <Route path="/projects/manorma-krishi-rakshak/terms" element={<PageTransition><ManormaTerms /></PageTransition>} />
         <Route path="/verify" element={<PageTransition><CertificateVerify /></PageTransition>} />
         <Route path="/verify/:certificateNumber" element={<PageTransition><CertificateVerify /></PageTransition>} />
         <Route path="/admin/certificates" element={<PageTransition><AdminCertificates /></PageTransition>} />

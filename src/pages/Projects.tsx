@@ -1,27 +1,64 @@
-import { SEO } from "@/components/SEO";
-import { Navigation } from "@/components/Navigation";
 import mockupProjects from "@/assets/mockup-projects.jpg";
-import { Footer } from "@/components/Footer";
-import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
+import { AI3DOrb } from "@/components/AI3DOrb";
 import { AICircuitLines } from "@/components/AICircuitLines";
+import { AIDataStream } from "@/components/AIDataStream";
 import { AIHexagonGrid } from "@/components/AIHexagonGrid";
 import { AIWaveField } from "@/components/AIWaveField";
-import { AI3DOrb } from "@/components/AI3DOrb";
-import { AIDataStream } from "@/components/AIDataStream";
-import { FadeUp, SlideLeft, SlideRight, StaggerContainer, StaggerItem } from "@/components/ScrollAnimations";
+import { Footer } from "@/components/Footer";
+import { Navigation } from "@/components/Navigation";
+import { FadeUp, SlideLeft, StaggerContainer, StaggerItem } from "@/components/ScrollAnimations";
+import { SEO } from "@/components/SEO";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 import { ContainerScroll } from "@/components/ui/container-scroll-animation";
+import { AnimatePresence, motion } from "framer-motion";
 import {
-  ArrowRight, ExternalLink, Calendar, MapPin, Zap, CheckCircle,
-  Brain, Eye, Code, Smartphone, BarChart3, Shield, Layers, Globe,
-  Package, Cpu,
+    ArrowRight,
+    BarChart3,
+    Brain,
+    Calendar,
+    CheckCircle,
+    Cpu,
+    Eye,
+    FileText,
+    Layers,
+    MapPin,
+    Package,
+    Shield,
+    Zap
 } from "lucide-react";
-import { Link } from "react-router-dom";
 import { useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { Link } from "react-router-dom";
+
+interface Project {
+  title: string;
+  description: string;
+  category: string;
+  image: string;
+  date: string;
+  status: "Ongoing" | "Completed";
+  client: string;
+  tags: string[];
+  impact: string;
+  termsPath?: string;
+  storeReleaseSoon?: boolean;
+}
 
 /* ─── Projects Data ─── */
-const projects = [
+const projects: Project[] = [
+  {
+    title: "Manorma Krishi Rakshak",
+    description: "Multilingual farmer-focused mobile app offering mandi market updates, government scheme guidance, AI crop assistance, and community success stories for agriculture users across India.",
+    category: "Mobile App Development",
+    image: "https://images.unsplash.com/photo-1472396961693-142e6e269027?auto=format&fit=crop&w=1200&q=80",
+    date: "March 2026",
+    status: "Completed",
+    client: "Manorma Krishi Initiative, India",
+    tags: ["Mobile App", "Agritech", "AI Assistant", "Localization"],
+    impact: "15-language farmer support",
+    termsPath: "/projects/manorma-krishi-rakshak/terms",
+    storeReleaseSoon: true,
+  },
   {
     title: "AI Inventory Management System",
     description: "Developing a smart inventory management system for one of South Africa's leading pet Bottles product companies. Real-time stock tracking, demand forecasting, and automated reorder triggers powered by machine learning.",
@@ -301,6 +338,27 @@ const Projects = () => {
                               <Zap className="w-4 h-4 text-accent" />
                               <span className="text-sm font-semibold text-accent">{filtered[0].impact}</span>
                             </div>
+                            {filtered[0].storeReleaseSoon && (
+                              <div className="mb-6 rounded-lg border border-border bg-secondary/30 p-3">
+                                <p className="text-xs font-semibold text-foreground mb-2">
+                                  Available on Play Store and App Store soon
+                                </p>
+                                <div className="flex flex-wrap items-center gap-2">
+                                  <img
+                                    src="https://img.shields.io/badge/Google%20Play-Coming%20Soon-34A853?style=flat-square&logo=google-play&logoColor=white"
+                                    alt="Coming soon on Google Play"
+                                    className="h-6 w-auto"
+                                    loading="lazy"
+                                  />
+                                  <img
+                                    src="https://img.shields.io/badge/App%20Store-Coming%20Soon-0D96F6?style=flat-square&logo=app-store-ios&logoColor=white"
+                                    alt="Coming soon on App Store"
+                                    className="h-6 w-auto"
+                                    loading="lazy"
+                                  />
+                                </div>
+                              </div>
+                            )}
                             <div className="flex flex-wrap gap-2">
                               {filtered[0].tags.map((tag) => (
                                 <Badge key={tag} variant="secondary" className="text-xs">
@@ -308,6 +366,16 @@ const Projects = () => {
                                 </Badge>
                               ))}
                             </div>
+                            {filtered[0].termsPath && (
+                              <div className="mt-6">
+                                <Link to={filtered[0].termsPath}>
+                                  <Button variant="outline" className="border-primary/30 hover:bg-primary/10">
+                                    <FileText className="w-4 h-4 mr-2" />
+                                    View Terms & Conditions
+                                  </Button>
+                                </Link>
+                              </div>
+                            )}
                           </div>
                         </div>
                       </div>
@@ -374,6 +442,15 @@ const Projects = () => {
                                 <MapPin className="w-3 h-3" /> {project.client}
                               </span>
                             </div>
+
+                            {project.termsPath && (
+                              <Link to={project.termsPath} className="mt-4">
+                                <Button variant="outline" size="sm" className="w-full border-primary/30 hover:bg-primary/10">
+                                  <FileText className="w-4 h-4 mr-2" />
+                                  Terms & Conditions
+                                </Button>
+                              </Link>
+                            )}
                           </div>
                         </div>
                       </StaggerItem>
