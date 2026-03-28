@@ -8,7 +8,8 @@ import { DateRange } from "react-day-picker";
 import { 
   Calendar as CalendarIcon, CheckCircle, XCircle, Clock, Search, Users, 
   MessageSquare, Filter, CalendarDays, Download, BarChart3, Building2,
-  Plus, Trash2, Edit, Briefcase, UserPlus, Link2, FileText, Eye, Mail, Phone, Linkedin, Github, Globe, ExternalLink
+  Plus, Trash2, Edit, Briefcase, UserPlus, Link2, FileText, Eye, Mail, Phone, Linkedin, Github, Globe, ExternalLink,
+  Send, Video
 } from "lucide-react";
 import TodaysAttendance from "@/components/admin/TodaysAttendance";
 import IndividualAttendanceReport from "@/components/admin/IndividualAttendanceReport";
