@@ -2864,8 +2864,8 @@ const AdminHRManagement = () => {
 
       {/* Application Details Dialog */}
       <Dialog open={!!selectedApplication} onOpenChange={(open) => !open && setSelectedApplication(null)}>
-        <DialogContent className="sm:max-w-lg">
-          <DialogHeader>
+        <DialogContent className="sm:max-w-2xl max-h-[85vh] flex flex-col">
+          <DialogHeader className="flex-shrink-0">
             <DialogTitle className="flex items-center gap-2">
               <FileText className="h-5 w-5" />
               Application Details
@@ -2873,7 +2873,7 @@ const AdminHRManagement = () => {
           </DialogHeader>
           
           {selectedApplication && (
-            <div className="space-y-4">
+            <div className="space-y-4 overflow-y-auto pr-2 flex-1">
               <div className="bg-muted/50 p-4 rounded-lg space-y-3">
                 <div className="flex justify-between items-start">
                   <span className="text-sm text-muted-foreground">Name:</span>

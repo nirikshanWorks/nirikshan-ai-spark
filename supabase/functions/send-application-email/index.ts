@@ -196,12 +196,27 @@ const handler = async (req: Request): Promise<Response> => {
 
     console.log(`Sending email with subject: ${subject}`);
 
+    // Append "do not reply" footer to all emails
+    const doNotReplyFooter = `
+      <div style="background:#f0f0f0; padding:12px; text-align:center; border-top:1px solid #ddd; margin-top:0;">
+        <p style="color:#999; font-size:11px; margin:0; font-style:italic;">
+          ⚠️ This is a system-generated email. Please do not reply to this email. For any queries, contact us at <a href="mailto:hr@nirikshanai.com" style="color:#8b5cf6;">hr@nirikshanai.com</a>
+        </p>
+      </div>
+    `;
+    
+    // Insert the footer before closing </div></body></html>
+    const finalHtml = htmlContent.replace(
+      /<\/div>\s*<\/body>\s*<\/html>\s*$/,
+      `${doNotReplyFooter}</div></body></html>`
+    );
+
     await client.send({
-      from: gmailUser,
+      from: `"Nirikshan AI" <${gmailUser}>`,
       to: to,
       subject: subject,
       content: "Please view this email in an HTML-compatible email client.",
-      html: htmlContent,
+      html: finalHtml,
     });
 
     await client.close();
