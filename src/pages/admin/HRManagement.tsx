@@ -1777,10 +1777,11 @@ const AdminHRManagement = () => {
                                   </TableCell>
                                   <TableCell>{getApplicationStatusBadge(app.status)}</TableCell>
                                   <TableCell className="text-right">
-                                    <div className="flex justify-end gap-2">
+                                    <div className="flex justify-end gap-1 flex-wrap">
                                       <Button
                                         variant="ghost"
                                         size="sm"
+                                        title="View Details"
                                         onClick={() => setSelectedApplication(app)}
                                       >
                                         <Eye className="h-4 w-4" />
@@ -1790,6 +1791,7 @@ const AdminHRManagement = () => {
                                         <Button
                                           variant="ghost"
                                           size="sm"
+                                          title="View Resume"
                                           onClick={async () => {
                                             const { data } = await supabase.storage.from('resumes').createSignedUrl(app.resume_url, 300);
                                             if (data?.signedUrl) window.open(data.signedUrl, '_blank');
@@ -1799,6 +1801,44 @@ const AdminHRManagement = () => {
                                           <ExternalLink className="h-4 w-4" />
                                         </Button>
                                       )}
+
+                                      {/* Email Action Buttons */}
+                                      <Button
+                                        variant="ghost"
+                                        size="sm"
+                                        title="Send Selection Email"
+                                        className="text-green-600 hover:text-green-700 hover:bg-green-50"
+                                        onClick={() => openEmailDialog("selection", app)}
+                                      >
+                                        <CheckCircle className="h-4 w-4" />
+                                      </Button>
+                                      <Button
+                                        variant="ghost"
+                                        size="sm"
+                                        title="Send Interview Email"
+                                        className="text-blue-600 hover:text-blue-700 hover:bg-blue-50"
+                                        onClick={() => openEmailDialog("interview", app)}
+                                      >
+                                        <Video className="h-4 w-4" />
+                                      </Button>
+                                      <Button
+                                        variant="ghost"
+                                        size="sm"
+                                        title="Send Reviewed Email"
+                                        className="text-purple-600 hover:text-purple-700 hover:bg-purple-50"
+                                        onClick={() => openEmailDialog("reviewed", app)}
+                                      >
+                                        <Mail className="h-4 w-4" />
+                                      </Button>
+                                      <Button
+                                        variant="ghost"
+                                        size="sm"
+                                        title="Send Rejection Email"
+                                        className="text-red-600 hover:text-red-700 hover:bg-red-50"
+                                        onClick={() => openEmailDialog("rejection", app)}
+                                      >
+                                        <XCircle className="h-4 w-4" />
+                                      </Button>
                                       
                                       <AlertDialog>
                                         <AlertDialogTrigger asChild>
