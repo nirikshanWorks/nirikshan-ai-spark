@@ -645,6 +645,95 @@ const AdminHRManagement = () => {
     }
   };
 
+  // ==================== EMAIL SENDING FUNCTIONS ====================
+
+  const openEmailDialog = (type: "selection" | "rejection" | "interview" | "reviewed", application: JobApplication) => {
+    setEmailDialog({ open: true, type, application });
+    if (type === "interview") {
+      setInterviewDate("");
+      setInterviewTime("");
+      setMeetLink("");
+    }
+  };
+
+  const closeEmailDialog = () => {
+    setEmailDialog({ open: false, type: "selection", application: null });
+    setInterviewDate("");
+    setInterviewTime("");
+    setMeetLink("");
+  };
+
+  const handleSendEmail = async () => {
+    if (!emailDialog.application) return;
+
+    setSendingEmail(true);
+    try {
+      const emailBody: any = {
+        to: emailDialog.application.email,
+        candidateName: emailDialog.application.name,
+        position: emailDialog.application.job_applied_for,
+        type: emailDialog.type === "reviewed" ? "rejection" : emailDialog.type,
+      };
+
+      if (emailDialog.type === "interview") {
+        if (!interviewDate || !interviewTime) {
+          toast.error("Please fill in interview date and time");
+          setSendingEmail(false);
+          return;
+        }
+        emailBody.interviewDate = interviewDate;
+        emailBody.interviewTime = interviewTime;
+        emailBody.meetLink = meetLink;
+      }
+
+      const { data, error } = await supabase.functions.invoke("send-application-email", {
+        body: emailBody,
+      });
+
+      if (error) {
+        throw new Error(error.message || "Failed to send email");
+      }
+
+      // Update application status
+      let newStatus = emailDialog.application.status;
+      if (emailDialog.type === "selection") newStatus = "selected";
+      else if (emailDialog.type === "rejection") newStatus = "rejected";
+      else if (emailDialog.type === "interview") newStatus = "interview";
+      else if (emailDialog.type === "reviewed") newStatus = "reviewed";
+
+      await supabase
+        .from("job_applications")
+        .update({ status: newStatus })
+        .eq("id", emailDialog.application.id);
+
+      setApplications((prev) =>
+        prev.map((app) =>
+          app.id === emailDialog.application?.id ? { ...app, status: newStatus } : app
+        )
+      );
+
+      if (selectedApplication?.id === emailDialog.application.id) {
+        setSelectedApplication({ ...selectedApplication, status: newStatus });
+      }
+
+      const labels: Record<string, string> = {
+        selection: "Selection",
+        rejection: "Rejection",
+        interview: "Interview",
+        reviewed: "Reviewed",
+      };
+
+      toast.success(`${labels[emailDialog.type]} email sent to ${emailDialog.application.name}`);
+      closeEmailDialog();
+      fetchApplications();
+    } catch (error: any) {
+      console.error("Email sending error:", error);
+      toast.error(`Failed to send email: ${error.message}`);
+    } finally {
+      setSendingEmail(false);
+    }
+  };
+
   const getApplicationStatusBadge = (status: string | null) => {
     const config: Record<string, { className: string; icon: React.ReactNode }> = {
       pending: { 
