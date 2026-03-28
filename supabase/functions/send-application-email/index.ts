@@ -206,7 +206,9 @@ const handler = async (req: Request): Promise<Response> => {
     `;
     
     // Insert the footer before closing </div></body></html>
-    const finalHtml = htmlContent.replace(
+    // Remove trailing spaces from each line to prevent =20 in quoted-printable encoding
+    const cleanedContent = htmlContent.replace(/ +$/gm, '');
+    const finalHtml = cleanedContent.replace(
       /<\/div>\s*<\/body>\s*<\/html>\s*$/,
       `${doNotReplyFooter}</div></body></html>`
     );
