@@ -252,6 +252,17 @@ const AdminHRManagement = () => {
   const [applicationStatusFilter, setApplicationStatusFilter] = useState<string>("all");
   const [selectedApplication, setSelectedApplication] = useState<JobApplication | null>(null);
 
+  // Email Dialog State
+  const [emailDialog, setEmailDialog] = useState<{
+    open: boolean;
+    type: "selection" | "rejection" | "interview" | "reviewed";
+    application: JobApplication | null;
+  }>({ open: false, type: "selection", application: null });
+  const [interviewDate, setInterviewDate] = useState("");
+  const [interviewTime, setInterviewTime] = useState("");
+  const [meetLink, setMeetLink] = useState("");
+  const [sendingEmail, setSendingEmail] = useState(false);
+
   // Holidays State
   const [holidays, setHolidays] = useState<Holiday[]>([]);
   const [holidaysLoading, setHolidaysLoading] = useState(true);
