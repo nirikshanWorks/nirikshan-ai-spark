@@ -119,7 +119,7 @@ const handler = async (req: Request): Promise<Response> => {
 
               <div style="background:#fff8e6; border:1px solid #f59e0b; border-radius:8px; padding:15px; margin:20px 0;">
                 <p style="color:#b45309; margin:0; font-weight:bold;">⏱️ Important Notice</p>
-                <p style="color:#555; margin:10px 0 0; line-height:1.5;">We request you to join <strong>30 minutes before</strong> your expected slot for smooth verification and to avoid last-moment delays.</p>
+                <p style="color:#555; margin:10px 0 0; line-height:1.5;">We request you to join <strong>5 minutes before</strong> your expected slot for smooth verification and to avoid last-moment delays.</p>
               </div>
               
               <div style="background:#f8fafc; border-radius:8px; padding:20px; margin:20px 0;">
