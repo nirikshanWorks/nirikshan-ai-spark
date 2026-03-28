@@ -8,7 +8,8 @@ import { DateRange } from "react-day-picker";
 import { 
   Calendar as CalendarIcon, CheckCircle, XCircle, Clock, Search, Users, 
   MessageSquare, Filter, CalendarDays, Download, BarChart3, Building2,
-  Plus, Trash2, Edit, Briefcase, UserPlus, Link2, FileText, Eye, Mail, Phone, Linkedin, Github, Globe, ExternalLink
+  Plus, Trash2, Edit, Briefcase, UserPlus, Link2, FileText, Eye, Mail, Phone, Linkedin, Github, Globe, ExternalLink,
+  Send, Video
 } from "lucide-react";
 import TodaysAttendance from "@/components/admin/TodaysAttendance";
 import IndividualAttendanceReport from "@/components/admin/IndividualAttendanceReport";
@@ -250,6 +251,17 @@ const AdminHRManagement = () => {
   const [applicationSearchQuery, setApplicationSearchQuery] = useState("");
   const [applicationStatusFilter, setApplicationStatusFilter] = useState<string>("all");
   const [selectedApplication, setSelectedApplication] = useState<JobApplication | null>(null);
+
+  // Email Dialog State
+  const [emailDialog, setEmailDialog] = useState<{
+    open: boolean;
+    type: "selection" | "rejection" | "interview" | "reviewed";
+    application: JobApplication | null;
+  }>({ open: false, type: "selection", application: null });
+  const [interviewDate, setInterviewDate] = useState("");
+  const [interviewTime, setInterviewTime] = useState("");
+  const [meetLink, setMeetLink] = useState("");
+  const [sendingEmail, setSendingEmail] = useState(false);
 
   // Holidays State
   const [holidays, setHolidays] = useState<Holiday[]>([]);
@@ -630,6 +642,95 @@ const AdminHRManagement = () => {
     } else {
       toast.success("Application deleted successfully");
       fetchApplications();
+    }
+  };
+
+  // ==================== EMAIL SENDING FUNCTIONS ====================
+
+  const openEmailDialog = (type: "selection" | "rejection" | "interview" | "reviewed", application: JobApplication) => {
+    setEmailDialog({ open: true, type, application });
+    if (type === "interview") {
+      setInterviewDate("");
+      setInterviewTime("");
+      setMeetLink("");
+    }
+  };
+
+  const closeEmailDialog = () => {
+    setEmailDialog({ open: false, type: "selection", application: null });
+    setInterviewDate("");
+    setInterviewTime("");
+    setMeetLink("");
+  };
+
+  const handleSendEmail = async () => {
+    if (!emailDialog.application) return;
+
+    setSendingEmail(true);
+    try {
+      const emailBody: any = {
+        to: emailDialog.application.email,
+        candidateName: emailDialog.application.name,
+        position: emailDialog.application.job_applied_for,
+        type: emailDialog.type === "reviewed" ? "rejection" : emailDialog.type,
+      };
+
+      if (emailDialog.type === "interview") {
+        if (!interviewDate || !interviewTime) {
+          toast.error("Please fill in interview date and time");
+          setSendingEmail(false);
+          return;
+        }
+        emailBody.interviewDate = interviewDate;
+        emailBody.interviewTime = interviewTime;
+        emailBody.meetLink = meetLink;
+      }
+
+      const { data, error } = await supabase.functions.invoke("send-application-email", {
+        body: emailBody,
+      });
+
+      if (error) {
+        throw new Error(error.message || "Failed to send email");
+      }
+
+      // Update application status
+      let newStatus = emailDialog.application.status;
+      if (emailDialog.type === "selection") newStatus = "selected";
+      else if (emailDialog.type === "rejection") newStatus = "rejected";
+      else if (emailDialog.type === "interview") newStatus = "interview";
+      else if (emailDialog.type === "reviewed") newStatus = "reviewed";
+
+      await supabase
+        .from("job_applications")
+        .update({ status: newStatus })
+        .eq("id", emailDialog.application.id);
+
+      setApplications((prev) =>
+        prev.map((app) =>
+          app.id === emailDialog.application?.id ? { ...app, status: newStatus } : app
+        )
+      );
+
+      if (selectedApplication?.id === emailDialog.application.id) {
+        setSelectedApplication({ ...selectedApplication, status: newStatus });
+      }
+
+      const labels: Record<string, string> = {
+        selection: "Selection",
+        rejection: "Rejection",
+        interview: "Interview",
+        reviewed: "Reviewed",
+      };
+
+      toast.success(`${labels[emailDialog.type]} email sent to ${emailDialog.application.name}`);
+      closeEmailDialog();
+      fetchApplications();
+    } catch (error: any) {
+      console.error("Email sending error:", error);
+      toast.error(`Failed to send email: ${error.message}`);
+    } finally {
+      setSendingEmail(false);
     }
   };
 
@@ -1676,10 +1777,11 @@ const AdminHRManagement = () => {
                                   </TableCell>
                                   <TableCell>{getApplicationStatusBadge(app.status)}</TableCell>
                                   <TableCell className="text-right">
-                                    <div className="flex justify-end gap-2">
+                                    <div className="flex justify-end gap-1 flex-wrap">
                                       <Button
                                         variant="ghost"
                                         size="sm"
+                                        title="View Details"
                                         onClick={() => setSelectedApplication(app)}
                                       >
                                         <Eye className="h-4 w-4" />
@@ -1689,6 +1791,7 @@ const AdminHRManagement = () => {
                                         <Button
                                           variant="ghost"
                                           size="sm"
+                                          title="View Resume"
                                           onClick={async () => {
                                             const { data } = await supabase.storage.from('resumes').createSignedUrl(app.resume_url, 300);
                                             if (data?.signedUrl) window.open(data.signedUrl, '_blank');
@@ -1698,6 +1801,44 @@ const AdminHRManagement = () => {
                                           <ExternalLink className="h-4 w-4" />
                                         </Button>
                                       )}
+
+                                      {/* Email Action Buttons */}
+                                      <Button
+                                        variant="ghost"
+                                        size="sm"
+                                        title="Send Selection Email"
+                                        className="text-green-600 hover:text-green-700 hover:bg-green-50"
+                                        onClick={() => openEmailDialog("selection", app)}
+                                      >
+                                        <CheckCircle className="h-4 w-4" />
+                                      </Button>
+                                      <Button
+                                        variant="ghost"
+                                        size="sm"
+                                        title="Send Interview Email"
+                                        className="text-blue-600 hover:text-blue-700 hover:bg-blue-50"
+                                        onClick={() => openEmailDialog("interview", app)}
+                                      >
+                                        <Video className="h-4 w-4" />
+                                      </Button>
+                                      <Button
+                                        variant="ghost"
+                                        size="sm"
+                                        title="Send Reviewed Email"
+                                        className="text-purple-600 hover:text-purple-700 hover:bg-purple-50"
+                                        onClick={() => openEmailDialog("reviewed", app)}
+                                      >
+                                        <Mail className="h-4 w-4" />
+                                      </Button>
+                                      <Button
+                                        variant="ghost"
+                                        size="sm"
+                                        title="Send Rejection Email"
+                                        className="text-red-600 hover:text-red-700 hover:bg-red-50"
+                                        onClick={() => openEmailDialog("rejection", app)}
+                                      >
+                                        <XCircle className="h-4 w-4" />
+                                      </Button>
                                       
                                       <AlertDialog>
                                         <AlertDialogTrigger asChild>
@@ -3011,6 +3152,45 @@ const AdminHRManagement = () => {
                   </SelectContent>
                 </Select>
               </div>
+
+              {/* Email Action Buttons */}
+              <div className="space-y-2">
+                <Label>Send Email</Label>
+                <div className="flex flex-wrap gap-2">
+                  <Button
+                    size="sm"
+                    className="bg-green-600 hover:bg-green-700 text-white"
+                    onClick={() => openEmailDialog("selection", selectedApplication)}
+                  >
+                    <CheckCircle className="h-4 w-4 mr-1" />
+                    Selection
+                  </Button>
+                  <Button
+                    size="sm"
+                    className="bg-blue-600 hover:bg-blue-700 text-white"
+                    onClick={() => openEmailDialog("interview", selectedApplication)}
+                  >
+                    <Video className="h-4 w-4 mr-1" />
+                    Interview
+                  </Button>
+                  <Button
+                    size="sm"
+                    className="bg-purple-600 hover:bg-purple-700 text-white"
+                    onClick={() => openEmailDialog("reviewed", selectedApplication)}
+                  >
+                    <Mail className="h-4 w-4 mr-1" />
+                    Reviewed
+                  </Button>
+                  <Button
+                    size="sm"
+                    variant="destructive"
+                    onClick={() => openEmailDialog("rejection", selectedApplication)}
+                  >
+                    <XCircle className="h-4 w-4 mr-1" />
+                    Rejection
+                  </Button>
+                </div>
+              </div>
             </div>
           )}
           
@@ -3018,6 +3198,83 @@ const AdminHRManagement = () => {
             <DialogClose asChild>
               <Button variant="outline">Close</Button>
             </DialogClose>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
+      {/* Email Confirmation / Interview Scheduling Dialog */}
+      <Dialog open={emailDialog.open} onOpenChange={(open) => !open && closeEmailDialog()}>
+        <DialogContent className="sm:max-w-md">
+          <DialogHeader>
+            <DialogTitle className="flex items-center gap-2">
+              <Send className="h-5 w-5" />
+              {emailDialog.type === "selection" && "Send Selection Email"}
+              {emailDialog.type === "rejection" && "Send Rejection Email"}
+              {emailDialog.type === "reviewed" && "Send Reviewed Email"}
+              {emailDialog.type === "interview" && "Schedule Interview"}
+            </DialogTitle>
+          </DialogHeader>
+
+          {emailDialog.application && (
+            <div className="space-y-4 py-2">
+              <div className="bg-muted/50 p-3 rounded-lg space-y-1">
+                <p className="font-medium text-sm">{emailDialog.application.name}</p>
+                <p className="text-xs text-muted-foreground">{emailDialog.application.email}</p>
+                <Badge variant="secondary" className="text-xs">{emailDialog.application.job_applied_for}</Badge>
+              </div>
+
+              {emailDialog.type === "interview" && (
+                <div className="space-y-3">
+                  <div className="space-y-2">
+                    <Label htmlFor="interview_date">Interview Date *</Label>
+                    <Input
+                      id="interview_date"
+                      type="date"
+                      value={interviewDate}
+                      onChange={(e) => setInterviewDate(e.target.value)}
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="interview_time">Interview Time *</Label>
+                    <Input
+                      id="interview_time"
+                      type="time"
+                      value={interviewTime}
+                      onChange={(e) => setInterviewTime(e.target.value)}
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="meet_link">Google Meet Link (Optional)</Label>
+                    <Input
+                      id="meet_link"
+                      placeholder="https://meet.google.com/..."
+                      value={meetLink}
+                      onChange={(e) => setMeetLink(e.target.value)}
+                    />
+                  </div>
+                </div>
+              )}
+
+              {emailDialog.type !== "interview" && (
+                <p className="text-sm text-muted-foreground">
+                  {emailDialog.type === "selection" && "This will send a congratulations email informing the candidate they have been selected."}
+                  {emailDialog.type === "rejection" && "This will send a polite rejection email to the candidate."}
+                  {emailDialog.type === "reviewed" && "This will send an email informing the candidate their application has been reviewed."}
+                </p>
+              )}
+            </div>
+          )}
+
+          <DialogFooter className="gap-2">
+            <Button variant="outline" onClick={closeEmailDialog}>Cancel</Button>
+            <Button onClick={handleSendEmail} disabled={sendingEmail}>
+              {sendingEmail ? (
+                <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2" />
+              ) : (
+                <Send className="h-4 w-4 mr-2" />
+              )}
+              {sendingEmail ? "Sending..." : "Send Email"}
+            </Button>
           </DialogFooter>
         </DialogContent>
       </Dialog>
