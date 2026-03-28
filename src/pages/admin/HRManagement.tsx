@@ -754,7 +754,7 @@ const AdminHRManagement = () => {
       },
       interview: { 
         className: "bg-cyan-100 text-cyan-800 border-cyan-200", 
-        icon: <Calendar className="h-3 w-3" /> 
+        icon: <CalendarIcon className="h-3 w-3" /> 
       },
       selected: { 
         className: "bg-green-100 text-green-800 border-green-200", 
