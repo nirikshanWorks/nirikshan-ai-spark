@@ -1,0 +1,2 @@
+ALTER TABLE public.job_applications DROP CONSTRAINT job_applications_status_check;
+ALTER TABLE public.job_applications ADD CONSTRAINT job_applications_status_check CHECK (status = ANY (ARRAY['pending'::text, 'selected'::text, 'rejected'::text, 'interview'::text, 'reviewed'::text, 'shortlisted'::text]));
