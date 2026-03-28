@@ -3152,6 +3152,45 @@ const AdminHRManagement = () => {
                   </SelectContent>
                 </Select>
               </div>
+
+              {/* Email Action Buttons */}
+              <div className="space-y-2">
+                <Label>Send Email</Label>
+                <div className="flex flex-wrap gap-2">
+                  <Button
+                    size="sm"
+                    className="bg-green-600 hover:bg-green-700 text-white"
+                    onClick={() => openEmailDialog("selection", selectedApplication)}
+                  >
+                    <CheckCircle className="h-4 w-4 mr-1" />
+                    Selection
+                  </Button>
+                  <Button
+                    size="sm"
+                    className="bg-blue-600 hover:bg-blue-700 text-white"
+                    onClick={() => openEmailDialog("interview", selectedApplication)}
+                  >
+                    <Video className="h-4 w-4 mr-1" />
+                    Interview
+                  </Button>
+                  <Button
+                    size="sm"
+                    className="bg-purple-600 hover:bg-purple-700 text-white"
+                    onClick={() => openEmailDialog("reviewed", selectedApplication)}
+                  >
+                    <Mail className="h-4 w-4 mr-1" />
+                    Reviewed
+                  </Button>
+                  <Button
+                    size="sm"
+                    variant="destructive"
+                    onClick={() => openEmailDialog("rejection", selectedApplication)}
+                  >
+                    <XCircle className="h-4 w-4 mr-1" />
+                    Rejection
+                  </Button>
+                </div>
+              </div>
             </div>
           )}
           
@@ -3159,6 +3198,83 @@ const AdminHRManagement = () => {
             <DialogClose asChild>
               <Button variant="outline">Close</Button>
             </DialogClose>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
+      {/* Email Confirmation / Interview Scheduling Dialog */}
+      <Dialog open={emailDialog.open} onOpenChange={(open) => !open && closeEmailDialog()}>
+        <DialogContent className="sm:max-w-md">
+          <DialogHeader>
+            <DialogTitle className="flex items-center gap-2">
+              <Send className="h-5 w-5" />
+              {emailDialog.type === "selection" && "Send Selection Email"}
+              {emailDialog.type === "rejection" && "Send Rejection Email"}
+              {emailDialog.type === "reviewed" && "Send Reviewed Email"}
+              {emailDialog.type === "interview" && "Schedule Interview"}
+            </DialogTitle>
+          </DialogHeader>
+
+          {emailDialog.application && (
+            <div className="space-y-4 py-2">
+              <div className="bg-muted/50 p-3 rounded-lg space-y-1">
+                <p className="font-medium text-sm">{emailDialog.application.name}</p>
+                <p className="text-xs text-muted-foreground">{emailDialog.application.email}</p>
+                <Badge variant="secondary" className="text-xs">{emailDialog.application.job_applied_for}</Badge>
+              </div>
+
+              {emailDialog.type === "interview" && (
+                <div className="space-y-3">
+                  <div className="space-y-2">
+                    <Label htmlFor="interview_date">Interview Date *</Label>
+                    <Input
+                      id="interview_date"
+                      type="date"
+                      value={interviewDate}
+                      onChange={(e) => setInterviewDate(e.target.value)}
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="interview_time">Interview Time *</Label>
+                    <Input
+                      id="interview_time"
+                      type="time"
+                      value={interviewTime}
+                      onChange={(e) => setInterviewTime(e.target.value)}
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="meet_link">Google Meet Link (Optional)</Label>
+                    <Input
+                      id="meet_link"
+                      placeholder="https://meet.google.com/..."
+                      value={meetLink}
+                      onChange={(e) => setMeetLink(e.target.value)}
+                    />
+                  </div>
+                </div>
+              )}
+
+              {emailDialog.type !== "interview" && (
+                <p className="text-sm text-muted-foreground">
+                  {emailDialog.type === "selection" && "This will send a congratulations email informing the candidate they have been selected."}
+                  {emailDialog.type === "rejection" && "This will send a polite rejection email to the candidate."}
+                  {emailDialog.type === "reviewed" && "This will send an email informing the candidate their application has been reviewed."}
+                </p>
+              )}
+            </div>
+          )}
+
+          <DialogFooter className="gap-2">
+            <Button variant="outline" onClick={closeEmailDialog}>Cancel</Button>
+            <Button onClick={handleSendEmail} disabled={sendingEmail}>
+              {sendingEmail ? (
+                <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2" />
+              ) : (
+                <Send className="h-4 w-4 mr-2" />
+              )}
+              {sendingEmail ? "Sending..." : "Send Email"}
+            </Button>
           </DialogFooter>
         </DialogContent>
       </Dialog>
