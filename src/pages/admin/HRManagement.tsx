@@ -648,12 +648,16 @@ const AdminHRManagement = () => {
   // ==================== EMAIL SENDING FUNCTIONS ====================
 
   const openEmailDialog = (type: "selection" | "rejection" | "interview" | "reviewed", application: JobApplication) => {
-    setEmailDialog({ open: true, type, application });
-    if (type === "interview") {
-      setInterviewDate("");
-      setInterviewTime("");
-      setMeetLink("");
-    }
+    // Close the detail dialog first to prevent dialog stacking conflicts
+    setSelectedApplication(null);
+    setTimeout(() => {
+      setEmailDialog({ open: true, type, application });
+      if (type === "interview") {
+        setInterviewDate("");
+        setInterviewTime("");
+        setMeetLink("");
+      }
+    }, 100);
   };
 
   const closeEmailDialog = () => {
