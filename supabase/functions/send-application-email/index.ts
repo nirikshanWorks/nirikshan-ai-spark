@@ -3,7 +3,7 @@ import { SMTPClient } from "https://deno.land/x/denomailer@1.6.0/mod.ts";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
-  "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
+  "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type, x-supabase-client-platform, x-supabase-client-platform-version, x-supabase-client-runtime, x-supabase-client-runtime-version",
 };
 
 interface EmailRequest {
@@ -119,7 +119,7 @@ const handler = async (req: Request): Promise<Response> => {
 
               <div style="background:#fff8e6; border:1px solid #f59e0b; border-radius:8px; padding:15px; margin:20px 0;">
                 <p style="color:#b45309; margin:0; font-weight:bold;">⏱️ Important Notice</p>
-                <p style="color:#555; margin:10px 0 0; line-height:1.5;">We request you to join <strong>30 minutes before</strong> your expected slot for smooth verification and to avoid last-moment delays.</p>
+                <p style="color:#555; margin:10px 0 0; line-height:1.5;">We request you to join <strong>5 minutes before</strong> your expected slot for smooth verification and to avoid last-moment delays.</p>
               </div>
               
               <div style="background:#f8fafc; border-radius:8px; padding:20px; margin:20px 0;">
@@ -196,12 +196,29 @@ const handler = async (req: Request): Promise<Response> => {
 
     console.log(`Sending email with subject: ${subject}`);
 
+    // Append "do not reply" footer to all emails
+    const doNotReplyFooter = `
+      <div style="background:#f0f0f0; padding:12px; text-align:center; border-top:1px solid #ddd; margin-top:0;">
+        <p style="color:#999; font-size:11px; margin:0; font-style:italic;">
+          ⚠️ This is a system-generated email. Please do not reply to this email. For any queries, contact us at <a href="mailto:hr@nirikshanai.com" style="color:#8b5cf6;">hr@nirikshanai.com</a>
+        </p>
+      </div>
+    `;
+    
+    // Insert the footer before closing </div></body></html>
+    // Remove trailing spaces from each line to prevent =20 in quoted-printable encoding
+    const cleanedContent = htmlContent.replace(/ +$/gm, '');
+    const finalHtml = cleanedContent.replace(
+      /<\/div>\s*<\/body>\s*<\/html>\s*$/,
+      `${doNotReplyFooter}</div></body></html>`
+    );
+
     await client.send({
-      from: gmailUser,
+      from: `"Nirikshan AI" <${gmailUser}>`,
       to: to,
       subject: subject,
       content: "Please view this email in an HTML-compatible email client.",
-      html: htmlContent,
+      html: finalHtml,
     });
 
     await client.close();
