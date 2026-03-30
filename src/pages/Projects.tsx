@@ -106,6 +106,9 @@ const projects: Project[] = [
     client: "Multiple Clients",
     tags: ["IoT", "React", "Real-time"],
     impact: "60% less manual tracking",
+    termsPath: "/projects/hostel-student-tracking-system/terms",
+    privacyPath: "/projects/hostel-student-tracking-system/privacy",
+    accountDeletionPath: "/projects/hostel-student-tracking-system/account-deletion-policy",
   },
   {
     title: "Class Test Proctor",
