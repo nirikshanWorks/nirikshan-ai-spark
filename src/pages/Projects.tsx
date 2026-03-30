@@ -41,23 +41,27 @@ interface Project {
   tags: string[];
   impact: string;
   termsPath?: string;
+  privacyPath?: string;
   storeReleaseSoon?: boolean;
+  accountDeletionPath?: string;
 }
 
 /* ─── Projects Data ─── */
 const projects: Project[] = [
   {
-    title: "Manorma Krishi Rakshak",
+    title: "Manorama KrishiRakshak",
     description: "Multilingual farmer-focused mobile app offering mandi market updates, government scheme guidance, AI crop assistance, and community success stories for agriculture users across India.",
     category: "Mobile App Development",
     image: "https://images.unsplash.com/photo-1472396961693-142e6e269027?auto=format&fit=crop&w=1200&q=80",
     date: "March 2026",
     status: "Completed",
-    client: "Manorma Krishi Initiative, India",
+    client: "Manorama Krishi Initiative, India",
     tags: ["Mobile App", "Agritech", "AI Assistant", "Localization"],
     impact: "15-language farmer support",
     termsPath: "/projects/manorma-krishi-rakshak/terms",
+    privacyPath: "/projects/manorma-krishi-rakshak/privacy",
     storeReleaseSoon: true,
+    accountDeletionPath: "/projects/manorma-krishi-rakshak/account-deletion-policy",
   },
   {
     title: "AI Inventory Management System",
@@ -366,14 +370,32 @@ const Projects = () => {
                                 </Badge>
                               ))}
                             </div>
-                            {filtered[0].termsPath && (
-                              <div className="mt-6">
-                                <Link to={filtered[0].termsPath}>
-                                  <Button variant="outline" className="border-primary/30 hover:bg-primary/10">
-                                    <FileText className="w-4 h-4 mr-2" />
-                                    View Terms & Conditions
-                                  </Button>
-                                </Link>
+                            {(filtered[0].termsPath || filtered[0].privacyPath || filtered[0].accountDeletionPath) && (
+                              <div className="mt-6 flex flex-wrap gap-3">
+                                {filtered[0].termsPath && (
+                                  <Link to={filtered[0].termsPath}>
+                                    <Button variant="outline" className="border-primary/30 hover:bg-primary/10">
+                                      <FileText className="w-4 h-4 mr-2" />
+                                      View Terms & Conditions
+                                    </Button>
+                                  </Link>
+                                )}
+                                {filtered[0].privacyPath && (
+                                  <Link to={filtered[0].privacyPath}>
+                                    <Button variant="outline" className="border-primary/30 hover:bg-primary/10">
+                                      <FileText className="w-4 h-4 mr-2" />
+                                      Privacy Notice
+                                    </Button>
+                                  </Link>
+                                )}
+                                {filtered[0].accountDeletionPath && (
+                                  <Link to={filtered[0].accountDeletionPath}>
+                                    <Button variant="outline" className="border-primary/30 hover:bg-primary/10">
+                                      <FileText className="w-4 h-4 mr-2" />
+                                      Account Deletion Policy
+                                    </Button>
+                                  </Link>
+                                )}
                               </div>
                             )}
                           </div>
@@ -443,13 +465,33 @@ const Projects = () => {
                               </span>
                             </div>
 
-                            {project.termsPath && (
-                              <Link to={project.termsPath} className="mt-4">
-                                <Button variant="outline" size="sm" className="w-full border-primary/30 hover:bg-primary/10">
-                                  <FileText className="w-4 h-4 mr-2" />
-                                  Terms & Conditions
-                                </Button>
-                              </Link>
+                            {(project.termsPath || project.privacyPath || project.accountDeletionPath) && (
+                              <div className="mt-4 space-y-2">
+                                {project.termsPath && (
+                                  <Link to={project.termsPath}>
+                                    <Button variant="outline" size="sm" className="w-full border-primary/30 hover:bg-primary/10">
+                                      <FileText className="w-4 h-4 mr-2" />
+                                      Terms & Conditions
+                                    </Button>
+                                  </Link>
+                                )}
+                                {project.privacyPath && (
+                                  <Link to={project.privacyPath}>
+                                    <Button variant="outline" size="sm" className="w-full border-primary/30 hover:bg-primary/10">
+                                      <FileText className="w-4 h-4 mr-2" />
+                                      Privacy Notice
+                                    </Button>
+                                  </Link>
+                                )}
+                                {project.accountDeletionPath && (
+                                  <Link to={project.accountDeletionPath}>
+                                    <Button variant="outline" size="sm" className="w-full border-primary/30 hover:bg-primary/10">
+                                      <FileText className="w-4 h-4 mr-2" />
+                                      Account Deletion Policy
+                                    </Button>
+                                  </Link>
+                                )}
+                              </div>
                             )}
                           </div>
                         </div>

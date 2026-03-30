@@ -29,6 +29,8 @@ const Contact = lazy(() => import("./pages/Contact"));
 const Privacy = lazy(() => import("./pages/Privacy"));
 const Terms = lazy(() => import("./pages/Terms"));
 const ManormaTerms = lazy(() => import("./pages/ManormaTerms"));
+const ManoramaPrivacy = lazy(() => import("./pages/ManoramaPrivacy"));
+const ManoramaAccountDeletionPolicy = lazy(() => import("./pages/ManoramaAccountDeletionPolicy"));
 const Testimonials = lazy(() => import("./pages/Testimonials"));
 const Journey = lazy(() => import("./pages/Journey"));
 const Applications = lazy(() => import("./pages/Applications"));
@@ -72,6 +74,8 @@ const AnimatedRoutes = () => {
         <Route path="/privacy" element={<PageTransition><Privacy /></PageTransition>} />
         <Route path="/terms" element={<PageTransition><Terms /></PageTransition>} />
         <Route path="/projects/manorma-krishi-rakshak/terms" element={<PageTransition><ManormaTerms /></PageTransition>} />
+        <Route path="/projects/manorma-krishi-rakshak/privacy" element={<PageTransition><ManoramaPrivacy /></PageTransition>} />
+        <Route path="/projects/manorma-krishi-rakshak/account-deletion-policy" element={<PageTransition><ManoramaAccountDeletionPolicy /></PageTransition>} />
         <Route path="/verify" element={<PageTransition><CertificateVerify /></PageTransition>} />
         <Route path="/verify/:certificateNumber" element={<PageTransition><CertificateVerify /></PageTransition>} />
         <Route path="/admin/certificates" element={<PageTransition><AdminCertificates /></PageTransition>} />
