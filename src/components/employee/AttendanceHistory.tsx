@@ -715,117 +715,12 @@ export const AttendanceHistory = ({
             <Button variant="outline" size="icon" onClick={fetchAttendance}>
               <RefreshCw className="h-4 w-4" />
             </Button>
-            <Button variant="outline" size="sm" onClick={exportToExcel} className="gap-1">
-              <Download className="h-4 w-4" />
-              Excel
-            </Button>
-            
-            {/* PDF Export Dialog */}
-            <Dialog open={pdfDialogOpen} onOpenChange={setPdfDialogOpen}>
-              <DialogTrigger asChild>
-                <Button variant="default" size="sm" className="gap-1">
-                  <FileText className="h-4 w-4" />
-                  PDF
-                </Button>
-              </DialogTrigger>
-              <DialogContent className="sm:max-w-[500px]">
-                <DialogHeader>
-                  <DialogTitle className="flex items-center gap-2">
-                    <FileText className="h-5 w-5" />
-                    Export Attendance as PDF
-                  </DialogTitle>
-                </DialogHeader>
-                <div className="space-y-4 py-4">
-                  <p className="text-sm text-muted-foreground">
-                    Select the date range for your official attendance record. The PDF will include company letterhead, your attendance details, and requires an authorized signature to be valid.
-                  </p>
-                  
-                  <div className="grid grid-cols-2 gap-4">
-                    <div className="space-y-2">
-                      <label className="text-sm font-medium">From Date</label>
-                      <Popover>
-                        <PopoverTrigger asChild>
-                          <Button
-                            variant="outline"
-                            className={cn(
-                              "w-full justify-start text-left font-normal",
-                              !pdfStartDate && "text-muted-foreground"
-                            )}
-                          >
-                            <CalendarIcon className="mr-2 h-4 w-4" />
-                            {pdfStartDate ? format(pdfStartDate, "dd MMM yyyy") : "Select date"}
-                          </Button>
-                        </PopoverTrigger>
-                        <PopoverContent className="w-auto p-0 z-[200]" align="start">
-                          <Calendar
-                            mode="single"
-                            selected={pdfStartDate}
-                            onSelect={setPdfStartDate}
-                            disabled={(date) => date > new Date()}
-                            initialFocus
-                          />
-                        </PopoverContent>
-                      </Popover>
-                    </div>
-                    
-                    <div className="space-y-2">
-                      <label className="text-sm font-medium">To Date</label>
-                      <Popover>
-                        <PopoverTrigger asChild>
-                          <Button
-                            variant="outline"
-                            className={cn(
-                              "w-full justify-start text-left font-normal",
-                              !pdfEndDate && "text-muted-foreground"
-                            )}
-                          >
-                            <CalendarIcon className="mr-2 h-4 w-4" />
-                            {pdfEndDate ? format(pdfEndDate, "dd MMM yyyy") : "Select date"}
-                          </Button>
-                        </PopoverTrigger>
-                        <PopoverContent className="w-auto p-0 z-[200]" align="start">
-                          <Calendar
-                            mode="single"
-                            selected={pdfEndDate}
-                            onSelect={setPdfEndDate}
-                            disabled={(date) => date > new Date() || (pdfStartDate ? date < pdfStartDate : false)}
-                            initialFocus
-                          />
-                        </PopoverContent>
-                      </Popover>
-                    </div>
-                  </div>
-
-                  <div className="bg-amber-50 dark:bg-amber-950/30 border border-amber-200 dark:border-amber-800 rounded-lg p-3">
-                    <p className="text-xs text-amber-800 dark:text-amber-200">
-                      <strong>Note:</strong> This document is valid only when signed by an authorized signatory from Nirikshan AI Pvt. Ltd.
-                    </p>
-                  </div>
-                </div>
-                <DialogFooter>
-                  <Button variant="outline" onClick={() => setPdfDialogOpen(false)}>
-                    Cancel
-                  </Button>
-                  <Button 
-                    onClick={exportToPDF} 
-                    disabled={!pdfStartDate || !pdfEndDate || pdfLoading}
-                    className="gap-2"
-                  >
-                    {pdfLoading ? (
-                      <>
-                        <RefreshCw className="h-4 w-4 animate-spin" />
-                        Generating...
-                      </>
-                    ) : (
-                      <>
-                        <Download className="h-4 w-4" />
-                        Download PDF
-                      </>
-                    )}
-                  </Button>
-                </DialogFooter>
-              </DialogContent>
-            </Dialog>
+            <div className="flex items-center gap-2 px-3 py-1.5 rounded-md bg-amber-50 dark:bg-amber-950/30 border border-amber-200 dark:border-amber-800">
+              <FileText className="h-4 w-4 text-amber-600 dark:text-amber-400 shrink-0" />
+              <p className="text-xs text-amber-700 dark:text-amber-300">
+                To download or verify records, contact <a href="mailto:info@nirikshanai.com" className="font-semibold underline">HR</a>
+              </p>
+            </div>
           </div>
         </CardHeader>
         <CardContent>
