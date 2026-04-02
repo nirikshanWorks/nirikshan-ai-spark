@@ -88,6 +88,121 @@ export type Database = {
         }
         Relationships: []
       }
+      chat_groups: {
+        Row: {
+          avatar_url: string | null
+          created_at: string | null
+          created_by: string | null
+          description: string | null
+          id: string
+          name: string | null
+          type: string
+        }
+        Insert: {
+          avatar_url?: string | null
+          created_at?: string | null
+          created_by?: string | null
+          description?: string | null
+          id?: string
+          name?: string | null
+          type?: string
+        }
+        Update: {
+          avatar_url?: string | null
+          created_at?: string | null
+          created_by?: string | null
+          description?: string | null
+          id?: string
+          name?: string | null
+          type?: string
+        }
+        Relationships: []
+      }
+      chat_members: {
+        Row: {
+          group_id: string | null
+          id: string
+          joined_at: string | null
+          role: string | null
+          user_id: string
+        }
+        Insert: {
+          group_id?: string | null
+          id?: string
+          joined_at?: string | null
+          role?: string | null
+          user_id: string
+        }
+        Update: {
+          group_id?: string | null
+          id?: string
+          joined_at?: string | null
+          role?: string | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "chat_members_group_id_fkey"
+            columns: ["group_id"]
+            isOneToOne: false
+            referencedRelation: "chat_groups"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      chat_messages: {
+        Row: {
+          content: string | null
+          created_at: string | null
+          duration_seconds: number | null
+          file_name: string | null
+          file_size: number | null
+          file_url: string | null
+          group_id: string | null
+          id: string
+          is_deleted: boolean | null
+          message_type: string | null
+          reply_to: string | null
+          sender_id: string
+        }
+        Insert: {
+          content?: string | null
+          created_at?: string | null
+          duration_seconds?: number | null
+          file_name?: string | null
+          file_size?: number | null
+          file_url?: string | null
+          group_id?: string | null
+          id?: string
+          is_deleted?: boolean | null
+          message_type?: string | null
+          reply_to?: string | null
+          sender_id: string
+        }
+        Update: {
+          content?: string | null
+          created_at?: string | null
+          duration_seconds?: number | null
+          file_name?: string | null
+          file_size?: number | null
+          file_url?: string | null
+          group_id?: string | null
+          id?: string
+          is_deleted?: boolean | null
+          message_type?: string | null
+          reply_to?: string | null
+          sender_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "chat_messages_group_id_fkey"
+            columns: ["group_id"]
+            isOneToOne: false
+            referencedRelation: "chat_groups"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       employees: {
         Row: {
           created_at: string | null
@@ -229,6 +344,62 @@ export type Database = {
         }
         Relationships: []
       }
+      leads: {
+        Row: {
+          assigned_to: string | null
+          company: string | null
+          created_at: string | null
+          email: string | null
+          id: string
+          message: string | null
+          name: string
+          notes: string | null
+          phone: string | null
+          service_interest: string | null
+          source: string | null
+          status: string | null
+          updated_at: string | null
+        }
+        Insert: {
+          assigned_to?: string | null
+          company?: string | null
+          created_at?: string | null
+          email?: string | null
+          id?: string
+          message?: string | null
+          name: string
+          notes?: string | null
+          phone?: string | null
+          service_interest?: string | null
+          source?: string | null
+          status?: string | null
+          updated_at?: string | null
+        }
+        Update: {
+          assigned_to?: string | null
+          company?: string | null
+          created_at?: string | null
+          email?: string | null
+          id?: string
+          message?: string | null
+          name?: string
+          notes?: string | null
+          phone?: string | null
+          service_interest?: string | null
+          source?: string | null
+          status?: string | null
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "leads_assigned_to_fkey"
+            columns: ["assigned_to"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       leave_requests: {
         Row: {
           admin_remarks: string | null
@@ -276,26 +447,130 @@ export type Database = {
           },
         ]
       }
+      message_reads: {
+        Row: {
+          id: string
+          message_id: string | null
+          read_at: string | null
+          user_id: string
+        }
+        Insert: {
+          id?: string
+          message_id?: string | null
+          read_at?: string | null
+          user_id: string
+        }
+        Update: {
+          id?: string
+          message_id?: string | null
+          read_at?: string | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "message_reads_message_id_fkey"
+            columns: ["message_id"]
+            isOneToOne: false
+            referencedRelation: "chat_messages"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       profiles: {
         Row: {
+          avatar_url: string | null
           created_at: string | null
+          department: string | null
+          designation: string | null
           email: string
+          full_name: string | null
           id: string
+          is_active: boolean | null
+          joining_date: string | null
+          phone: string | null
           updated_at: string | null
         }
         Insert: {
+          avatar_url?: string | null
           created_at?: string | null
+          department?: string | null
+          designation?: string | null
           email: string
+          full_name?: string | null
           id: string
+          is_active?: boolean | null
+          joining_date?: string | null
+          phone?: string | null
           updated_at?: string | null
         }
         Update: {
+          avatar_url?: string | null
           created_at?: string | null
+          department?: string | null
+          designation?: string | null
           email?: string
+          full_name?: string | null
           id?: string
+          is_active?: boolean | null
+          joining_date?: string | null
+          phone?: string | null
           updated_at?: string | null
         }
         Relationships: []
+      }
+      tasks: {
+        Row: {
+          assigned_by: string | null
+          assigned_to: string | null
+          created_at: string | null
+          description: string | null
+          due_date: string | null
+          id: string
+          priority: string
+          status: string
+          title: string
+          updated_at: string | null
+        }
+        Insert: {
+          assigned_by?: string | null
+          assigned_to?: string | null
+          created_at?: string | null
+          description?: string | null
+          due_date?: string | null
+          id?: string
+          priority?: string
+          status?: string
+          title: string
+          updated_at?: string | null
+        }
+        Update: {
+          assigned_by?: string | null
+          assigned_to?: string | null
+          created_at?: string | null
+          description?: string | null
+          due_date?: string | null
+          id?: string
+          priority?: string
+          status?: string
+          title?: string
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "tasks_assigned_by_fkey"
+            columns: ["assigned_by"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "tasks_assigned_to_fkey"
+            columns: ["assigned_to"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       user_roles: {
         Row: {
@@ -330,9 +605,10 @@ export type Database = {
         }
         Returns: boolean
       }
+      user_group_ids: { Args: { _user_id: string }; Returns: string[] }
     }
     Enums: {
-      app_role: "admin" | "user"
+      app_role: "admin" | "user" | "manager" | "employee"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -460,7 +736,7 @@ export type CompositeTypes<
 export const Constants = {
   public: {
     Enums: {
-      app_role: ["admin", "user"],
+      app_role: ["admin", "user", "manager", "employee"],
     },
   },
 } as const

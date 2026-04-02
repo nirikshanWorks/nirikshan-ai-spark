@@ -49,6 +49,16 @@ const AIShowcase = lazy(() => import("./pages/AIShowcase"));
 const Blog = lazy(() => import("./pages/Blog"));
 const NotFound = lazy(() => import("./pages/NotFound"));
 
+// CRM Dashboard
+const CrmLogin = lazy(() => import("./pages/dashboard/CrmLogin"));
+const DashboardLayout = lazy(() => import("./pages/dashboard/DashboardLayout"));
+const DashboardHome = lazy(() => import("./pages/dashboard/DashboardHome"));
+const DashboardEmployees = lazy(() => import("./pages/dashboard/DashboardEmployees"));
+const DashboardAttendance = lazy(() => import("./pages/dashboard/DashboardAttendance"));
+const DashboardTasks = lazy(() => import("./pages/dashboard/DashboardTasks"));
+const DashboardLeads = lazy(() => import("./pages/dashboard/DashboardLeads"));
+const DashboardMessages = lazy(() => import("./pages/dashboard/DashboardMessages"));
+
 const queryClient = new QueryClient();
 
 const PageLoader = () => <EyeLoaderInline />;
@@ -92,6 +102,15 @@ const AnimatedRoutes = () => {
         <Route path="/object-detection-demo" element={<PageTransition><ObjectDetectionDemo /></PageTransition>} />
         <Route path="/ai-showcase" element={<PageTransition><AIShowcase /></PageTransition>} />
         <Route path="/blog" element={<PageTransition><Blog /></PageTransition>} />
+        <Route path="/login" element={<PageTransition><CrmLogin /></PageTransition>} />
+        <Route path="/dashboard" element={<DashboardLayout />}>
+          <Route index element={<DashboardHome />} />
+          <Route path="employees" element={<DashboardEmployees />} />
+          <Route path="attendance" element={<DashboardAttendance />} />
+          <Route path="tasks" element={<DashboardTasks />} />
+          <Route path="leads" element={<DashboardLeads />} />
+          <Route path="messages" element={<DashboardMessages />} />
+        </Route>
         <Route path="*" element={<PageTransition><NotFound /></PageTransition>} />
       </Routes>
     </AnimatePresence>
