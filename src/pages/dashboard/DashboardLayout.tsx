@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { Outlet, useNavigate, NavLink, useLocation } from "react-router-dom";
-import { useCrmAuth } from "@/hooks/useCrmAuth";
+import { useCrmAuth, CrmAuthProvider } from "@/hooks/useCrmAuth";
 import {
   LayoutDashboard, Users, Clock, CheckSquare, Target, MessageCircle,
   LogOut, ChevronLeft, ChevronRight, Menu,
@@ -19,7 +19,7 @@ const navItems = [
   { path: "/dashboard/messages", label: "Messages", icon: MessageCircle },
 ];
 
-const DashboardLayout = () => {
+const DashboardLayoutInner = () => {
   const { user, profile, role, loading, signOut } = useCrmAuth();
   const navigate = useNavigate();
   const location = useLocation();
@@ -133,5 +133,11 @@ const DashboardLayout = () => {
     </div>
   );
 };
+
+const DashboardLayout = () => (
+  <CrmAuthProvider>
+    <DashboardLayoutInner />
+  </CrmAuthProvider>
+);
 
 export default DashboardLayout;
