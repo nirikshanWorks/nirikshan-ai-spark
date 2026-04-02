@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { Outlet, useNavigate, NavLink, useLocation } from "react-router-dom";
-import { useCrmAuth } from "@/hooks/useCrmAuth";
+import { useCrmAuth, CrmAuthProvider } from "@/hooks/useCrmAuth";
 import {
   LayoutDashboard, Users, Clock, CheckSquare, Target, MessageCircle,
   LogOut, ChevronLeft, ChevronRight, Menu,
