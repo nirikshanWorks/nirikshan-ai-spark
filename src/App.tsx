@@ -102,6 +102,15 @@ const AnimatedRoutes = () => {
         <Route path="/object-detection-demo" element={<PageTransition><ObjectDetectionDemo /></PageTransition>} />
         <Route path="/ai-showcase" element={<PageTransition><AIShowcase /></PageTransition>} />
         <Route path="/blog" element={<PageTransition><Blog /></PageTransition>} />
+        <Route path="/login" element={<PageTransition><CrmLogin /></PageTransition>} />
+        <Route path="/dashboard" element={<DashboardLayout />}>
+          <Route index element={<DashboardHome />} />
+          <Route path="employees" element={<DashboardEmployees />} />
+          <Route path="attendance" element={<DashboardAttendance />} />
+          <Route path="tasks" element={<DashboardTasks />} />
+          <Route path="leads" element={<DashboardLeads />} />
+          <Route path="messages" element={<DashboardMessages />} />
+        </Route>
         <Route path="*" element={<PageTransition><NotFound /></PageTransition>} />
       </Routes>
     </AnimatePresence>
