@@ -19,7 +19,7 @@ const navItems = [
   { path: "/dashboard/messages", label: "Messages", icon: MessageCircle },
 ];
 
-const DashboardLayout = () => {
+const DashboardLayoutInner = () => {
   const { user, profile, role, loading, signOut } = useCrmAuth();
   const navigate = useNavigate();
   const location = useLocation();
