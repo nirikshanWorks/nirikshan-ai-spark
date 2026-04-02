@@ -49,6 +49,16 @@ const AIShowcase = lazy(() => import("./pages/AIShowcase"));
 const Blog = lazy(() => import("./pages/Blog"));
 const NotFound = lazy(() => import("./pages/NotFound"));
 
+// CRM Dashboard
+const CrmLogin = lazy(() => import("./pages/dashboard/CrmLogin"));
+const DashboardLayout = lazy(() => import("./pages/dashboard/DashboardLayout"));
+const DashboardHome = lazy(() => import("./pages/dashboard/DashboardHome"));
+const DashboardEmployees = lazy(() => import("./pages/dashboard/DashboardEmployees"));
+const DashboardAttendance = lazy(() => import("./pages/dashboard/DashboardAttendance"));
+const DashboardTasks = lazy(() => import("./pages/dashboard/DashboardTasks"));
+const DashboardLeads = lazy(() => import("./pages/dashboard/DashboardLeads"));
+const DashboardMessages = lazy(() => import("./pages/dashboard/DashboardMessages"));
+
 const queryClient = new QueryClient();
 
 const PageLoader = () => <EyeLoaderInline />;
