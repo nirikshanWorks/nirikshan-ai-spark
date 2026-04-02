@@ -134,4 +134,10 @@ const DashboardLayoutInner = () => {
   );
 };
 
+const DashboardLayout = () => (
+  <CrmAuthProvider>
+    <DashboardLayoutInner />
+  </CrmAuthProvider>
+);
+
 export default DashboardLayout;
