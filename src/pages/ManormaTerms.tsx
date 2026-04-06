@@ -63,6 +63,45 @@ const termsBlocks: TermsBlock[] = [
       "These terms may be updated periodically. Continued use after updates means you accept the revised terms.",
     ],
   },
+  {
+    heading: "9. Cancellation Policy",
+    points: [
+      "Buyer cancellation before farmer acceptance is allowed and eligible for a 100% refund.",
+      "Buyer cancellation after farmer acceptance but before dispatch is limited and eligible for an 80% to 90% refund; remaining amount may compensate the farmer.",
+      "Buyer cancellation after dispatch is not allowed; buyer must coordinate directly with the transporter.",
+      "Farmer cancellation is allowed only for valid reasons such as crop failure, stock unavailability, or unavoidable circumstances, and the buyer receives a 100% refund.",
+      "If a farmer cancels without a valid reason, the platform may impose penalties, reduce platform visibility, or suspend the account.",
+    ],
+  },
+  {
+    heading: "10. Refund Policy",
+    points: [
+      "If an order is not delivered, the buyer is eligible for a full refund.",
+      "For damaged or spoiled goods, issues must be reported within 24 hours of delivery with photo or video proof; refund may be partial or full after review.",
+      "If an incorrect product is delivered, the buyer is eligible for a full refund or replacement.",
+      "No refund will be issued for incorrect delivery details provided by the buyer.",
+      "No refund will be issued if the buyer is unavailable at delivery.",
+      "No refund will be issued for complaints raised without valid proof.",
+      "No refund will be issued for delays caused by transporter operations.",
+    ],
+  },
+  {
+    heading: "11. Transport and Delivery",
+    points: [
+      "Transport is arranged independently by the buyer.",
+      "Transporters are not controlled by the platform.",
+      "The platform is not liable for delays, transit damage, or loss of goods during transportation.",
+    ],
+  },
+  {
+    heading: "12. Payments",
+    points: [
+      "All payments are processed through secure payment gateways.",
+      "Eligible refunds are processed within 5 to 7 working days.",
+      "Payment gateway charges may be non-refundable.",
+      "Refunds are issued only to the original payment method.",
+    ],
+  },
 ];
 
 const ManormaTerms = () => {
