@@ -9,8 +9,9 @@ import {
   Calendar as CalendarIcon, CheckCircle, XCircle, Clock, Search, Users, 
   MessageSquare, Filter, CalendarDays, Download, BarChart3, Building2,
   Plus, Trash2, Edit, Briefcase, UserPlus, Link2, FileText, Eye, Mail, Phone, Linkedin, Github, Globe, ExternalLink,
-  Send, Video
+  Send, Video, CheckSquare, XSquare
 } from "lucide-react";
+import { Checkbox } from "@/components/ui/checkbox";
 import TodaysAttendance from "@/components/admin/TodaysAttendance";
 import IndividualAttendanceReport from "@/components/admin/IndividualAttendanceReport";
 
@@ -250,6 +251,7 @@ const AdminHRManagement = () => {
   const [applicationsLoading, setApplicationsLoading] = useState(true);
   const [applicationSearchQuery, setApplicationSearchQuery] = useState("");
   const [applicationStatusFilter, setApplicationStatusFilter] = useState<string>("all");
+  const [selectedAppIds, setSelectedAppIds] = useState<Set<string>>(new Set());
   const [selectedApplication, setSelectedApplication] = useState<JobApplication | null>(null);
 
   // Email Dialog State
@@ -791,6 +793,30 @@ const AdminHRManagement = () => {
     shortlisted: applications.filter(a => a.status === "shortlisted").length,
     selected: applications.filter(a => a.status === "selected").length,
     rejected: applications.filter(a => a.status === "rejected").length,
+  };
+
+  const toggleAppSelect = (id: string) => {
+    setSelectedAppIds(prev => {
+      const next = new Set(prev);
+      if (next.has(id)) next.delete(id); else next.add(id);
+      return next;
+    });
+  };
+
+  const selectAllApps = () => {
+    if (selectedAppIds.size === filteredApplications.length) setSelectedAppIds(new Set());
+    else setSelectedAppIds(new Set(filteredApplications.map(a => a.id)));
+  };
+
+  const handleBulkAppStatus = async (newStatus: string) => {
+    if (selectedAppIds.size === 0) return;
+    const ids = Array.from(selectedAppIds);
+    for (const id of ids) {
+      await supabase.from("job_applications").update({ status: newStatus }).eq("id", id);
+    }
+    toast.success(`${ids.length} application(s) marked as ${newStatus}`);
+    setSelectedAppIds(new Set());
+    setApplications(prev => prev.map(app => ids.includes(app.id) ? { ...app, status: newStatus } : app));
   };
 
   // ==================== LEAVE MANAGEMENT FUNCTIONS ====================
@@ -1713,10 +1739,42 @@ const AdminHRManagement = () => {
                   {/* Applications Table */}
                   <Card>
                     <CardHeader>
-                      <CardTitle className="flex items-center gap-2">
-                        <Briefcase className="h-5 w-5" />
-                        Job Applications
-                      </CardTitle>
+                      <div className="flex flex-wrap items-center justify-between gap-3">
+                        <CardTitle className="flex items-center gap-2">
+                          <Briefcase className="h-5 w-5" />
+                          Job Applications
+                        </CardTitle>
+                        <div className="flex items-center gap-2 flex-wrap">
+                          <div className="flex items-center gap-2">
+                            <Checkbox
+                              checked={selectedAppIds.size === filteredApplications.length && filteredApplications.length > 0}
+                              onCheckedChange={selectAllApps}
+                            />
+                            <span className="text-xs text-muted-foreground">
+                              {selectedAppIds.size > 0 ? `${selectedAppIds.size} selected` : "Select all"}
+                            </span>
+                          </div>
+                          {selectedAppIds.size > 0 && (
+                            <>
+                              <Button size="sm" onClick={() => handleBulkAppStatus("selected")} className="bg-green-600 hover:bg-green-700 text-white text-xs">
+                                <CheckCircle className="h-3 w-3 mr-1" /> Selected ({selectedAppIds.size})
+                              </Button>
+                              <Button size="sm" onClick={() => handleBulkAppStatus("rejected")} className="bg-red-600 hover:bg-red-700 text-white text-xs">
+                                <XCircle className="h-3 w-3 mr-1" /> Rejected ({selectedAppIds.size})
+                              </Button>
+                              <Button size="sm" onClick={() => handleBulkAppStatus("reviewed")} className="bg-purple-600 hover:bg-purple-700 text-white text-xs">
+                                Reviewed ({selectedAppIds.size})
+                              </Button>
+                              <Button size="sm" onClick={() => handleBulkAppStatus("interview")} className="bg-blue-600 hover:bg-blue-700 text-white text-xs">
+                                Interview ({selectedAppIds.size})
+                              </Button>
+                              <Button size="sm" onClick={() => handleBulkAppStatus("shortlisted")} className="bg-yellow-600 hover:bg-yellow-700 text-white text-xs">
+                                Shortlisted ({selectedAppIds.size})
+                              </Button>
+                            </>
+                          )}
+                        </div>
+                      </div>
                     </CardHeader>
                     <CardContent>
                       {filteredApplications.length === 0 ? (
@@ -1734,6 +1792,12 @@ const AdminHRManagement = () => {
                           <Table>
                             <TableHeader>
                               <TableRow>
+                                <TableHead className="w-10">
+                                  <Checkbox
+                                    checked={selectedAppIds.size === filteredApplications.length && filteredApplications.length > 0}
+                                    onCheckedChange={selectAllApps}
+                                  />
+                                </TableHead>
                                 <TableHead>Candidate</TableHead>
                                 <TableHead>Position</TableHead>
                                 <TableHead>Contact</TableHead>
@@ -1744,7 +1808,13 @@ const AdminHRManagement = () => {
                             </TableHeader>
                             <TableBody>
                               {filteredApplications.map((app) => (
-                                <TableRow key={app.id}>
+                                <TableRow key={app.id} className={selectedAppIds.has(app.id) ? "bg-muted/50" : ""}>
+                                  <TableCell>
+                                    <Checkbox
+                                      checked={selectedAppIds.has(app.id)}
+                                      onCheckedChange={() => toggleAppSelect(app.id)}
+                                    />
+                                  </TableCell>
                                   <TableCell>
                                     <div>
                                       <p className="font-medium">{app.name}</p>
