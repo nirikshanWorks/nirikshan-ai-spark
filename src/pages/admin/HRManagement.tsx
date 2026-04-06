@@ -9,8 +9,9 @@ import {
   Calendar as CalendarIcon, CheckCircle, XCircle, Clock, Search, Users, 
   MessageSquare, Filter, CalendarDays, Download, BarChart3, Building2,
   Plus, Trash2, Edit, Briefcase, UserPlus, Link2, FileText, Eye, Mail, Phone, Linkedin, Github, Globe, ExternalLink,
-  Send, Video
+  Send, Video, CheckSquare, XSquare
 } from "lucide-react";
+import { Checkbox } from "@/components/ui/checkbox";
 import TodaysAttendance from "@/components/admin/TodaysAttendance";
 import IndividualAttendanceReport from "@/components/admin/IndividualAttendanceReport";
 
