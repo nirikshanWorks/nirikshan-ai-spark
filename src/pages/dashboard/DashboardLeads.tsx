@@ -67,6 +67,30 @@ const DashboardLeads = () => {
     fetchLeads();
   };
 
+  const handleBulkAction = async (newStatus: string) => {
+    if (selectedIds.size === 0) return;
+    const ids = Array.from(selectedIds);
+    for (const id of ids) {
+      await supabase.from("leads").update({ status: newStatus, updated_at: new Date().toISOString() }).eq("id", id);
+    }
+    toast({ title: `${ids.length} lead(s) marked as ${PIPELINE_LABELS[newStatus]}` });
+    setSelectedIds(new Set());
+    fetchLeads();
+  };
+
+  const toggleSelect = (id: string) => {
+    setSelectedIds(prev => {
+      const next = new Set(prev);
+      if (next.has(id)) next.delete(id); else next.add(id);
+      return next;
+    });
+  };
+
+  const selectAll = () => {
+    if (selectedIds.size === leads.length) setSelectedIds(new Set());
+    else setSelectedIds(new Set(leads.map(l => l.id)));
+  };
+
   const getAssigneeName = (id: string | null) => {
     if (!id) return "Unassigned";
     const p = profiles.find(p => p.id === id);
