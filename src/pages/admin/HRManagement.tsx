@@ -1792,6 +1792,12 @@ const AdminHRManagement = () => {
                           <Table>
                             <TableHeader>
                               <TableRow>
+                                <TableHead className="w-10">
+                                  <Checkbox
+                                    checked={selectedAppIds.size === filteredApplications.length && filteredApplications.length > 0}
+                                    onCheckedChange={selectAllApps}
+                                  />
+                                </TableHead>
                                 <TableHead>Candidate</TableHead>
                                 <TableHead>Position</TableHead>
                                 <TableHead>Contact</TableHead>
