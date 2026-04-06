@@ -7,7 +7,8 @@ import { Textarea } from "@/components/ui/textarea";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Badge } from "@/components/ui/badge";
-import { Plus, Building2, Mail, Phone, User } from "lucide-react";
+import { Checkbox } from "@/components/ui/checkbox";
+import { Plus, Building2, Mail, Phone, User, CheckSquare, XSquare } from "lucide-react";
 import { format } from "date-fns";
 import { useToast } from "@/hooks/use-toast";
 
@@ -27,6 +28,7 @@ const DashboardLeads = () => {
   const [loading, setLoading] = useState(true);
   const [showCreate, setShowCreate] = useState(false);
   const [selectedLead, setSelectedLead] = useState<any>(null);
+  const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set());
   const [newLead, setNewLead] = useState({ name: "", email: "", phone: "", company: "", service_interest: "", message: "", source: "manual", assigned_to: "" });
 
   const fetchLeads = async () => {
@@ -65,6 +67,30 @@ const DashboardLeads = () => {
     fetchLeads();
   };
 
+  const handleBulkAction = async (newStatus: string) => {
+    if (selectedIds.size === 0) return;
+    const ids = Array.from(selectedIds);
+    for (const id of ids) {
+      await supabase.from("leads").update({ status: newStatus, updated_at: new Date().toISOString() }).eq("id", id);
+    }
+    toast({ title: `${ids.length} lead(s) marked as ${PIPELINE_LABELS[newStatus]}` });
+    setSelectedIds(new Set());
+    fetchLeads();
+  };
+
+  const toggleSelect = (id: string) => {
+    setSelectedIds(prev => {
+      const next = new Set(prev);
+      if (next.has(id)) next.delete(id); else next.add(id);
+      return next;
+    });
+  };
+
+  const selectAll = () => {
+    if (selectedIds.size === leads.length) setSelectedIds(new Set());
+    else setSelectedIds(new Set(leads.map(l => l.id)));
+  };
+
   const getAssigneeName = (id: string | null) => {
     if (!id) return "Unassigned";
     const p = profiles.find(p => p.id === id);
@@ -79,12 +105,32 @@ const DashboardLeads = () => {
       {/* Header */}
       <div className="flex flex-wrap items-center gap-3 justify-between">
         <div className="flex items-center gap-3">
+          <Checkbox checked={selectedIds.size === leads.length && leads.length > 0} onCheckedChange={selectAll} className="border-[#556677]" />
+          <span className="text-xs text-[#8899AA]">{selectedIds.size > 0 ? `${selectedIds.size} selected` : "Select all"}</span>
           <Badge className="bg-green-500/20 text-green-400 border-0">Won: {wonCount}</Badge>
           <Badge className="bg-red-500/20 text-red-400 border-0">Lost: {lostCount}</Badge>
         </div>
-        <Button onClick={() => setShowCreate(true)} className="bg-[#00D4FF] hover:bg-[#00B8E0] text-[#050A14]">
-          <Plus className="h-4 w-4 mr-1" /> Add Lead
-        </Button>
+        <div className="flex items-center gap-2">
+          {selectedIds.size > 0 && (
+            <>
+              <Button size="sm" onClick={() => handleBulkAction("won")} className="bg-green-600 hover:bg-green-700 text-white text-xs">
+                <CheckSquare className="h-3 w-3 mr-1" /> Won ({selectedIds.size})
+              </Button>
+              <Button size="sm" onClick={() => handleBulkAction("lost")} className="bg-red-600 hover:bg-red-700 text-white text-xs">
+                <XSquare className="h-3 w-3 mr-1" /> Lost ({selectedIds.size})
+              </Button>
+              <Button size="sm" onClick={() => handleBulkAction("qualified")} className="bg-yellow-600 hover:bg-yellow-700 text-white text-xs">
+                Qualified ({selectedIds.size})
+              </Button>
+              <Button size="sm" onClick={() => handleBulkAction("contacted")} className="bg-purple-600 hover:bg-purple-700 text-white text-xs">
+                Contacted ({selectedIds.size})
+              </Button>
+            </>
+          )}
+          <Button onClick={() => setShowCreate(true)} className="bg-[#00D4FF] hover:bg-[#00B8E0] text-[#050A14]">
+            <Plus className="h-4 w-4 mr-1" /> Add Lead
+          </Button>
+        </div>
       </div>
 
       {/* Pipeline */}
@@ -107,12 +153,17 @@ const DashboardLeads = () => {
                   {columnLeads.length === 0 ? (
                     <p className="text-center text-[#556677] text-[10px] py-4">No leads</p>
                   ) : columnLeads.map(lead => (
-                    <div key={lead.id} onClick={() => setSelectedLead(lead)}
+                    <div key={lead.id}
                       className="rounded-lg p-2.5 border border-[#1A2C45] cursor-pointer hover:border-[#00D4FF]/30 transition"
-                      style={{ background: "#0F1E35" }}>
-                      <p className="text-xs text-white font-medium truncate">{lead.name}</p>
-                      {lead.company && <p className="text-[10px] text-[#556677] flex items-center gap-1 mt-0.5"><Building2 className="h-2.5 w-2.5" />{lead.company}</p>}
-                      <p className="text-[9px] text-[#556677] mt-1">{format(new Date(lead.created_at), "MMM d")}</p>
+                      style={{ background: selectedIds.has(lead.id) ? "#1A2C45" : "#0F1E35" }}>
+                      <div className="flex items-start gap-2">
+                        <Checkbox checked={selectedIds.has(lead.id)} onCheckedChange={() => toggleSelect(lead.id)} className="border-[#556677] mt-0.5" onClick={(e) => e.stopPropagation()} />
+                        <div className="flex-1 min-w-0" onClick={() => setSelectedLead(lead)}>
+                          <p className="text-xs text-white font-medium truncate">{lead.name}</p>
+                          {lead.company && <p className="text-[10px] text-[#556677] flex items-center gap-1 mt-0.5"><Building2 className="h-2.5 w-2.5" />{lead.company}</p>}
+                          <p className="text-[9px] text-[#556677] mt-1">{format(new Date(lead.created_at), "MMM d")}</p>
+                        </div>
+                      </div>
                     </div>
                   ))}
                 </div>
