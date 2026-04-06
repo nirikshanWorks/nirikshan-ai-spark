@@ -28,6 +28,7 @@ const DashboardLeads = () => {
   const [loading, setLoading] = useState(true);
   const [showCreate, setShowCreate] = useState(false);
   const [selectedLead, setSelectedLead] = useState<any>(null);
+  const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set());
   const [newLead, setNewLead] = useState({ name: "", email: "", phone: "", company: "", service_interest: "", message: "", source: "manual", assigned_to: "" });
 
   const fetchLeads = async () => {
