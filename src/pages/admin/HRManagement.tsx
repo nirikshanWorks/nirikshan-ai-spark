@@ -252,6 +252,7 @@ const AdminHRManagement = () => {
   const [applicationSearchQuery, setApplicationSearchQuery] = useState("");
   const [applicationStatusFilter, setApplicationStatusFilter] = useState<string>("all");
   const [selectedAppIds, setSelectedAppIds] = useState<Set<string>>(new Set());
+  const [selectedApplication, setSelectedApplication] = useState<JobApplication | null>(null);
 
   // Email Dialog State
   const [emailDialog, setEmailDialog] = useState<{
