@@ -795,6 +795,30 @@ const AdminHRManagement = () => {
     rejected: applications.filter(a => a.status === "rejected").length,
   };
 
+  const toggleAppSelect = (id: string) => {
+    setSelectedAppIds(prev => {
+      const next = new Set(prev);
+      if (next.has(id)) next.delete(id); else next.add(id);
+      return next;
+    });
+  };
+
+  const selectAllApps = () => {
+    if (selectedAppIds.size === filteredApplications.length) setSelectedAppIds(new Set());
+    else setSelectedAppIds(new Set(filteredApplications.map(a => a.id)));
+  };
+
+  const handleBulkAppStatus = async (newStatus: string) => {
+    if (selectedAppIds.size === 0) return;
+    const ids = Array.from(selectedAppIds);
+    for (const id of ids) {
+      await supabase.from("job_applications").update({ status: newStatus }).eq("id", id);
+    }
+    toast.success(`${ids.length} application(s) marked as ${newStatus}`);
+    setSelectedAppIds(new Set());
+    setApplications(prev => prev.map(app => ids.includes(app.id) ? { ...app, status: newStatus } : app));
+  };
+
   // ==================== LEAVE MANAGEMENT FUNCTIONS ====================
 
   const fetchLeaveRequests = async () => {
