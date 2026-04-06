@@ -1808,7 +1808,13 @@ const AdminHRManagement = () => {
                             </TableHeader>
                             <TableBody>
                               {filteredApplications.map((app) => (
-                                <TableRow key={app.id}>
+                                <TableRow key={app.id} className={selectedAppIds.has(app.id) ? "bg-muted/50" : ""}>
+                                  <TableCell>
+                                    <Checkbox
+                                      checked={selectedAppIds.has(app.id)}
+                                      onCheckedChange={() => toggleAppSelect(app.id)}
+                                    />
+                                  </TableCell>
                                   <TableCell>
                                     <div>
                                       <p className="font-medium">{app.name}</p>
