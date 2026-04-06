@@ -105,12 +105,32 @@ const DashboardLeads = () => {
       {/* Header */}
       <div className="flex flex-wrap items-center gap-3 justify-between">
         <div className="flex items-center gap-3">
+          <Checkbox checked={selectedIds.size === leads.length && leads.length > 0} onCheckedChange={selectAll} className="border-[#556677]" />
+          <span className="text-xs text-[#8899AA]">{selectedIds.size > 0 ? `${selectedIds.size} selected` : "Select all"}</span>
           <Badge className="bg-green-500/20 text-green-400 border-0">Won: {wonCount}</Badge>
           <Badge className="bg-red-500/20 text-red-400 border-0">Lost: {lostCount}</Badge>
         </div>
-        <Button onClick={() => setShowCreate(true)} className="bg-[#00D4FF] hover:bg-[#00B8E0] text-[#050A14]">
-          <Plus className="h-4 w-4 mr-1" /> Add Lead
-        </Button>
+        <div className="flex items-center gap-2">
+          {selectedIds.size > 0 && (
+            <>
+              <Button size="sm" onClick={() => handleBulkAction("won")} className="bg-green-600 hover:bg-green-700 text-white text-xs">
+                <CheckSquare className="h-3 w-3 mr-1" /> Won ({selectedIds.size})
+              </Button>
+              <Button size="sm" onClick={() => handleBulkAction("lost")} className="bg-red-600 hover:bg-red-700 text-white text-xs">
+                <XSquare className="h-3 w-3 mr-1" /> Lost ({selectedIds.size})
+              </Button>
+              <Button size="sm" onClick={() => handleBulkAction("qualified")} className="bg-yellow-600 hover:bg-yellow-700 text-white text-xs">
+                Qualified ({selectedIds.size})
+              </Button>
+              <Button size="sm" onClick={() => handleBulkAction("contacted")} className="bg-purple-600 hover:bg-purple-700 text-white text-xs">
+                Contacted ({selectedIds.size})
+              </Button>
+            </>
+          )}
+          <Button onClick={() => setShowCreate(true)} className="bg-[#00D4FF] hover:bg-[#00B8E0] text-[#050A14]">
+            <Plus className="h-4 w-4 mr-1" /> Add Lead
+          </Button>
+        </div>
       </div>
 
       {/* Pipeline */}
