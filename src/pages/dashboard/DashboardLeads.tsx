@@ -153,13 +153,17 @@ const DashboardLeads = () => {
                   {columnLeads.length === 0 ? (
                     <p className="text-center text-[#556677] text-[10px] py-4">No leads</p>
                   ) : columnLeads.map(lead => (
-                    <div key={lead.id} onClick={() => setSelectedLead(lead)}
+                    <div key={lead.id}
                       className="rounded-lg p-2.5 border border-[#1A2C45] cursor-pointer hover:border-[#00D4FF]/30 transition"
-                      style={{ background: "#0F1E35" }}>
-                      <p className="text-xs text-white font-medium truncate">{lead.name}</p>
-                      {lead.company && <p className="text-[10px] text-[#556677] flex items-center gap-1 mt-0.5"><Building2 className="h-2.5 w-2.5" />{lead.company}</p>}
-                      <p className="text-[9px] text-[#556677] mt-1">{format(new Date(lead.created_at), "MMM d")}</p>
-                    </div>
+                      style={{ background: selectedIds.has(lead.id) ? "#1A2C45" : "#0F1E35" }}>
+                      <div className="flex items-start gap-2">
+                        <Checkbox checked={selectedIds.has(lead.id)} onCheckedChange={() => toggleSelect(lead.id)} className="border-[#556677] mt-0.5" onClick={(e) => e.stopPropagation()} />
+                        <div className="flex-1 min-w-0" onClick={() => setSelectedLead(lead)}>
+                          <p className="text-xs text-white font-medium truncate">{lead.name}</p>
+                          {lead.company && <p className="text-[10px] text-[#556677] flex items-center gap-1 mt-0.5"><Building2 className="h-2.5 w-2.5" />{lead.company}</p>}
+                          <p className="text-[9px] text-[#556677] mt-1">{format(new Date(lead.created_at), "MMM d")}</p>
+                        </div>
+                      </div>
                   ))}
                 </div>
               </div>
