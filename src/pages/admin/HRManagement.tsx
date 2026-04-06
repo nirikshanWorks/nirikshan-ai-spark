@@ -1739,10 +1739,42 @@ const AdminHRManagement = () => {
                   {/* Applications Table */}
                   <Card>
                     <CardHeader>
-                      <CardTitle className="flex items-center gap-2">
-                        <Briefcase className="h-5 w-5" />
-                        Job Applications
-                      </CardTitle>
+                      <div className="flex flex-wrap items-center justify-between gap-3">
+                        <CardTitle className="flex items-center gap-2">
+                          <Briefcase className="h-5 w-5" />
+                          Job Applications
+                        </CardTitle>
+                        <div className="flex items-center gap-2 flex-wrap">
+                          <div className="flex items-center gap-2">
+                            <Checkbox
+                              checked={selectedAppIds.size === filteredApplications.length && filteredApplications.length > 0}
+                              onCheckedChange={selectAllApps}
+                            />
+                            <span className="text-xs text-muted-foreground">
+                              {selectedAppIds.size > 0 ? `${selectedAppIds.size} selected` : "Select all"}
+                            </span>
+                          </div>
+                          {selectedAppIds.size > 0 && (
+                            <>
+                              <Button size="sm" onClick={() => handleBulkAppStatus("selected")} className="bg-green-600 hover:bg-green-700 text-white text-xs">
+                                <CheckCircle className="h-3 w-3 mr-1" /> Selected ({selectedAppIds.size})
+                              </Button>
+                              <Button size="sm" onClick={() => handleBulkAppStatus("rejected")} className="bg-red-600 hover:bg-red-700 text-white text-xs">
+                                <XCircle className="h-3 w-3 mr-1" /> Rejected ({selectedAppIds.size})
+                              </Button>
+                              <Button size="sm" onClick={() => handleBulkAppStatus("reviewed")} className="bg-purple-600 hover:bg-purple-700 text-white text-xs">
+                                Reviewed ({selectedAppIds.size})
+                              </Button>
+                              <Button size="sm" onClick={() => handleBulkAppStatus("interview")} className="bg-blue-600 hover:bg-blue-700 text-white text-xs">
+                                Interview ({selectedAppIds.size})
+                              </Button>
+                              <Button size="sm" onClick={() => handleBulkAppStatus("shortlisted")} className="bg-yellow-600 hover:bg-yellow-700 text-white text-xs">
+                                Shortlisted ({selectedAppIds.size})
+                              </Button>
+                            </>
+                          )}
+                        </div>
+                      </div>
                     </CardHeader>
                     <CardContent>
                       {filteredApplications.length === 0 ? (
