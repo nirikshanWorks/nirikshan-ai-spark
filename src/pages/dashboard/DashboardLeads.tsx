@@ -164,6 +164,7 @@ const DashboardLeads = () => {
                           <p className="text-[9px] text-[#556677] mt-1">{format(new Date(lead.created_at), "MMM d")}</p>
                         </div>
                       </div>
+                    </div>
                   ))}
                 </div>
               </div>
