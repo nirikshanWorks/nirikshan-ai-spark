@@ -11,7 +11,7 @@ import { AuthProvider } from "@/hooks/useAuth";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { AnimatePresence } from "framer-motion";
 import { ThemeProvider } from "next-themes";
-import { lazy, Suspense, useCallback, useState } from "react";
+import { lazy, Suspense, useCallback, useEffect, useState } from "react";
 import { HelmetProvider } from "react-helmet-async";
 import { BrowserRouter, Route, Routes, useLocation } from "react-router-dom";
 
@@ -60,8 +60,27 @@ const DashboardLeads = lazy(() => import("./pages/dashboard/DashboardLeads"));
 const DashboardMessages = lazy(() => import("./pages/dashboard/DashboardMessages"));
 
 const queryClient = new QueryClient();
+const GA_MEASUREMENT_ID = "G-D747PB384B";
 
 const PageLoader = () => <EyeLoaderInline />;
+
+const AnalyticsTracker = () => {
+  const location = useLocation();
+
+  useEffect(() => {
+    const gtag = window.gtag;
+
+    if (!gtag) {
+      return;
+    }
+
+    gtag("config", GA_MEASUREMENT_ID, {
+      page_path: `${location.pathname}${location.search}`,
+    });
+  }, [location.pathname, location.search]);
+
+  return null;
+};
 
 const AnimatedRoutes = () => {
   const location = useLocation();
@@ -133,6 +152,7 @@ const App = () => {
               <BrowserRouter>
                 <AuthProvider>
                   <ScrollToTop />
+                  <AnalyticsTracker />
                   <Suspense fallback={<PageLoader />}>
                     <AnimatedRoutes />
                   </Suspense>
