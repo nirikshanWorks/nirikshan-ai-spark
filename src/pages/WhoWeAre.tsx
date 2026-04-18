@@ -431,7 +431,6 @@ const WhoWeAre = () => {
                 <p className="text-muted-foreground leading-relaxed">
                   “I am proud of the ecosystem we continue to build — one where every project is handled with precision, and every partner
                   sees us as an extension of their own mission.”
-                  Hye Harry, Riya, Dheeraj,Raj 
                 </p>
                 <div className="text-sm font-semibold text-indigo-600 uppercase tracking-widest">
                   Anshul · Co-Founder & COO
