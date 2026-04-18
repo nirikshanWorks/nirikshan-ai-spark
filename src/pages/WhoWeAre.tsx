@@ -4,19 +4,16 @@ import rajeshImage from "@/assets/team/rajesh-dabral.jpg";
 import vikramImage from "@/assets/team/vikram-biyani.jpg";
 import wwaTeamVideo from "@/assets/wwa-team.mp4";
 import { Footer } from "@/components/Footer";
-import { SEO } from "@/components/SEO";
 import { Navigation } from "@/components/Navigation";
-import { Button } from "@/components/ui/button";
+import { FadeUp, StaggerContainer, StaggerItem } from "@/components/ScrollAnimations";
+import { SEO } from "@/components/SEO";
 import {
   AnimatedProfileCard,
   ProfileCardContent,
   SocialLink,
 } from "@/components/ui/animated-profile-card";
+import { Button } from "@/components/ui/button";
 import { useScrollAnimation } from "@/hooks/use-scroll-animation";
-import { AICircuitLines } from "@/components/AICircuitLines";
-import { AIFloatingIcons } from "@/components/AIFloatingIcons";
-import { AIHexagonGrid } from "@/components/AIHexagonGrid";
-import { FadeUp, SlideLeft, SlideRight, StaggerContainer, StaggerItem } from "@/components/ScrollAnimations";
 import {
   ArrowRight,
   ArrowUp,
@@ -434,6 +431,7 @@ const WhoWeAre = () => {
                 <p className="text-muted-foreground leading-relaxed">
                   “I am proud of the ecosystem we continue to build — one where every project is handled with precision, and every partner
                   sees us as an extension of their own mission.”
+                  Hye Harry, Riya, Dheeraj,Raj 
                 </p>
                 <div className="text-sm font-semibold text-indigo-600 uppercase tracking-widest">
                   Anshul · Co-Founder & COO
