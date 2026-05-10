@@ -1,5 +1,4 @@
 import anshulImage from "@/assets/team/anshul.jpg";
-import dineshImage from "@/assets/team/dinesh-yadav.jpg";
 import rajeshImage from "@/assets/team/rajesh-dabral.jpg";
 import vikramImage from "@/assets/team/vikram-biyani.jpg";
 import wwaTeamVideo from "@/assets/wwa-team.mp4";
@@ -61,16 +60,9 @@ const values = [
 
 const leadership = [
   {
-    name: "Dinesh Yadav",
-    role: "Director – Technical",
-    bio: "Dinesh, also the Founder & CEO of Nirikshan AI, drives technical excellence across projects, ensuring engineering standards and innovative architectures power every solution we deliver.",
-    image: dineshImage,
-    linkedin: "https://www.linkedin.com/in/dinesh003"
-  },
-  {
     name: "Anshul",
-    role: "Director – Technical",
-    bio: "Anshul, Co-Founder & COO of Nirikshan AI, spearheads technical strategy and system design, translating complex requirements into scalable, production-ready platforms.",
+    role: "Founder & CEO",
+    bio: "Anshul, Founder & CEO of Nirikshan AI, spearheads technical strategy and system design, translating complex requirements into scalable, production-ready platforms.",
     image: anshulImage,
     linkedin: "https://www.linkedin.com/in/anshultech1"
   },
@@ -82,9 +74,9 @@ const leadership = [
     linkedin: ""
   },
   {
-    name: "Vikram Biyani",
+    name: "CA Vikram Biyani",
     role: "Director – Finance",
-    bio: "Vikram steers financial strategy and planning, enabling sustainable growth through disciplined fiscal management and strategic investments.",
+    bio: "CA Vikram Biyani steers financial strategy and planning, enabling sustainable growth through disciplined fiscal management and strategic investments.",
     image: vikramImage,
     linkedin: "https://www.linkedin.com/in/viekram-biyaani-44810817b"
   }
@@ -372,43 +364,6 @@ const WhoWeAre = () => {
 
         <section className="py-20">
           <div className="container mx-auto px-6 space-y-16">
-            <div className="grid gap-10 lg:grid-cols-[1.2fr,0.8fr] items-center">
-              <div className="space-y-6">
-                <h2 className="text-3xl md:text-4xl font-bold">Message from Our CEO</h2>
-                <p className="text-muted-foreground leading-relaxed">
-                  “We founded Nirikshan AI with the belief that innovation thrives when curiosity meets accountability. Our lab is
-                  a playground for new ideas, but every experiment is tied to the real-world impact it can create for communities and industries.”
-                </p>
-                <p className="text-muted-foreground leading-relaxed">
-                  “As we scale, we hold onto our startup ethos: move fast, learn continuously, and build with empathy. Every solution we
-                  ship is a testament to collaboration between visionary researchers and courageous partners.”
-                </p>
-                <p className="text-muted-foreground leading-relaxed">
-                  “The future demands intelligent systems that are ethical, explainable, and designed for people. At Nirikshan AI, we are
-                  committed to leading that future.”
-                </p>
-                <div className="text-sm font-semibold text-indigo-600 uppercase tracking-widest">
-                  Dinesh Yadav · Founder & CEO
-                </div>
-                <a
-                  href="https://www.linkedin.com/in/dinesh003"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 text-sm text-indigo-600 hover:text-indigo-700"
-                >
-                  <Linkedin size={16} /> Connect on LinkedIn
-                </a>
-              </div>
-              <div className="relative flex justify-center">
-                <img
-                  src="https://res.cloudinary.com/dlqvk6v14/image/upload/v1766061891/Picsart_25-12-18_18-13-18-816_clp11p.png"
-                  alt="Dinesh Yadav"
-                  className="w-full max-w-sm h-auto drop-shadow-2xl"
-                />
-                <div className="absolute inset-0 -z-10 rounded-full bg-gradient-to-br from-indigo-500/30 via-purple-500/30 to-blue-500/30 blur-3xl" aria-hidden="true" />
-              </div>
-            </div>
-
             <div className="grid gap-10 lg:grid-cols-[0.8fr,1.2fr] items-center">
               <div className="relative flex justify-center order-last lg:order-first">
                 <img
@@ -419,7 +374,7 @@ const WhoWeAre = () => {
                 <div className="absolute inset-0 -z-10 rounded-full bg-gradient-to-br from-purple-500/30 via-indigo-500/30 to-blue-500/30 blur-3xl" aria-hidden="true" />
               </div>
               <div className="space-y-6 order-first lg:order-last">
-                <h2 className="text-3xl md:text-4xl font-bold">Message from Our COO</h2>
+                <h2 className="text-3xl md:text-4xl font-bold">Message from Our CEO</h2>
                 <p className="text-muted-foreground leading-relaxed">
                   “Operational excellence is more than executing playbooks — it is about designing environments where teams are empowered
                   to experiment, iterate, and deliver.”
@@ -433,7 +388,7 @@ const WhoWeAre = () => {
                   sees us as an extension of their own mission.”
                 </p>
                 <div className="text-sm font-semibold text-indigo-600 uppercase tracking-widest">
-                  Anshul · Co-Founder & COO
+                  Anshul · Founder & CEO
                 </div>
                 <a
                   href="https://www.linkedin.com/in/anshultech1"
