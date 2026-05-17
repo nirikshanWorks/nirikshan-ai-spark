@@ -43,7 +43,7 @@ const AdminCertificates = lazy(() => import("./pages/admin/Certificates"));
 const AdminHRManagement = lazy(() => import("./pages/admin/HRManagement"));
 const EmployeeLogin = lazy(() => import("./pages/employee/Login"));
 const EmployeeDashboard = lazy(() => import("./pages/employee/Dashboard"));
-const CampaignIntelligence = lazy(() => import("./pages/CampaignIntelligence"));
+
 const ObjectDetectionDemo = lazy(() => import("./pages/ObjectDetectionDemo"));
 const AIShowcase = lazy(() => import("./pages/AIShowcase"));
 const Blog = lazy(() => import("./pages/Blog"));
