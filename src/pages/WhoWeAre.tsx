@@ -351,14 +351,14 @@ const WhoWeAre = () => {
             <div className="grid gap-10 lg:grid-cols-[0.8fr,1.2fr] items-center">
               <div className="relative flex justify-center order-last lg:order-first">
                 <img
-                  src="https://res.cloudinary.com/dlqvk6v14/image/upload/v1766061671/Picsart_25-12-18_18-09-42-855_nhoru2.png"
-                  alt="Anshul"
-                  className="w-full max-w-sm h-auto drop-shadow-2xl"
+                  src={dineshImage}
+                  alt="Dinesh"
+                  className="w-full max-w-sm h-auto drop-shadow-2xl rounded-3xl"
                 />
                 <div className="absolute inset-0 -z-10 rounded-full bg-gradient-to-br from-purple-500/30 via-indigo-500/30 to-blue-500/30 blur-3xl" aria-hidden="true" />
               </div>
               <div className="space-y-6 order-first lg:order-last">
-                <h2 className="text-3xl md:text-4xl font-bold">Message from Our CEO</h2>
+                <h2 className="text-3xl md:text-4xl font-bold">Message from Our Founder</h2>
                 <p className="text-muted-foreground leading-relaxed">
                   “Operational excellence is more than executing playbooks — it is about designing environments where teams are empowered
                   to experiment, iterate, and deliver.”
@@ -372,16 +372,8 @@ const WhoWeAre = () => {
                   sees us as an extension of their own mission.”
                 </p>
                 <div className="text-sm font-semibold text-indigo-600 uppercase tracking-widest">
-                  Anshul · Founder & CEO
+                  Dinesh · Founder
                 </div>
-                <a
-                  href="https://www.linkedin.com/in/anshultech1"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 text-sm text-indigo-600 hover:text-indigo-700"
-                >
-                  <Linkedin size={16} /> Connect on LinkedIn
-                </a>
               </div>
             </div>
           </div>
