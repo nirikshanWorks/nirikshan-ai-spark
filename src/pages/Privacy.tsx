@@ -58,7 +58,7 @@ const sections: Section[] = [
       "Please note that our products, services, and digital platforms may use the brand name \"Nirikshan AI\" for marketing, product identity, and public communication purposes.",
       "Both names refer to the same business entity, and all activities under the brand \"Nirikshan AI\" are fully owned, managed, and operated by Niraskhan AI Private Limited.",
       "For any official clarification or communication, please contact:",
-      "Anshul — Co-Founder & COO",
+      "Dinesh — Founder",
       "Phone: +91 7827278321",
       "Email: admin@nirikshanai.com"
     ]
