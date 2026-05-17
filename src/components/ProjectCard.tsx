@@ -26,7 +26,7 @@ export const ProjectCard = ({
   const whatsappMessage = encodeURIComponent(
     `Hi Nirikshan AI team, I'm interested in discussing the project "${title}".`
   );
-  const whatsappUrl = `https://wa.me/919410992204?text=${whatsappMessage}`;
+  const whatsappUrl = `https://wa.me/917827278321?text=${whatsappMessage}`;
 
   return (
     <Card className="overflow-hidden h-full bg-white dark:bg-slate-800/50 border border-border/60 backdrop-blur-sm relative shadow-md">
