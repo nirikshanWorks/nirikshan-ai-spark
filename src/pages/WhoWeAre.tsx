@@ -58,25 +58,11 @@ const values = [
 
 const leadership = [
   {
-    name: "Anshul",
-    role: "Founder & CEO",
-    bio: "Anshul, Founder & CEO of Nirikshan AI, spearheads technical strategy and system design, translating complex requirements into scalable, production-ready platforms.",
-    image: anshulImage,
-    linkedin: "https://www.linkedin.com/in/anshultech1"
-  },
-  {
-    name: "Rajesh Dabral",
-    role: "Director – Administration",
-    bio: "Rajesh oversees administrative operations, ensuring seamless coordination across teams and efficient resource management to support our growth.",
-    image: rajeshImage,
+    name: "Dinesh",
+    role: "Founder",
+    bio: "Dinesh, Founder of Nirikshan AI, leads the company's vision and technical strategy, translating bold ideas into scalable, production-ready AI platforms.",
+    image: dineshImage,
     linkedin: ""
-  },
-  {
-    name: "CA Vikram Biyani",
-    role: "Director – Finance",
-    bio: "CA Vikram Biyani steers financial strategy and planning, enabling sustainable growth through disciplined fiscal management and strategic investments.",
-    image: vikramImage,
-    linkedin: "https://www.linkedin.com/in/viekram-biyaani-44810817b"
   }
 ];
 
