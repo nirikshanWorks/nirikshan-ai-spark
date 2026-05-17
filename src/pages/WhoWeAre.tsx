@@ -1,6 +1,4 @@
-import anshulImage from "@/assets/team/anshul.jpg";
-import rajeshImage from "@/assets/team/rajesh-dabral.jpg";
-import vikramImage from "@/assets/team/vikram-biyani.jpg";
+import dineshImage from "@/assets/team/dinesh-yadav.jpg";
 import wwaTeamVideo from "@/assets/wwa-team.mp4";
 import { Footer } from "@/components/Footer";
 import { Navigation } from "@/components/Navigation";
