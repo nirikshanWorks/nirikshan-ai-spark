@@ -27,7 +27,6 @@ const navLinks = [
   { label: "About", path: "/about" },
   { label: "Projects", path: "/projects" },
   { label: "Case Studies", path: "/case-studies" },
-  { label: "AICI", path: "/campaign-intelligence" },
   { label: "Blog", path: "/blog" },
   { label: "Careers", path: "/careers" },
   { label: "Who We Are", path: "/who-we-are" },
