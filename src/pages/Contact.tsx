@@ -133,7 +133,7 @@ const CONNECT_OPTIONS = [
     description: "Invite our founders for keynotes, podcasts, or thought leadership collaborations around responsible AI innovation.",
     bullets: ["Insights on applied AI and ethics", "Stories from live deployments", "Tailored narrative for your audience"],
     actionLabel: "Request Availability",
-    actionHref: "mailto:info@nirikshanai.com",
+    actionHref: "mailto:admin@nirikshanai.com",
     icon: Mic2
   }
 ];
@@ -309,7 +309,7 @@ const Contact = () => {
                   </a>
                 </Button>
                 <Button size="lg" variant="outline" asChild>
-                  <a href="https://wa.me/919410992204" target="_blank" rel="noopener noreferrer">
+                  <a href="https://wa.me/917827278321" target="_blank" rel="noopener noreferrer">
                     WhatsApp our team
                     <ArrowUpRight size={18} />
                   </a>
@@ -429,7 +429,7 @@ const Contact = () => {
                         type="tel"
                         value={formData.phone}
                         onChange={handleChange}
-                        placeholder="+91 9410 992204"
+                        placeholder="+91 7827278321"
                       />
                     </div>
                     <div className="space-y-2">
@@ -637,10 +637,10 @@ const Contact = () => {
                       <div>
                         <h3 className="text-lg font-semibold">Email</h3>
                         <a
-                          href="mailto:info@nirikshanai.com"
+                          href="mailto:admin@nirikshanai.com"
                           className="text-sm text-muted-foreground transition-colors hover:text-primary"
                         >
-                          info@nirikshanai.com
+                          admin@nirikshanai.com
                         </a>
                       </div>
                     </div>
@@ -651,10 +651,10 @@ const Contact = () => {
                       <div>
                         <h3 className="text-lg font-semibold">Phone</h3>
                         <a
-                          href="tel:+919410992204"
+                          href="tel:+917827278321"
                           className="block text-sm text-muted-foreground transition-colors hover:text-primary"
                         >
-                          +91 9410 992204
+                          +91 7827278321
                         </a>
                         <p className="text-xs text-muted-foreground mt-1">Mon-Fri, 9AM-6PM IST</p>
                       </div>
@@ -720,10 +720,10 @@ const Contact = () => {
                   Existing clients can reach our support team at
                   {" "}
                   <a
-                    href="mailto:info@nirikshanai.com"
+                    href="mailto:admin@nirikshanai.com"
                     className="font-semibold text-primary transition-colors hover:text-primary/80"
                   >
-                    info@nirikshanai.com
+                    admin@nirikshanai.com
                   </a>
                   {" "}
                   for technical assistance and urgent requests.

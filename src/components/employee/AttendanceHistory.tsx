@@ -596,7 +596,7 @@ export const AttendanceHistory = ({
       doc.setFont('helvetica', 'normal');
       doc.text('CIN: U62091HR2025PTC134110', pageWidth / 2, footerY + 4, { align: 'center' });
       doc.text('166A, Village Malra Sarai, Lawan, Lawan, Mahendragarh- 123029, Haryana', pageWidth / 2, footerY + 8, { align: 'center' });
-      doc.text('Email: info@nirikshanai.com | Website: www.nirikshanai.com | Phone: +91 94109 92204', pageWidth / 2, footerY + 12, { align: 'center' });
+      doc.text('Email: admin@nirikshanai.com | Website: www.nirikshanai.com | Phone: +91 7827278321', pageWidth / 2, footerY + 12, { align: 'center' });
 
       // Save PDF
       const fileName = `Attendance_Record_${employeeName.replace(/\s+/g, '_')}_${format(pdfStartDate, 'ddMMMyyyy')}_to_${format(pdfEndDate, 'ddMMMyyyy')}.pdf`;
@@ -718,7 +718,7 @@ export const AttendanceHistory = ({
             <div className="flex items-center gap-2 px-3 py-1.5 rounded-md bg-amber-50 dark:bg-amber-950/30 border border-amber-200 dark:border-amber-800">
               <FileText className="h-4 w-4 text-amber-600 dark:text-amber-400 shrink-0" />
               <p className="text-xs text-amber-700 dark:text-amber-300">
-                To download or verify records, contact <a href="mailto:info@nirikshanai.com" className="font-semibold underline">HR</a>
+                To download or verify records, contact <a href="mailto:admin@nirikshanai.com" className="font-semibold underline">HR</a>
               </p>
             </div>
           </div>
