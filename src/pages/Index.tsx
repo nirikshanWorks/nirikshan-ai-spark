@@ -1,7 +1,7 @@
 import { SEO } from "@/components/SEO";
 import React from "react";
 import { LogoCarousel, type Logo } from "@/components/ui/logo-carousel";
-import mockupDashboard from "@/assets/mockup-ai-dashboard.jpg";
+
 import partnerMadapet from "@/assets/partners/madapet.png";
 import partnerVB from "@/assets/partners/vb.png";
 import partnerMDJKS from "@/assets/partners/mdjks.png";
@@ -18,8 +18,9 @@ import { Spotlight } from "@/components/ui/spotlight";
 import { AnimatedGridBg } from "@/components/AnimatedGridBg";
 import { TypingText } from "@/components/TypingText";
 import { FadeUp, SlideLeft, SlideRight, StaggerContainer, StaggerItem } from "@/components/ScrollAnimations";
-import { ContainerScroll } from "@/components/ui/container-scroll-animation";
+
 import { InfiniteTextMarquee } from "@/components/ui/infinite-text-marquee";
+import { InteractiveCVShowcase } from "@/components/InteractiveCVShowcase";
 import {
   ArrowRight, Brain, Eye, Bot, Building2, Activity,
   TrendingUp, FileText, CheckCircle2,
@@ -29,9 +30,11 @@ import { Link } from "react-router-dom";
 
 /* ─── Data ─── */
 const capabilities = [
-  { icon: Brain, title: "Generative AI Solutions", desc: "Custom AI models that create insights, automate content, and drive intelligent decision-making across your enterprise." },
-  { icon: Eye, title: "Computer Vision Systems", desc: "Intelligent visual interpretation and pattern discovery — from real-time object detection to automated quality inspection." },
-  { icon: Bot, title: "Agentic AI Solutions", desc: "Autonomous workflows that reason, plan, and act on insights — executing multi-step tasks across your business systems." },
+  { icon: Brain, title: "Generative AI", desc: "Custom AI models that create insights, automate content, and drive intelligent decision-making across your enterprise." },
+  { icon: Eye, title: "OpenCV & Computer Vision", desc: "Intelligent visual interpretation and pattern discovery — from real-time object detection to automated quality inspection." },
+  { icon: Activity, title: "Machine Learning", desc: "Advanced predictive models that uncover hidden patterns and adapt from data to solve complex business problems." },
+  { icon: Lightbulb, title: "AI Consulting", desc: "Expert strategic guidance on AI implementation, readiness assessments, and digital transformation roadmaps." },
+  { icon: Bot, title: "AI Agent Development", desc: "Autonomous workflows that reason, plan, and act on insights — executing multi-step tasks across your business systems." },
 ];
 
 const useCases = [
@@ -167,24 +170,27 @@ const Index = () => {
           </div>
         </section>
 
-        {/* ── Scroll Animation Showcase ── */}
-        <section className="bg-secondary/20">
-          <ContainerScroll
-            titleComponent={
-              <div className="text-center">
-                <p className="text-sm font-semibold uppercase tracking-widest text-primary mb-3">AI Dashboard</p>
-                <h2 className="text-3xl md:text-5xl font-bold">
-                  Experience <span className="text-gradient">Intelligent</span> Analytics
-                </h2>
+        {/* ── Computer Vision Visual Showcase ── */}
+        <section className="py-20 md:py-28 relative overflow-hidden bg-secondary/20">
+          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(120,119,198,0.15),transparent_70%)] pointer-events-none"></div>
+          <div className="container mx-auto px-6 relative z-10">
+            <FadeUp className="text-center mb-12 md:mb-16 max-w-3xl mx-auto">
+              <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-primary/10 text-primary font-medium text-sm mb-6">
+                <Eye className="w-4 h-4" />
+                Computer Vision Expertise
               </div>
-            }
-          >
-            <img
-              src={mockupDashboard}
-              alt="AI Analytics Dashboard"
-              className="w-full h-full object-cover object-left-top rounded-2xl"
-            />
-          </ContainerScroll>
+              <h2 className="text-3xl md:text-5xl font-bold leading-tight mb-6">
+                See the Unseen with <span className="text-gradient">Intelligent Vision</span>
+              </h2>
+              <p className="text-lg text-muted-foreground leading-relaxed">
+                We build deep learning visual systems that instantly detect, track, and analyze objects in real-time. Experience how our AI processes raw camera feeds into actionable intelligence.
+              </p>
+            </FadeUp>
+            
+            <FadeUp delay={0.2} className="w-full max-w-6xl mx-auto">
+              <InteractiveCVShowcase />
+            </FadeUp>
+          </div>
         </section>
 
         {/* ── 2. Problem → Solution ── */}
@@ -250,7 +256,7 @@ const Index = () => {
             <FadeUp className="text-center mb-16">
               <p className="text-sm font-semibold uppercase tracking-widest text-primary mb-3">Core Capabilities</p>
               <h2 className="text-3xl md:text-4xl font-bold mb-4">Intelligence Across <span className="text-gradient">Every</span> Dimension</h2>
-              <p className="text-muted-foreground max-w-2xl mx-auto text-lg">Three pillars of AI that cover the full spectrum of enterprise automation.</p>
+              <p className="text-muted-foreground max-w-2xl mx-auto text-lg">Comprehensive AI capabilities that cover the full spectrum of enterprise automation.</p>
             </FadeUp>
 
             <StaggerContainer className="grid sm:grid-cols-2 lg:grid-cols-3 gap-8 max-w-5xl mx-auto" staggerDelay={0.15}>
