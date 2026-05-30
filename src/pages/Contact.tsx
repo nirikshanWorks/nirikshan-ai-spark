@@ -33,9 +33,17 @@ import {
   ShieldCheck,
   Sparkles
 } from "lucide-react";
-import { useRef, useState } from "react";
-import ReCAPTCHA from "react-google-recaptcha";
+import { lazy, Suspense, useRef, useState } from "react";
 import { toast } from "sonner";
+
+// Lazy-load ReCAPTCHA so the Contact page doesn't crash if the module fails to resolve
+const LazyReCAPTCHA = lazy(() =>
+  import("react-google-recaptcha").then((mod) => ({
+    default: mod.default || mod,
+  })).catch(() => ({
+    default: (() => null) as any,
+  }))
+);
 
 const COUNTRIES = [
   "India",
@@ -176,7 +184,7 @@ const Contact = () => {
 
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [recaptchaToken, setRecaptchaToken] = useState<string | null>(null);
-  const recaptchaRef = useRef<ReCAPTCHA | null>(null);
+  const recaptchaRef = useRef<any>(null);
   const siteKey = import.meta.env.VITE_RECAPTCHA_SITE_KEY || FALLBACK_RECAPTCHA_SITE_KEY;
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -541,14 +549,16 @@ const Contact = () => {
 
                   <div className="flex justify-center">
                     {siteKey ? (
-                      <ReCAPTCHA
-                        ref={(instance) => {
-                          recaptchaRef.current = instance;
-                        }}
-                        sitekey={siteKey}
-                        onChange={(token) => setRecaptchaToken(token)}
-                        onExpired={() => setRecaptchaToken(null)}
-                      />
+                      <Suspense fallback={<div className="h-[78px] w-[304px] rounded border border-border animate-pulse bg-muted" />}>
+                        <LazyReCAPTCHA
+                          ref={(instance: any) => {
+                            recaptchaRef.current = instance;
+                          }}
+                          sitekey={siteKey}
+                          onChange={(token: string | null) => setRecaptchaToken(token)}
+                          onExpired={() => setRecaptchaToken(null)}
+                        />
+                      </Suspense>
                     ) : (
                       <p className="text-sm text-destructive">
                         reCAPTCHA key missing. Add VITE_RECAPTCHA_SITE_KEY to your environment.
