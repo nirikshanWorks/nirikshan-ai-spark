@@ -41,6 +41,7 @@ const Auth = lazy(() => import("./pages/Auth"));
 const CertificateVerify = lazy(() => import("./pages/CertificateVerify"));
 const AdminCertificates = lazy(() => import("./pages/admin/Certificates"));
 const AdminHRManagement = lazy(() => import("./pages/admin/HRManagement"));
+const AdminInternshipApplications = lazy(() => import("./pages/admin/InternshipApplications"));
 const EmployeeLogin = lazy(() => import("./pages/employee/Login"));
 const EmployeeDashboard = lazy(() => import("./pages/employee/Dashboard"));
 const ObjectDetectionDemo = lazy(() => import("./pages/ObjectDetectionDemo"));
