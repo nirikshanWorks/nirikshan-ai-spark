@@ -161,7 +161,7 @@ export const Chatbot = () => {
         ...prev,
         {
           role: "assistant",
-          content: "Sorry, I'm having trouble connecting right now. Please try again or reach us at **admin@nirikshanai.com**.",
+          content: "Sorry, I'm having trouble connecting right now. Please try again or reach us at **info@nirikshanai.com**.",
           timestamp: new Date(),
         },
       ]);

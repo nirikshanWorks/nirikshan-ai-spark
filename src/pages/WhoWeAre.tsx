@@ -1,4 +1,6 @@
-import dineshImage from "@/assets/team/dinesh-yadav.jpg";
+import anshulImage from "@/assets/team/anshul.jpg";
+import rajeshImage from "@/assets/team/rajesh-dabral.jpg";
+import vikramImage from "@/assets/team/vikram-biyani.jpg";
 import wwaTeamVideo from "@/assets/wwa-team.mp4";
 import { Footer } from "@/components/Footer";
 import { Navigation } from "@/components/Navigation";
@@ -58,11 +60,25 @@ const values = [
 
 const leadership = [
   {
-    name: "Dinesh",
-    role: "Founder",
-    bio: "Dinesh, Founder of Nirikshan AI, leads the company's vision and technical strategy, translating bold ideas into scalable, production-ready AI platforms.",
-    image: dineshImage,
+    name: "Anshul",
+    role: "Founder & CEO",
+    bio: "Anshul, Founder & CEO of Nirikshan AI, spearheads technical strategy and system design, translating complex requirements into scalable, production-ready platforms.",
+    image: anshulImage,
+    linkedin: "https://www.linkedin.com/in/anshultech1"
+  },
+  {
+    name: "Rajesh Dabral",
+    role: "Director – Administration",
+    bio: "Rajesh oversees administrative operations, ensuring seamless coordination across teams and efficient resource management to support our growth.",
+    image: rajeshImage,
     linkedin: ""
+  },
+  {
+    name: "CA Vikram Biyani",
+    role: "Director – Finance",
+    bio: "CA Vikram Biyani steers financial strategy and planning, enabling sustainable growth through disciplined fiscal management and strategic investments.",
+    image: vikramImage,
+    linkedin: "https://www.linkedin.com/in/viekram-biyaani-44810817b"
   }
 ];
 
@@ -351,14 +367,14 @@ const WhoWeAre = () => {
             <div className="grid gap-10 lg:grid-cols-[0.8fr,1.2fr] items-center">
               <div className="relative flex justify-center order-last lg:order-first">
                 <img
-                  src={dineshImage}
-                  alt="Dinesh"
-                  className="w-full max-w-sm h-auto drop-shadow-2xl rounded-3xl"
+                  src="https://res.cloudinary.com/dlqvk6v14/image/upload/v1766061671/Picsart_25-12-18_18-09-42-855_nhoru2.png"
+                  alt="Anshul"
+                  className="w-full max-w-sm h-auto drop-shadow-2xl"
                 />
                 <div className="absolute inset-0 -z-10 rounded-full bg-gradient-to-br from-purple-500/30 via-indigo-500/30 to-blue-500/30 blur-3xl" aria-hidden="true" />
               </div>
               <div className="space-y-6 order-first lg:order-last">
-                <h2 className="text-3xl md:text-4xl font-bold">Message from Our Founder</h2>
+                <h2 className="text-3xl md:text-4xl font-bold">Message from Our CEO</h2>
                 <p className="text-muted-foreground leading-relaxed">
                   “Operational excellence is more than executing playbooks — it is about designing environments where teams are empowered
                   to experiment, iterate, and deliver.”
@@ -372,8 +388,16 @@ const WhoWeAre = () => {
                   sees us as an extension of their own mission.”
                 </p>
                 <div className="text-sm font-semibold text-indigo-600 uppercase tracking-widest">
-                  Dinesh · Founder
+                  Anshul · Founder & CEO
                 </div>
+                <a
+                  href="https://www.linkedin.com/in/anshultech1"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 text-sm text-indigo-600 hover:text-indigo-700"
+                >
+                  <Linkedin size={16} /> Connect on LinkedIn
+                </a>
               </div>
             </div>
           </div>

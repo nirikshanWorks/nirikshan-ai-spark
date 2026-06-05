@@ -96,9 +96,9 @@ const Index = () => {
               ],
               contactPoint: {
                 "@type": "ContactPoint",
-                telephone: "+91-7827278321",
+                telephone: "+91-9410-992204",
                 contactType: "sales",
-                email: "admin@nirikshanai.com"
+                email: "info@nirikshanai.com"
               }
             },
             {

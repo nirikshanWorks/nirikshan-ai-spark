@@ -437,7 +437,7 @@ const IndividualAttendanceReport = ({ employee, onBack, holidays }: IndividualAt
     doc.setFont('helvetica', 'normal');
     doc.text('CIN: U62091HR2025PTC134110', pageWidth / 2, footerY + 4, { align: 'center' });
     doc.text('166A, Village Malra Sarai, Lawan, Lawan, Mahendragarh- 123029, Haryana', pageWidth / 2, footerY + 8, { align: 'center' });
-    doc.text('Email: admin@nirikshanai.com | Website: www.nirikshanai.com | Phone: +91 7827278321', pageWidth / 2, footerY + 12, { align: 'center' });
+    doc.text('Email: info@nirikshanai.com | Website: www.nirikshanai.com | Phone: +91 94109 92204', pageWidth / 2, footerY + 12, { align: 'center' });
 
     // Save PDF
     const fileName = `${employee.employee_id}_Attendance_${monthName.replace(' ', '_')}.pdf`;
