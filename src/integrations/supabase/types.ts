@@ -344,48 +344,6 @@ export type Database = {
         }
         Relationships: []
       }
-      social_internship_applications: {
-        Row: {
-          college: string
-          created_at: string
-          email: string
-          id: string
-          name: string
-          phone: string
-          resume_link: string | null
-          statement_of_purpose: string
-          status: string
-          track: string
-          updated_at: string
-        }
-        Insert: {
-          college: string
-          created_at?: string
-          email: string
-          id?: string
-          name: string
-          phone: string
-          resume_link?: string | null
-          statement_of_purpose: string
-          status?: string
-          track: string
-          updated_at?: string
-        }
-        Update: {
-          college?: string
-          created_at?: string
-          email?: string
-          id?: string
-          name?: string
-          phone?: string
-          resume_link?: string | null
-          statement_of_purpose?: string
-          status?: string
-          track?: string
-          updated_at?: string
-        }
-        Relationships: []
-      }
       leads: {
         Row: {
           assigned_to: string | null
