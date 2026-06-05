@@ -167,87 +167,20 @@ const hiringSteps = [
   }
 ];
 
-const jobOpenings = [
-  {
-    code: "NAI-AGENTIC-INT-01",
-    title: "Agentic AI Engineer",
-    type: "Internship",
-    location: "Remote / Hybrid",
-    duration: "3–6 Months",
-    stipend: "Performance-based",
-    overview: "Are you excited about building the next generation of AI systems that can think, plan, and act autonomously? This is your chance to work on cutting-edge Agentic AI and real-world problem solving.",
-    responsibilities: [
-      "Building intelligent AI agents using LLMs",
-      "Designing multi-agent systems for real-world use cases",
-      "Integrating APIs, tools, and workflows into AI systems",
-      "Working on automation, decision-making, and reasoning pipelines"
-    ],
-    required: [
-      "Strong basics in Python",
-      "Understanding of AI/ML & LLM concepts",
-      "Hands-on with APIs (OpenAI / other LLMs is a plus)",
-      "Problem-solving mindset + curiosity to learn fast"
-    ],
-    goodToHave: [
-      "Experience with LangChain / CrewAI / AutoGen",
-      "Built any AI-based projects",
-      "Understanding of prompt engineering"
-    ]
-  },
-  {
-    code: "NAI-SALES-INT-02",
-    title: "Sales Executive",
-    type: "Internship",
-    location: "Remote / Work from Home",
-    duration: "3–6 Months",
-    stipend: "Incentive + Commission",
-    overview: "You'll handle lead generation, client communication, and product pitching. If your English is weak or you hesitate in conversations, this role will expose that immediately. We need confident, proactive communicators.",
-    responsibilities: [
-      "Generate leads using online/offline channels",
-      "Talk to prospects, understand needs, and pitch our solutions",
-      "Maintain CRM records",
-      "Assist in meetings, demos, and follow-ups",
-      "Support sales campaigns with proper coordination"
-    ],
-    required: [
-      "Strong English communication (spoken + written)",
-      "Confidence in client handling",
-      "Ability to learn product details quickly",
-      "Team coordination mindset"
-    ],
-    goodToHave: [
-      "Prior experience in sales calls or telemarketing",
-      "Basic understanding of B2B/tech sales"
-    ]
-  },
-  {
-    code: "NAI-DM-INT-03",
-    title: "Digital Marketing",
-    type: "Internship",
-    location: "Remote / Work from Home",
-    duration: "3–6 Months",
-    stipend: "Performance-based",
-    overview: "This role demands creativity and execution. You'll manage social media, content creation, and branding activities. If you can't produce consistent outputs, the role won't suit you.",
-    responsibilities: [
-      "Manage Instagram, LinkedIn, and other platforms",
-      "Create content (posts, reels, captions, scripts)",
-      "Assist with branding, campaigns, and analytics",
-      "Research competitors and trends",
-      "Help grow the digital presence of Nirikshan AI"
-    ],
-    required: [
-      "Basic content writing",
-      "Understanding of how social media algorithms work",
-      "Creativity + consistency",
-      "Ability to execute independently"
-    ],
-    goodToHave: [
-      "Experience with Canva / Photoshop",
-      "Video editing basic skills",
-      "Knowledge of SEO"
-    ]
-  }
-];
+interface JobOpening {
+  code: string;
+  title: string;
+  type: string;
+  location: string;
+  duration: string;
+  stipend: string;
+  overview: string;
+  responsibilities: string[];
+  required: string[];
+  goodToHave: string[];
+}
+
+const jobOpenings: JobOpening[] = [];
 
 const faqs = [
   {
@@ -280,7 +213,7 @@ const Careers = () => {
     linkedinProfile: "",
     githubProfile: "",
     portfolioLink: "",
-    jobAppliedFor: "",
+    jobAppliedFor: jobOpenings.length > 0 ? "" : "GENERAL-TALENT-NETWORK",
     salaryExpectation: "",
     whyJoinStartup: "",
     relevantExperience: "",
@@ -385,7 +318,7 @@ const Careers = () => {
         linkedinProfile: "",
         githubProfile: "",
         portfolioLink: "",
-        jobAppliedFor: "",
+        jobAppliedFor: jobOpenings.length > 0 ? "" : "GENERAL-TALENT-NETWORK",
         salaryExpectation: "",
         whyJoinStartup: "",
         relevantExperience: "",
@@ -763,11 +696,17 @@ const Careers = () => {
                       <SelectValue placeholder="Select a position" />
                     </SelectTrigger>
                     <SelectContent>
-                      {jobOpenings.map((job) => (
-                        <SelectItem key={job.code} value={job.code}>
-                          {job.title} ({job.code})
+                      {jobOpenings.length > 0 ? (
+                        jobOpenings.map((job) => (
+                          <SelectItem key={job.code} value={job.code}>
+                            {job.title} ({job.code})
+                          </SelectItem>
+                        ))
+                      ) : (
+                        <SelectItem value="GENERAL-TALENT-NETWORK">
+                          General Application / Talent Network
                         </SelectItem>
-                      ))}
+                      )}
                     </SelectContent>
                   </Select>
                 </div>
