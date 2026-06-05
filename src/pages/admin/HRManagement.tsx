@@ -1345,6 +1345,12 @@ const AdminHRManagement = () => {
                 Manage employees, applications, leave requests, and attendance reports
               </p>
             </div>
+            <Button variant="outline" asChild>
+              <Link to="/admin/internship-applications">
+                <FileText className="h-4 w-4 mr-2" />
+                Internship Applications
+              </Link>
+            </Button>
           </div>
 
           {/* Tabs */}
