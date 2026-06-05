@@ -344,48 +344,6 @@ export type Database = {
         }
         Relationships: []
       }
-      social_internship_applications: {
-        Row: {
-          college: string
-          created_at: string
-          email: string
-          id: string
-          name: string
-          phone: string
-          resume_link: string | null
-          statement_of_purpose: string
-          status: string
-          track: string
-          updated_at: string
-        }
-        Insert: {
-          college: string
-          created_at?: string
-          email: string
-          id?: string
-          name: string
-          phone: string
-          resume_link?: string | null
-          statement_of_purpose: string
-          status?: string
-          track: string
-          updated_at?: string
-        }
-        Update: {
-          college?: string
-          created_at?: string
-          email?: string
-          id?: string
-          name?: string
-          phone?: string
-          resume_link?: string | null
-          statement_of_purpose?: string
-          status?: string
-          track?: string
-          updated_at?: string
-        }
-        Relationships: []
-      }
       leads: {
         Row: {
           assigned_to: string | null
@@ -557,6 +515,51 @@ export type Database = {
           joining_date?: string | null
           phone?: string | null
           updated_at?: string | null
+        }
+        Relationships: []
+      }
+      social_internship_applications: {
+        Row: {
+          college: string
+          created_at: string
+          email: string
+          id: string
+          name: string
+          notes: string | null
+          phone: string
+          resume_link: string | null
+          statement_of_purpose: string
+          status: string
+          track: string
+          updated_at: string
+        }
+        Insert: {
+          college: string
+          created_at?: string
+          email: string
+          id?: string
+          name: string
+          notes?: string | null
+          phone: string
+          resume_link?: string | null
+          statement_of_purpose: string
+          status?: string
+          track: string
+          updated_at?: string
+        }
+        Update: {
+          college?: string
+          created_at?: string
+          email?: string
+          id?: string
+          name?: string
+          notes?: string | null
+          phone?: string
+          resume_link?: string | null
+          statement_of_purpose?: string
+          status?: string
+          track?: string
+          updated_at?: string
         }
         Relationships: []
       }
