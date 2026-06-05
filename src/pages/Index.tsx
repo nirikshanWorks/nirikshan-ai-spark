@@ -1,7 +1,6 @@
 import { SEO } from "@/components/SEO";
 import React from "react";
-import { LogoCarousel, type Logo } from "@/components/ui/logo-carousel";
-import mockupDashboard from "@/assets/mockup-ai-dashboard.jpg";
+
 import partnerMadapet from "@/assets/partners/madapet.png";
 import partnerVB from "@/assets/partners/vb.png";
 import partnerMDJKS from "@/assets/partners/mdjks.png";
@@ -17,21 +16,76 @@ import { SplineScene } from "@/components/ui/splite";
 import { Spotlight } from "@/components/ui/spotlight";
 import { AnimatedGridBg } from "@/components/AnimatedGridBg";
 import { TypingText } from "@/components/TypingText";
+import { RotatingKeywords } from "@/components/RotatingKeywords";
+import { AIServicesStrip } from "@/components/AIServicesStrip";
 import { FadeUp, SlideLeft, SlideRight, StaggerContainer, StaggerItem } from "@/components/ScrollAnimations";
-import { ContainerScroll } from "@/components/ui/container-scroll-animation";
+import { motion } from "framer-motion";
+
 import { InfiniteTextMarquee } from "@/components/ui/infinite-text-marquee";
+import { InteractiveCVShowcase } from "@/components/InteractiveCVShowcase";
 import {
   ArrowRight, Brain, Eye, Bot, Building2, Activity,
   TrendingUp, FileText, CheckCircle2,
-  Lightbulb, Code2, Rocket, Quote,
+  Lightbulb, Code2, Rocket, Quote, Cpu, Scan, Sparkles, Zap,
 } from "lucide-react";
 import { Link } from "react-router-dom";
 
 /* ─── Data ─── */
 const capabilities = [
-  { icon: Brain, title: "Generative AI Solutions", desc: "Custom AI models that create insights, automate content, and drive intelligent decision-making across your enterprise." },
-  { icon: Eye, title: "Computer Vision Systems", desc: "Intelligent visual interpretation and pattern discovery — from real-time object detection to automated quality inspection." },
-  { icon: Bot, title: "Agentic AI Solutions", desc: "Autonomous workflows that reason, plan, and act on insights — executing multi-step tasks across your business systems." },
+  {
+    icon: Eye,
+    title: "Computer Vision",
+    highlight: "OpenCV · YOLO · Deep Learning",
+    desc: "Real-time object detection, visual inspection, and pattern recognition — from factory floors to surveillance systems.",
+    accent: "from-violet-500/15 to-fuchsia-500/15",
+    iconBg: "bg-violet-500/10",
+    iconColor: "text-violet-500",
+  },
+  {
+    icon: Brain,
+    title: "Generative AI",
+    highlight: "LLMs · RAG · Content Synthesis",
+    desc: "Custom AI models that generate insights, automate content creation, and power intelligent document understanding.",
+    accent: "from-blue-500/15 to-cyan-500/15",
+    iconBg: "bg-blue-500/10",
+    iconColor: "text-blue-500",
+  },
+  {
+    icon: Bot,
+    title: "AI Agent Development",
+    highlight: "Multi-Step · Autonomous · Agentic",
+    desc: "Autonomous workflows that reason, plan, and execute complex multi-step tasks across your business systems 24/7.",
+    accent: "from-emerald-500/15 to-teal-500/15",
+    iconBg: "bg-emerald-500/10",
+    iconColor: "text-emerald-500",
+  },
+  {
+    icon: Activity,
+    title: "Machine Learning",
+    highlight: "Predictive · Adaptive · Scalable",
+    desc: "Advanced ML models that uncover hidden patterns, forecast outcomes, and continuously improve from new data.",
+    accent: "from-amber-500/15 to-orange-500/15",
+    iconBg: "bg-amber-500/10",
+    iconColor: "text-amber-500",
+  },
+  {
+    icon: Cpu,
+    title: "AI Automation",
+    highlight: "Pipelines · Integration · MLOps",
+    desc: "End-to-end automation of data pipelines, model deployment, and operational workflows with production-grade reliability.",
+    accent: "from-rose-500/15 to-pink-500/15",
+    iconBg: "bg-rose-500/10",
+    iconColor: "text-rose-500",
+  },
+  {
+    icon: Lightbulb,
+    title: "AI Consulting",
+    highlight: "Strategy · Roadmaps · Audits",
+    desc: "Expert strategic guidance on AI readiness, implementation planning, and digital transformation tailored to your industry.",
+    accent: "from-indigo-500/15 to-purple-500/15",
+    iconBg: "bg-indigo-500/10",
+    iconColor: "text-indigo-500",
+  },
 ];
 
 const useCases = [
@@ -41,29 +95,17 @@ const useCases = [
   { icon: FileText, title: "Insight Generation from Unstructured Data", desc: "Extract actionable intelligence from documents, images, and complex datasets." },
 ];
 
-const trustMetrics = [
-  { value: "20+", label: "Projects Delivered" },
-  { value: "5+", label: "Enterprise Clients" },
-  { value: "3x", label: "Avg. ROI Improvement" },
-  { value: "99.9%", label: "System Uptime" },
-];
+// Trust metrics are now embedded in the hero stats bar for immediate visibility
 
-const makeImgLogo = (src: string, alt: string) => {
-  const ImgComponent = (props: React.ImgHTMLAttributes<HTMLImageElement>) => (
-    <img src={src} alt={alt} loading="lazy" {...props} style={{ objectFit: "contain", width: "100%", height: "100%" }} />
-  );
-  ImgComponent.displayName = `Logo_${alt}`;
-  return ImgComponent;
-};
-
-const partnerLogos: Logo[] = [
-  { name: "Madapet", id: 1, img: makeImgLogo(partnerMadapet, "Madapet") },
-  { name: "Mangosorange Agritech", id: 2, img: makeImgLogo("https://mangosorange.co.in/assets/img/MOLogo.png", "Mangosorange Agritech") },
-  { name: "Motherson", id: 3, img: makeImgLogo("https://apn-portal.my.salesforce.com/servlet/servlet.ImageServer?id=0150h0000055wCcAAI&oid=00DE0000000c48tMAA", "Motherson") },
-  { name: "Ranayara Pvt Ltd", id: 4, img: makeImgLogo("https://5.imimg.com/data5/NSDMERP/Board/2023/5/308937129/NE/QI/NP/155783236/155783236-board-1684400723760.jpg", "Ranayara Pvt Ltd") },
-  { name: "YMCA University", id: 5, img: makeImgLogo("https://upload.wikimedia.org/wikipedia/en/a/ae/J.C._Bose_University_of_Science_and_Technology%2C_YMCA_logo.png", "YMCA University") },
-  { name: "VB Group", id: 6, img: makeImgLogo(partnerVB, "VB Group") },
-  { name: "Manorama Dabral Jan Kalyan Samiti", id: 7, img: makeImgLogo(partnerMDJKS, "Manorama Dabral Jan Kalyan Samiti") },
+const partners = [
+  { name: "Madapet", src: partnerMadapet },
+  { name: "Mangosorange Agritech", src: "https://mangosorange.co.in/assets/img/MOLogo.png", url: "https://mangosorange.co.in/" },
+  { name: "Motherson", src: "https://apn-portal.my.salesforce.com/servlet/servlet.ImageServer?id=0150h0000055wCcAAI&oid=00DE0000000c48tMAA" },
+  { name: "Ranayara Pvt Ltd", src: "https://5.imimg.com/data5/NSDMERP/Board/2023/5/308937129/NE/QI/NP/155783236/155783236-board-1684400723760.jpg" },
+  { name: "YMCA University", src: "https://upload.wikimedia.org/wikipedia/en/a/ae/J.C._Bose_University_of_Science_and_Technology%2C_YMCA_logo.png", url: "https://jcboseust.ac.in/" },
+  { name: "VB Group", src: partnerVB },
+  { name: "Manorama Dabral Jan Kalyan Samiti", src: partnerMDJKS, url: "https://mdjks.org/" },
+  { name: "AVR AI Technologies", src: "https://avraitechnologies.com/favicon.png", url: "https://avraitechnologies.com/" },
 ];
 
 const processSteps = [
@@ -113,7 +155,7 @@ const Index = () => {
 
       <main className="relative z-10">
         {/* ── HERO ── */}
-        <section className="relative overflow-hidden pt-24 pb-8 md:pt-32 md:pb-12">
+        <section className="relative overflow-hidden pt-24 pb-6 md:pt-32 md:pb-10">
           <div className="container mx-auto px-4 sm:px-6">
             <div className="relative w-full rounded-xl border border-border bg-card/80 backdrop-blur overflow-hidden">
               <Spotlight className="-top-40 left-0 md:left-60 md:-top-20" size={300} />
@@ -121,121 +163,241 @@ const Index = () => {
               <div className="flex flex-col md:flex-row">
                 {/* Left content */}
                 <div className="flex-1 p-6 sm:p-8 md:p-12 relative z-10 flex flex-col justify-center">
-                  <div className="inline-flex items-center gap-2 px-3 py-1.5 sm:px-4 sm:py-2 rounded-full bg-primary/10 border border-primary/20 text-xs sm:text-sm font-medium text-primary w-fit mb-4 sm:mb-6">
-                    <Brain className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
-                    AI-Powered Enterprise Solutions
-                  </div>
+                  {/* Domain Badge */}
+                  <motion.div
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.5, delay: 0.1 }}
+                    className="inline-flex items-center gap-2 px-3 py-1.5 sm:px-4 sm:py-2 rounded-full bg-primary/10 border border-primary/20 text-xs sm:text-sm font-medium text-primary w-fit mb-4 sm:mb-5"
+                  >
+                    <Zap className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
+                    Computer Vision · Generative AI · AI Automation
+                  </motion.div>
                   
-                  <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold leading-[1.1] tracking-tight">
-                    AI That Sees, Understands &{" "}
-                    <span className="text-gradient">Acts for Impact</span>
-                  </h1>
+                  {/* Headline with Rotating Keywords */}
+                  <motion.h1
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.6, delay: 0.2 }}
+                    className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold leading-[1.15] tracking-tight"
+                  >
+                    We Build AI That
+                    <br />
+                    <RotatingKeywords
+                      keywords={[
+                        "Sees & Detects",
+                        "Thinks & Creates",
+                        "Automates & Scales",
+                        "Predicts & Decides",
+                      ]}
+                      interval={3000}
+                    />
+                  </motion.h1>
                   
-                  <p className="mt-3 sm:mt-4 text-muted-foreground max-w-lg text-sm sm:text-base md:text-lg leading-relaxed">
-                    Generative AI, Computer Vision & Agentic Solutions that transform data into actionable insights.
-                  </p>
+                  {/* Subtitle */}
+                  <motion.p
+                    initial={{ opacity: 0, y: 15 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.5, delay: 0.4 }}
+                    className="mt-4 sm:mt-5 text-muted-foreground max-w-xl text-sm sm:text-base md:text-lg leading-relaxed"
+                  >
+                    From <strong className="text-foreground">computer vision</strong> that inspects at scale, to <strong className="text-foreground">generative AI</strong> that creates insights, and <strong className="text-foreground">autonomous agents</strong> that execute — we deliver end-to-end AI solutions for enterprises.
+                  </motion.p>
 
-                  <div className="flex flex-col sm:flex-row items-start gap-3 sm:gap-4 pt-4 sm:pt-6">
+                  {/* CTA Buttons */}
+                  <motion.div
+                    initial={{ opacity: 0, y: 15 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.5, delay: 0.55 }}
+                    className="flex flex-col sm:flex-row items-start gap-3 sm:gap-4 pt-5 sm:pt-6"
+                  >
                     <Link to="/contact">
                       <Button size="lg" className="gradient-primary text-primary-foreground px-6 sm:px-8 h-10 sm:h-12 text-sm sm:text-base font-semibold border-0 w-full sm:w-auto">
-                        Request Demo
+                        Get AI Consultation
                         <ArrowRight className="ml-2 w-4 h-4 sm:w-5 sm:h-5" />
                       </Button>
                     </Link>
                     <Link to="/expertise">
                       <Button size="lg" variant="outline" className="h-10 sm:h-12 px-6 sm:px-8 text-sm sm:text-base border-border hover:bg-secondary w-full sm:w-auto">
-                        View Capabilities
+                        Explore Our AI Expertise
                       </Button>
                     </Link>
-                  </div>
+                  </motion.div>
+
+                  {/* Quick Domain Tags */}
+                  <motion.div
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ duration: 0.5, delay: 0.7 }}
+                    className="flex flex-wrap gap-2 mt-5 sm:mt-6"
+                  >
+                    {[
+                      { icon: Eye, label: "OpenCV & Vision" },
+                      { icon: Brain, label: "LLMs & Gen AI" },
+                      { icon: Bot, label: "AI Agents" },
+                      { icon: Cpu, label: "ML Automation" },
+                    ].map((tag) => (
+                      <span
+                        key={tag.label}
+                        className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-secondary/80 text-[11px] sm:text-xs font-medium text-muted-foreground border border-border/50"
+                      >
+                        <tag.icon className="w-3 h-3 text-primary/70" />
+                        {tag.label}
+                      </span>
+                    ))}
+                  </motion.div>
                 </div>
 
                 {/* Right – 3D Spline scene */}
-                <div className="flex-1 relative h-[250px] sm:h-[300px] md:h-auto md:min-h-[450px]">
+                <div className="flex-1 relative h-[250px] sm:h-[300px] md:h-auto md:min-h-[480px]">
                   <SplineScene 
                     scene="https://prod.spline.design/kZDDjO5HuC9GJUM2/scene.splinecode"
                     className="w-full h-full"
                   />
                   <div className="absolute bottom-4 sm:bottom-6 left-1/2 -translate-x-1/2 px-4 sm:px-5 py-2 sm:py-2.5 rounded-full bg-primary/90 backdrop-blur-sm border border-primary-foreground/20 shadow-lg">
                     <p className="text-primary-foreground text-xs sm:text-sm font-semibold tracking-wide whitespace-nowrap">
-                      <TypingText text="👋 Hello From Nirikshan AI" />
+                      <TypingText text="Building the Future with AI 🚀" />
                     </p>
                   </div>
                 </div>
               </div>
             </div>
+
+            {/* Hero Stats Bar */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.8 }}
+              className="mt-5 grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4"
+            >
+              {[
+                { value: "20+", label: "AI Projects Delivered", icon: Rocket },
+                { value: "99.9%", label: "Model Uptime", icon: Activity },
+                { value: "5+", label: "Enterprise Clients", icon: Building2 },
+                { value: "3x", label: "Avg. ROI Improvement", icon: TrendingUp },
+              ].map((stat) => (
+                <div
+                  key={stat.label}
+                  className="flex items-center gap-3 px-4 py-3 rounded-lg border border-border bg-card/60 backdrop-blur-sm"
+                >
+                  <div className="w-9 h-9 rounded-lg flex items-center justify-center bg-primary/10 flex-shrink-0">
+                    <stat.icon className="w-4.5 h-4.5 text-primary" />
+                  </div>
+                  <div>
+                    <div className="text-lg md:text-xl font-bold text-gradient leading-none">
+                      {stat.value}
+                    </div>
+                    <div className="text-[10px] sm:text-xs text-muted-foreground mt-0.5">
+                      {stat.label}
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </motion.div>
           </div>
         </section>
 
-        {/* ── Scroll Animation Showcase ── */}
-        <section className="bg-secondary/20">
-          <ContainerScroll
-            titleComponent={
-              <div className="text-center">
-                <p className="text-sm font-semibold uppercase tracking-widest text-primary mb-3">AI Dashboard</p>
-                <h2 className="text-3xl md:text-5xl font-bold">
-                  Experience <span className="text-gradient">Intelligent</span> Analytics
-                </h2>
+        {/* ── AI Services At-a-Glance Strip ── */}
+        <AIServicesStrip />
+
+        {/* ── Computer Vision Visual Showcase ── */}
+        <section className="py-20 md:py-28 relative overflow-hidden bg-secondary/20">
+          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(120,119,198,0.15),transparent_70%)] pointer-events-none"></div>
+          <div className="container mx-auto px-6 relative z-10">
+            <FadeUp className="text-center mb-12 md:mb-16 max-w-3xl mx-auto">
+              <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-primary/10 text-primary font-medium text-sm mb-6">
+                <Eye className="w-4 h-4" />
+                Computer Vision Expertise
               </div>
-            }
-          >
-            <img
-              src={mockupDashboard}
-              alt="AI Analytics Dashboard"
-              className="w-full h-full object-cover object-left-top rounded-2xl"
-            />
-          </ContainerScroll>
+              <h2 className="text-3xl md:text-5xl font-bold leading-tight mb-6">
+                See the Unseen with <span className="text-gradient">Intelligent Vision</span>
+              </h2>
+              <p className="text-lg text-muted-foreground leading-relaxed">
+                We build deep learning visual systems that instantly detect, track, and analyze objects in real-time. Experience how our AI processes raw camera feeds into actionable intelligence.
+              </p>
+            </FadeUp>
+            
+            <FadeUp delay={0.2} className="w-full max-w-6xl mx-auto">
+              <InteractiveCVShowcase />
+            </FadeUp>
+          </div>
         </section>
 
-        {/* ── 2. Problem → Solution ── */}
+        {/* ── 2. What We Do ── */}
         <section className="py-20 md:py-28 bg-secondary/30">
           <div className="container mx-auto px-6">
-            <FadeUp className="text-center mb-16">
+            <FadeUp className="text-center mb-14">
               <p className="text-sm font-semibold uppercase tracking-widest text-primary mb-3">What We Do</p>
-              <h2 className="text-3xl md:text-4xl font-bold mb-4">Complex Problems. <span className="text-gradient">Intelligent</span> Solutions.</h2>
+              <h2 className="text-3xl md:text-4xl font-bold mb-4">From Raw Data to <span className="text-gradient">Real Impact</span></h2>
               <p className="text-muted-foreground max-w-2xl mx-auto text-lg">
-                Enterprises drown in unstructured data. We transform it into intelligence that drives action.
+                We solve the hardest enterprise challenges with purpose-built AI — here's how.
               </p>
             </FadeUp>
 
-            <div className="grid md:grid-cols-2 gap-8 max-w-5xl mx-auto">
-              <SlideLeft delay={0.1}>
-                <div className="p-8 rounded-xl border border-border bg-card space-y-6 ai-border-glow">
-                  <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-sm font-medium bg-destructive/10 text-destructive">
-                    The Challenge
-                  </div>
-                  <ul className="space-y-4">
-                    {["Manual data interpretation across siloed systems", "Slow, error-prone decision-making loops", "Inability to scale expertise across the organization", "Missed patterns in complex, high-volume data"].map((item, i) => (
-                      <li key={i} className="flex items-start gap-3 text-muted-foreground">
-                        <span className="mt-1.5 w-2 h-2 rounded-full flex-shrink-0 bg-destructive/50" />
-                        {item}
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              </SlideLeft>
+            <StaggerContainer className="grid sm:grid-cols-2 lg:grid-cols-4 gap-5 max-w-6xl mx-auto" staggerDelay={0.1}>
+              {[
+                {
+                  icon: Eye,
+                  title: "Visual Intelligence",
+                  problem: "Manual quality checks miss defects and slow production.",
+                  solution: "Computer Vision detects, classifies, and inspects in real-time with 99%+ accuracy.",
+                  accent: "from-violet-500/15 to-fuchsia-500/15",
+                  iconBg: "bg-violet-500/10",
+                  iconColor: "text-violet-500",
+                },
+                {
+                  icon: Brain,
+                  title: "Generative AI",
+                  problem: "Teams waste hours extracting insights from unstructured data.",
+                  solution: "LLMs synthesize reports, answer queries, and generate actionable intelligence instantly.",
+                  accent: "from-blue-500/15 to-cyan-500/15",
+                  iconBg: "bg-blue-500/10",
+                  iconColor: "text-blue-500",
+                },
+                {
+                  icon: Bot,
+                  title: "AI Agents",
+                  problem: "Repetitive multi-step workflows drain skilled human resources.",
+                  solution: "Autonomous agents reason, plan, and execute complex tasks across your systems 24/7.",
+                  accent: "from-emerald-500/15 to-teal-500/15",
+                  iconBg: "bg-emerald-500/10",
+                  iconColor: "text-emerald-500",
+                },
+                {
+                  icon: TrendingUp,
+                  title: "Predictive Analytics",
+                  problem: "Decisions rely on lagging indicators and gut instinct.",
+                  solution: "ML models forecast demand, detect anomalies, and surface risks before they escalate.",
+                  accent: "from-amber-500/15 to-orange-500/15",
+                  iconBg: "bg-amber-500/10",
+                  iconColor: "text-amber-500",
+                },
+              ].map((item) => (
+                <StaggerItem key={item.title}>
+                  <div className={`h-full p-6 rounded-xl border border-border bg-gradient-to-br ${item.accent} backdrop-blur-sm flex flex-col transition-all duration-300 hover:-translate-y-1 hover:shadow-lg ai-border-glow`}>
+                    {/* Icon */}
+                    <div className={`w-11 h-11 rounded-lg flex items-center justify-center ${item.iconBg} mb-4`}>
+                      <item.icon className={`w-5 h-5 ${item.iconColor}`} />
+                    </div>
 
-              <SlideRight delay={0.2}>
-                <div className="p-8 rounded-xl border border-border bg-card space-y-6 ai-border-glow">
-                  <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-sm font-medium bg-accent/10 text-accent-foreground">
-                    Our AI Solution
+                    {/* Title */}
+                    <h3 className="text-base font-semibold mb-3">{item.title}</h3>
+
+                    {/* Problem */}
+                    <div className="mb-3">
+                      <p className="text-[11px] font-semibold uppercase tracking-wider text-destructive/80 mb-1">Challenge</p>
+                      <p className="text-sm text-muted-foreground leading-relaxed">{item.problem}</p>
+                    </div>
+
+                    {/* Solution */}
+                    <div className="mt-auto pt-3 border-t border-border/50">
+                      <p className="text-[11px] font-semibold uppercase tracking-wider text-primary mb-1">AI Solution</p>
+                      <p className="text-sm text-muted-foreground leading-relaxed">{item.solution}</p>
+                    </div>
                   </div>
-                  <ul className="space-y-4">
-                    {[
-                      "Generative AI that synthesizes insights from any data source",
-                      "Computer Vision that automates visual inspection at scale",
-                      "LLM-powered automation for reports, queries, and decisions",
-                      "Agentic workflows that execute multi-step tasks autonomously",
-                    ].map((item, i) => (
-                      <li key={i} className="flex items-start gap-3 text-muted-foreground">
-                        <CheckCircle2 className="mt-0.5 w-4 h-4 flex-shrink-0 text-accent" />
-                        {item}
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              </SlideRight>
-            </div>
+                </StaggerItem>
+              ))}
+            </StaggerContainer>
           </div>
         </section>
 
@@ -243,25 +405,30 @@ const Index = () => {
         <section className="py-20 md:py-28 relative">
           <AIHexagonGrid className="opacity-30" />
           <AIWaveField className="opacity-20" />
-          <div className="absolute left-6 top-1/2 -translate-y-1/2 opacity-20 hidden xl:block">
-            <AI3DCube size={100} />
-          </div>
-          <div className="container mx-auto px-6">
-            <FadeUp className="text-center mb-16">
+          <div className="container mx-auto px-6 relative z-10">
+            <FadeUp className="text-center mb-14">
               <p className="text-sm font-semibold uppercase tracking-widest text-primary mb-3">Core Capabilities</p>
-              <h2 className="text-3xl md:text-4xl font-bold mb-4">Intelligence Across <span className="text-gradient">Every</span> Dimension</h2>
-              <p className="text-muted-foreground max-w-2xl mx-auto text-lg">Three pillars of AI that cover the full spectrum of enterprise automation.</p>
+              <h2 className="text-3xl md:text-4xl font-bold mb-4">Full-Stack <span className="text-gradient">AI Expertise</span></h2>
+              <p className="text-muted-foreground max-w-2xl mx-auto text-lg">Every capability you need to go from idea to production-grade AI — under one roof.</p>
             </FadeUp>
 
-            <StaggerContainer className="grid sm:grid-cols-2 lg:grid-cols-3 gap-8 max-w-5xl mx-auto" staggerDelay={0.15}>
+            <StaggerContainer className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5 max-w-6xl mx-auto" staggerDelay={0.1}>
               {capabilities.map((cap) => (
                 <StaggerItem key={cap.title}>
-                  <div className="group p-8 rounded-xl border border-border bg-card hover:-translate-y-2 transition-transform duration-300 ai-border-glow">
-                    <div className="w-12 h-12 rounded-xl flex items-center justify-center mb-5 bg-primary/10">
-                      <cap.icon className="w-6 h-6 text-primary" />
+                  <div className={`h-full p-6 rounded-xl border border-border bg-gradient-to-br ${cap.accent} backdrop-blur-sm flex flex-col transition-all duration-300 hover:-translate-y-1 hover:shadow-lg ai-border-glow`}>
+                    {/* Icon */}
+                    <div className={`w-11 h-11 rounded-lg flex items-center justify-center ${cap.iconBg} mb-4`}>
+                      <cap.icon className={`w-5 h-5 ${cap.iconColor}`} />
                     </div>
-                    <h3 className="text-xl font-semibold mb-3">{cap.title}</h3>
-                    <p className="text-muted-foreground leading-relaxed">{cap.desc}</p>
+
+                    {/* Title */}
+                    <h3 className="text-base font-semibold mb-1.5">{cap.title}</h3>
+
+                    {/* Tech highlight */}
+                    <p className="text-[11px] font-mono font-medium text-primary/70 tracking-wide mb-3">{cap.highlight}</p>
+
+                    {/* Description */}
+                    <p className="text-sm text-muted-foreground leading-relaxed mt-auto">{cap.desc}</p>
                   </div>
                 </StaggerItem>
               ))}
@@ -312,17 +479,6 @@ const Index = () => {
               <h2 className="text-3xl md:text-4xl font-bold mb-4">Trusted by <span className="text-gradient">Forward-Thinking</span> Organizations</h2>
             </FadeUp>
 
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-6 max-w-4xl mx-auto mb-16">
-              {trustMetrics.map((m) => (
-                <div key={m.label} className="text-center p-6 rounded-xl border border-border bg-card ai-border-glow">
-                  <div className="text-3xl md:text-4xl font-bold mb-1 text-gradient">
-                    {m.value}
-                  </div>
-                  <div className="text-sm text-muted-foreground">{m.label}</div>
-                </div>
-              ))}
-            </div>
-
             {/* Testimonial */}
             <FadeUp className="max-w-3xl mx-auto mb-16">
               <div className="p-8 rounded-xl border border-border bg-card text-center ai-glow">
@@ -337,9 +493,44 @@ const Index = () => {
               </div>
             </FadeUp>
 
-            {/* Client logos */}
+            {/* Client logos — static grid */}
             <FadeUp>
-              <LogoCarousel columnCount={7} logos={partnerLogos} />
+              <div className="max-w-5xl mx-auto">
+                <p className="text-center text-sm text-muted-foreground mb-8 font-medium uppercase tracking-widest">Our Clients & Partners</p>
+                <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-8 gap-4 md:gap-5 items-center">
+                  {partners.map((partner) => {
+                    const CardContent = (
+                      <div
+                        className="flex items-center justify-center p-4 md:p-5 rounded-xl border border-border bg-card/80 aspect-square hover:border-primary/30 hover:shadow-md hover:shadow-primary/5 transition-all duration-300 group cursor-pointer w-full h-full"
+                      >
+                        <img
+                          src={partner.src}
+                          alt={partner.name}
+                          loading="lazy"
+                          className="w-full h-full object-contain opacity-70 group-hover:opacity-100 transition-opacity duration-300 dark:brightness-90 dark:group-hover:brightness-110"
+                        />
+                      </div>
+                    );
+
+                    return partner.url ? (
+                      <a
+                        key={partner.name}
+                        href={partner.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="block w-full h-full"
+                        title={`Visit ${partner.name}`}
+                      >
+                        {CardContent}
+                      </a>
+                    ) : (
+                      <div key={partner.name} className="block w-full h-full" title={partner.name}>
+                        {CardContent}
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
             </FadeUp>
           </div>
         </section>

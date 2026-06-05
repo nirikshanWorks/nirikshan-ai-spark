@@ -15,10 +15,11 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import { expertiseCategories } from "@/pages/expertise/expertiseData";
 
 const navigationCategories = expertiseCategories.map((category) => ({
-  title: category.title.toUpperCase(),
+  title: category.title,
   slug: category.slug,
   items: category.services.map((service) => ({
     title: service.title,
+    description: service.description,
     href: `/expertise/${category.slug}/${service.slug}`,
   })),
 }));
@@ -27,7 +28,7 @@ const navLinks = [
   { label: "About", path: "/about" },
   { label: "Projects", path: "/projects" },
   { label: "Case Studies", path: "/case-studies" },
-  { label: "AICI", path: "/campaign-intelligence" },
+  { label: "Internship", path: "/social-internship" },
   { label: "Blog", path: "/blog" },
   { label: "Careers", path: "/careers" },
   { label: "Who We Are", path: "/who-we-are" },
@@ -120,62 +121,40 @@ export const Navigation = () => {
 
             {/* Desktop Navigation */}
             <div className="hidden lg:flex items-center gap-1">
-              {/* Expertise Mega Menu */}
+              {/* Expertise Dropdown */}
               <NavigationMenu value={desktopMenuValue} onValueChange={setDesktopMenuValue}>
                 <NavigationMenuList>
                   <NavigationMenuItem value="expertise">
                     <NavigationMenuTrigger className="bg-transparent text-sm font-medium text-muted-foreground hover:text-foreground h-9 px-3">
                       Expertise
                     </NavigationMenuTrigger>
-                    <NavigationMenuContent className="md:w-screen md:max-w-none md:px-0 md:max-h-[75vh] md:overflow-y-auto animate-in slide-in-from-top-4 fade-in duration-300">
-                      <div className="w-full px-4 py-6 md:px-10 lg:px-20 space-y-6">
-                        <div className="flex flex-col items-start justify-between gap-4 rounded-xl border border-border bg-secondary/50 p-6 md:flex-row md:items-center">
-                          <div className="space-y-2">
-                            <span className="text-xs font-semibold uppercase tracking-[0.25em] text-muted-foreground">
-                              Explore Our Expertise
-                            </span>
-                            <h3 className="text-2xl font-semibold font-heading text-foreground">
-                              Tailored solutions across industries and capabilities.
-                            </h3>
-                          </div>
-                          <Link to="/expertise" className="shrink-0">
-                            <Button variant="outline" className="border-primary text-primary hover:bg-primary hover:text-primary-foreground">
-                              View all expertise
-                            </Button>
+                    <NavigationMenuContent className="animate-in slide-in-from-top-4 fade-in duration-300">
+                      <div className="w-[320px] md:w-[500px] p-4">
+                        <div className="mb-3 px-3 flex items-center justify-between">
+                          <h4 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+                            {navigationCategories[0]?.title}
+                          </h4>
+                          <Link to={`/expertise/${navigationCategories[0]?.slug}`} className="text-xs text-primary hover:underline">
+                            View All
                           </Link>
                         </div>
-
-                        <div className="grid grid-cols-1 gap-6 md:grid-cols-3 lg:grid-cols-4">
-                          {navigationCategories.map((category, index) => (
-                            <div
-                              key={category.title}
-                              className="group space-y-3 rounded-xl border border-border bg-card p-5 transition-all duration-300 hover:border-primary/40 hover:shadow-md hover:-translate-y-1 animate-in fade-in slide-in-from-bottom-2"
-                              style={{ animationDelay: `${index * 50}ms` }}
-                            >
-                              <Link
-                                to={`/expertise/${category.slug}`}
-                                className="flex items-center gap-2 font-bold text-sm tracking-wider text-gradient transition-opacity group-hover:opacity-80"
-                              >
-                                {category.title}
-                                <span className="h-px flex-1 bg-gradient-to-r from-primary/40 to-transparent" />
-                              </Link>
-                              <ul className="space-y-2">
-                                {category.items.map((item) => (
-                                  <li key={item.title}>
-                                    <NavigationMenuLink asChild>
-                                      <Link
-                                        to={item.href}
-                                        className="block rounded-md px-2 py-1 text-sm text-muted-foreground transition-colors duration-200 hover:bg-primary/10 hover:text-primary"
-                                      >
-                                        {item.title}
-                                      </Link>
-                                    </NavigationMenuLink>
-                                  </li>
-                                ))}
-                              </ul>
-                            </div>
+                        <ul className="grid grid-cols-1 md:grid-cols-2 gap-2">
+                          {navigationCategories[0]?.items.map((item) => (
+                            <li key={item.title}>
+                              <NavigationMenuLink asChild>
+                                <Link
+                                  to={item.href}
+                                  className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground"
+                                >
+                                  <div className="text-sm font-medium leading-none text-foreground">{item.title}</div>
+                                  <p className="line-clamp-2 text-xs leading-snug text-muted-foreground mt-1.5">
+                                    {item.description}
+                                  </p>
+                                </Link>
+                              </NavigationMenuLink>
+                            </li>
                           ))}
-                        </div>
+                        </ul>
                       </div>
                     </NavigationMenuContent>
                   </NavigationMenuItem>
@@ -241,30 +220,26 @@ export const Navigation = () => {
             </button>
 
             {mobileExpertiseOpen && (
-              <div className="pl-4 space-y-4 pb-2 animate-in fade-in slide-in-from-top-2 duration-200">
-                {navigationCategories.map((category) => (
-                  <div key={category.title} className="space-y-2">
+              <div className="pl-4 pb-2 animate-in fade-in slide-in-from-top-2 duration-200">
+                <div className="space-y-1">
+                  {navigationCategories[0]?.items.map((item) => (
                     <Link
-                      to={`/expertise/${category.slug}`}
-                      className="block text-sm font-bold tracking-wider text-gradient"
+                      key={item.title}
+                      to={item.href}
+                      className="block px-4 py-2.5 text-sm text-muted-foreground hover:text-primary hover:bg-secondary/50 rounded-lg transition-colors"
                       onClick={closeMobileMenu}
                     >
-                      {category.title}
+                      {item.title}
                     </Link>
-                    <div className="pl-2 space-y-1">
-                      {category.items.map((item) => (
-                        <Link
-                          key={item.title}
-                          to={item.href}
-                          className="block px-4 py-1.5 text-sm text-muted-foreground hover:text-primary rounded-md transition-colors"
-                          onClick={closeMobileMenu}
-                        >
-                          {item.title}
-                        </Link>
-                      ))}
-                    </div>
-                  </div>
-                ))}
+                  ))}
+                  <Link
+                    to={`/expertise/${navigationCategories[0]?.slug}`}
+                    className="block px-4 py-2.5 text-sm font-medium text-primary hover:bg-secondary/50 rounded-lg transition-colors mt-2"
+                    onClick={closeMobileMenu}
+                  >
+                    View All {navigationCategories[0]?.title} →
+                  </Link>
+                </div>
               </div>
             )}
 
