@@ -320,7 +320,7 @@ const SocialInternship = () => {
                   <img 
                     src={img.src} 
                     alt={img.alt} 
-                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700 ease-out filter grayscale group-hover:grayscale-0"
+                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700 ease-out"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-emerald-950/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-6">
                     <span className="text-xs uppercase text-emerald-300 tracking-wider font-semibold">{img.category}</span>
@@ -399,7 +399,7 @@ const SocialInternship = () => {
                         value={formData.college}
                         onChange={handleChange}
                         required
-                        placeholder="e.g., YMCA University"
+                        placeholder="e.g., DBUU"
                         className="hover:border-emerald-500/50 focus-visible:ring-emerald-500"
                       />
                     </div>

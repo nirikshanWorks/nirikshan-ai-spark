@@ -1,7 +1,6 @@
 import { Chatbot } from "@/components/Chatbot/Chatbot";
 import { ErrorBoundary } from "@/components/ErrorBoundary";
 import { EyeLoader, EyeLoaderInline } from "@/components/EyeLoader";
-import { MouseColorSplatter } from "@/components/MouseColorSplatter";
 import { PageTransition } from "@/components/PageTransition";
 import ScrollToTop from "@/components/ScrollToTop";
 import { Toaster as Sonner } from "@/components/ui/sonner";
@@ -159,7 +158,6 @@ const App = () => {
                     <AnimatedRoutes />
                   </Suspense>
                   <Chatbot />
-                  <MouseColorSplatter />
                 </AuthProvider>
               </BrowserRouter>
             </ErrorBoundary>
