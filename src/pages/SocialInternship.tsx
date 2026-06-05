@@ -29,6 +29,8 @@ import {
 } from "lucide-react";
 import { lazy, Suspense, useRef, useState } from "react";
 import { toast } from "sonner";
+import { supabase } from "@/integrations/supabase/client";
+
 
 // Lazy-loaded ReCAPTCHA
 const LazyReCAPTCHA = lazy(() =>
@@ -101,51 +103,39 @@ const SocialInternship = () => {
     }
     setIsSubmitting(true);
 
-    const payload = {
-      ...formData,
-      submissionType: "internship-application",
-      recaptchaToken
-    };
-
     try {
-      let submissionOk = false;
-      let failureReason: string | undefined;
-
-      try {
-        const response = await fetch(GOOGLE_SCRIPT_ENDPOINT, {
-          method: "POST",
-          body: JSON.stringify(payload)
+      // 1. Save social internship application to database
+      const { error: dbError } = await supabase
+        .from("social_internship_applications")
+        .insert({
+          name: formData.name,
+          email: formData.email,
+          phone: formData.phone,
+          college: formData.college,
+          track: formData.track,
+          resume_link: formData.resumeLink || null,
+          statement_of_purpose: formData.statementOfPurpose
         });
 
-        if (response.type === "opaque") {
-          submissionOk = true;
-        } else {
-          const rawText = await response.text();
-          let result: { success?: boolean; error?: string } = {};
-          try {
-            result = rawText ? JSON.parse(rawText) : {};
-          } catch {
-            result = { success: response.ok };
-          }
-          submissionOk = response.ok && result?.success !== false;
-          failureReason = result?.error || (!response.ok ? response.statusText : undefined);
-        }
-      } catch (networkError) {
-        failureReason = networkError instanceof Error ? networkError.message : String(networkError);
-        try {
-          await fetch(GOOGLE_SCRIPT_ENDPOINT, {
-            method: "POST",
-            mode: "no-cors",
-            body: JSON.stringify(payload)
-          });
-          submissionOk = true;
-        } catch (fallbackError) {
-          failureReason = fallbackError instanceof Error ? fallbackError.message : String(fallbackError);
-        }
+      if (dbError) {
+        console.error("Database submission failed:", dbError);
+        throw new Error(dbError.message || "Failed to save application to database");
       }
 
-      if (!submissionOk) {
-        throw new Error(failureReason || "Submission failed");
+      // 2. Fire-and-forget submission to Google Script endpoint (existing integration)
+      const payload = {
+        ...formData,
+        submissionType: "internship-application",
+        recaptchaToken
+      };
+
+      try {
+        fetch(GOOGLE_SCRIPT_ENDPOINT, {
+          method: "POST",
+          body: JSON.stringify(payload)
+        }).catch((err) => console.warn("Google Script background post warning:", err));
+      } catch (scriptErr) {
+        console.warn("Google Script fetch warning:", scriptErr);
       }
 
       toast.success("Application submitted successfully! Our committee will review it and get in touch.");
@@ -154,7 +144,11 @@ const SocialInternship = () => {
       setRecaptchaToken(null);
     } catch (error) {
       console.error("Internship form submission failed", error);
-      toast.error("Something went wrong. Please try again or email us directly at info@nirikshanai.com.");
+      toast.error(
+        error instanceof Error 
+          ? error.message 
+          : "Something went wrong. Please try again or email us directly at info@nirikshanai.com."
+      );
     } finally {
       setIsSubmitting(false);
     }
