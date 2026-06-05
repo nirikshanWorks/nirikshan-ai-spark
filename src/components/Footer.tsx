@@ -44,10 +44,10 @@ export const Footer = () => {
             <h4 className="font-semibold text-sm uppercase tracking-wider mb-4 text-muted-foreground">Services</h4>
             <ul className="space-y-2.5 text-sm">
               <li><Link to="/expertise/artificial-intelligence/generative-ai" className="text-muted-foreground hover:text-foreground transition-colors">Generative AI</Link></li>
-              <li><Link to="/expertise/artificial-intelligence/machine-learning" className="text-muted-foreground hover:text-foreground transition-colors">Predictive Analytics</Link></li>
-              <li><Link to="/expertise/microsoft-services/dotnet-development" className="text-muted-foreground hover:text-foreground transition-colors">.NET Modernization</Link></li>
-              <li><Link to="/expertise/microsoft-services/azure-cloud" className="text-muted-foreground hover:text-foreground transition-colors">Azure Cloud</Link></li>
-              <li><Link to="/expertise/quality-assurance/software-testing" className="text-muted-foreground hover:text-foreground transition-colors">Quality Engineering</Link></li>
+              <li><Link to="/expertise/artificial-intelligence/computer-vision" className="text-muted-foreground hover:text-foreground transition-colors">OpenCV & Computer Vision</Link></li>
+              <li><Link to="/expertise/artificial-intelligence/machine-learning" className="text-muted-foreground hover:text-foreground transition-colors">Machine Learning</Link></li>
+              <li><Link to="/expertise/artificial-intelligence/ai-consulting" className="text-muted-foreground hover:text-foreground transition-colors">AI Consulting</Link></li>
+              <li><Link to="/expertise/artificial-intelligence/ai-agent-development" className="text-muted-foreground hover:text-foreground transition-colors">AI Agent Development</Link></li>
             </ul>
           </div>
 
