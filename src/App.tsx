@@ -41,6 +41,7 @@ const Auth = lazy(() => import("./pages/Auth"));
 const CertificateVerify = lazy(() => import("./pages/CertificateVerify"));
 const AdminCertificates = lazy(() => import("./pages/admin/Certificates"));
 const AdminHRManagement = lazy(() => import("./pages/admin/HRManagement"));
+const AdminInternshipApplications = lazy(() => import("./pages/admin/InternshipApplications"));
 const EmployeeLogin = lazy(() => import("./pages/employee/Login"));
 const EmployeeDashboard = lazy(() => import("./pages/employee/Dashboard"));
 const ObjectDetectionDemo = lazy(() => import("./pages/ObjectDetectionDemo"));
@@ -115,6 +116,7 @@ const AnimatedRoutes = () => {
         <Route path="/verify/:certificateNumber" element={<PageTransition><CertificateVerify /></PageTransition>} />
         <Route path="/admin/certificates" element={<PageTransition><AdminCertificates /></PageTransition>} />
         <Route path="/admin/hr" element={<PageTransition><AdminHRManagement /></PageTransition>} />
+        <Route path="/admin/internship-applications" element={<PageTransition><AdminInternshipApplications /></PageTransition>} />
         <Route path="/employee/login" element={<PageTransition><EmployeeLogin /></PageTransition>} />
         <Route path="/employee/dashboard" element={<PageTransition><EmployeeDashboard /></PageTransition>} />
         <Route path="/object-detection-demo" element={<PageTransition><ObjectDetectionDemo /></PageTransition>} />
