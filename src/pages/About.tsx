@@ -467,6 +467,75 @@ const About = () => {
           </div>
         </section>
 
+        {/* Ecosystem & Impact Section */}
+        <section className="py-20 bg-secondary/10 relative">
+          <div className="container mx-auto px-6">
+            <FadeUp className="text-center mb-16">
+              <p className="text-sm font-semibold uppercase tracking-widest text-primary mb-3">Ecosystem & Impact</p>
+              <h2 className="text-3xl md:text-4xl font-bold mb-4">Our Network of <span className="text-gradient">Technology & Community</span></h2>
+              <p className="text-muted-foreground max-w-2xl mx-auto">
+                We believe in bridging the gap between cutting-edge engineering and social development. Explore our partner technical firm and our community development NGO.
+              </p>
+            </FadeUp>
+
+            <div className="grid md:grid-cols-2 gap-8 max-w-5xl mx-auto">
+              {/* AVR AI card */}
+              <div className="group relative rounded-3xl border border-primary/10 bg-card p-8 hover:border-primary/30 transition-all duration-300 flex flex-col justify-between ai-border-glow">
+                <div>
+                  <div className="flex items-center justify-between mb-6">
+                    <div className="flex items-center gap-3">
+                      <div className="w-12 h-12 rounded-xl bg-primary/10 text-primary flex items-center justify-center">
+                        <Zap size={24} />
+                      </div>
+                      <div>
+                        <span className="text-[10px] font-mono text-primary uppercase tracking-widest">Sister Technical Firm</span>
+                        <h3 className="text-xl font-bold text-foreground">AVR AI Technologies</h3>
+                      </div>
+                    </div>
+                  </div>
+                  <p className="text-sm font-semibold text-foreground/90 mb-2">Engineering Intelligent Futures</p>
+                  <p className="text-sm text-muted-foreground leading-relaxed">
+                    AVR AI Technologies Pvt. Ltd. bridges the gap between deep academic research and production-grade software delivery. By deploying composable layers of security and data processing, they power automated systems for mission-critical operations.
+                  </p>
+                </div>
+                <div className="mt-8 pt-6 border-t border-border flex items-center justify-between">
+                  <span className="text-[10px] font-mono text-muted-foreground">DEHRADUN, INDIA</span>
+                  <a href="https://avraitechnologies.com/" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1.5 text-sm font-semibold text-primary hover:text-primary/80 transition-colors">
+                    Visit AVR AI <ArrowRight size={16} />
+                  </a>
+                </div>
+              </div>
+
+              {/* MDJKS NGO card */}
+              <div className="group relative rounded-3xl border border-primary/10 bg-card p-8 hover:border-primary/30 transition-all duration-300 flex flex-col justify-between ai-border-glow">
+                <div>
+                  <div className="flex items-center justify-between mb-6">
+                    <div className="flex items-center gap-3">
+                      <div className="w-12 h-12 rounded-xl bg-emerald-500/10 text-emerald-500 flex items-center justify-center">
+                        <Users size={24} />
+                      </div>
+                      <div>
+                        <span className="text-[10px] font-mono text-emerald-500 uppercase tracking-widest">CSR & Social Impact Partner</span>
+                        <h3 className="text-xl font-bold text-foreground">MDJKS NGO</h3>
+                      </div>
+                    </div>
+                  </div>
+                  <p className="text-sm font-semibold text-foreground/90 mb-2">Manorama Dabral Jan Kalyan Samiti</p>
+                  <p className="text-sm text-muted-foreground leading-relaxed">
+                    Established in September 2015 and founded by Mrs. Kamla Dabral, MDJKS is dedicated to rural upliftment, women empowerment, education, and natural resource conservation in Uttarakhand.
+                  </p>
+                </div>
+                <div className="mt-8 pt-6 border-t border-border flex items-center justify-between">
+                  <span className="text-[10px] font-mono text-emerald-500">LADPUR, DEHRADUN</span>
+                  <a href="https://mdjks.org/" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1.5 text-sm font-semibold text-emerald-500 hover:text-emerald-400 transition-colors">
+                    Visit MDJKS NGO <ArrowRight size={16} />
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
         {/* World Map Section */}
         <section className="py-12 sm:py-16 md:py-28 relative bg-secondary/20">
           <div className="container mx-auto px-4 sm:px-6">

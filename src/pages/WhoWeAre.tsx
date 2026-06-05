@@ -1,4 +1,4 @@
-import anshulImage from "@/assets/team/anshul.jpg";
+import anshulImage from "@/assets/team/anshul.png";
 import rajeshImage from "@/assets/team/rajesh-dabral.jpg";
 import vikramImage from "@/assets/team/vikram-biyani.jpg";
 import wwaTeamVideo from "@/assets/wwa-team.mp4";
@@ -6,11 +6,7 @@ import { Footer } from "@/components/Footer";
 import { Navigation } from "@/components/Navigation";
 import { FadeUp, StaggerContainer, StaggerItem } from "@/components/ScrollAnimations";
 import { SEO } from "@/components/SEO";
-import {
-  AnimatedProfileCard,
-  ProfileCardContent,
-  SocialLink,
-} from "@/components/ui/animated-profile-card";
+import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { useScrollAnimation } from "@/hooks/use-scroll-animation";
 import {
@@ -62,7 +58,9 @@ const leadership = [
   {
     name: "Anshul",
     role: "Founder & CEO",
-    bio: "Anshul, Founder & CEO of Nirikshan AI, spearheads technical strategy and system design, translating complex requirements into scalable, production-ready platforms.",
+    bio: "Anshul spearheads technical strategy and system design, translating complex requirements into scalable, production-ready platforms.",
+    extendedBio: "Anshul leads the core vision of Nirikshan AI, blending hands-on deep tech expertise with business acumen. With a passion for building AI systems that work in the real world, he guides the engineering teams in deploying robust LLM pipelines, RAG systems, and real-time computer vision models. Under his leadership, Nirikshan AI has grown from a student research project into a trusted technology partner for global clients.",
+    message: "Operational excellence is more than executing playbooks — it is about designing environments where teams are empowered to experiment, iterate, and deliver. We invest deeply in research collaborations, mentorship, and tooling that help our people grow. When our teams thrive, the innovations they produce resonate far beyond our studio. I am proud of the ecosystem we continue to build — one where every project is handled with precision, and every partner sees us as an extension of their own mission.",
     image: anshulImage,
     linkedin: "https://www.linkedin.com/in/anshultech1"
   },
@@ -70,6 +68,8 @@ const leadership = [
     name: "Rajesh Dabral",
     role: "Director – Administration",
     bio: "Rajesh oversees administrative operations, ensuring seamless coordination across teams and efficient resource management to support our growth.",
+    extendedBio: "Rajesh Dabral brings years of administrative excellence to Nirikshan AI, managing operational policies, team cohesion, and resource allocation. He facilitates a collaborative environment that bridges research ambitions with operational efficiency. His focus is on establishing a resilient corporate framework that supports rapid scaling while maintaining the company's core values of integrity and transparency.",
+    message: "A company's strength lies in its foundation and its people. My goal is to cultivate an environment of absolute transparency, clear communication, and seamless coordination. By establishing robust administrative operations, we ensure that our engineering and research teams have the support they need to focus entirely on building breakthrough solutions. Building a company is a collaborative journey, and we are committed to doing it with integrity.",
     image: rajeshImage,
     linkedin: ""
   },
@@ -77,6 +77,8 @@ const leadership = [
     name: "CA Vikram Biyani",
     role: "Director – Finance",
     bio: "CA Vikram Biyani steers financial strategy and planning, enabling sustainable growth through disciplined fiscal management and strategic investments.",
+    extendedBio: "CA Vikram Biyani is a seasoned financial strategist who directs Nirikshan AI's fiscal policies, capital efficiency, and strategic partnerships. Combining mathematical precision with financial foresight, he ensures that the company's research-driven initiatives are backed by solid economic foundations. He advises on risk management, investment strategies, and maximizing ROI for both the company and its enterprise partners.",
+    message: "Sustainable growth requires a perfect balance of disciplined fiscal policy and bold investments in innovation. At Nirikshan AI, we approach finance not just as keeping books, but as a strategic tool to generate long-term value for our clients, team, and shareholders. By ensuring financial health and capital efficiency, we build a stable, trust-driven company that our partners can rely on for years to come.",
     image: vikramImage,
     linkedin: "https://www.linkedin.com/in/viekram-biyaani-44810817b"
   }
@@ -89,6 +91,7 @@ const WhoWeAre = () => {
   const leadershipRef = useScrollAnimation(0.2);
   const cardsRef = useScrollAnimation(0.2);
   const [showBackToTop, setShowBackToTop] = useState(false);
+  const [activeLeaderIndex, setActiveLeaderIndex] = useState(0);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -257,46 +260,90 @@ const WhoWeAre = () => {
                 Meet the founders and leaders steering Nirikshan AI towards a future of responsible technological advancement.
               </p>
             </FadeUp>
-            <div className="grid gap-8 grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 max-w-6xl mx-auto justify-items-center">
-              {leadership.map((member) => {
-                const initials = member.name.split(' ').map(n => n[0]).join('');
-                const socials: SocialLink[] = member.linkedin
-                  ? [{ id: 'linkedin', url: member.linkedin, label: 'LinkedIn', icon: <Linkedin size={18} /> }]
-                  : [];
 
+            {/* Interactive Tabs */}
+            <div className="flex flex-wrap justify-center gap-4 mb-12 max-w-4xl mx-auto">
+              {leadership.map((member, idx) => {
+                const isActive = activeLeaderIndex === idx;
                 return (
-                  <AnimatedProfileCard
+                  <button
                     key={member.name}
-                    accentColor="hsl(var(--primary))"
-                    baseCard={
-                      <ProfileCardContent
-                        name={member.name}
-                        location={member.role}
-                        bio={member.bio}
-                        avatarSrc={member.image}
-                        avatarFallback={initials}
-                        socials={socials}
-                      />
-                    }
-                    overlayCard={
-                      <ProfileCardContent
-                        variant="on-accent"
-                        name={member.name}
-                        location={member.role}
-                        bio={member.bio}
-                        avatarSrc={member.image}
-                        avatarFallback={initials}
-                        showAvatar={false}
-                        socials={socials}
-                        titleStyle={{ color: 'var(--primary-foreground)' }}
-                        descriptionClassName="text-primary-foreground/80"
-                        bioClassName="text-primary-foreground/80"
-                        footerClassName="text-primary-foreground"
-                      />
-                    }
-                  />
+                    onClick={() => setActiveLeaderIndex(idx)}
+                    className={`flex items-center gap-3 px-6 py-3 rounded-2xl border text-left transition-all duration-300 group cursor-pointer ${
+                      isActive
+                        ? "bg-primary text-primary-foreground border-primary shadow-lg shadow-primary/20 scale-[1.02]"
+                        : "bg-card border-border hover:bg-secondary hover:border-primary/30"
+                    }`}
+                  >
+                    <div className="w-10 h-10 rounded-full overflow-hidden border border-border flex-shrink-0">
+                      <img src={member.image} alt={member.name} className="w-full h-full object-cover" />
+                    </div>
+                    <div>
+                      <div className="text-sm font-semibold truncate">{member.name}</div>
+                      <div className={`text-[10px] font-mono uppercase tracking-wider mt-0.5 ${isActive ? "text-primary-foreground/80" : "text-muted-foreground"}`}>{member.role}</div>
+                    </div>
+                  </button>
                 );
               })}
+            </div>
+
+            {/* Selected Leader Spotlight Panel */}
+            <div className="max-w-5xl mx-auto relative min-h-[400px]">
+              <motion.div
+                key={activeLeaderIndex}
+                initial={{ opacity: 0, y: 15 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -15 }}
+                transition={{ duration: 0.4 }}
+                className="grid gap-10 lg:grid-cols-[0.8fr,1.2fr] items-center bg-card border border-border p-8 md:p-12 rounded-3xl ai-border-glow shadow-xl"
+              >
+                {/* Image side */}
+                <div className="relative flex justify-center order-last lg:order-first">
+                  <div className="relative w-full max-w-xs md:max-w-sm rounded-2xl overflow-hidden shadow-2xl border border-primary/20 aspect-[4/5]">
+                    <img
+                      src={leadership[activeLeaderIndex].image}
+                      alt={leadership[activeLeaderIndex].name}
+                      className="w-full h-full object-cover transition-transform duration-500 hover:scale-105"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-slate-950/40 via-transparent to-transparent pointer-events-none" />
+                  </div>
+                  <div className="absolute inset-0 -z-10 rounded-full bg-gradient-to-br from-primary/20 via-accent/20 to-primary/20 blur-3xl" aria-hidden="true" />
+                </div>
+
+                {/* Content side */}
+                <div className="space-y-6 order-first lg:order-last">
+                  <div className="space-y-2">
+                    <h3 className="text-3xl font-bold text-gradient">{leadership[activeLeaderIndex].name}</h3>
+                    <p className="text-indigo-500 font-medium tracking-wide text-sm md:text-base font-mono uppercase">{leadership[activeLeaderIndex].role}</p>
+                  </div>
+
+                  <div className="space-y-4">
+                    <p className="text-muted-foreground leading-relaxed text-sm md:text-base">
+                      {leadership[activeLeaderIndex].extendedBio}
+                    </p>
+                  </div>
+
+                  <div className="p-6 rounded-2xl bg-secondary/50 border border-border/80 relative">
+                    <Quote className="absolute top-4 right-4 w-10 h-10 text-primary/10 pointer-events-none" />
+                    <p className="text-muted-foreground italic leading-relaxed text-xs md:text-sm font-medium">
+                      “{leadership[activeLeaderIndex].message}”
+                    </p>
+                  </div>
+
+                  <div className="flex items-center gap-4 pt-2">
+                    {leadership[activeLeaderIndex].linkedin && (
+                      <a
+                        href={leadership[activeLeaderIndex].linkedin}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center gap-2 text-sm text-indigo-600 hover:text-indigo-700 font-semibold"
+                      >
+                        <Linkedin size={18} /> Connect on LinkedIn
+                      </a>
+                    )}
+                  </div>
+                </div>
+              </motion.div>
             </div>
           </div>
         </section>
@@ -362,46 +409,7 @@ const WhoWeAre = () => {
           </div>
         </section>
 
-        <section className="py-20">
-          <div className="container mx-auto px-6 space-y-16">
-            <div className="grid gap-10 lg:grid-cols-[0.8fr,1.2fr] items-center">
-              <div className="relative flex justify-center order-last lg:order-first">
-                <img
-                  src="https://res.cloudinary.com/dlqvk6v14/image/upload/v1766061671/Picsart_25-12-18_18-09-42-855_nhoru2.png"
-                  alt="Anshul"
-                  className="w-full max-w-sm h-auto drop-shadow-2xl"
-                />
-                <div className="absolute inset-0 -z-10 rounded-full bg-gradient-to-br from-purple-500/30 via-indigo-500/30 to-blue-500/30 blur-3xl" aria-hidden="true" />
-              </div>
-              <div className="space-y-6 order-first lg:order-last">
-                <h2 className="text-3xl md:text-4xl font-bold">Message from Our CEO</h2>
-                <p className="text-muted-foreground leading-relaxed">
-                  “Operational excellence is more than executing playbooks — it is about designing environments where teams are empowered
-                  to experiment, iterate, and deliver.”
-                </p>
-                <p className="text-muted-foreground leading-relaxed">
-                  “We invest deeply in research collaborations, mentorship, and tooling that help our people grow. When our teams thrive,
-                  the innovations they produce resonate far beyond our studio.”
-                </p>
-                <p className="text-muted-foreground leading-relaxed">
-                  “I am proud of the ecosystem we continue to build — one where every project is handled with precision, and every partner
-                  sees us as an extension of their own mission.”
-                </p>
-                <div className="text-sm font-semibold text-indigo-600 uppercase tracking-widest">
-                  Anshul · Founder & CEO
-                </div>
-                <a
-                  href="https://www.linkedin.com/in/anshultech1"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 text-sm text-indigo-600 hover:text-indigo-700"
-                >
-                  <Linkedin size={16} /> Connect on LinkedIn
-                </a>
-              </div>
-            </div>
-          </div>
-        </section>
+
       </main>
 
       <Footer />

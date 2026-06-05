@@ -99,12 +99,13 @@ const useCases = [
 
 const partners = [
   { name: "Madapet", src: partnerMadapet },
-  { name: "Mangosorange Agritech", src: "https://mangosorange.co.in/assets/img/MOLogo.png" },
+  { name: "Mangosorange Agritech", src: "https://mangosorange.co.in/assets/img/MOLogo.png", url: "https://mangosorange.co.in/" },
   { name: "Motherson", src: "https://apn-portal.my.salesforce.com/servlet/servlet.ImageServer?id=0150h0000055wCcAAI&oid=00DE0000000c48tMAA" },
   { name: "Ranayara Pvt Ltd", src: "https://5.imimg.com/data5/NSDMERP/Board/2023/5/308937129/NE/QI/NP/155783236/155783236-board-1684400723760.jpg" },
-  { name: "YMCA University", src: "https://upload.wikimedia.org/wikipedia/en/a/ae/J.C._Bose_University_of_Science_and_Technology%2C_YMCA_logo.png" },
+  { name: "YMCA University", src: "https://upload.wikimedia.org/wikipedia/en/a/ae/J.C._Bose_University_of_Science_and_Technology%2C_YMCA_logo.png", url: "https://jcboseust.ac.in/" },
   { name: "VB Group", src: partnerVB },
-  { name: "Manorama Dabral Jan Kalyan Samiti", src: partnerMDJKS },
+  { name: "Manorama Dabral Jan Kalyan Samiti", src: partnerMDJKS, url: "https://mdjks.org/" },
+  { name: "AVR AI Technologies", src: "https://avraitechnologies.com/favicon.png", url: "https://avraitechnologies.com/" },
 ];
 
 const processSteps = [
@@ -496,20 +497,38 @@ const Index = () => {
             <FadeUp>
               <div className="max-w-5xl mx-auto">
                 <p className="text-center text-sm text-muted-foreground mb-8 font-medium uppercase tracking-widest">Our Clients & Partners</p>
-                <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-7 gap-4 md:gap-5 items-center">
-                  {partners.map((partner) => (
-                    <div
-                      key={partner.name}
-                      className="flex items-center justify-center p-4 md:p-5 rounded-xl border border-border bg-card/80 aspect-square hover:border-primary/30 hover:shadow-md hover:shadow-primary/5 transition-all duration-300 group"
-                    >
-                      <img
-                        src={partner.src}
-                        alt={partner.name}
-                        loading="lazy"
-                        className="w-full h-full object-contain opacity-70 group-hover:opacity-100 transition-opacity duration-300 dark:brightness-90 dark:group-hover:brightness-110"
-                      />
-                    </div>
-                  ))}
+                <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-8 gap-4 md:gap-5 items-center">
+                  {partners.map((partner) => {
+                    const CardContent = (
+                      <div
+                        className="flex items-center justify-center p-4 md:p-5 rounded-xl border border-border bg-card/80 aspect-square hover:border-primary/30 hover:shadow-md hover:shadow-primary/5 transition-all duration-300 group cursor-pointer w-full h-full"
+                      >
+                        <img
+                          src={partner.src}
+                          alt={partner.name}
+                          loading="lazy"
+                          className="w-full h-full object-contain opacity-70 group-hover:opacity-100 transition-opacity duration-300 dark:brightness-90 dark:group-hover:brightness-110"
+                        />
+                      </div>
+                    );
+
+                    return partner.url ? (
+                      <a
+                        key={partner.name}
+                        href={partner.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="block w-full h-full"
+                        title={`Visit ${partner.name}`}
+                      >
+                        {CardContent}
+                      </a>
+                    ) : (
+                      <div key={partner.name} className="block w-full h-full" title={partner.name}>
+                        {CardContent}
+                      </div>
+                    );
+                  })}
                 </div>
               </div>
             </FadeUp>
