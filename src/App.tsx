@@ -116,6 +116,7 @@ const AnimatedRoutes = () => {
         <Route path="/verify/:certificateNumber" element={<PageTransition><CertificateVerify /></PageTransition>} />
         <Route path="/admin/certificates" element={<PageTransition><AdminCertificates /></PageTransition>} />
         <Route path="/admin/hr" element={<PageTransition><AdminHRManagement /></PageTransition>} />
+        <Route path="/admin/internship-applications" element={<PageTransition><AdminInternshipApplications /></PageTransition>} />
         <Route path="/employee/login" element={<PageTransition><EmployeeLogin /></PageTransition>} />
         <Route path="/employee/dashboard" element={<PageTransition><EmployeeDashboard /></PageTransition>} />
         <Route path="/object-detection-demo" element={<PageTransition><ObjectDetectionDemo /></PageTransition>} />
