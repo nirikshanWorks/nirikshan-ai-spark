@@ -246,6 +246,98 @@ const jobOpenings = [
       "Video editing basic skills",
       "Knowledge of SEO"
     ]
+  },
+  {
+    code: "NAI-REACT-TRN-04",
+    title: "React JS Trainer Intern",
+    type: "Internship",
+    location: "Remote / Hybrid",
+    duration: "3–6 Months",
+    stipend: "Performance-based",
+    overview: "Help students and early-career developers master React JS through hands-on sessions, practical projects, and personalized mentorship. Strong communication and coding fundamentals are essential.",
+    responsibilities: [
+      "Deliver hands-on training sessions on React JS",
+      "Teach modern JavaScript (ES6+), React Hooks, Routing, API Integration, and State Management",
+      "Guide students in developing real-world web applications",
+      "Assist students with coding challenges and debugging",
+      "Conduct practical assignments and project reviews"
+    ],
+    required: [
+      "HTML5",
+      "CSS3",
+      "JavaScript (ES6+)",
+      "React JS",
+      "REST APIs",
+      "Git & GitHub",
+      "Responsive Web Design",
+      "Basic knowledge of deployment"
+    ],
+    goodToHave: [
+      "Experience with state management libraries (Redux / Zustand / Context API)",
+      "Familiarity with TypeScript",
+      "Prior teaching or mentoring experience"
+    ]
+  },
+  {
+    code: "NAI-PYTHON-FS-TRN-05",
+    title: "Full Stack Python Trainer Intern",
+    type: "Internship",
+    location: "Remote / Hybrid",
+    duration: "3–6 Months",
+    stipend: "Performance-based",
+    overview: "Train aspiring developers in full-stack Python development using Django/Flask, databases, REST APIs, and deployment basics. Ideal for candidates who enjoy coding and explaining concepts clearly.",
+    responsibilities: [
+      "Conduct practical sessions on Python programming",
+      "Teach Django/Flask-based web development",
+      "Guide students through database integration and backend development",
+      "Mentor students during live projects",
+      "Evaluate assignments and provide technical support"
+    ],
+    required: [
+      "Python",
+      "Django or Flask",
+      "HTML, CSS, JavaScript",
+      "SQL/MySQL",
+      "REST APIs",
+      "Git & GitHub",
+      "Basic Cloud Deployment"
+    ],
+    goodToHave: [
+      "Experience with FastAPI",
+      "Knowledge of cloud platforms (AWS / GCP / Azure)",
+      "Previous mentoring or training experience"
+    ]
+  },
+  {
+    code: "NAI-AI-DL-TRN-06",
+    title: "AI, Deep Learning & Generative AI Trainer Intern",
+    type: "Internship",
+    location: "Remote / Hybrid",
+    duration: "3–6 Months",
+    stipend: "Performance-based",
+    overview: "Deliver engaging sessions on AI, machine learning, deep learning, and generative AI. Guide students through real-world AI projects and introduce them to the latest GPT technologies and prompt engineering techniques.",
+    responsibilities: [
+      "Deliver training on Artificial Intelligence fundamentals",
+      "Teach Machine Learning and Deep Learning concepts",
+      "Conduct hands-on sessions on NLP and Large Language Models",
+      "Introduce students to GPT Technologies, Prompt Engineering, and AI tools",
+      "Guide students in developing AI-based projects"
+    ],
+    required: [
+      "Python",
+      "Machine Learning",
+      "Deep Learning",
+      "TensorFlow or PyTorch",
+      "Natural Language Processing (NLP)",
+      "Generative AI",
+      "GPT Technologies",
+      "Prompt Engineering"
+    ],
+    goodToHave: [
+      "Research or published work in AI/ML",
+      "Experience with LangChain, Hugging Face, or similar frameworks",
+      "Prior teaching or workshop facilitation experience"
+    ]
   }
 ];
 
