@@ -169,32 +169,6 @@ const hiringSteps = [
 
 const jobOpenings = [
   {
-    code: "NAI-AGENTIC-INT-01",
-    title: "Agentic AI Engineer",
-    type: "Internship",
-    location: "Remote / Hybrid",
-    duration: "3–6 Months",
-    stipend: "Performance-based",
-    overview: "Are you excited about building the next generation of AI systems that can think, plan, and act autonomously? This is your chance to work on cutting-edge Agentic AI and real-world problem solving.",
-    responsibilities: [
-      "Building intelligent AI agents using LLMs",
-      "Designing multi-agent systems for real-world use cases",
-      "Integrating APIs, tools, and workflows into AI systems",
-      "Working on automation, decision-making, and reasoning pipelines"
-    ],
-    required: [
-      "Strong basics in Python",
-      "Understanding of AI/ML & LLM concepts",
-      "Hands-on with APIs (OpenAI / other LLMs is a plus)",
-      "Problem-solving mindset + curiosity to learn fast"
-    ],
-    goodToHave: [
-      "Experience with LangChain / CrewAI / AutoGen",
-      "Built any AI-based projects",
-      "Understanding of prompt engineering"
-    ]
-  },
-  {
     code: "NAI-SALES-INT-02",
     title: "Sales Executive",
     type: "Internship",
@@ -373,16 +347,9 @@ const Careers = () => {
     githubProfile: "",
     portfolioLink: "",
     jobAppliedFor: "",
-    salaryExpectation: "",
-    whyJoinStartup: "",
-    relevantExperience: "",
-    availability: "",
-    howDidYouHear: "",
   });
   const [resumeFile, setResumeFile] = useState<File | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
-
-  const isAgenticRole = applicationForm.jobAppliedFor === "NAI-AGENTIC-INT-01";
 
   const handleFormChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
@@ -441,7 +408,6 @@ const Careers = () => {
       }
 
       // Save application to database with file path (not public URL)
-      const isAgentic = applicationForm.jobAppliedFor === "NAI-AGENTIC-INT-01";
       const { error: dbError } = await supabase
         .from('job_applications')
         .insert({
@@ -453,13 +419,6 @@ const Careers = () => {
           portfolio_link: applicationForm.portfolioLink || null,
           job_applied_for: applicationForm.jobAppliedFor,
           resume_url: filePath,
-          ...(isAgentic ? {
-            salary_expectation: applicationForm.salaryExpectation || null,
-            why_join_startup: applicationForm.whyJoinStartup || null,
-            relevant_experience: applicationForm.relevantExperience || null,
-            availability: applicationForm.availability || null,
-            how_did_you_hear: applicationForm.howDidYouHear || null,
-          } : {}),
         });
 
       if (dbError) {
@@ -478,11 +437,6 @@ const Careers = () => {
         githubProfile: "",
         portfolioLink: "",
         jobAppliedFor: "",
-        salaryExpectation: "",
-        whyJoinStartup: "",
-        relevantExperience: "",
-        availability: "",
-        howDidYouHear: "",
       });
       setResumeFile(null);
       // Reset file input
@@ -864,80 +818,6 @@ const Careers = () => {
                   </Select>
                 </div>
 
-                {isAgenticRole && (
-                  <>
-                    <div className="grid gap-2">
-                      <label htmlFor="salaryExpectation" className="text-sm font-medium">
-                        What are your salary/stipend expectations? <span className="text-destructive">*</span>
-                      </label>
-                      <Input
-                        id="salaryExpectation"
-                        name="salaryExpectation"
-                        placeholder="e.g., ₹10,000 - ₹15,000/month"
-                        required
-                        value={applicationForm.salaryExpectation}
-                        onChange={handleFormChange}
-                      />
-                    </div>
-
-                    <div className="grid gap-2">
-                      <label htmlFor="whyJoinStartup" className="text-sm font-medium">
-                        Why do you want to join a startup like Nirikshan-AI? <span className="text-destructive">*</span>
-                      </label>
-                      <Textarea
-                        id="whyJoinStartup"
-                        name="whyJoinStartup"
-                        placeholder="Tell us what excites you about working at an early-stage AI startup..."
-                        required
-                        rows={3}
-                        value={applicationForm.whyJoinStartup}
-                        onChange={handleFormChange}
-                      />
-                    </div>
-
-                    <div className="grid gap-2">
-                      <label htmlFor="relevantExperience" className="text-sm font-medium">
-                        Describe any relevant experience with AI agents, LLMs, or automation <span className="text-destructive">*</span>
-                      </label>
-                      <Textarea
-                        id="relevantExperience"
-                        name="relevantExperience"
-                        placeholder="Projects you've built, tools you've used (LangChain, CrewAI, etc.), or problems you've solved..."
-                        required
-                        rows={3}
-                        value={applicationForm.relevantExperience}
-                        onChange={handleFormChange}
-                      />
-                    </div>
-
-                    <div className="grid gap-2">
-                      <label htmlFor="availability" className="text-sm font-medium">
-                        What is your availability? (Start date & hours/week) <span className="text-destructive">*</span>
-                      </label>
-                      <Input
-                        id="availability"
-                        name="availability"
-                        placeholder="e.g., Can start immediately, available 40 hrs/week"
-                        required
-                        value={applicationForm.availability}
-                        onChange={handleFormChange}
-                      />
-                    </div>
-
-                    <div className="grid gap-2">
-                      <label htmlFor="howDidYouHear" className="text-sm font-medium">
-                        How did you hear about this opportunity?
-                      </label>
-                      <Input
-                        id="howDidYouHear"
-                        name="howDidYouHear"
-                        placeholder="e.g., LinkedIn, referral, college placement cell..."
-                        value={applicationForm.howDidYouHear}
-                        onChange={handleFormChange}
-                      />
-                    </div>
-                  </>
-                )}
 
                 <div className="grid gap-2">
                   <label htmlFor="resume" className="text-sm font-medium">
