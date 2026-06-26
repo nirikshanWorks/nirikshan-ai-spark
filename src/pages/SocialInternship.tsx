@@ -59,7 +59,7 @@ const LazyReCAPTCHA = lazy(() =>
   })).catch(() => ({
     default: (() => null) as any,
   }))
-);
+) as any;
 
 const TRACKS = [
   {

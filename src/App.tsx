@@ -68,7 +68,7 @@ const AnalyticsTracker = () => {
   const location = useLocation();
 
   useEffect(() => {
-    const gtag = window.gtag;
+    const gtag = (window as any).gtag;
 
     if (!gtag) {
       return;
