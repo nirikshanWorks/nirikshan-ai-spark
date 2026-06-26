@@ -1,7 +1,6 @@
 import { Chatbot } from "@/components/Chatbot/Chatbot";
 import { ErrorBoundary } from "@/components/ErrorBoundary";
 import { EyeLoader, EyeLoaderInline } from "@/components/EyeLoader";
-import { MouseColorSplatter } from "@/components/MouseColorSplatter";
 import { PageTransition } from "@/components/PageTransition";
 import ScrollToTop from "@/components/ScrollToTop";
 import { Toaster as Sonner } from "@/components/ui/sonner";
@@ -41,6 +40,7 @@ const Auth = lazy(() => import("./pages/Auth"));
 const CertificateVerify = lazy(() => import("./pages/CertificateVerify"));
 const AdminCertificates = lazy(() => import("./pages/admin/Certificates"));
 const AdminHRManagement = lazy(() => import("./pages/admin/HRManagement"));
+const AdminInternshipApplications = lazy(() => import("./pages/admin/InternshipApplications"));
 const EmployeeLogin = lazy(() => import("./pages/employee/Login"));
 const EmployeeDashboard = lazy(() => import("./pages/employee/Dashboard"));
 const ObjectDetectionDemo = lazy(() => import("./pages/ObjectDetectionDemo"));
@@ -68,7 +68,7 @@ const AnalyticsTracker = () => {
   const location = useLocation();
 
   useEffect(() => {
-    const gtag = window.gtag;
+    const gtag = (window as any).gtag;
 
     if (!gtag) {
       return;
@@ -115,6 +115,7 @@ const AnimatedRoutes = () => {
         <Route path="/verify/:certificateNumber" element={<PageTransition><CertificateVerify /></PageTransition>} />
         <Route path="/admin/certificates" element={<PageTransition><AdminCertificates /></PageTransition>} />
         <Route path="/admin/hr" element={<PageTransition><AdminHRManagement /></PageTransition>} />
+        <Route path="/admin/internship-applications" element={<PageTransition><AdminInternshipApplications /></PageTransition>} />
         <Route path="/employee/login" element={<PageTransition><EmployeeLogin /></PageTransition>} />
         <Route path="/employee/dashboard" element={<PageTransition><EmployeeDashboard /></PageTransition>} />
         <Route path="/object-detection-demo" element={<PageTransition><ObjectDetectionDemo /></PageTransition>} />
@@ -157,7 +158,6 @@ const App = () => {
                     <AnimatedRoutes />
                   </Suspense>
                   <Chatbot />
-                  <MouseColorSplatter />
                 </AuthProvider>
               </BrowserRouter>
             </ErrorBoundary>
