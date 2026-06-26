@@ -194,30 +194,6 @@ const jobOpenings = [
       "Basic understanding of B2B/tech sales"
     ]
   },
-    title: "Sales Executive",
-    type: "Internship",
-    location: "Remote / Work from Home",
-    duration: "3–6 Months",
-    stipend: "Incentive + Commission",
-    overview: "You'll handle lead generation, client communication, and product pitching. If your English is weak or you hesitate in conversations, this role will expose that immediately. We need confident, proactive communicators.",
-    responsibilities: [
-      "Generate leads using online/offline channels",
-      "Talk to prospects, understand needs, and pitch our solutions",
-      "Maintain CRM records",
-      "Assist in meetings, demos, and follow-ups",
-      "Support sales campaigns with proper coordination"
-    ],
-    required: [
-      "Strong English communication (spoken + written)",
-      "Confidence in client handling",
-      "Ability to learn product details quickly",
-      "Team coordination mindset"
-    ],
-    goodToHave: [
-      "Prior experience in sales calls or telemarketing",
-      "Basic understanding of B2B/tech sales"
-    ]
-  },
   {
     code: "NAI-DM-INT-03",
     title: "Digital Marketing",
