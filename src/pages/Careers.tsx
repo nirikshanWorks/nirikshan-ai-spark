@@ -169,33 +169,31 @@ const hiringSteps = [
 
 const jobOpenings = [
   {
-    code: "NAI-AGENTIC-INT-01",
-    title: "Agentic AI Engineer",
+    code: "NAI-SALES-INT-02",
+    title: "Sales Executive",
     type: "Internship",
-    location: "Remote / Hybrid",
+    location: "Remote / Work from Home",
     duration: "3–6 Months",
-    stipend: "Performance-based",
-    overview: "Are you excited about building the next generation of AI systems that can think, plan, and act autonomously? This is your chance to work on cutting-edge Agentic AI and real-world problem solving.",
+    stipend: "Incentive + Commission",
+    overview: "You'll handle lead generation, client communication, and product pitching. If your English is weak or you hesitate in conversations, this role will expose that immediately. We need confident, proactive communicators.",
     responsibilities: [
-      "Building intelligent AI agents using LLMs",
-      "Designing multi-agent systems for real-world use cases",
-      "Integrating APIs, tools, and workflows into AI systems",
-      "Working on automation, decision-making, and reasoning pipelines"
+      "Generate leads using online/offline channels",
+      "Talk to prospects, understand needs, and pitch our solutions",
+      "Maintain CRM records",
+      "Assist in meetings, demos, and follow-ups",
+      "Support sales campaigns with proper coordination"
     ],
     required: [
-      "Strong basics in Python",
-      "Understanding of AI/ML & LLM concepts",
-      "Hands-on with APIs (OpenAI / other LLMs is a plus)",
-      "Problem-solving mindset + curiosity to learn fast"
+      "Strong English communication (spoken + written)",
+      "Confidence in client handling",
+      "Ability to learn product details quickly",
+      "Team coordination mindset"
     ],
     goodToHave: [
-      "Experience with LangChain / CrewAI / AutoGen",
-      "Built any AI-based projects",
-      "Understanding of prompt engineering"
+      "Prior experience in sales calls or telemarketing",
+      "Basic understanding of B2B/tech sales"
     ]
   },
-  {
-    code: "NAI-SALES-INT-02",
     title: "Sales Executive",
     type: "Internship",
     location: "Remote / Work from Home",
