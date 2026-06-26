@@ -584,11 +584,16 @@ const Careers = () => {
                   <Card key={job.code} className="p-6 md:p-8 bg-background/90 backdrop-blur border-border hover:border-primary/50 transition-colors">
                     <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-4 mb-6">
                       <div>
-                        <div className="flex items-center gap-3 mb-2">
+                        <div className="flex items-center gap-3 mb-2 flex-wrap">
                           <h3 className="text-2xl font-bold">{job.title}</h3>
                           <span className="inline-flex items-center rounded-full bg-primary/10 px-3 py-1 text-xs font-medium text-primary">
                             {job.type}
                           </span>
+                          {(job.code === "NAI-SALES-INT-02" || job.code === "NAI-DM-INT-03") && (
+                            <span className="inline-flex items-center rounded-full bg-emerald-500/15 px-3 py-1 text-xs font-medium text-emerald-500">
+                              New
+                            </span>
+                          )}
                         </div>
                         <p className="text-sm text-muted-foreground">Job Code: {job.code}</p>
                       </div>
