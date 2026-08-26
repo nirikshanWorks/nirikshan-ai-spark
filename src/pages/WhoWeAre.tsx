@@ -1,5 +1,5 @@
 import anshulImage from "@/assets/team/anshul.png";
-import rajeshImage from "@/assets/team/rajesh-dabral.jpg";
+
 import vikramImage from "@/assets/team/vikram-biyani.jpg";
 import wwaTeamVideo from "@/assets/wwa-team.mp4";
 import { Footer } from "@/components/Footer";
@@ -63,15 +63,6 @@ const leadership = [
     message: "Operational excellence is more than executing playbooks — it is about designing environments where teams are empowered to experiment, iterate, and deliver. We invest deeply in research collaborations, mentorship, and tooling that help our people grow. When our teams thrive, the innovations they produce resonate far beyond our studio. I am proud of the ecosystem we continue to build — one where every project is handled with precision, and every partner sees us as an extension of their own mission.",
     image: anshulImage,
     linkedin: "https://www.linkedin.com/in/anshultech1"
-  },
-  {
-    name: "Rajesh Dabral",
-    role: "Director – Administration",
-    bio: "Rajesh oversees administrative operations, ensuring seamless coordination across teams and efficient resource management to support our growth.",
-    extendedBio: "Rajesh Dabral brings years of administrative excellence to Nirikshan AI, managing operational policies, team cohesion, and resource allocation. He facilitates a collaborative environment that bridges research ambitions with operational efficiency. His focus is on establishing a resilient corporate framework that supports rapid scaling while maintaining the company's core values of integrity and transparency.",
-    message: "A company's strength lies in its foundation and its people. My goal is to cultivate an environment of absolute transparency, clear communication, and seamless coordination. By establishing robust administrative operations, we ensure that our engineering and research teams have the support they need to focus entirely on building breakthrough solutions. Building a company is a collaborative journey, and we are committed to doing it with integrity.",
-    image: rajeshImage,
-    linkedin: ""
   },
   {
     name: "CA Vikram Biyani",
