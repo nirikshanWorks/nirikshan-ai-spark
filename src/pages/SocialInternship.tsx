@@ -1,9 +1,7 @@
-import { FloatingElements } from "@/components/FloatingElements";
 import { SEO } from "@/components/SEO";
 import { Footer } from "@/components/Footer";
-import { HeroParticles } from "@/components/HeroParticles";
 import { Navigation } from "@/components/Navigation";
-import { AICircuitLines } from "@/components/AICircuitLines";
+
 import { AIFloatingIcons } from "@/components/AIFloatingIcons";
 import { FadeUp } from "@/components/ScrollAnimations";
 import { Badge } from "@/components/ui/badge";
@@ -14,7 +12,6 @@ import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 import {
-  ArrowUpRight,
   BookOpen,
   Calendar,
   Heart,
@@ -27,6 +24,7 @@ import {
   ShieldCheck,
   CheckCircle2
 } from "lucide-react";
+
 import { lazy, Suspense, useRef, useState } from "react";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
@@ -188,39 +186,6 @@ const SocialInternship = () => {
       <Navigation />
 
       <main className="pt-16">
-        {/* Hero Section */}
-        <section className="relative overflow-hidden py-24 md:py-32 bg-secondary/10">
-          <div className="absolute inset-0 bg-gradient-to-br from-emerald-500/15 via-background to-green-500/5 animate-pulse-slow" aria-hidden="true" />
-          <AICircuitLines className="opacity-25" />
-          <HeroParticles />
-          <FloatingElements count={8} />
-
-          <div className="relative container mx-auto px-6 max-w-5xl text-center space-y-8">
-            <Badge className="inline-flex items-center gap-2 bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border-emerald-500/20 px-3 py-1 text-xs md:text-sm">
-              <Sparkles size={14} /> Joint Initiative: Technology & Social Impact
-            </Badge>
-            <h1 className="text-4xl md:text-6xl font-bold leading-tight">
-              Social & Technology <br />
-              <span className="bg-clip-text text-transparent bg-gradient-to-r from-emerald-600 to-green-500 dark:from-emerald-400 dark:to-green-400 font-bold">Student Internship 2026</span>
-            </h1>
-            <p className="text-lg md:text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed">
-              Launched collaboratively by **Nirikshan AI** and **MDJKS NGO**, this program offers college and university students a unique pathway to build and deploy digital systems, conduct ground-level social fieldwork, and empower rural communities in Uttarakhand. Perfect for students looking for real-world projects, academic internship credits, and community impact.
-            </p>
-            <div className="flex flex-wrap justify-center gap-4 pt-4">
-              <Button size="lg" className="bg-gradient-to-r from-emerald-600 to-green-600 hover:from-emerald-500 hover:to-green-500 text-white border-none shadow-lg shadow-emerald-500/20 hover:shadow-emerald-500/35 transition-all duration-300" asChild>
-                <a href="#apply-form">
-                  Apply Now
-                  <ArrowUpRight size={18} />
-                </a>
-              </Button>
-              <Button size="lg" variant="outline" className="border-emerald-500/30 text-emerald-700 dark:text-emerald-300 hover:bg-emerald-500/10" asChild>
-                <a href="https://mdjks.org" target="_blank" rel="noopener noreferrer">
-                  Learn about MDJKS
-                </a>
-              </Button>
-            </div>
-          </div>
-        </section>
 
         {/* Tracks Section */}
         <section className="py-20 container mx-auto px-6 max-w-6xl">
