@@ -1396,7 +1396,7 @@ const AdminHRManagement = () => {
 
           {/* Tabs */}
           <Tabs value={defaultTab} onValueChange={handleTabChange} className="space-y-6">
-            <TabsList className="grid w-full max-w-4xl grid-cols-5">
+            <TabsList className="grid w-full max-w-5xl grid-cols-6">
               <TabsTrigger value="employees" className="gap-2">
                 <UserPlus className="h-4 w-4" />
                 Employees
