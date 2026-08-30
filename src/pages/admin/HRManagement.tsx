@@ -277,6 +277,22 @@ const AdminHRManagement = () => {
     description: "",
   });
 
+  // Enquiries (website leads)
+  type Lead = {
+    id: string;
+    name: string;
+    email: string | null;
+    phone: string | null;
+    company: string | null;
+    service_interest: string | null;
+    message: string | null;
+    status: string | null;
+    created_at: string | null;
+  };
+  const [leads, setLeads] = useState<Lead[]>([]);
+  const [leadsLoading, setLeadsLoading] = useState(true);
+  const [leadSearchQuery, setLeadSearchQuery] = useState("");
+
   useEffect(() => {
     if (!authLoading && (!user || !isAdmin)) {
       navigate("/auth");
@@ -298,9 +314,34 @@ const AdminHRManagement = () => {
     }
   }, [selectedMonth]);
 
+  useEffect(() => {
+    if (user && isAdmin) {
+      fetchLeads();
+    }
+  }, [user, isAdmin]);
+
   const handleTabChange = (value: string) => {
     setSearchParams({ tab: value });
   };
+
+  // ==================== ENQUIRIES (LEADS) ====================
+
+  const fetchLeads = async () => {
+    setLeadsLoading(true);
+    const { data, error } = await supabase
+      .from("leads")
+      .select("*")
+      .order("created_at", { ascending: false });
+    if (!error && data) setLeads(data as Lead[]);
+    setLeadsLoading(false);
+  };
+
+  const filteredLeads = leads.filter((lead) => {
+    const q = leadSearchQuery.toLowerCase();
+    if (!q) return true;
+    return [lead.name, lead.email, lead.company, lead.phone, lead.service_interest, lead.message]
+      .some((v) => (v || "").toLowerCase().includes(q));
+  });
 
   // ==================== HOLIDAYS FUNCTIONS ====================
 
@@ -1355,7 +1396,7 @@ const AdminHRManagement = () => {
 
           {/* Tabs */}
           <Tabs value={defaultTab} onValueChange={handleTabChange} className="space-y-6">
-            <TabsList className="grid w-full max-w-4xl grid-cols-5">
+            <TabsList className="grid w-full max-w-5xl grid-cols-6">
               <TabsTrigger value="employees" className="gap-2">
                 <UserPlus className="h-4 w-4" />
                 Employees
@@ -1375,6 +1416,10 @@ const AdminHRManagement = () => {
               <TabsTrigger value="holidays" className="gap-2">
                 <CalendarIcon className="h-4 w-4" />
                 Holidays
+              </TabsTrigger>
+              <TabsTrigger value="enquiries" className="gap-2">
+                <MessageSquare className="h-4 w-4" />
+                Enquiries
               </TabsTrigger>
             </TabsList>
 
@@ -2649,6 +2694,83 @@ const AdminHRManagement = () => {
                               ))}
                             </TableBody>
                           </Table>
+                        </div>
+                      )}
+                    </CardContent>
+                  </Card>
+                </>
+              )}
+            </TabsContent>
+
+            {/* ==================== ENQUIRIES TAB ==================== */}
+            <TabsContent value="enquiries" className="space-y-6">
+              {leadsLoading ? (
+                <div className="flex items-center justify-center py-12">
+                  <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
+                </div>
+              ) : (
+                <>
+                  <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+                    <div>
+                      <h3 className="text-lg font-semibold">Client Enquiries</h3>
+                      <p className="text-sm text-muted-foreground">
+                        Submissions from the website "Send us a Message" form
+                      </p>
+                    </div>
+                    <div className="relative w-full md:w-72">
+                      <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                      <Input
+                        placeholder="Search enquiries..."
+                        value={leadSearchQuery}
+                        onChange={(e) => setLeadSearchQuery(e.target.value)}
+                        className="pl-9"
+                      />
+                    </div>
+                  </div>
+
+                  <Card>
+                    <CardContent className="p-0">
+                      {filteredLeads.length === 0 ? (
+                        <div className="py-12 text-center text-muted-foreground">
+                          No enquiries found
+                        </div>
+                      ) : (
+                        <div className="divide-y">
+                          {filteredLeads.map((lead) => (
+                            <div key={lead.id} className="p-4 space-y-2">
+                              <div className="flex flex-wrap items-center gap-2 justify-between">
+                                <div className="font-medium flex items-center gap-2">
+                                  <MessageSquare className="h-4 w-4 text-primary" />
+                                  {lead.name}
+                                  {lead.company && (
+                                    <span className="text-muted-foreground text-sm">· {lead.company}</span>
+                                  )}
+                                </div>
+                                <div className="flex items-center gap-2">
+                                  <Badge variant="outline">{lead.status || "new"}</Badge>
+                                  <span className="text-xs text-muted-foreground">
+                                    {lead.created_at ? format(new Date(lead.created_at), "dd MMM yyyy, HH:mm") : ""}
+                                  </span>
+                                </div>
+                              </div>
+                              <div className="flex flex-wrap gap-4 text-sm text-muted-foreground">
+                                {lead.email && (
+                                  <span className="flex items-center gap-1"><Mail className="h-3 w-3" />{lead.email}</span>
+                                )}
+                                {lead.phone && (
+                                  <span className="flex items-center gap-1"><Phone className="h-3 w-3" />{lead.phone}</span>
+                                )}
+                                {lead.service_interest && (
+                                  <span className="flex items-center gap-1"><Briefcase className="h-3 w-3" />{lead.service_interest}</span>
+                                )}
+                              </div>
+                              {lead.message && (
+                                <p className="text-sm whitespace-pre-wrap bg-muted/40 rounded-md p-3">
+                                  {lead.message}
+                                </p>
+                              )}
+                            </div>
+                          ))}
                         </div>
                       )}
                     </CardContent>
