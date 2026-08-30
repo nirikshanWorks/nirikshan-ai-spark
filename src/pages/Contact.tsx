@@ -1,4 +1,5 @@
 
+import { supabase } from "@/integrations/supabase/client";
 import { FloatingElements } from "@/components/FloatingElements";
 import { SEO } from "@/components/SEO";
 import { Footer } from "@/components/Footer";
@@ -254,7 +255,32 @@ const Contact = () => {
         throw new Error(failureReason || "Submission failed");
       }
 
-      console.info("Contact form submission payload", payload);
+      // Save the enquiry into the CRM so it shows up in the admin panel
+      const details = [
+        formData.message?.trim(),
+        formData.engagementType ? `Engagement: ${formData.engagementType}` : null,
+        formData.budgetRange ? `Budget: ${formData.budgetRange}` : null,
+        formData.projectTimeline ? `Timeline: ${formData.projectTimeline}` : null,
+        formData.successCriteria ? `Success criteria: ${formData.successCriteria}` : null,
+        `NDA required: ${formData.ndaRequired ? "Yes" : "No"}`,
+        [formData.city, formData.country].filter(Boolean).join(", ") || null,
+      ]
+        .filter(Boolean)
+        .join("\n");
+
+      const { error: leadError } = await supabase.from("leads").insert({
+        name: formData.name,
+        email: formData.email || null,
+        phone: formData.phone || null,
+        company: formData.company || null,
+        service_interest: formData.engagementType || null,
+        message: details,
+        source: "website",
+        status: "new",
+        assigned_to: null,
+      });
+      if (leadError) console.error("Failed to save lead", leadError);
+
       toast.success("Thank you for your message! We'll get back to you soon.");
       setFormData({ ...FORM_INITIAL_STATE });
       recaptchaRef.current?.reset();
