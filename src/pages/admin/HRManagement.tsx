@@ -1417,6 +1417,10 @@ const AdminHRManagement = () => {
                 <CalendarIcon className="h-4 w-4" />
                 Holidays
               </TabsTrigger>
+              <TabsTrigger value="enquiries" className="gap-2">
+                <MessageSquare className="h-4 w-4" />
+                Enquiries
+              </TabsTrigger>
             </TabsList>
 
             {/* ==================== EMPLOYEES TAB ==================== */}
