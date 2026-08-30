@@ -298,9 +298,34 @@ const AdminHRManagement = () => {
     }
   }, [selectedMonth]);
 
+  useEffect(() => {
+    if (user && isAdmin) {
+      fetchLeads();
+    }
+  }, [user, isAdmin]);
+
   const handleTabChange = (value: string) => {
     setSearchParams({ tab: value });
   };
+
+  // ==================== ENQUIRIES (LEADS) ====================
+
+  const fetchLeads = async () => {
+    setLeadsLoading(true);
+    const { data, error } = await supabase
+      .from("leads")
+      .select("*")
+      .order("created_at", { ascending: false });
+    if (!error && data) setLeads(data as Lead[]);
+    setLeadsLoading(false);
+  };
+
+  const filteredLeads = leads.filter((lead) => {
+    const q = leadSearchQuery.toLowerCase();
+    if (!q) return true;
+    return [lead.name, lead.email, lead.company, lead.phone, lead.service_interest, lead.message]
+      .some((v) => (v || "").toLowerCase().includes(q));
+  });
 
   // ==================== HOLIDAYS FUNCTIONS ====================
 
