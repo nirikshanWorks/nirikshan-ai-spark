@@ -277,6 +277,22 @@ const AdminHRManagement = () => {
     description: "",
   });
 
+  // Enquiries (website leads)
+  type Lead = {
+    id: string;
+    name: string;
+    email: string | null;
+    phone: string | null;
+    company: string | null;
+    service_interest: string | null;
+    message: string | null;
+    status: string | null;
+    created_at: string | null;
+  };
+  const [leads, setLeads] = useState<Lead[]>([]);
+  const [leadsLoading, setLeadsLoading] = useState(true);
+  const [leadSearchQuery, setLeadSearchQuery] = useState("");
+
   useEffect(() => {
     if (!authLoading && (!user || !isAdmin)) {
       navigate("/auth");
