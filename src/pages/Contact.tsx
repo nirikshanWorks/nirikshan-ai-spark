@@ -1,4 +1,5 @@
 
+import { supabase } from "@/integrations/supabase/client";
 import { FloatingElements } from "@/components/FloatingElements";
 import { SEO } from "@/components/SEO";
 import { Footer } from "@/components/Footer";
