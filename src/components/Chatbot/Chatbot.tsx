@@ -184,7 +184,8 @@ export const Chatbot = () => {
       )}
 
       {isOpen && (
-        <div className="fixed bottom-6 right-6 w-[380px] h-[600px] bg-background border border-border rounded-2xl shadow-2xl flex flex-col z-50 fade-in scale-in overflow-hidden">
+        <div className="fixed bottom-6 right-6 w-[380px] h-[min(600px,calc(100dvh-48px))] bg-background border border-border rounded-2xl shadow-2xl flex flex-col z-[9999] fade-in scale-in overflow-hidden">
+
           <div className="absolute inset-0 pointer-events-none">
             <ChatbotParticles />
           </div>
