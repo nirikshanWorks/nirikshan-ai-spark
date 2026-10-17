@@ -44,7 +44,6 @@ const AdminInternshipApplications = lazy(() => import("./pages/admin/InternshipA
 const EmployeeLogin = lazy(() => import("./pages/employee/Login"));
 const EmployeeDashboard = lazy(() => import("./pages/employee/Dashboard"));
 const ObjectDetectionDemo = lazy(() => import("./pages/ObjectDetectionDemo"));
-const SocialInternship = lazy(() => import("./pages/SocialInternship"));
 const AIShowcase = lazy(() => import("./pages/AIShowcase"));
 const Blog = lazy(() => import("./pages/Blog"));
 const NotFound = lazy(() => import("./pages/NotFound"));
@@ -119,7 +118,6 @@ const AnimatedRoutes = () => {
         <Route path="/employee/login" element={<PageTransition><EmployeeLogin /></PageTransition>} />
         <Route path="/employee/dashboard" element={<PageTransition><EmployeeDashboard /></PageTransition>} />
         <Route path="/object-detection-demo" element={<PageTransition><ObjectDetectionDemo /></PageTransition>} />
-        <Route path="/social-internship" element={<PageTransition><SocialInternship /></PageTransition>} />
         <Route path="/ai-showcase" element={<PageTransition><AIShowcase /></PageTransition>} />
         <Route path="/blog" element={<PageTransition><Blog /></PageTransition>} />
         <Route path="/login" element={<PageTransition><CrmLogin /></PageTransition>} />

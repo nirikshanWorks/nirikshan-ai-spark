@@ -59,22 +59,6 @@ interface Project {
 /* ─── Projects Data ─── */
 const projects: Project[] = [
   {
-    title: "Manorama KrishiRakshak",
-    description: "Multilingual farmer-focused mobile app offering mandi market updates, government scheme guidance, AI crop assistance, and community success stories for agriculture users across India.",
-    category: "Mobile App Development",
-    image: "https://images.unsplash.com/photo-1472396961693-142e6e269027?auto=format&fit=crop&w=1200&q=80",
-    date: "March 2026",
-    status: "Completed",
-    client: "Manorama Krishi Initiative, India",
-    tags: ["Mobile App", "Agritech", "AI Assistant", "Localization"],
-    impact: "15-language farmer support",
-    termsPath: "/projects/manorma-krishi-rakshak/terms",
-    privacyPath: "/projects/manorma-krishi-rakshak/privacy",
-    storeReleaseSoon: true,
-    accountDeletionPath: "/projects/manorma-krishi-rakshak/account-deletion-policy",
-    accentColor: "from-emerald-500 to-teal-400",
-  },
-  {
     title: "AI Inventory Management System",
     description: "Developing a smart inventory management system for one of South Africa's leading pet Bottles product companies. Real-time stock tracking, demand forecasting, and automated reorder triggers powered by machine learning.",
     category: "AI Solution",
@@ -1083,6 +1067,110 @@ const Projects = () => {
                   <div className="grid md:grid-cols-2 gap-8 max-w-5xl mx-auto">
                     {products.map((product, idx) => (
                       <ProductCard key={product.name} product={product} index={idx} />
+                    ))}
+                  </div>
+                </div>
+              </section>
+
+              {/* ── Product Catalogues ── */}
+              <section className="py-16 relative overflow-hidden">
+                <div className="container mx-auto px-6 relative z-10">
+                  <FadeUp className="text-center mb-12">
+                    <div className="inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/5 px-4 py-2 text-sm font-medium text-primary mb-4">
+                      <FileText className="w-4 h-4" />
+                      Explore Our Solutions
+                    </div>
+
+                    <h2 className="text-3xl md:text-4xl font-bold mb-4">
+                      Product <span className="text-gradient">Catalogues</span>
+                    </h2>
+
+                    <p className="text-muted-foreground max-w-2xl mx-auto leading-relaxed">
+                      Explore our catalogues to learn more about our AI solutions
+                      and the capabilities we offer.
+                    </p>
+                  </FadeUp>
+
+                  <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto">
+                    {[
+                      {
+                        title: "Computer Vision",
+                        subtitle: "Safer Homes & Smarter Industries",
+                        description:
+                          "Explore Nirikshan AI's computer vision catalogue for applications across homes and industries.",
+                        file: "/catalogues/computer-vision-catalogue.pdf",
+                        icon: Eye,
+                        gradient: "from-violet-500 to-indigo-500",
+                      },
+                      {
+                        title: "10X AI Productivity",
+                        subtitle: "AI-Powered Productivity",
+                        description:
+                          "Discover the 10X AI Productivity Initiative catalogue and explore its proposed AI productivity solutions.",
+                        file: "/catalogues/ai-productivity-catalogue.pdf",
+                        icon: Zap,
+                        gradient: "from-blue-500 to-cyan-500",
+                      },
+                      {
+                        title: "Social Media Intelligence",
+                        subtitle: "Monitoring & Governance",
+                        description:
+                          "Explore the catalogue for social media monitoring and governance intelligence solutions.",
+                        file: "/catalogues/social-media-intelligence-catalogue.pdf",
+                        icon: Globe2,
+                        gradient: "from-emerald-500 to-teal-500",
+                      },
+                    ].map((catalogue, index) => (
+                      <motion.div
+                        key={catalogue.file}
+                        initial={{ opacity: 0, y: 24 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        viewport={{ once: true, margin: "-40px" }}
+                        transition={{ duration: 0.45, delay: index * 0.12 }}
+                        whileHover={{ y: -6 }}
+                        className="group relative rounded-2xl border border-border/60 bg-card p-6 md:p-7 overflow-hidden transition-colors duration-300 hover:border-primary/40 hover:shadow-xl hover:shadow-primary/5"
+                      >
+                        <div
+                          className={`absolute -top-16 -right-16 h-40 w-40 rounded-full bg-gradient-to-br ${catalogue.gradient} opacity-10 blur-3xl transition-opacity duration-300 group-hover:opacity-25`}
+                          aria-hidden="true"
+                        />
+
+                        <div className="relative">
+                          <div
+                            className={`flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br ${catalogue.gradient} shadow-lg mb-6 transition-transform duration-300 group-hover:scale-110`}
+                          >
+                            <catalogue.icon className="h-7 w-7 text-white" />
+                          </div>
+
+                          <p className="text-xs font-semibold uppercase tracking-widest text-primary mb-2">
+                            Catalogue {String(index + 1).padStart(2, "0")}
+                          </p>
+
+                          <h3 className="text-xl font-bold mb-2">
+                            {catalogue.title}
+                          </h3>
+
+                          <p className="text-sm font-medium text-muted-foreground mb-3">
+                            {catalogue.subtitle}
+                          </p>
+
+                          <p className="text-sm text-muted-foreground leading-relaxed min-h-[72px] mb-6">
+                            {catalogue.description}
+                          </p>
+
+                          <a
+                            href={catalogue.file}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            aria-label={`Open ${catalogue.title} catalogue in a new tab`}
+                            className="inline-flex w-full items-center justify-center gap-2 rounded-xl gradient-primary px-5 py-3 text-sm font-semibold text-primary-foreground transition-all duration-300 hover:opacity-90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
+                          >
+                            <FileText className="h-4 w-4" />
+                            View Catalogue
+                            <ArrowUpRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1 group-hover:-translate-y-1" />
+                          </a>
+                        </div>
+                      </motion.div>
                     ))}
                   </div>
                 </div>

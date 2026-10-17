@@ -709,14 +709,7 @@ const Contact = () => {
                             Mahendragarh - 123029, Haryana
                           </p>
                         </div>
-                        
-                        <div className="space-y-1">
-                          <h4 className="text-sm font-semibold text-foreground">Chair Office - Dehradun</h4>
-                          <p className="text-sm text-muted-foreground leading-relaxed">
-                            Sahastradhara Rd, Doon IT Park,<br />
-                            Aman Vihar, Dehradun, Uttarakhand 248013
-                          </p>
-                        </div>
+
                         
                         <div className="space-y-1">
                           <h4 className="text-sm font-semibold text-foreground">Chair Office - Kolkata</h4>
