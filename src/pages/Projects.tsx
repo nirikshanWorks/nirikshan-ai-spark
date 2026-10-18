@@ -37,7 +37,7 @@ import {
     Zap
 } from "lucide-react";
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import {
   Dialog,
   DialogContent,
@@ -582,7 +582,12 @@ const ProductCard = ({ product, index }: { product: typeof products[0]; index: n
 
 const Projects = () => {
   const [activeCategory, setActiveCategory] = useState("All");
-  const [activeTab, setActiveTab] = useState<"projects" | "products">("projects");
+
+  const location = useLocation();
+  const navigate = useNavigate();
+
+  const activeTab: "projects" | "products" =
+    location.pathname === "/products" ? "products" : "projects";
   const [searchQuery, setSearchQuery] = useState("");
   const [statusFilter, setStatusFilter] = useState<"All" | Project["status"]>("All");
   const [sortBy, setSortBy] = useState<"featured" | "az" | "za">("featured");
@@ -706,7 +711,7 @@ const Projects = () => {
               >
                 <button
                   id="tab-projects"
-                  onClick={() => setActiveTab("projects")}
+                  onClick={() => navigate("/projects")}
                   className={`relative px-7 py-3 rounded-xl text-sm font-semibold transition-all duration-400 overflow-hidden ${
                     activeTab === "projects"
                       ? "text-primary-foreground shadow-lg"
@@ -727,7 +732,7 @@ const Projects = () => {
                 </button>
                 <button
                   id="tab-products"
-                  onClick={() => setActiveTab("products")}
+                  onClick={() => navigate("/products")}
                   className={`relative px-7 py-3 rounded-xl text-sm font-semibold transition-all duration-400 overflow-hidden ${
                     activeTab === "products"
                       ? "text-primary-foreground shadow-lg"
