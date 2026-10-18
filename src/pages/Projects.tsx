@@ -380,15 +380,39 @@ const ProductCard = ({ product, index }: { product: typeof products[0]; index: n
       transition={{ duration: 0.6, delay: index * 0.12 }}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
-      className="group relative rounded-2xl border border-border/50 bg-card overflow-hidden h-full"
+      className="group relative rounded-2xl border border-border/50 bg-card overflow-hidden h-full isolate"
       style={{
-        transition: "transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94), box-shadow 0.4s ease",
-        transform: isHovered ? "translateY(-6px)" : "translateY(0)",
+        transition:
+          "transform 0.45s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.45s ease",
+        transform: isHovered
+          ? "translateY(-20px) scale(1.08)"
+          : "translateY(0) scale(1)",
+        transformOrigin: "center center",
         boxShadow: isHovered
-          ? "0 25px 60px -12px rgba(0,0,0,0.25), 0 0 40px -10px hsl(var(--primary) / 0.2)"
-          : "0 1px 3px rgba(0,0,0,0.08)",
+          ? "0 45px 90px -15px rgba(0,0,0,0.5), 0 20px 45px -12px hsl(var(--primary) / 0.4)"
+          : "0 2px 5px rgba(0,0,0,0.1)",
+        zIndex: isHovered ? 50 : 0,
       }}
-    >
+
+    > {/* Animated border glow */}
+      <div
+        className="pointer-events-none absolute inset-0 rounded-2xl p-px transition-opacity duration-500"
+        style={{ opacity: isHovered ? 1 : 0 }}
+      >
+        <div
+          className="h-full w-full rounded-2xl"
+          style={{
+            background:
+              "linear-gradient(135deg, hsl(var(--primary)), transparent 35%, transparent 65%, hsl(var(--primary)))",
+            maskImage:
+              "linear-gradient(#fff 0 0), linear-gradient(#fff 0 0)",
+            maskOrigin: "content-box, padding-box",
+            maskClip: "content-box, border-box",
+            maskComposite: "exclude",
+          }}
+        />
+      </div>
+
       {/* Top accent gradient */}
       <div className={`h-1.5 bg-gradient-to-r ${product.gradient}`} />
 
@@ -398,7 +422,7 @@ const ProductCard = ({ product, index }: { product: typeof products[0]; index: n
         style={{ opacity: isHovered ? 0.6 : 0.2 }}
       />
 
-      <div className="relative p-7">
+      <div className="relative p-7 flex flex-col">
         {/* Status badge */}
         <Badge
           className={`absolute top-6 right-6 text-[10px] font-bold uppercase tracking-wider ${
@@ -415,33 +439,78 @@ const ProductCard = ({ product, index }: { product: typeof products[0]; index: n
 
         {/* Icon */}
         <div
-          className={`w-14 h-14 rounded-2xl bg-gradient-to-br ${product.gradient} flex items-center justify-center mb-5 shadow-lg`}
+          className={`relative w-16 h-16 rounded-2xl bg-gradient-to-br ${product.gradient} flex items-center justify-center mb-5 shadow-lg overflow-hidden`}
           style={{
-            transition: "transform 0.4s ease",
-            transform: isHovered ? "scale(1.1) rotate(-3deg)" : "scale(1) rotate(0deg)",
+            transition: "transform 0.4s ease, box-shadow 0.4s ease",
+            transform: isHovered
+              ? "scale(1.1) rotate(-4deg)"
+              : "scale(1) rotate(0deg)",
+            boxShadow: isHovered
+              ? "0 12px 30px -8px hsl(var(--primary) / 0.45)"
+              : "0 4px 12px rgba(0,0,0,0.12)",
           }}
         >
-          <product.icon className="w-7 h-7 text-white" />
+          <motion.div
+            className="absolute inset-0 bg-white/20"
+            initial={{ x: "-100%" }}
+            animate={{ x: isHovered ? "100%" : "-100%" }}
+            transition={{ duration: 0.5, ease: "easeInOut" }}
+          />
+          <product.icon
+            className="relative z-10 w-8 h-8 text-white"
+            style={{
+              transition: "transform 0.4s ease",
+              transform: isHovered ? "scale(1.12)" : "scale(1)",
+            }}
+          />
         </div>
+
 
         {/* Content */}
-        <h3 className="text-xl font-bold mb-1">{product.name}</h3>
-        <p className="text-sm text-primary font-medium mb-3">{product.tagline}</p>
-        <p className="text-sm text-muted-foreground leading-relaxed mb-6">
-          {product.description}
-        </p>
+        <div className="mb-5">
+          <h3 className="text-2xl font-bold tracking-tight mb-2 transition-colors duration-300 group-hover:text-primary">
+            {product.name}
+          </h3>
+
+          <p className="text-sm font-semibold text-primary leading-relaxed mb-3">
+            {product.tagline}
+          </p>
+
+          <p className="text-sm text-muted-foreground leading-7">
+            {product.description}
+          </p>
+        </div>
+
 
         {/* Features */}
-        <div className="space-y-2.5">
-          {product.features.map((feature) => (
-            <div key={feature} className="flex items-center gap-2.5 text-sm">
-              <div className={`w-5 h-5 rounded-full bg-gradient-to-br ${product.gradient} flex items-center justify-center flex-shrink-0`}>
-                <CheckCircle className="w-3 h-3 text-white" />
-              </div>
-              <span className="text-muted-foreground">{feature}</span>
-            </div>
-          ))}
+        <div className="mt-auto pt-5 border-t border-border/40">
+          <p className="text-xs font-semibold uppercase tracking-[0.16em] text-muted-foreground mb-4">
+            Key capabilities
+          </p>
+
+          <div className="grid gap-3">
+            {product.features.map((feature, index) => (
+              <motion.div
+                key={feature}
+                initial={{ opacity: 0, x: -6 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.3, delay: index * 0.05 }}
+                className="flex items-start gap-3 text-sm"
+              >
+                <div
+                  className={`mt-0.5 w-5 h-5 rounded-md bg-gradient-to-br ${product.gradient} flex items-center justify-center flex-shrink-0 shadow-sm`}
+                >
+                  <CheckCircle className="w-3 h-3 text-white" />
+                </div>
+
+                <span className="text-foreground/80 leading-relaxed">
+                  {feature}
+                </span>
+              </motion.div>
+            ))}
+          </div>
         </div>
+
 
         {/* Learn more link */}
         {/* Interactive product details */}
@@ -449,7 +518,7 @@ const ProductCard = ({ product, index }: { product: typeof products[0]; index: n
           <DialogTrigger asChild>
             <button
               type="button"
-              className="mt-6 pt-4 border-t border-border/50 w-full flex items-center justify-between gap-2 text-sm font-semibold text-primary group/link focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary rounded-md"
+              className="mt-6 -mx-2 px-3 py-3 border-t border-border/50 w-[calc(100%+1rem)] flex items-center justify-between gap-2 text-sm font-semibold text-primary rounded-xl transition-all duration-300 hover:bg-primary/5 hover:border-primary/20 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary group/link"
             >
               Explore product
               <ArrowUpRight className="w-4 h-4 transition-transform duration-300 group-hover/link:translate-x-1 group-hover/link:-translate-y-1" />
