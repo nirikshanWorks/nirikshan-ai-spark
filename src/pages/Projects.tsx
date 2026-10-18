@@ -38,6 +38,15 @@ import {
 } from "lucide-react";
 import { useState } from "react";
 import { Link } from "react-router-dom";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 
 interface Project {
   title: string;
@@ -435,22 +444,68 @@ const ProductCard = ({ product, index }: { product: typeof products[0]; index: n
         </div>
 
         {/* Learn more link */}
-        <div
-          className="mt-6 pt-4 border-t border-border/50 flex items-center gap-1 text-sm font-medium text-primary cursor-pointer"
-          style={{
-            opacity: isHovered ? 1 : 0.7,
-            transition: "opacity 0.3s ease",
-          }}
-        >
-          Learn more
-          <ArrowUpRight
-            className="w-4 h-4"
-            style={{
-              transform: isHovered ? "translate(2px, -2px)" : "translate(0, 0)",
-              transition: "transform 0.3s ease",
-            }}
-          />
-        </div>
+        {/* Interactive product details */}
+        <Dialog>
+          <DialogTrigger asChild>
+            <button
+              type="button"
+              className="mt-6 pt-4 border-t border-border/50 w-full flex items-center justify-between gap-2 text-sm font-semibold text-primary group/link focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary rounded-md"
+            >
+              Explore product
+              <ArrowUpRight className="w-4 h-4 transition-transform duration-300 group-hover/link:translate-x-1 group-hover/link:-translate-y-1" />
+            </button>
+          </DialogTrigger>
+
+          <DialogContent className="max-w-xl max-h-[85vh] overflow-y-auto border-border/60 bg-card">
+            <DialogHeader>
+              <div
+                className={`w-12 h-12 rounded-xl bg-gradient-to-br ${product.gradient} flex items-center justify-center mb-2`}
+              >
+                <product.icon className="w-6 h-6 text-white" />
+              </div>
+
+              <DialogTitle className="text-2xl font-bold">
+                {product.name}
+              </DialogTitle>
+
+              <DialogDescription>
+                {product.tagline}
+              </DialogDescription>
+            </DialogHeader>
+
+            <Badge variant="outline" className="w-fit">
+              {product.status}
+            </Badge>
+
+            <p className="text-sm text-muted-foreground leading-relaxed">
+              {product.description}
+            </p>
+
+            <div className="space-y-3">
+              <h4 className="font-semibold">Key capabilities</h4>
+
+              {product.features.map((feature) => (
+                <div key={feature} className="flex items-start gap-3">
+                  <CheckCircle className="w-5 h-5 text-primary shrink-0 mt-0.5" />
+                  <span className="text-sm text-muted-foreground">
+                    {feature}
+                  </span>
+                </div>
+              ))}
+            </div>
+
+            <DialogFooter>
+              <Link
+                to="/contact"
+                className="inline-flex items-center justify-center gap-2 rounded-xl gradient-primary px-5 py-3 text-sm font-semibold text-primary-foreground transition-opacity hover:opacity-90"
+              >
+                Discuss this product
+                <ArrowRight className="w-4 h-4" />
+              </Link>
+            </DialogFooter>
+          </DialogContent>
+        </Dialog>
+
       </div>
     </motion.div>
   );
