@@ -107,15 +107,15 @@ export const Navigation = () => {
         }`}
       >
         <div className="mx-auto flex w-full max-w-7xl items-center justify-between px-4 sm:px-6">
-          <div className="flex h-16 w-full items-center justify-between">
+          <div className="flex h-14 sm:h-16 w-full items-center justify-between">
             {/* Logo */}
-            <Link to="/" className="flex items-center space-x-3 group shrink-0">
+            <Link to="/" className="flex items-center space-x-2 sm:space-x-3 group shrink-0">
               <img
                 src="/nirikshan-ai-logo.png"
                 alt="Nirikshan AI Pvt. Ltd."
-                className="h-10 lg:h-14 w-auto transition-transform duration-300 group-hover:scale-105"
+                className="h-9 sm:h-10 lg:h-14 w-auto transition-transform duration-300 group-hover:scale-105"
               />
-              <div className="text-lg font-bold font-heading text-foreground">
+              <div className="text-base sm:text-lg font-bold font-heading text-foreground">
                 Nirikshan <span className="text-gradient">AI</span>
               </div>
             </Link>
@@ -187,9 +187,14 @@ export const Navigation = () => {
             </div>
 
             {/* Mobile Menu Button */}
-            <div className="lg:hidden flex items-center gap-2">
+            <div className="lg:hidden flex items-center gap-1.5">
               <SwitchToggleThemeDemo />
-              <button onClick={toggleMobileMenu} aria-expanded={mobileMenuOpen} aria-controls="mobile-navigation" className="p-2 relative z-[80]">
+              <button
+                onClick={toggleMobileMenu}
+                aria-expanded={mobileMenuOpen}
+                aria-controls="mobile-navigation"
+                className="p-2 relative z-[80] rounded-xl hover:bg-secondary transition-colors"
+              >
                 {mobileMenuOpen ? <X size={22} /> : <Menu size={22} />}
               </button>
             </div>
@@ -197,69 +202,87 @@ export const Navigation = () => {
         </div>
       </nav>
 
-      {/* Mobile Navigation */}
+      {/* Mobile Navigation — App-like drawer */}
       {mobileMenuOpen && (
         <div
           id="mobile-navigation"
-          className="fixed inset-x-0 top-16 bottom-0 z-[70] overflow-y-auto bg-background backdrop-blur-xl px-5 py-5 lg:hidden border-t border-border animate-in fade-in slide-in-from-top-2 duration-200"
+          className="fixed inset-x-0 top-14 z-[70] lg:hidden border-t border-border animate-in fade-in slide-in-from-top-2 duration-200"
+          style={{ bottom: "calc(4.25rem + env(safe-area-inset-bottom, 0px))" }}
         >
-          <div className="space-y-1 pb-[max(env(safe-area-inset-bottom),1rem)]">
-            <Link
-              to="/about"
-              className="block rounded-lg px-4 py-3 text-base font-bold hover:bg-secondary transition-colors"
-              onClick={closeMobileMenu}
-            >
-              About
-            </Link>
+          <div className="h-full overflow-y-auto bg-background/98 backdrop-blur-xl">
+            <div className="px-4 py-4 space-y-2">
 
-            <button
-              className="flex w-full items-center justify-between gap-2 rounded-lg px-4 py-3 text-base font-bold hover:bg-secondary transition-colors"
-              onClick={() => setMobileExpertiseOpen((prev) => !prev)}
-            >
-              Expertise
-              <span className={`transition-transform duration-200 ${mobileExpertiseOpen ? "rotate-180" : ""}`}>▾</span>
-            </button>
+              {/* Quick CTA bar */}
+              <div className="flex gap-2 mb-3">
+                <Link
+                  to="/contact"
+                  onClick={closeMobileMenu}
+                  className="flex-1 flex items-center justify-center rounded-xl py-3 gradient-primary text-white text-sm font-semibold"
+                >
+                  Get in Touch
+                </Link>
+                <Link
+                  to="/about"
+                  onClick={closeMobileMenu}
+                  className="flex-1 flex items-center justify-center rounded-xl py-3 bg-secondary text-foreground text-sm font-semibold border border-border"
+                >
+                  About Us
+                </Link>
+              </div>
 
-            {mobileExpertiseOpen && (
-              <div className="pl-4 pb-2 animate-in fade-in slide-in-from-top-2 duration-200">
-                <div className="space-y-1">
-                  {navigationCategories[0]?.items.map((item) => (
+              <div className="border-t border-border" />
+
+              {/* Expertise accordion */}
+              <button
+                className="flex w-full items-center justify-between gap-2 rounded-xl px-4 py-3.5 text-sm font-semibold hover:bg-secondary transition-colors"
+                onClick={() => setMobileExpertiseOpen((prev) => !prev)}
+              >
+                <span>Expertise</span>
+                <span className={`transition-transform duration-200 text-muted-foreground ${mobileExpertiseOpen ? "rotate-180" : ""}`}>▾</span>
+              </button>
+
+              {mobileExpertiseOpen && (
+                <div className="animate-in fade-in slide-in-from-top-2 duration-200">
+                  <div className="space-y-0.5 bg-secondary/40 rounded-xl p-2 mx-1">
+                    {navigationCategories[0]?.items.map((item) => (
+                      <Link
+                        key={item.title}
+                        to={item.href}
+                        className="block px-3 py-2.5 text-sm text-muted-foreground hover:text-primary hover:bg-background/70 rounded-lg transition-colors"
+                        onClick={closeMobileMenu}
+                      >
+                        {item.title}
+                      </Link>
+                    ))}
                     <Link
-                      key={item.title}
-                      to={item.href}
-                      className="block px-4 py-2.5 text-sm text-muted-foreground hover:text-primary hover:bg-secondary/50 rounded-lg transition-colors"
+                      to={`/expertise/${navigationCategories[0]?.slug}`}
+                      className="block px-3 py-2.5 text-sm font-semibold text-primary rounded-lg transition-colors mt-1 border-t border-border/50"
                       onClick={closeMobileMenu}
                     >
-                      {item.title}
+                      View All {navigationCategories[0]?.title} →
                     </Link>
-                  ))}
+                  </div>
+                </div>
+              )}
+
+              {/* Nav links — 2-column grid for app-like feel */}
+              <div className="grid grid-cols-2 gap-2 pt-1">
+                {navLinks.slice(1).map((link) => (
                   <Link
-                    to={`/expertise/${navigationCategories[0]?.slug}`}
-                    className="block px-4 py-2.5 text-sm font-medium text-primary hover:bg-secondary/50 rounded-lg transition-colors mt-2"
+                    key={link.path}
+                    to={link.path}
+                    className={`flex items-center rounded-xl px-4 py-3.5 text-sm font-semibold transition-colors ${
+                      location.pathname === link.path
+                        ? "bg-primary/10 text-primary"
+                        : "hover:bg-secondary text-foreground"
+                    }`}
                     onClick={closeMobileMenu}
                   >
-                    View All {navigationCategories[0]?.title} →
+                    {link.label}
                   </Link>
-                </div>
+                ))}
               </div>
-            )}
-
-            {navLinks.slice(1).map((link) => (
-              <Link
-                key={link.path}
-                to={link.path}
-                className="block rounded-lg px-4 py-3 text-base font-bold hover:bg-secondary transition-colors"
-                onClick={closeMobileMenu}
-              >
-                {link.label}
-              </Link>
-            ))}
-
-            <Link to="/contact" onClick={closeMobileMenu} className="block pt-3">
-              <Button className="w-full gradient-primary text-primary-foreground text-base py-3 h-12">
-                Get in Touch
-              </Button>
-            </Link>
+            </div>
           </div>
         </div>
       )}

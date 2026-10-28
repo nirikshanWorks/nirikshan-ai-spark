@@ -1,6 +1,7 @@
 import { Chatbot } from "@/components/Chatbot/Chatbot";
 import { ErrorBoundary } from "@/components/ErrorBoundary";
 import { EyeLoader, EyeLoaderInline } from "@/components/EyeLoader";
+import { MobileBottomNav } from "@/components/MobileBottomNav";
 import { PageTransition } from "@/components/PageTransition";
 import ScrollToTop from "@/components/ScrollToTop";
 import { Toaster as Sonner } from "@/components/ui/sonner";
@@ -163,6 +164,7 @@ const App = () => {
                   <Suspense fallback={<PageLoader />}>
                     <AnimatedRoutes />
                   </Suspense>
+                  <MobileBottomNav />
                   <Chatbot />
                 </AuthProvider>
               </BrowserRouter>

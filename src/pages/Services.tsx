@@ -1,6 +1,5 @@
 import { SEO } from "@/components/SEO";
 import { Navigation } from "@/components/Navigation";
-import mockupServices from "@/assets/mockup-services-platform.jpg";
 import { Footer } from "@/components/Footer";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
@@ -16,7 +15,6 @@ import { AIWaveField } from "@/components/AIWaveField";
 import { AIParticleRing } from "@/components/AIParticleRing";
 import { AIDataStream } from "@/components/AIDataStream";
 import { FadeUp, SlideLeft, SlideRight, StaggerContainer, StaggerItem } from "@/components/ScrollAnimations";
-import { ContainerScroll } from "@/components/ui/container-scroll-animation";
 import { 
   Brain, 
   Eye, 
@@ -432,13 +430,13 @@ const ServiceDetail = ({ service, index }: { service: typeof servicesData[0], in
   const contentRef = useScrollAnimation(0.2);
 
   return (
-    <section className={`py-20 ${index % 2 === 0 ? "bg-background" : "bg-secondary/30"} relative`}>
-      <div className="container mx-auto px-6" ref={contentRef.ref}>
+    <section className={`py-12 sm:py-16 md:py-20 ${index % 2 === 0 ? "bg-background" : "bg-secondary/30"} relative`}>
+      <div className="container mx-auto px-4 sm:px-6" ref={contentRef.ref}>
         {index % 4 === 0 && <AICircuitLines className="opacity-15" />}
         {index % 4 === 1 && <AIHexagonGrid className="opacity-15" />}
         {index % 4 === 2 && <AIFloatingIcons count={4} className="opacity-30" />}
         {index % 4 === 3 && <AIWaveField className="opacity-12" />}
-        {/* 3D decorations on alternating sections */}
+        {/* 3D decorations — desktop only */}
         {index % 3 === 0 && (
           <div className="absolute -right-8 top-1/4 opacity-15 hidden xl:block">
             <AI3DOrb size={150} />
@@ -454,64 +452,64 @@ const ServiceDetail = ({ service, index }: { service: typeof servicesData[0], in
             <AIParticleRing size={160} particleCount={20} />
           </div>
         )}
-        <div className={`grid md:grid-cols-2 gap-12 items-center transition-all duration-1000 relative z-10 ${
+        <div className={`grid md:grid-cols-2 gap-8 md:gap-12 items-start transition-all duration-1000 relative z-10 ${
           contentRef.isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
         }`}>
-          {/* Left side - Icon and description */}
+          {/* Left side */}
           <div className={index % 2 === 1 ? "order-2" : ""}>
-            <div className="flex items-center gap-4 mb-6">
-              <div className="w-16 h-16 rounded-xl gradient-primary flex items-center justify-center shadow-lg flex-shrink-0 icon-3d">
-                <service.icon className="text-white" size={32} />
+            <div className="flex items-center gap-3 sm:gap-4 mb-4 sm:mb-6">
+              <div className="w-12 h-12 sm:w-16 sm:h-16 rounded-xl gradient-primary flex items-center justify-center shadow-lg flex-shrink-0 icon-3d">
+                <service.icon className="text-white" size={24} />
               </div>
-              <h2 className="text-3xl md:text-4xl font-bold">{service.title}</h2>
+              <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold">{service.title}</h2>
             </div>
-            <p className="text-lg text-muted-foreground mb-8 leading-relaxed">
+            <p className="text-base sm:text-lg text-muted-foreground mb-6 sm:mb-8 leading-relaxed">
               {service.fullDesc}
             </p>
 
-            {/* Key Features with 3D cards */}
-            <div className="mb-8">
-              <h3 className="text-xl font-semibold mb-4 flex items-center gap-2">
-                <Zap size={20} className="text-primary" />
+            {/* Key Features */}
+            <div className="mb-6 sm:mb-8">
+              <h3 className="text-lg sm:text-xl font-semibold mb-3 sm:mb-4 flex items-center gap-2">
+                <Zap size={18} className="text-primary" />
                 Key Features
               </h3>
-              <ul className="space-y-3">
+              <ul className="space-y-2 sm:space-y-3">
                 {service.features.map((feature, idx) => (
-                  <li key={idx} className="flex items-start gap-3 group">
-                    <Check size={20} className="text-green-500 flex-shrink-0 mt-0.5 group-hover:scale-110 transition-transform" />
-                    <span className="text-muted-foreground group-hover:text-foreground transition-colors">{feature}</span>
+                  <li key={idx} className="flex items-start gap-2 sm:gap-3 group">
+                    <Check size={18} className="text-green-500 flex-shrink-0 mt-0.5 group-hover:scale-110 transition-transform" />
+                    <span className="text-sm sm:text-base text-muted-foreground group-hover:text-foreground transition-colors">{feature}</span>
                   </li>
                 ))}
               </ul>
             </div>
           </div>
 
-          {/* Right side - Benefits and Use Cases with 3D effects */}
+          {/* Right side */}
           <div className={index % 2 === 1 ? "order-1" : ""}>
             {/* Benefits Card */}
-            <div className="p-6 mb-6 rounded-2xl tilt-card glass-card border border-primary/10 ai-glow-hover">
-              <h3 className="text-xl font-semibold mb-4 flex items-center gap-2">
-                <TrendingUp size={20} className="text-primary" />
+            <div className="p-4 sm:p-6 mb-4 sm:mb-6 rounded-2xl tilt-card glass-card border border-primary/10 ai-glow-hover">
+              <h3 className="text-lg sm:text-xl font-semibold mb-3 sm:mb-4 flex items-center gap-2">
+                <TrendingUp size={18} className="text-primary" />
                 Benefits
               </h3>
-              <ul className="space-y-3">
+              <ul className="space-y-2 sm:space-y-3">
                 {service.benefits.map((benefit, idx) => (
-                  <li key={idx} className="flex items-start gap-3">
-                    <div className="w-2 h-2 rounded-full bg-primary mt-2 flex-shrink-0" />
-                    <span className="text-muted-foreground">{benefit}</span>
+                  <li key={idx} className="flex items-start gap-2 sm:gap-3">
+                    <div className="w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full bg-primary mt-2 flex-shrink-0" />
+                    <span className="text-sm text-muted-foreground">{benefit}</span>
                   </li>
                 ))}
               </ul>
             </div>
 
             {/* Use Cases Card */}
-            <div className="p-6 rounded-2xl tilt-card glass-card border border-accent/10 ai-glow-hover">
-              <h3 className="text-xl font-semibold mb-4">Real-World Applications</h3>
-              <ul className="space-y-3">
+            <div className="p-4 sm:p-6 rounded-2xl tilt-card glass-card border border-accent/10 ai-glow-hover">
+              <h3 className="text-lg sm:text-xl font-semibold mb-3 sm:mb-4">Real-World Applications</h3>
+              <ul className="space-y-2 sm:space-y-3">
                 {service.useCases.map((useCase, idx) => (
-                  <li key={idx} className="flex items-start gap-3">
-                    <div className="w-2 h-2 rounded-full bg-accent mt-2 flex-shrink-0" />
-                    <span className="text-muted-foreground">{useCase}</span>
+                  <li key={idx} className="flex items-start gap-2 sm:gap-3">
+                    <div className="w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full bg-accent mt-2 flex-shrink-0" />
+                    <span className="text-sm text-muted-foreground">{useCase}</span>
                   </li>
                 ))}
               </ul>
@@ -536,9 +534,9 @@ const Services = () => {
       />
       <Navigation />
 
-      <main className="pt-16">
-        {/* Hero Section with 3D depth and particles */}
-        <section className="relative h-[450px] md:h-[550px] overflow-hidden group perspective-container" ref={heroRef.ref}>
+      <main className="pt-14 sm:pt-16">
+        {/* Hero Section */}
+        <section className="relative h-[340px] sm:h-[450px] md:h-[550px] overflow-hidden group perspective-container" ref={heroRef.ref}>
           <img 
             src={heroAI} 
             alt="Our Services" 
@@ -551,57 +549,38 @@ const Services = () => {
           {/* Particle effects */}
           <HeroParticles />
           
-          {/* Floating elements */}
+          {/* Floating elements — fewer on mobile */}
           <FloatingElements count={8} />
           
-          <div className="relative z-10 container mx-auto px-6 h-full flex items-center">
+          <div className="relative z-10 container mx-auto px-4 sm:px-6 h-full flex items-center">
             <div className={`max-w-3xl transition-all duration-1000 ${
               heroRef.isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
             }`}>
-              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/10 backdrop-blur-sm border border-white/20 text-white/90 text-sm font-medium mb-6 animate-fade-in">
-                <Zap size={16} className="text-accent animate-pulse" />
+              <div className="inline-flex items-center gap-2 px-3 sm:px-4 py-1.5 sm:py-2 rounded-full bg-white/10 backdrop-blur-sm border border-white/20 text-white/90 text-xs sm:text-sm font-medium mb-4 sm:mb-6 animate-fade-in">
+                <Zap size={14} className="text-accent animate-pulse" />
                 <span>Full-Stack Technology Solutions</span>
               </div>
-              <h1 className="text-4xl md:text-6xl font-bold text-white mb-6 leading-tight animate-fade-in" style={{ animationDelay: '0.1s' }}>
+              <h1 className="text-3xl sm:text-4xl md:text-6xl font-bold text-white mb-4 sm:mb-6 leading-tight animate-fade-in" style={{ animationDelay: '0.1s' }}>
                 Our <span className="text-gradient">Services</span>
               </h1>
-              <div className="h-1 w-24 bg-gradient-to-r from-primary to-accent rounded-full mb-6 animate-fade-in" style={{ animationDelay: '0.15s' }} />
-              <p className="text-lg md:text-xl text-white/85 max-w-2xl leading-relaxed animate-fade-in" style={{ animationDelay: '0.2s' }}>
+              <div className="h-1 w-16 sm:w-24 bg-gradient-to-r from-primary to-accent rounded-full mb-4 sm:mb-6 animate-fade-in" style={{ animationDelay: '0.15s' }} />
+              <p className="text-sm sm:text-lg md:text-xl text-white/85 max-w-2xl leading-relaxed animate-fade-in" style={{ animationDelay: '0.2s' }}>
                 Comprehensive technology solutions powered by deep expertise and innovation across AI, Cloud, and Enterprise domains
               </p>
             </div>
           </div>
         </section>
 
-        {/* Scroll Animation Showcase */}
-        <section className="bg-secondary/10">
-          <ContainerScroll
-            titleComponent={
-              <div className="text-center">
-                <p className="text-sm font-semibold uppercase tracking-widest text-primary mb-3">Our Platform</p>
-                <h2 className="text-3xl md:text-5xl font-bold">
-                  Full-Stack <span className="text-gradient">Technology</span> Solutions
-                </h2>
-              </div>
-            }
-          >
-            <img
-              src={mockupServices}
-              alt="Technology Solutions Dashboard"
-              className="w-full h-full object-cover object-left-top rounded-2xl"
-            />
-          </ContainerScroll>
-        </section>
 
         {/* 3D Product Carousel */}
-        <section className="py-16 bg-gradient-to-b from-background via-secondary/20 to-background relative">
+        <section className="py-10 sm:py-16 bg-gradient-to-b from-background via-secondary/20 to-background relative">
           <AIHexagonGrid className="opacity-20" />
           <AIDataStream className="opacity-10" />
-          <div className="container mx-auto px-6 relative z-10">
-            <FadeUp className="text-center mb-8">
-              <h2 className="text-3xl md:text-4xl font-bold mb-4">Explore Our Solutions</h2>
-              <div className="h-1 w-16 bg-gradient-to-r from-primary to-accent mx-auto rounded-full mb-4" />
-              <p className="text-muted-foreground max-w-2xl mx-auto">
+          <div className="container mx-auto px-4 sm:px-6 relative z-10">
+            <FadeUp className="text-center mb-6 sm:mb-8">
+              <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-3 sm:mb-4">Explore Our Solutions</h2>
+              <div className="h-1 w-12 sm:w-16 bg-gradient-to-r from-primary to-accent mx-auto rounded-full mb-3 sm:mb-4" />
+              <p className="text-sm sm:text-base text-muted-foreground max-w-2xl mx-auto">
                 Interactive 3D showcase of our core technology offerings
               </p>
             </FadeUp>
@@ -630,25 +609,25 @@ const Services = () => {
         ))}
 
         {/* CTA Section */}
-        <section className="py-20 relative overflow-hidden">
+        <section className="py-12 sm:py-20 relative overflow-hidden">
           <AICircuitLines className="opacity-20" />
           <div className="absolute inset-0 bg-gradient-to-br from-primary/10 via-transparent to-accent/10"></div>
-          <div className="container mx-auto px-6 relative z-10 text-center">
+          <div className="container mx-auto px-4 sm:px-6 relative z-10 text-center">
             <FadeUp className="max-w-3xl mx-auto">
-              <h2 className="text-3xl md:text-4xl font-bold mb-4">Ready to Transform Your Business?</h2>
-              <div className="h-1 w-16 bg-gradient-to-r from-primary to-accent mx-auto rounded-full mb-6"></div>
-              <p className="text-lg text-muted-foreground mb-10">
+              <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-3 sm:mb-4">Ready to Transform Your Business?</h2>
+              <div className="h-1 w-12 sm:w-16 bg-gradient-to-r from-primary to-accent mx-auto rounded-full mb-4 sm:mb-6"></div>
+              <p className="text-sm sm:text-lg text-muted-foreground mb-8 sm:mb-10">
                 Let's discuss how our services can help you achieve your business goals and drive innovation
               </p>
-              <div className="flex flex-col sm:flex-row gap-4 justify-center">
+              <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center">
                 <Link to="/contact">
-                  <Button size="lg" className="gradient-primary hover:shadow-lg hover:shadow-blue-500/50 transition-all duration-300 transform hover:scale-105">
+                  <Button size="lg" className="gradient-primary hover:shadow-lg hover:shadow-blue-500/50 transition-all duration-300 transform hover:scale-105 w-full sm:w-auto">
                     Get Started Today
                     <ArrowRight className="ml-2" size={20} />
                   </Button>
                 </Link>
                 <Link to="/projects">
-                  <Button size="lg" variant="outline" className="hover:bg-secondary transition-all duration-300 transform hover:scale-105">
+                  <Button size="lg" variant="outline" className="hover:bg-secondary transition-all duration-300 transform hover:scale-105 w-full sm:w-auto">
                     View Our Work
                   </Button>
                 </Link>
