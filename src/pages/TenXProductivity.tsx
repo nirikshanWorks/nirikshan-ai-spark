@@ -60,7 +60,7 @@ const TenXProductivity: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-white text-slate-900 font-sans antialiased selection:bg-blue-100 selection:text-blue-900">
+    <div className="min-h-screen bg-background text-foreground font-sans antialiased selection:bg-primary/20 selection:text-primary transition-colors duration-200">
       <SEO
         title="10X AI Productivity Initiative — Building an AI-Ready Tomorrow | Nirikshan AI"
         description="Empowering students, educational institutions, professionals, management, and industries to learn, apply, automate, and scale AI for real-world impact with Nirikshan AI."

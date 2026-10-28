@@ -23,6 +23,8 @@ import {
   Loader2,
   AlertCircle,
   ShieldCheck,
+  Zap,
+  BookmarkCheck,
 } from "lucide-react";
 import { toast } from "sonner";
 
@@ -62,6 +64,23 @@ export const TenXEnquiryForm: React.FC<TenXEnquiryFormProps> = ({
       }));
     }
   }, [prefilledProgramme, prefilledAudience]);
+
+  const quickGoalChips = [
+    { label: "University MoUs & Capstones", audience: "Universities & Colleges", interest: "AI Career Accelerator (Universities)", text: "We are interested in discussing an academic partnership or credit-aligned AI capstone cohort for our engineering & computer science students." },
+    { label: "Enterprise Workflow Audit", audience: "Industries & Enterprises", interest: "AI Workforce Transformation (Industries)", text: "We want to audit manual operational bottlenecks across our business departments and deploy automated AI workflows." },
+    { label: "Executive Leadership Sprints", audience: "Management & Leadership", interest: "AI Leadership (Management)", text: "We want a private executive briefing and AI strategy roadmap for our management and leadership team." },
+    { label: "K-12 Student AI Workshop", audience: "Schools", interest: "AI Explorer (Schools)", text: "We are interested in organizing an AI awareness and creative storytelling workshop for high school students." },
+  ];
+
+  const handleChipClick = (chip: typeof quickGoalChips[0]) => {
+    setFormData((prev) => ({
+      ...prev,
+      audienceType: chip.audience,
+      areaOfInterest: chip.interest,
+      message: chip.text,
+    }));
+    toast.info(`Configured form for: ${chip.label}`);
+  };
 
   const handleChange = (
     e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -179,7 +198,7 @@ export const TenXEnquiryForm: React.FC<TenXEnquiryFormProps> = ({
 
       <div className="container relative mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
-          {/* Left Column: Heading, Value Proposition & Direct Contact Info */}
+          {/* Left Column: Heading, Value Proposition & Real-Time Engagement Summary */}
           <div className="lg:col-span-5 space-y-6">
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-500/20 text-blue-300 text-xs font-semibold uppercase tracking-wider border border-blue-400/30">
               <Sparkles className="w-3.5 h-3.5 text-cyan-300" />
@@ -198,7 +217,23 @@ export const TenXEnquiryForm: React.FC<TenXEnquiryFormProps> = ({
               Partner with Nirikshan AI to build practical AI skills, improve workflows, and prepare your organisation for an AI-enabled future.
             </p>
 
-            <div className="pt-4 border-t border-slate-800 space-y-4">
+            {/* Live Engagement Preview Card */}
+            {(formData.audienceType || formData.areaOfInterest) && (
+              <div className="p-4 rounded-2xl bg-white/10 backdrop-blur-md border border-white/15 text-xs text-slate-200 animate-in fade-in slide-in-from-top-1 space-y-2">
+                <span className="text-[10px] font-mono font-bold text-cyan-300 uppercase tracking-wider block">
+                  Configured Engagement Focus:
+                </span>
+                <div className="flex justify-between items-center text-white font-semibold">
+                  <span>Audience: {formData.audienceType || "General"}</span>
+                  <span className="text-blue-300">{formData.areaOfInterest || "10X Track"}</span>
+                </div>
+                <p className="text-[11px] text-slate-300">
+                  Custom syllabus, tailored capstone deliverables, and expert practitioner mentorship will be bundled for this inquiry.
+                </p>
+              </div>
+            )}
+
+            <div className="pt-2 border-t border-slate-800 space-y-4">
               <div className="flex items-start gap-3">
                 <CheckCircle2 className="w-5 h-5 text-cyan-400 shrink-0 mt-0.5" />
                 <div>
@@ -230,38 +265,29 @@ export const TenXEnquiryForm: React.FC<TenXEnquiryFormProps> = ({
               </div>
             </div>
 
-            <div className="pt-6 border-t border-slate-800 flex flex-col sm:flex-row gap-4">
-              <Button
-                variant="outline"
-                onClick={() => {
-                  formRef.current?.scrollIntoView({ behavior: "smooth" });
-                }}
-                className="bg-white/10 hover:bg-white/20 text-white border-white/20 text-xs font-semibold px-4 py-2.5 rounded-xl"
-              >
-                Start Your 10X Journey
-              </Button>
+            <div className="pt-4 border-t border-slate-800 flex flex-col sm:flex-row gap-4">
               <a
                 href="mailto:info@nirikshanai.com"
-                className="inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl text-xs font-semibold text-slate-300 hover:text-white bg-slate-800/80 hover:bg-slate-800 transition-colors border border-slate-700"
+                className="inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl text-xs font-semibold text-white bg-slate-800 hover:bg-slate-700 transition-colors border border-slate-700 w-full sm:w-auto"
               >
                 <Mail className="w-3.5 h-3.5 text-blue-400" />
-                Contact Our Team
+                Contact Directly: info@nirikshanai.com
               </a>
             </div>
           </div>
 
-          {/* Right Column: Clean, Validated Enquiry Form */}
+          {/* Right Column: Clean, Interactive Validated Enquiry Form */}
           <div className="lg:col-span-7">
-            <div className="bg-white rounded-3xl p-6 sm:p-8 md:p-10 text-slate-900 shadow-2xl relative border border-slate-100">
+            <div className="bg-card rounded-3xl p-6 sm:p-8 md:p-10 text-foreground shadow-2xl relative border border-border">
               {isSubmitted ? (
                 <div className="text-center py-12 px-4 space-y-4">
-                  <div className="w-16 h-16 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center mx-auto shadow-md">
+                  <div className="w-16 h-16 rounded-full bg-emerald-100 dark:bg-emerald-950/60 text-emerald-600 dark:text-emerald-400 flex items-center justify-center mx-auto shadow-md">
                     <CheckCircle2 className="w-8 h-8" />
                   </div>
-                  <h3 className="text-2xl font-bold text-slate-900">
+                  <h3 className="text-2xl font-bold text-foreground">
                     Inquiry Received Successfully!
                   </h3>
-                  <p className="text-sm text-slate-600 max-w-md mx-auto leading-relaxed">
+                  <p className="text-sm text-muted-foreground max-w-md mx-auto leading-relaxed">
                     Thank you for your interest in the Nirikshan AI 10X Productivity Initiative. Our education & transformation advisors will review your requirements and reach out within 1 business day.
                   </p>
                   <Button
@@ -277,26 +303,46 @@ export const TenXEnquiryForm: React.FC<TenXEnquiryFormProps> = ({
                       });
                     }}
                     variant="outline"
-                    className="mt-4 text-xs font-semibold text-slate-700 border-slate-300"
+                    className="mt-4 text-xs font-semibold text-foreground border-border hover:bg-muted"
                   >
                     Submit Another Inquiry
                   </Button>
                 </div>
               ) : (
                 <form ref={formRef} onSubmit={handleSubmit} className="space-y-4 sm:space-y-5">
-                  <div className="border-b border-slate-100 pb-4 mb-4">
-                    <h3 className="text-xl font-bold text-slate-900">
+                  <div className="border-b border-border pb-3 mb-2">
+                    <h3 className="text-xl font-bold text-foreground">
                       Express Interest / Cohort Partnership
                     </h3>
-                    <p className="text-xs text-slate-500">
-                      Tell us about your team or institution. We will tailor an engagement roadmap.
+                    <p className="text-xs text-muted-foreground">
+                      Select a common goal preset or customize your requirements below:
                     </p>
+                  </div>
+
+                  {/* Interactive Quick Goal Chips */}
+                  <div>
+                    <span className="text-[11px] font-bold text-muted-foreground uppercase tracking-wider block mb-2">
+                      Quick Preset Objectives:
+                    </span>
+                    <div className="flex flex-wrap gap-1.5">
+                      {quickGoalChips.map((chip) => (
+                        <button
+                          type="button"
+                          key={chip.label}
+                          onClick={() => handleChipClick(chip)}
+                          className="px-2.5 py-1 rounded-lg bg-muted/50 hover:bg-blue-50 dark:hover:bg-blue-950/60 border border-border hover:border-blue-400 text-[11px] text-muted-foreground hover:text-foreground transition-colors flex items-center gap-1"
+                        >
+                          <Zap className="w-3 h-3 text-blue-500 dark:text-cyan-400" />
+                          <span>{chip.label}</span>
+                        </button>
+                      ))}
+                    </div>
                   </div>
 
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     {/* Full Name */}
                     <div>
-                      <label className="block text-xs font-semibold text-slate-700 mb-1.5">
+                      <label className="block text-xs font-semibold text-foreground mb-1.5">
                         Full Name <span className="text-rose-500">*</span>
                       </label>
                       <Input
@@ -305,7 +351,7 @@ export const TenXEnquiryForm: React.FC<TenXEnquiryFormProps> = ({
                         value={formData.fullName}
                         onChange={handleChange}
                         placeholder="Dr. Rajesh Sharma"
-                        className={`text-xs h-10 ${
+                        className={`text-xs h-10 bg-background/80 border-border text-foreground placeholder:text-muted-foreground ${
                           validationErrors.fullName ? "border-rose-500 ring-rose-200" : ""
                         }`}
                       />
@@ -318,7 +364,7 @@ export const TenXEnquiryForm: React.FC<TenXEnquiryFormProps> = ({
 
                     {/* Work Email */}
                     <div>
-                      <label className="block text-xs font-semibold text-slate-700 mb-1.5">
+                      <label className="block text-xs font-semibold text-foreground mb-1.5">
                         Work / Institutional Email <span className="text-rose-500">*</span>
                       </label>
                       <Input
@@ -327,7 +373,7 @@ export const TenXEnquiryForm: React.FC<TenXEnquiryFormProps> = ({
                         value={formData.workEmail}
                         onChange={handleChange}
                         placeholder="rajesh@institution.edu / company.com"
-                        className={`text-xs h-10 ${
+                        className={`text-xs h-10 bg-background/80 border-border text-foreground placeholder:text-muted-foreground ${
                           validationErrors.workEmail ? "border-rose-500 ring-rose-200" : ""
                         }`}
                       />
@@ -341,7 +387,7 @@ export const TenXEnquiryForm: React.FC<TenXEnquiryFormProps> = ({
 
                   {/* Organisation */}
                   <div>
-                    <label className="block text-xs font-semibold text-slate-700 mb-1.5">
+                    <label className="block text-xs font-semibold text-foreground mb-1.5">
                       Organisation / School / University <span className="text-rose-500">*</span>
                     </label>
                     <Input
@@ -350,7 +396,7 @@ export const TenXEnquiryForm: React.FC<TenXEnquiryFormProps> = ({
                       value={formData.organisation}
                       onChange={handleChange}
                       placeholder="e.g. Apex Institute of Technology / Tata Enterprises"
-                      className={`text-xs h-10 ${
+                      className={`text-xs h-10 bg-background/80 border-border text-foreground placeholder:text-muted-foreground ${
                         validationErrors.organisation ? "border-rose-500 ring-rose-200" : ""
                       }`}
                     />
@@ -364,17 +410,17 @@ export const TenXEnquiryForm: React.FC<TenXEnquiryFormProps> = ({
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     {/* Audience Type */}
                     <div>
-                      <label className="block text-xs font-semibold text-slate-700 mb-1.5">
+                      <label className="block text-xs font-semibold text-foreground mb-1.5">
                         Audience Type <span className="text-rose-500">*</span>
                       </label>
                       <Select
                         value={formData.audienceType}
                         onValueChange={(val) => handleSelectChange("audienceType", val)}
                       >
-                        <SelectTrigger className={`text-xs h-10 ${validationErrors.audienceType ? "border-rose-500" : ""}`}>
+                        <SelectTrigger className={`text-xs h-10 bg-background/80 border-border text-foreground ${validationErrors.audienceType ? "border-rose-500" : ""}`}>
                           <SelectValue placeholder="Select Audience" />
                         </SelectTrigger>
-                        <SelectContent className="bg-white">
+                        <SelectContent className="bg-popover border-border text-popover-foreground">
                           <SelectItem value="Schools">Schools (K-12 / High School)</SelectItem>
                           <SelectItem value="Universities & Colleges">Universities & Colleges</SelectItem>
                           <SelectItem value="Working Professionals">Working Professionals</SelectItem>
@@ -391,17 +437,17 @@ export const TenXEnquiryForm: React.FC<TenXEnquiryFormProps> = ({
 
                     {/* Area of Interest */}
                     <div>
-                      <label className="block text-xs font-semibold text-slate-700 mb-1.5">
+                      <label className="block text-xs font-semibold text-foreground mb-1.5">
                         Area of Interest <span className="text-rose-500">*</span>
                       </label>
                       <Select
                         value={formData.areaOfInterest}
                         onValueChange={(val) => handleSelectChange("areaOfInterest", val)}
                       >
-                        <SelectTrigger className={`text-xs h-10 ${validationErrors.areaOfInterest ? "border-rose-500" : ""}`}>
+                        <SelectTrigger className={`text-xs h-10 bg-background/80 border-border text-foreground ${validationErrors.areaOfInterest ? "border-rose-500" : ""}`}>
                           <SelectValue placeholder="Select Interest" />
                         </SelectTrigger>
-                        <SelectContent className="bg-white">
+                        <SelectContent className="bg-popover border-border text-popover-foreground">
                           <SelectItem value="AI Explorer (Schools)">AI Explorer (Schools)</SelectItem>
                           <SelectItem value="AI Career Accelerator (Universities)">AI Career Accelerator (Universities)</SelectItem>
                           <SelectItem value="10X Professional (Working Professionals)">10X Professional (Professionals)</SelectItem>
@@ -422,16 +468,16 @@ export const TenXEnquiryForm: React.FC<TenXEnquiryFormProps> = ({
 
                   {/* Message / Goals */}
                   <div>
-                    <label className="block text-xs font-semibold text-slate-700 mb-1.5">
+                    <label className="block text-xs font-semibold text-foreground mb-1.5">
                       Tell Us About Your Goals & Team Size <span className="text-rose-500">*</span>
                     </label>
                     <Textarea
                       name="message"
-                      rows={4}
+                      rows={3}
                       value={formData.message}
                       onChange={handleChange}
                       placeholder="Please share details such as expected cohort size, primary departments involved, desired timeline, or key operational bottlenecks..."
-                      className={`text-xs resize-none ${
+                      className={`text-xs resize-none bg-background/80 border-border text-foreground placeholder:text-muted-foreground ${
                         validationErrors.message ? "border-rose-500 ring-rose-200" : ""
                       }`}
                     />
@@ -463,8 +509,8 @@ export const TenXEnquiryForm: React.FC<TenXEnquiryFormProps> = ({
                     </Button>
                   </div>
 
-                  <p className="text-[11px] text-slate-400 text-center flex items-center justify-center gap-1.5 pt-1">
-                    <ShieldCheck className="w-3.5 h-3.5 text-blue-600" />
+                  <p className="text-[11px] text-muted-foreground text-center flex items-center justify-center gap-1.5 pt-1">
+                    <ShieldCheck className="w-3.5 h-3.5 text-blue-600 dark:text-cyan-400" />
                     <span>Your data is protected. We respond to all institutional inquiries within 24 hours.</span>
                   </p>
                 </form>
