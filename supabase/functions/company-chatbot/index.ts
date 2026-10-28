@@ -23,10 +23,8 @@ Key Services:
 5. Data Analytics - Business intelligence and predictive analytics
 
 Career Opportunities:
-- Currently hiring for Sales Executive Internship and Digital Marketing Internship
-- Remote/Work from home positions available
-- 3-6 month internship durations
-- Performance-based stipends
+- We are always looking for passionate talent; candidates can join our talent network and submit general applications on our Careers page
+- Remote/Work from home opportunities available
 
 Contact Information:
 - Email: info@nirikshanai.com

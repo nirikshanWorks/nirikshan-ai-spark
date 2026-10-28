@@ -26,9 +26,10 @@ const navigationCategories = expertiseCategories.map((category) => ({
 
 const navLinks = [
   { label: "About", path: "/about" },
+  { label: "Products", path: "/products" },
+  { label: "10X AI Initiative", path: "/10x-ai-productivity" },
   { label: "Projects", path: "/projects" },
   { label: "Case Studies", path: "/case-studies" },
-  { label: "Internship", path: "/social-internship" },
   { label: "Blog", path: "/blog" },
   { label: "Careers", path: "/careers" },
   { label: "Who We Are", path: "/who-we-are" },

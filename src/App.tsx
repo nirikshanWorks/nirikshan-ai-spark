@@ -12,7 +12,7 @@ import { AnimatePresence } from "framer-motion";
 import { ThemeProvider } from "next-themes";
 import { lazy, Suspense, useCallback, useEffect, useState } from "react";
 import { HelmetProvider } from "react-helmet-async";
-import { BrowserRouter, Route, Routes, useLocation } from "react-router-dom";
+import { BrowserRouter, Navigate, Route, Routes, useLocation } from "react-router-dom";
 
 const Index = lazy(() => import("./pages/Index"));
 const About = lazy(() => import("./pages/About"));
@@ -21,6 +21,8 @@ const Services = lazy(() => import("./pages/Services"));
 const ExpertisePage = lazy(() => import("./pages/expertise/index"));
 const ExpertiseCategoryPage = lazy(() => import("./pages/expertise/[categorySlug]"));
 const ExpertiseServicePage = lazy(() => import("./pages/expertise/[categorySlug]/[serviceSlug]"));
+const Products = lazy(() => import("./pages/Products"));
+const TenXProductivity = lazy(() => import("./pages/TenXProductivity"));
 const Projects = lazy(() => import("./pages/Projects"));
 const CaseStudies = lazy(() => import("./pages/CaseStudies"));
 const Careers = lazy(() => import("./pages/Careers"));
@@ -95,6 +97,10 @@ const AnimatedRoutes = () => {
         <Route path="/expertise/:categorySlug" element={<PageTransition><ExpertiseCategoryPage /></PageTransition>} />
         <Route path="/expertise/:categorySlug/:serviceSlug" element={<PageTransition><ExpertiseServicePage /></PageTransition>} />
         <Route path="/services" element={<PageTransition><Services /></PageTransition>} />
+        <Route path="/products" element={<PageTransition><Products /></PageTransition>} />
+        <Route path="/10x-ai-productivity" element={<PageTransition><TenXProductivity /></PageTransition>} />
+        <Route path="/10x" element={<Navigate to="/10x-ai-productivity" replace />} />
+        <Route path="/productivity" element={<Navigate to="/10x-ai-productivity" replace />} />
         <Route path="/projects" element={<PageTransition><Projects /></PageTransition>} />
         <Route path="/case-studies" element={<PageTransition><CaseStudies /></PageTransition>} />
         <Route path="/careers" element={<PageTransition><Careers /></PageTransition>} />
@@ -119,7 +125,7 @@ const AnimatedRoutes = () => {
         <Route path="/employee/login" element={<PageTransition><EmployeeLogin /></PageTransition>} />
         <Route path="/employee/dashboard" element={<PageTransition><EmployeeDashboard /></PageTransition>} />
         <Route path="/object-detection-demo" element={<PageTransition><ObjectDetectionDemo /></PageTransition>} />
-        <Route path="/social-internship" element={<PageTransition><SocialInternship /></PageTransition>} />
+        <Route path="/social-internship" element={<Navigate to="/careers" replace />} />
         <Route path="/ai-showcase" element={<PageTransition><AIShowcase /></PageTransition>} />
         <Route path="/blog" element={<PageTransition><Blog /></PageTransition>} />
         <Route path="/login" element={<PageTransition><CrmLogin /></PageTransition>} />

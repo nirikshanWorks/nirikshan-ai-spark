@@ -516,7 +516,7 @@ const About = () => {
                 </Link>
                 <Link to="/careers">
                   <Button size="lg" variant="outline" className="hover:bg-secondary transition-all duration-300 transform hover:scale-105">
-                    View Open Positions
+                    Explore Careers
                   </Button>
                 </Link>
               </div>

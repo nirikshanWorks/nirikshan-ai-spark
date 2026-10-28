@@ -73,7 +73,7 @@ export const chatbotResponses: Record<string, ChatResponse> = {
   "💼 Career Opportunities": {
     message: "We're always looking for passionate innovators to join our growing AI team!\n\nExplore open roles and internships in AI development, data science, and product design.\n\n👉 Visit our Career section or email info@nirikshanai.com with your CV and portfolio.",
     followUp: ["📧 Visit Careers Page", "🧠 Our Expertise"],
-    links: [{ text: "View Open Positions", url: "/careers" }]
+    links: [{ text: "Explore Careers", url: "/careers" }]
   },
   
   "📧 Visit Careers Page": {

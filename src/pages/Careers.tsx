@@ -167,153 +167,20 @@ const hiringSteps = [
   }
 ];
 
-const jobOpenings = [
-  {
-    code: "NAI-SALES-INT-02",
-    title: "Sales Executive",
-    type: "Internship",
-    location: "Remote / Work from Home",
-    duration: "3–6 Months",
-    stipend: "Incentive + Commission",
-    overview: "You'll handle lead generation, client communication, and product pitching. If your English is weak or you hesitate in conversations, this role will expose that immediately. We need confident, proactive communicators.",
-    responsibilities: [
-      "Generate leads using online/offline channels",
-      "Talk to prospects, understand needs, and pitch our solutions",
-      "Maintain CRM records",
-      "Assist in meetings, demos, and follow-ups",
-      "Support sales campaigns with proper coordination"
-    ],
-    required: [
-      "Strong English communication (spoken + written)",
-      "Confidence in client handling",
-      "Ability to learn product details quickly",
-      "Team coordination mindset"
-    ],
-    goodToHave: [
-      "Prior experience in sales calls or telemarketing",
-      "Basic understanding of B2B/tech sales"
-    ]
-  },
-  {
-    code: "NAI-DM-INT-03",
-    title: "Digital Marketing",
-    type: "Internship",
-    location: "Remote / Work from Home",
-    duration: "3–6 Months",
-    stipend: "Performance-based",
-    overview: "This role demands creativity and execution. You'll manage social media, content creation, and branding activities. If you can't produce consistent outputs, the role won't suit you.",
-    responsibilities: [
-      "Manage Instagram, LinkedIn, and other platforms",
-      "Create content (posts, reels, captions, scripts)",
-      "Assist with branding, campaigns, and analytics",
-      "Research competitors and trends",
-      "Help grow the digital presence of Nirikshan AI"
-    ],
-    required: [
-      "Basic content writing",
-      "Understanding of how social media algorithms work",
-      "Creativity + consistency",
-      "Ability to execute independently"
-    ],
-    goodToHave: [
-      "Experience with Canva / Photoshop",
-      "Video editing basic skills",
-      "Knowledge of SEO"
-    ]
-  },
-  {
-    code: "NAI-REACT-TRN-04",
-    title: "React JS Trainer Intern",
-    type: "Internship",
-    location: "Remote / Hybrid",
-    duration: "3–6 Months",
-    stipend: "Performance-based",
-    overview: "Help students and early-career developers master React JS through hands-on sessions, practical projects, and personalized mentorship. Strong communication and coding fundamentals are essential.",
-    responsibilities: [
-      "Deliver hands-on training sessions on React JS",
-      "Teach modern JavaScript (ES6+), React Hooks, Routing, API Integration, and State Management",
-      "Guide students in developing real-world web applications",
-      "Assist students with coding challenges and debugging",
-      "Conduct practical assignments and project reviews"
-    ],
-    required: [
-      "HTML5",
-      "CSS3",
-      "JavaScript (ES6+)",
-      "React JS",
-      "REST APIs",
-      "Git & GitHub",
-      "Responsive Web Design",
-      "Basic knowledge of deployment"
-    ],
-    goodToHave: [
-      "Experience with state management libraries (Redux / Zustand / Context API)",
-      "Familiarity with TypeScript",
-      "Prior teaching or mentoring experience"
-    ]
-  },
-  {
-    code: "NAI-PYTHON-FS-TRN-05",
-    title: "Full Stack Python Trainer Intern",
-    type: "Internship",
-    location: "Remote / Hybrid",
-    duration: "3–6 Months",
-    stipend: "Performance-based",
-    overview: "Train aspiring developers in full-stack Python development using Django/Flask, databases, REST APIs, and deployment basics. Ideal for candidates who enjoy coding and explaining concepts clearly.",
-    responsibilities: [
-      "Conduct practical sessions on Python programming",
-      "Teach Django/Flask-based web development",
-      "Guide students through database integration and backend development",
-      "Mentor students during live projects",
-      "Evaluate assignments and provide technical support"
-    ],
-    required: [
-      "Python",
-      "Django or Flask",
-      "HTML, CSS, JavaScript",
-      "SQL/MySQL",
-      "REST APIs",
-      "Git & GitHub",
-      "Basic Cloud Deployment"
-    ],
-    goodToHave: [
-      "Experience with FastAPI",
-      "Knowledge of cloud platforms (AWS / GCP / Azure)",
-      "Previous mentoring or training experience"
-    ]
-  },
-  {
-    code: "NAI-AI-DL-TRN-06",
-    title: "AI, Deep Learning & Generative AI Trainer Intern",
-    type: "Internship",
-    location: "Remote / Hybrid",
-    duration: "3–6 Months",
-    stipend: "Performance-based",
-    overview: "Deliver engaging sessions on AI, machine learning, deep learning, and generative AI. Guide students through real-world AI projects and introduce them to the latest GPT technologies and prompt engineering techniques.",
-    responsibilities: [
-      "Deliver training on Artificial Intelligence fundamentals",
-      "Teach Machine Learning and Deep Learning concepts",
-      "Conduct hands-on sessions on NLP and Large Language Models",
-      "Introduce students to GPT Technologies, Prompt Engineering, and AI tools",
-      "Guide students in developing AI-based projects"
-    ],
-    required: [
-      "Python",
-      "Machine Learning",
-      "Deep Learning",
-      "TensorFlow or PyTorch",
-      "Natural Language Processing (NLP)",
-      "Generative AI",
-      "GPT Technologies",
-      "Prompt Engineering"
-    ],
-    goodToHave: [
-      "Research or published work in AI/ML",
-      "Experience with LangChain, Hugging Face, or similar frameworks",
-      "Prior teaching or workshop facilitation experience"
-    ]
-  }
-];
+interface JobOpening {
+  code: string;
+  title: string;
+  type: string;
+  location: string;
+  duration: string;
+  stipend: string;
+  overview: string;
+  responsibilities: string[];
+  required: string[];
+  goodToHave: string[];
+}
+
+const jobOpenings: JobOpening[] = [];
 
 const faqs = [
   {
@@ -814,11 +681,17 @@ const Careers = () => {
                       <SelectValue placeholder="Select a position" />
                     </SelectTrigger>
                     <SelectContent>
-                      {jobOpenings.map((job) => (
-                        <SelectItem key={job.code} value={job.code}>
-                          {job.title} ({job.code})
+                      {jobOpenings.length > 0 ? (
+                        jobOpenings.map((job) => (
+                          <SelectItem key={job.code} value={job.code}>
+                            {job.title} ({job.code})
+                          </SelectItem>
+                        ))
+                      ) : (
+                        <SelectItem value="GENERAL-APPLICATION">
+                          General Application / Future Opportunities
                         </SelectItem>
-                      ))}
+                      )}
                     </SelectContent>
                   </Select>
                 </div>

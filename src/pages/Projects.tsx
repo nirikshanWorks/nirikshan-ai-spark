@@ -59,22 +59,6 @@ interface Project {
 /* ─── Projects Data ─── */
 const projects: Project[] = [
   {
-    title: "Manorama KrishiRakshak",
-    description: "Multilingual farmer-focused mobile app offering mandi market updates, government scheme guidance, AI crop assistance, and community success stories for agriculture users across India.",
-    category: "Mobile App Development",
-    image: "https://images.unsplash.com/photo-1472396961693-142e6e269027?auto=format&fit=crop&w=1200&q=80",
-    date: "March 2026",
-    status: "Completed",
-    client: "Manorama Krishi Initiative, India",
-    tags: ["Mobile App", "Agritech", "AI Assistant", "Localization"],
-    impact: "15-language farmer support",
-    termsPath: "/projects/manorma-krishi-rakshak/terms",
-    privacyPath: "/projects/manorma-krishi-rakshak/privacy",
-    storeReleaseSoon: true,
-    accountDeletionPath: "/projects/manorma-krishi-rakshak/account-deletion-policy",
-    accentColor: "from-emerald-500 to-teal-400",
-  },
-  {
     title: "AI Inventory Management System",
     description: "Developing a smart inventory management system for one of South Africa's leading pet Bottles product companies. Real-time stock tracking, demand forecasting, and automated reorder triggers powered by machine learning.",
     category: "AI Solution",
@@ -126,18 +110,6 @@ const projects: Project[] = [
     accentColor: "from-rose-500 to-pink-400",
   },
   {
-    title: "Class Test Proctor",
-    description: "AI-powered online exam monitoring tool using OpenCV and Python to detect cheating with 95% accuracy. Features real-time student tracking, automated grading, and scheduling.",
-    category: "AI Solution",
-    image: "https://cdn-media-assets.socratease.co/autoproctor/marketing/landing-page/hero-section/ap-hero.svg",
-    date: "March 2025",
-    status: "Ongoing",
-    client: "Universities & Institutions",
-    tags: ["AI", "OpenCV", "Proctoring"],
-    impact: "40% less manual effort",
-    accentColor: "from-indigo-500 to-blue-400",
-  },
-  {
     title: "Hackathon Evaluation System",
     description: "Real-time hackathon management platform with multi-judge scoring, automated result calculation, and live leaderboards. Built for scale with Docker and Supabase.",
     category: "Software Development",
@@ -148,18 +120,6 @@ const projects: Project[] = [
     tags: ["React", "Supabase", "Docker"],
     impact: "50% faster evaluation",
     accentColor: "from-sky-500 to-cyan-400",
-  },
-  {
-    title: "PG-HOTEL Website",
-    description: "Responsive web portal connecting PG operators with students, featuring availability search, bookings, and digital payments with a modern UI.",
-    category: "Website Development",
-    image: "https://res.cloudinary.com/dch0uyw8e/image/upload/v1760831341/b0a3ac2c-022b-41d7-8734-fe5e411bc0d8.png",
-    date: "May 2025",
-    status: "Completed",
-    client: "Ashiyana PG",
-    tags: ["Web", "Booking", "Payments"],
-    impact: "2x booking conversion",
-    accentColor: "from-fuchsia-500 to-pink-400",
   },
 ];
 
