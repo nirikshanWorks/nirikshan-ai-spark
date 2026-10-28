@@ -10,7 +10,7 @@ import {
 } from "@/components/ui/navigation-menu";
 import { Menu, X } from "lucide-react";
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 
 import { expertiseCategories } from "@/pages/expertise/expertiseData";
 
@@ -35,6 +35,9 @@ const navLinks = [
   { label: "Who We Are", path: "/who-we-are" },
 ];
 
+// Bottom nav height constant — keep in sync with MobileBottomNav.tsx
+const BOTTOM_NAV_HEIGHT = 64; // px — roughly 4rem (icon + label + padding)
+
 export const Navigation = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [mobileExpertiseOpen, setMobileExpertiseOpen] = useState(false);
@@ -42,7 +45,7 @@ export const Navigation = () => {
   const [scrolled, setScrolled] = useState(false);
   const desktopMenuOpen = Boolean(desktopMenuValue);
   const navRef = useRef<HTMLElement | null>(null);
-  const [headerHeight, setHeaderHeight] = useState(0);
+  const [headerHeight, setHeaderHeight] = useState(56); // default 14 = 56px
   const location = useLocation();
 
   const toggleMobileMenu = () => {
@@ -58,25 +61,31 @@ export const Navigation = () => {
     setMobileExpertiseOpen(false);
   };
 
+  // Close menu on route change
+  useEffect(() => {
+    closeMobileMenu();
+  }, [location.pathname]);
+
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 10);
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
+  // Lock body scroll only when desktop dropdown is open; mobile drawer handles its own scroll
   useEffect(() => {
-    if (mobileMenuOpen || desktopMenuOpen) {
+    if (desktopMenuOpen) {
       const orig = document.body.style.overflow;
       document.body.style.overflow = "hidden";
       return () => { document.body.style.overflow = orig; };
     }
     document.body.style.overflow = "";
     return undefined;
-  }, [mobileMenuOpen, desktopMenuOpen]);
+  }, [desktopMenuOpen]);
 
   useLayoutEffect(() => {
     const update = () => {
-      const h = navRef.current?.getBoundingClientRect().height ?? 0;
+      const h = navRef.current?.getBoundingClientRect().height ?? 56;
       setHeaderHeight(h);
     };
     update();
@@ -98,31 +107,32 @@ export const Navigation = () => {
 
   return (
     <>
+      {/* ── Top nav bar ── */}
       <nav
         ref={navRef}
         className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
           scrolled
-            ? "bg-background/80 backdrop-blur-xl border-b border-border shadow-sm"
-            : "bg-background/60 backdrop-blur-md border-b border-transparent"
+            ? "bg-background/90 backdrop-blur-xl border-b border-border shadow-sm"
+            : "bg-background/70 backdrop-blur-md border-b border-transparent"
         }`}
       >
         <div className="mx-auto flex w-full max-w-7xl items-center justify-between px-4 sm:px-6">
           <div className="flex h-14 sm:h-16 w-full items-center justify-between">
+
             {/* Logo */}
-            <Link to="/" className="flex items-center space-x-2 sm:space-x-3 group shrink-0">
+            <Link to="/" className="flex items-center gap-2 sm:gap-3 group shrink-0" onClick={closeMobileMenu}>
               <img
                 src="/nirikshan-ai-logo.png"
                 alt="Nirikshan AI Pvt. Ltd."
                 className="h-9 sm:h-10 lg:h-14 w-auto transition-transform duration-300 group-hover:scale-105"
               />
-              <div className="text-base sm:text-lg font-bold font-heading text-foreground">
+              <span className="text-base sm:text-lg font-bold font-heading text-foreground select-none">
                 Nirikshan <span className="text-gradient">AI</span>
-              </div>
+              </span>
             </Link>
 
-            {/* Desktop Navigation */}
+            {/* ── Desktop nav ── */}
             <div className="hidden lg:flex items-center gap-1">
-              {/* Expertise Dropdown */}
               <NavigationMenu value={desktopMenuValue} onValueChange={setDesktopMenuValue}>
                 <NavigationMenuList>
                   <NavigationMenuItem value="expertise">
@@ -162,7 +172,6 @@ export const Navigation = () => {
                 </NavigationMenuList>
               </NavigationMenu>
 
-              {/* Simple nav links */}
               {navLinks.map((link) => (
                 <Link
                   key={link.path}
@@ -186,77 +195,99 @@ export const Navigation = () => {
               <SwitchToggleThemeDemo />
             </div>
 
-            {/* Mobile Menu Button */}
-            <div className="lg:hidden flex items-center gap-1.5">
+            {/* ── Mobile right controls ── */}
+            <div className="lg:hidden flex items-center gap-2">
               <SwitchToggleThemeDemo />
               <button
                 onClick={toggleMobileMenu}
                 aria-expanded={mobileMenuOpen}
                 aria-controls="mobile-navigation"
-                className="p-2 relative z-[80] rounded-xl hover:bg-secondary transition-colors"
+                aria-label={mobileMenuOpen ? "Close menu" : "Open menu"}
+                className="flex items-center justify-center w-10 h-10 rounded-xl hover:bg-secondary/80 transition-colors"
               >
                 {mobileMenuOpen ? <X size={22} /> : <Menu size={22} />}
               </button>
             </div>
+
           </div>
         </div>
       </nav>
 
-      {/* Mobile Navigation — App-like drawer */}
+      {/* ── Mobile navigation drawer ── */}
       {mobileMenuOpen && (
-        <div
-          id="mobile-navigation"
-          className="fixed inset-x-0 top-14 z-[70] lg:hidden border-t border-border animate-in fade-in slide-in-from-top-2 duration-200"
-          style={{ bottom: "calc(4.25rem + env(safe-area-inset-bottom, 0px))" }}
-        >
-          <div className="h-full overflow-y-auto bg-background/98 backdrop-blur-xl">
-            <div className="px-4 py-4 space-y-2">
+        <>
+          {/* Backdrop */}
+          <div
+            className="fixed inset-0 z-[45] lg:hidden bg-black/20 backdrop-blur-[2px]"
+            onClick={closeMobileMenu}
+            aria-hidden="true"
+          />
 
-              {/* Quick CTA bar */}
-              <div className="flex gap-2 mb-3">
+          {/* Drawer panel */}
+          <div
+            id="mobile-navigation"
+            role="dialog"
+            aria-modal="true"
+            aria-label="Navigation menu"
+            className="fixed left-0 right-0 z-[48] lg:hidden overflow-y-auto overscroll-contain bg-background border-b border-border shadow-xl animate-in fade-in slide-in-from-top-3 duration-200"
+            style={{
+              top: headerHeight,
+              maxHeight: `calc(100dvh - ${headerHeight}px - ${BOTTOM_NAV_HEIGHT}px - env(safe-area-inset-bottom, 0px))`,
+            }}
+          >
+            <div className="px-4 pt-3 pb-5 space-y-2">
+
+              {/* Quick CTA row */}
+              <div className="grid grid-cols-2 gap-2 pb-1">
                 <Link
                   to="/contact"
                   onClick={closeMobileMenu}
-                  className="flex-1 flex items-center justify-center rounded-xl py-3 gradient-primary text-white text-sm font-semibold"
+                  className="flex items-center justify-center rounded-xl py-3 gradient-primary text-white text-sm font-semibold"
                 >
                   Get in Touch
                 </Link>
                 <Link
                   to="/about"
                   onClick={closeMobileMenu}
-                  className="flex-1 flex items-center justify-center rounded-xl py-3 bg-secondary text-foreground text-sm font-semibold border border-border"
+                  className="flex items-center justify-center rounded-xl py-3 bg-secondary text-foreground text-sm font-semibold border border-border"
                 >
                   About Us
                 </Link>
               </div>
 
-              <div className="border-t border-border" />
+              <div className="border-t border-border/60" />
 
               {/* Expertise accordion */}
               <button
-                className="flex w-full items-center justify-between gap-2 rounded-xl px-4 py-3.5 text-sm font-semibold hover:bg-secondary transition-colors"
+                className="flex w-full items-center justify-between gap-2 rounded-xl px-4 py-3.5 text-sm font-semibold hover:bg-secondary transition-colors text-left"
                 onClick={() => setMobileExpertiseOpen((prev) => !prev)}
               >
                 <span>Expertise</span>
-                <span className={`transition-transform duration-200 text-muted-foreground ${mobileExpertiseOpen ? "rotate-180" : ""}`}>▾</span>
+                <span
+                  className={`text-muted-foreground transition-transform duration-200 ${
+                    mobileExpertiseOpen ? "rotate-180" : ""
+                  }`}
+                >
+                  ▾
+                </span>
               </button>
 
               {mobileExpertiseOpen && (
-                <div className="animate-in fade-in slide-in-from-top-2 duration-200">
-                  <div className="space-y-0.5 bg-secondary/40 rounded-xl p-2 mx-1">
-                    {navigationCategories[0]?.items.map((item) => (
-                      <Link
-                        key={item.title}
-                        to={item.href}
-                        className="block px-3 py-2.5 text-sm text-muted-foreground hover:text-primary hover:bg-background/70 rounded-lg transition-colors"
-                        onClick={closeMobileMenu}
-                      >
-                        {item.title}
-                      </Link>
-                    ))}
+                <div className="space-y-0.5 bg-secondary/40 rounded-xl p-2 mx-1 animate-in fade-in slide-in-from-top-2 duration-150">
+                  {navigationCategories[0]?.items.map((item) => (
+                    <Link
+                      key={item.title}
+                      to={item.href}
+                      className="block px-3 py-2.5 text-sm text-muted-foreground hover:text-primary hover:bg-background/70 rounded-lg transition-colors"
+                      onClick={closeMobileMenu}
+                    >
+                      {item.title}
+                    </Link>
+                  ))}
+                  <div className="border-t border-border/50 mt-1 pt-1">
                     <Link
                       to={`/expertise/${navigationCategories[0]?.slug}`}
-                      className="block px-3 py-2.5 text-sm font-semibold text-primary rounded-lg transition-colors mt-1 border-t border-border/50"
+                      className="block px-3 py-2.5 text-sm font-semibold text-primary rounded-lg transition-colors"
                       onClick={closeMobileMenu}
                     >
                       View All {navigationCategories[0]?.title} →
@@ -265,7 +296,7 @@ export const Navigation = () => {
                 </div>
               )}
 
-              {/* Nav links — 2-column grid for app-like feel */}
+              {/* Nav links — 2-column grid */}
               <div className="grid grid-cols-2 gap-2 pt-1">
                 {navLinks.slice(1).map((link) => (
                   <Link
@@ -274,7 +305,7 @@ export const Navigation = () => {
                     className={`flex items-center rounded-xl px-4 py-3.5 text-sm font-semibold transition-colors ${
                       location.pathname === link.path
                         ? "bg-primary/10 text-primary"
-                        : "hover:bg-secondary text-foreground"
+                        : "bg-secondary/50 hover:bg-secondary text-foreground"
                     }`}
                     onClick={closeMobileMenu}
                   >
@@ -282,11 +313,13 @@ export const Navigation = () => {
                   </Link>
                 ))}
               </div>
+
             </div>
           </div>
-        </div>
+        </>
       )}
 
+      {/* Spacer so content doesn't hide under the fixed nav */}
       <div aria-hidden="true" style={{ height: headerHeight }} />
     </>
   );
