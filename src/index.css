@@ -341,3 +341,11 @@ html {
     line-height: 1.15;
   }
 }
+
+/* ─── Scrollbar hide utility (used by horizontal scroll sections) ─── */
+.scrollbar-none {
+  scrollbar-width: none;
+}
+.scrollbar-none::-webkit-scrollbar {
+  display: none;
+}

@@ -2,528 +2,146 @@ import { SEO } from "@/components/SEO";
 import { Navigation } from "@/components/Navigation";
 import { Footer } from "@/components/Footer";
 import { Button } from "@/components/ui/button";
-import { Card } from "@/components/ui/card";
-import { HeroParticles } from "@/components/HeroParticles";
-import { FloatingElements } from "@/components/FloatingElements";
-import { ProductCarousel3D } from "@/components/ProductCarousel3D";
 import { AICircuitLines } from "@/components/AICircuitLines";
-import { AIFloatingIcons } from "@/components/AIFloatingIcons";
-import { AIHexagonGrid } from "@/components/AIHexagonGrid";
-import { AI3DOrb } from "@/components/AI3DOrb";
-import { AI3DCube } from "@/components/AI3DCube";
-import { AIWaveField } from "@/components/AIWaveField";
-import { AIParticleRing } from "@/components/AIParticleRing";
-import { AIDataStream } from "@/components/AIDataStream";
-import { FadeUp, SlideLeft, SlideRight, StaggerContainer, StaggerItem } from "@/components/ScrollAnimations";
-import { 
-  Brain, 
-  Eye, 
-  Code, 
-  Globe, 
-  Palette, 
-  Database, 
-  Users,
-  ArrowRight,
-  Check,
-  Zap,
-  TrendingUp,
-  Cpu,
-  Cloud,
-  Smartphone,
-  BarChart3,
-  CheckCircle,
-  GitBranch,
-  Boxes
+import { FadeUp } from "@/components/ScrollAnimations";
+import {
+  Brain, Eye, Code, Database, Users, ArrowRight, Check,
+  Zap, TrendingUp, Cpu, Cloud, Smartphone, BarChart3,
+  CheckCircle, GitBranch, Boxes, ChevronRight,
 } from "lucide-react";
 import { Link } from "react-router-dom";
-import { useScrollAnimation } from "@/hooks/use-scroll-animation";
 import heroAI from "@/assets/hero-ai.jpg";
+import { useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 
 const servicesData = [
   {
     icon: Brain,
-    title: "Artificial Intelligence & Machine Learning",
+    title: "AI & Machine Learning",
     shortDesc: "Advanced AI solutions and ML models",
+    color: "from-violet-500 to-purple-600",
+    iconBg: "bg-violet-500",
+    tag: "Most Popular",
     fullDesc: "Transform your business with cutting-edge AI and machine learning solutions. From generative AI to predictive analytics, we develop intelligent systems that learn and adapt to your specific needs.",
-    features: [
-      "Generative AI models and LLM implementations",
-      "Custom machine learning models",
-      "Predictive analytics and forecasting",
-      "Natural language processing (NLP)",
-      "AI consulting and strategy",
-      "Intelligent automation systems",
-      "Recommendation engines",
-      "Anomaly detection systems"
-    ],
-    benefits: [
-      "Automate complex processes",
-      "Gain actionable insights from data",
-      "Reduce operational costs by 40%+",
-      "Improve decision-making accuracy",
-      "Scale operations efficiently",
-      "Stay ahead of competition"
-    ],
-    useCases: [
-      "Customer behavior prediction",
-      "Fraud detection systems",
-      "Demand forecasting",
-      "Quality assurance automation",
-      "Natural language understanding",
-      "Conversational AI chatbots"
-    ]
+    features: ["Generative AI & LLM implementations", "Custom machine learning models", "Predictive analytics & forecasting", "Natural language processing (NLP)", "AI consulting & strategy", "Intelligent automation systems"],
+    benefits: ["Automate complex processes", "Gain actionable insights", "Reduce costs by 40%+", "Improve decision accuracy"],
+    stat: "40%", statLabel: "avg. cost reduction",
   },
   {
     icon: Cpu,
-    title: "Microsoft Services & .NET Solutions",
-    shortDesc: "Enterprise Microsoft ecosystem services",
-    fullDesc: "Leverage Microsoft's enterprise ecosystem with our comprehensive services. From .NET development to Azure cloud solutions, MS Dynamics, and legacy application migration, we deliver enterprise-grade solutions.",
-    features: [
-      ".NET framework development",
-      "MS Dynamics CRM implementations",
-      "MS Dynamics ERP solutions",
-      "Legacy application migration to .NET",
-      "Azure cloud infrastructure",
-      "Azure DevOps and CI/CD",
-      "Microsoft 365 integration",
-      "Enterprise security solutions"
-    ],
-    benefits: [
-      "Seamless enterprise integration",
-      "Improved business processes",
-      "Enhanced security and compliance",
-      "Scalable cloud infrastructure",
-      "Cost-effective solutions",
-      "Expert Microsoft partnership"
-    ],
-    useCases: [
-      "Enterprise resource planning",
-      "Customer relationship management",
-      "Legacy system modernization",
-      "Cloud migration projects",
-      "Business process automation",
-      "Enterprise application development"
-    ]
+    title: "Microsoft & .NET",
+    shortDesc: "Enterprise Microsoft ecosystem",
+    color: "from-blue-500 to-cyan-600",
+    iconBg: "bg-blue-500",
+    fullDesc: "Leverage Microsoft's enterprise ecosystem. From .NET development to Azure cloud solutions, MS Dynamics, and legacy application migration — enterprise-grade solutions built right.",
+    features: [".NET framework development", "MS Dynamics CRM & ERP", "Legacy migration to .NET", "Azure cloud infrastructure", "Azure DevOps & CI/CD", "Microsoft 365 integration"],
+    benefits: ["Seamless enterprise integration", "Enhanced compliance", "Scalable cloud infra", "Expert MS partnership"],
+    stat: "99%", statLabel: "enterprise uptime",
   },
   {
     icon: Boxes,
     title: "SAP BTP Solutions",
-    shortDesc: "Business Technology Platform services",
-    fullDesc: "Unlock the full potential of SAP Business Technology Platform. We provide comprehensive solutions for integration, application development, data management, and AI-powered insights on SAP BTP.",
-    features: [
-      "SAP Integration Suite implementations",
-      "Low-code/No-code application development",
-      "SAP BTP data and analytics",
-      "Application Development Automation",
-      "AI capabilities on SAP BTP",
-      "SAP Analytics Cloud",
-      "Data modeling and ETL",
-      "Custom API development"
-    ],
-    benefits: [
-      "Faster application development",
-      "Reduced integration complexity",
-      "Real-time data insights",
-      "Scalable on-demand infrastructure",
-      "Cost optimization",
-      "Future-ready platform"
-    ],
-    useCases: [
-      "Enterprise data integration",
-      "Real-time reporting dashboards",
-      "Supply chain optimization",
-      "Customer analytics platforms",
-      "Business process automation",
-      "Intelligent forecasting"
-    ]
+    shortDesc: "Business Technology Platform",
+    color: "from-emerald-500 to-teal-600",
+    iconBg: "bg-emerald-500",
+    fullDesc: "Unlock the full potential of SAP Business Technology Platform with comprehensive integration, application development, data management, and AI-powered insights.",
+    features: ["SAP Integration Suite", "Low-code/No-code development", "SAP BTP data & analytics", "AI on SAP BTP", "SAP Analytics Cloud", "Custom API development"],
+    benefits: ["Faster app development", "Reduced integration complexity", "Real-time data insights", "Future-ready platform"],
+    stat: "3×", statLabel: "faster delivery",
   },
   {
     icon: Cloud,
-    title: "AWS & Cloud Services",
+    title: "AWS & Cloud",
     shortDesc: "Amazon Web Services infrastructure",
-    fullDesc: "Harness the power of AWS cloud with our comprehensive services. We help you migrate, optimize, and innovate on the AWS platform with expert architecture and best practices.",
-    features: [
-      "AWS infrastructure design and setup",
-      "Cloud migration services",
-      "AWS cost optimization",
-      "Serverless application development",
-      "Cloud security and compliance",
-      "AWS DevOps and automation",
-      "Database migration services",
-      "Disaster recovery solutions"
-    ],
-    benefits: [
-      "Global infrastructure availability",
-      "Pay-as-you-go pricing model",
-      "High scalability and reliability",
-      "Enhanced security and compliance",
-      "Reduced operational overhead",
-      "Innovation at scale"
-    ],
-    useCases: [
-      "Web application hosting",
-      "Big data analytics",
-      "Real-time streaming applications",
-      "Enterprise data backup",
-      "IoT platform development",
-      "Mobile app backend services"
-    ]
+    color: "from-amber-500 to-orange-600",
+    iconBg: "bg-amber-500",
+    fullDesc: "Harness the power of AWS cloud with expert architecture and best practices. Migrate, optimize, and innovate on the AWS platform with end-to-end cloud services.",
+    features: ["AWS infrastructure design", "Cloud migration", "AWS cost optimization", "Serverless development", "Cloud security", "Disaster recovery"],
+    benefits: ["Global availability", "Pay-as-you-go model", "High scalability", "Reduced overhead"],
+    stat: "60%", statLabel: "infra cost saved",
   },
   {
     icon: Code,
     title: "Web Development",
-    shortDesc: "Modern responsive web applications",
-    fullDesc: "We create high-performance, responsive web applications that deliver exceptional user experiences. Using React, Next.js, and modern frameworks, we build progressive web apps for any scale.",
-    features: [
-      "Responsive web design",
-      "Progressive web apps (PWA)",
-      "E-commerce platforms",
-      "Content management systems",
-      "Real-time applications",
-      "Single page applications (SPA)",
-      "WordPress development",
-      "Performance optimization"
-    ],
-    benefits: [
-      "Works on all devices",
-      "Fast loading times",
-      "SEO friendly",
-      "Improved user engagement",
-      "Better conversion rates",
-      "Cross-browser compatibility"
-    ],
-    useCases: [
-      "Online stores and marketplaces",
-      "Business portals",
-      "Social platforms",
-      "Analytics dashboards",
-      "Content platforms",
-      "Booking systems"
-    ]
+    shortDesc: "Modern responsive web apps",
+    color: "from-rose-500 to-pink-600",
+    iconBg: "bg-rose-500",
+    fullDesc: "High-performance, responsive web applications that deliver exceptional user experiences. Using React, Next.js, and modern frameworks for any scale.",
+    features: ["Responsive web design", "Progressive web apps (PWA)", "E-commerce platforms", "CMS development", "Real-time applications", "Performance optimization"],
+    benefits: ["Works on all devices", "Fast loading", "SEO friendly", "Better conversions"],
+    stat: "2×", statLabel: "faster load times",
   },
   {
     icon: Smartphone,
-    title: "Mobile Application Development",
-    shortDesc: "Native and cross-platform mobile apps",
-    fullDesc: "Build powerful mobile applications for iOS, Android, or both platforms. Our expert team creates native and cross-platform solutions that provide exceptional mobile experiences.",
-    features: [
-      "Native Android development",
-      "Native iOS development",
-      "Cross-platform development (React Native, Flutter)",
-      "Mobile UI/UX design",
-      "App store optimization",
-      "Push notifications",
-      "Offline functionality",
-      "Mobile analytics integration"
-    ],
-    benefits: [
-      "Native performance",
-      "Code reusability",
-      "Faster time to market",
-      "Cost-effective development",
-      "Better user experience",
-      "Regular updates and support"
-    ],
-    useCases: [
-      "Consumer apps",
-      "Enterprise mobile solutions",
-      "Location-based services",
-      "Social networking apps",
-      "E-commerce mobile apps",
-      "Healthcare applications"
-    ]
+    title: "Mobile Apps",
+    shortDesc: "Native & cross-platform mobile",
+    color: "from-indigo-500 to-purple-600",
+    iconBg: "bg-indigo-500",
+    fullDesc: "Powerful mobile applications for iOS, Android, or both platforms with native and cross-platform solutions that provide exceptional user experiences.",
+    features: ["Native Android & iOS", "React Native & Flutter", "Mobile UI/UX design", "App store optimization", "Push notifications", "Offline functionality"],
+    benefits: ["Native performance", "Code reusability", "Faster to market", "Cost-effective"],
+    stat: "4.8★", statLabel: "avg. app rating",
   },
   {
     icon: CheckCircle,
-    title: "Quality Assurance & Testing",
-    shortDesc: "Comprehensive QA and testing services",
-    fullDesc: "Ensure your software meets the highest quality standards with our comprehensive testing services. From functional testing to automation testing, we provide thorough quality assurance across all platforms.",
-    features: [
-      "Manual software testing",
-      "Functional testing",
-      "Automation testing",
-      "Performance testing",
-      "Security testing",
-      "Regression testing",
-      "User acceptance testing",
-      "Test management and reporting"
-    ],
-    benefits: [
-      "Reduce defects and bugs",
-      "Improve software reliability",
-      "Faster release cycles",
-      "Cost-effective testing",
-      "Enhanced user satisfaction",
-      "Continuous quality improvement"
-    ],
-    useCases: [
-      "Software release validation",
-      "Regression test automation",
-      "Performance benchmarking",
-      "Security vulnerability testing",
-      "Compliance verification",
-      "Continuous integration testing"
-    ]
+    title: "QA & Testing",
+    shortDesc: "Quality assurance services",
+    color: "from-teal-500 to-cyan-600",
+    iconBg: "bg-teal-500",
+    fullDesc: "Ensure software meets the highest quality standards with comprehensive testing from functional to automation across all platforms.",
+    features: ["Manual & automation testing", "Performance testing", "Security testing", "Regression testing", "UAT", "Test management"],
+    benefits: ["Fewer defects", "Faster releases", "Improved reliability", "Cost-effective QA"],
+    stat: "90%", statLabel: "defect reduction",
   },
   {
     icon: GitBranch,
-    title: "Legacy Application Modernization",
-    shortDesc: "Transform legacy systems for modern era",
-    fullDesc: "Breathe new life into your legacy applications with comprehensive modernization strategies. From re-engineering to cloud migration, we help you transform outdated systems into modern, efficient solutions.",
-    features: [
-      "Application re-engineering",
-      "Application re-architecture",
-      "Legacy cloud migration",
-      "UI/UX modernization",
-      "API integration",
-      "Database modernization",
-      "Performance optimization",
-      "Maintenance services"
-    ],
-    benefits: [
-      "Extended system lifespan",
-      "Improved performance",
-      "Reduced maintenance costs",
-      "Better scalability",
-      "Modern user interface",
-      "Cloud-ready architecture"
-    ],
-    useCases: [
-      "Mainframe modernization",
-      "Desktop to web transformation",
-      "Legacy to cloud migration",
-      "Database upgrades",
-      "API-first transformation",
-      "Microservices migration"
-    ]
+    title: "Legacy Modernization",
+    shortDesc: "Transform legacy systems",
+    color: "from-slate-500 to-gray-600",
+    iconBg: "bg-slate-500",
+    fullDesc: "Breathe new life into legacy applications with re-engineering, cloud migration, and UI/UX modernization that transform outdated systems.",
+    features: ["App re-engineering", "Cloud migration", "UI/UX modernization", "API integration", "Database modernization", "Maintenance services"],
+    benefits: ["Extended lifespan", "Better performance", "Lower maintenance", "Cloud-ready"],
+    stat: "70%", statLabel: "lower maintenance",
   },
   {
     icon: BarChart3,
-    title: "Digital Marketing Services",
-    shortDesc: "Grow your online presence and reach",
-    fullDesc: "Expand your digital footprint with our comprehensive marketing services. From SEO to social media marketing, we help you reach and engage your target audience effectively.",
-    features: [
-      "Search engine optimization (SEO)",
-      "Social media marketing",
-      "Content marketing",
-      "Paid advertising campaigns",
-      "Email marketing",
-      "Marketing analytics",
-      "Brand strategy",
-      "Digital consulting"
-    ],
-    benefits: [
-      "Increased online visibility",
-      "Higher conversion rates",
-      "Better customer engagement",
-      "Measurable ROI",
-      "Cost-effective marketing",
-      "Brand awareness growth"
-    ],
-    useCases: [
-      "E-commerce visibility",
-      "Lead generation",
-      "Brand awareness campaigns",
-      "Social media engagement",
-      "Search rankings improvement",
-      "Customer retention"
-    ]
-  },
-  {
-    icon: Zap,
-    title: "Digital Transformation Services",
-    shortDesc: "End-to-end digital transformation",
-    fullDesc: "Navigate your digital transformation journey with our expert guidance. We help organizations modernize operations, embrace new technologies, and drive business growth in the digital age.",
-    features: [
-      "Digital transformation strategy",
-      "Business process automation",
-      "Cloud migration planning",
-      "AI-powered transformation",
-      "Agile and DevOps implementation",
-      "Change management",
-      "Technology assessment",
-      "Innovation workshops"
-    ],
-    benefits: [
-      "Accelerated business growth",
-      "Operational efficiency",
-      "Cost reduction",
-      "Enhanced customer experience",
-      "Employee productivity",
-      "Competitive advantage"
-    ],
-    useCases: [
-      "Enterprise digital transformation",
-      "Business process optimization",
-      "Customer experience enhancement",
-      "Operational efficiency",
-      "New product development",
-      "Market expansion"
-    ]
+    title: "Digital Marketing",
+    shortDesc: "Grow your online presence",
+    color: "from-pink-500 to-rose-600",
+    iconBg: "bg-pink-500",
+    fullDesc: "Expand your digital footprint with comprehensive marketing services — from SEO to social media, reaching and engaging your target audience.",
+    features: ["SEO optimization", "Social media marketing", "Content marketing", "Paid advertising", "Email marketing", "Marketing analytics"],
+    benefits: ["More visibility", "Higher conversions", "Measurable ROI", "Brand awareness"],
+    stat: "5×", statLabel: "traffic growth",
   },
   {
     icon: Database,
-    title: "Data Management & Analytics",
+    title: "Data & Analytics",
     shortDesc: "Comprehensive data solutions",
-    fullDesc: "Turn your data into actionable insights with our comprehensive data management and analytics solutions. From database design to advanced analytics, we help you leverage your data for business growth.",
-    features: [
-      "Database design and optimization",
-      "ETL pipelines and data integration",
-      "Data warehousing",
-      "Business intelligence systems",
-      "Analytics platforms",
-      "Data governance",
-      "Big data solutions",
-      "Real-time analytics"
-    ],
-    benefits: [
-      "Better data insights",
-      "Faster query performance",
-      "Scalable infrastructure",
-      "Improved data quality",
-      "Regulatory compliance",
-      "Data-driven decisions"
-    ],
-    useCases: [
-      "Business analytics platforms",
-      "Real-time dashboards",
-      "Data migration projects",
-      "Big data solutions",
-      "Customer analytics",
-      "Operational intelligence"
-    ]
+    color: "from-cyan-500 to-blue-600",
+    iconBg: "bg-cyan-500",
+    fullDesc: "Turn data into actionable insights with database design, ETL pipelines, data warehousing, and advanced analytics platforms.",
+    features: ["Database design & optimization", "ETL pipelines", "Data warehousing", "Business intelligence", "Big data solutions", "Real-time analytics"],
+    benefits: ["Better insights", "Faster queries", "Scalable infra", "Data-driven decisions"],
+    stat: "10×", statLabel: "faster queries",
   },
   {
     icon: Users,
     title: "CRM & Managed Services",
-    shortDesc: "Customer solutions and ongoing support",
-    fullDesc: "Streamline customer relationships and ensure smooth operations with our CRM and managed services. We provide both custom CRM solutions and continuous application management services.",
-    features: [
-      "Custom CRM development",
-      "Customer database management",
-      "Sales pipeline automation",
-      "Marketing automation",
-      "Customer service tools",
-      "Application managed services",
-      "24/7 monitoring and support",
-      "Performance optimization"
-    ],
-    benefits: [
-      "Improved customer relationships",
-      "Increased sales efficiency",
-      "Better customer retention",
-      "Enhanced collaboration",
-      "Data-driven decisions",
-      "Reduced IT overhead"
-    ],
-    useCases: [
-      "Sales force automation",
-      "Customer support systems",
-      "Marketing automation",
-      "Application support services",
-      "System monitoring",
-      "Performance maintenance"
-    ]
-  }
+    shortDesc: "Customer solutions & support",
+    color: "from-orange-500 to-amber-600",
+    iconBg: "bg-orange-500",
+    fullDesc: "Streamline customer relationships with custom CRM solutions and continuous application management services with 24/7 support.",
+    features: ["Custom CRM development", "Sales pipeline automation", "Marketing automation", "24/7 monitoring", "Application managed services", "Performance optimization"],
+    benefits: ["Better customer retention", "More sales efficiency", "Reduced IT overhead", "Always-on support"],
+    stat: "24/7", statLabel: "monitoring",
+  },
 ];
 
-const ServiceDetail = ({ service, index }: { service: typeof servicesData[0], index: number }) => {
-  const contentRef = useScrollAnimation(0.2);
-
-  return (
-    <section className={`py-12 sm:py-16 md:py-20 ${index % 2 === 0 ? "bg-background" : "bg-secondary/30"} relative`}>
-      <div className="container mx-auto px-4 sm:px-6" ref={contentRef.ref}>
-        {index % 4 === 0 && <AICircuitLines className="opacity-15" />}
-        {index % 4 === 1 && <AIHexagonGrid className="opacity-15" />}
-        {index % 4 === 2 && <AIFloatingIcons count={4} className="opacity-30" />}
-        {index % 4 === 3 && <AIWaveField className="opacity-12" />}
-        {/* 3D decorations — desktop only */}
-        {index % 3 === 0 && (
-          <div className="absolute -right-8 top-1/4 opacity-15 hidden xl:block">
-            <AI3DOrb size={150} />
-          </div>
-        )}
-        {index % 3 === 1 && (
-          <div className="absolute -left-6 bottom-1/4 opacity-15 hidden xl:block">
-            <AI3DCube size={80} />
-          </div>
-        )}
-        {index % 3 === 2 && (
-          <div className="absolute right-10 bottom-10 opacity-12 hidden xl:block">
-            <AIParticleRing size={160} particleCount={20} />
-          </div>
-        )}
-        <div className={`grid md:grid-cols-2 gap-8 md:gap-12 items-start transition-all duration-1000 relative z-10 ${
-          contentRef.isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
-        }`}>
-          {/* Left side */}
-          <div className={index % 2 === 1 ? "order-2" : ""}>
-            <div className="flex items-center gap-3 sm:gap-4 mb-4 sm:mb-6">
-              <div className="w-12 h-12 sm:w-16 sm:h-16 rounded-xl gradient-primary flex items-center justify-center shadow-lg flex-shrink-0 icon-3d">
-                <service.icon className="text-white" size={24} />
-              </div>
-              <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold">{service.title}</h2>
-            </div>
-            <p className="text-base sm:text-lg text-muted-foreground mb-6 sm:mb-8 leading-relaxed">
-              {service.fullDesc}
-            </p>
-
-            {/* Key Features */}
-            <div className="mb-6 sm:mb-8">
-              <h3 className="text-lg sm:text-xl font-semibold mb-3 sm:mb-4 flex items-center gap-2">
-                <Zap size={18} className="text-primary" />
-                Key Features
-              </h3>
-              <ul className="space-y-2 sm:space-y-3">
-                {service.features.map((feature, idx) => (
-                  <li key={idx} className="flex items-start gap-2 sm:gap-3 group">
-                    <Check size={18} className="text-green-500 flex-shrink-0 mt-0.5 group-hover:scale-110 transition-transform" />
-                    <span className="text-sm sm:text-base text-muted-foreground group-hover:text-foreground transition-colors">{feature}</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          </div>
-
-          {/* Right side */}
-          <div className={index % 2 === 1 ? "order-1" : ""}>
-            {/* Benefits Card */}
-            <div className="p-4 sm:p-6 mb-4 sm:mb-6 rounded-2xl tilt-card glass-card border border-primary/10 ai-glow-hover">
-              <h3 className="text-lg sm:text-xl font-semibold mb-3 sm:mb-4 flex items-center gap-2">
-                <TrendingUp size={18} className="text-primary" />
-                Benefits
-              </h3>
-              <ul className="space-y-2 sm:space-y-3">
-                {service.benefits.map((benefit, idx) => (
-                  <li key={idx} className="flex items-start gap-2 sm:gap-3">
-                    <div className="w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full bg-primary mt-2 flex-shrink-0" />
-                    <span className="text-sm text-muted-foreground">{benefit}</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-
-            {/* Use Cases Card */}
-            <div className="p-4 sm:p-6 rounded-2xl tilt-card glass-card border border-accent/10 ai-glow-hover">
-              <h3 className="text-lg sm:text-xl font-semibold mb-3 sm:mb-4">Real-World Applications</h3>
-              <ul className="space-y-2 sm:space-y-3">
-                {service.useCases.map((useCase, idx) => (
-                  <li key={idx} className="flex items-start gap-2 sm:gap-3">
-                    <div className="w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full bg-accent mt-2 flex-shrink-0" />
-                    <span className="text-sm text-muted-foreground">{useCase}</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-  );
-};
-
-
 const Services = () => {
-  const heroRef = useScrollAnimation(0.1);
+  const [activeTab, setActiveTab] = useState(0);
+  const active = servicesData[activeTab];
 
   return (
     <div className="min-h-screen">
@@ -535,100 +153,219 @@ const Services = () => {
       <Navigation />
 
       <main className="pt-14 sm:pt-16">
-        {/* Hero Section */}
-        <section className="relative h-[340px] sm:h-[450px] md:h-[550px] overflow-hidden group perspective-container" ref={heroRef.ref}>
-          <img 
-            src={heroAI} 
-            alt="Our Services" 
-            className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" 
-          />
-          {/* Multi-layer gradient for depth */}
-          <div className="absolute inset-0 bg-gradient-to-r from-slate-950/90 via-slate-900/70 to-transparent" />
-          <div className="absolute inset-0 bg-gradient-to-t from-slate-950/70 via-transparent to-slate-900/40" />
-          
-          {/* Particle effects */}
-          <HeroParticles />
-          
-          {/* Floating elements — fewer on mobile */}
-          <FloatingElements count={8} />
-          
-          <div className="relative z-10 container mx-auto px-4 sm:px-6 h-full flex items-center">
-            <div className={`max-w-3xl transition-all duration-1000 ${
-              heroRef.isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
-            }`}>
-              <div className="inline-flex items-center gap-2 px-3 sm:px-4 py-1.5 sm:py-2 rounded-full bg-white/10 backdrop-blur-sm border border-white/20 text-white/90 text-xs sm:text-sm font-medium mb-4 sm:mb-6 animate-fade-in">
-                <Zap size={14} className="text-accent animate-pulse" />
-                <span>Full-Stack Technology Solutions</span>
+
+        {/* ── Hero ── */}
+        <section className="relative h-[280px] sm:h-[380px] md:h-[460px] overflow-hidden">
+          <img src={heroAI} alt="Our Services" className="absolute inset-0 w-full h-full object-cover" />
+          <div className="absolute inset-0 bg-gradient-to-r from-slate-950/95 via-slate-900/75 to-slate-950/40" />
+          <div className="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-transparent to-transparent" />
+          <div className="relative z-10 container mx-auto px-4 sm:px-6 h-full flex items-end pb-10 sm:pb-14">
+            <div>
+              <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/10 border border-white/20 text-white/90 text-xs sm:text-sm font-medium mb-3 sm:mb-4">
+                <Zap size={12} className="text-yellow-400" />
+                Full-Stack Technology Solutions
               </div>
-              <h1 className="text-3xl sm:text-4xl md:text-6xl font-bold text-white mb-4 sm:mb-6 leading-tight animate-fade-in" style={{ animationDelay: '0.1s' }}>
+              <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-white leading-tight mb-3">
                 Our <span className="text-gradient">Services</span>
               </h1>
-              <div className="h-1 w-16 sm:w-24 bg-gradient-to-r from-primary to-accent rounded-full mb-4 sm:mb-6 animate-fade-in" style={{ animationDelay: '0.15s' }} />
-              <p className="text-sm sm:text-lg md:text-xl text-white/85 max-w-2xl leading-relaxed animate-fade-in" style={{ animationDelay: '0.2s' }}>
-                Comprehensive technology solutions powered by deep expertise and innovation across AI, Cloud, and Enterprise domains
+              <p className="text-sm sm:text-base text-white/75 max-w-lg">
+                Comprehensive technology solutions across AI, Cloud, Web, and Enterprise domains.
               </p>
             </div>
           </div>
         </section>
 
-
-        {/* 3D Product Carousel */}
-        <section className="py-10 sm:py-16 bg-gradient-to-b from-background via-secondary/20 to-background relative">
-          <AIHexagonGrid className="opacity-20" />
-          <AIDataStream className="opacity-10" />
-          <div className="container mx-auto px-4 sm:px-6 relative z-10">
-            <FadeUp className="text-center mb-6 sm:mb-8">
-              <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-3 sm:mb-4">Explore Our Solutions</h2>
-              <div className="h-1 w-12 sm:w-16 bg-gradient-to-r from-primary to-accent mx-auto rounded-full mb-3 sm:mb-4" />
-              <p className="text-sm sm:text-base text-muted-foreground max-w-2xl mx-auto">
-                Interactive 3D showcase of our core technology offerings
-              </p>
+        {/* ── Tabbed Service Explorer ── */}
+        <section className="py-12 sm:py-20">
+          <div className="container mx-auto px-4 sm:px-6">
+            <FadeUp className="text-center mb-8 sm:mb-12">
+              <p className="text-xs font-bold uppercase tracking-widest text-primary mb-2">Choose a Service</p>
+              <h2 className="text-2xl sm:text-3xl font-bold">Explore What We Offer</h2>
             </FadeUp>
-            <ProductCarousel3D
-              items={servicesData.slice(0, 6).map((service, idx) => ({
-                icon: service.icon,
-                title: service.title.split(' ').slice(0, 3).join(' '),
-                description: service.shortDesc,
-                features: service.features,
-                color: [
-                  'hsl(216, 82%, 62%)',
-                  'hsl(192, 100%, 42%)',
-                  'hsl(266, 73%, 45%)',
-                  'hsl(142, 71%, 45%)',
-                  'hsl(38, 92%, 50%)',
-                  'hsl(340, 82%, 52%)',
-                ][idx],
-              }))}
-            />
+
+            <div className="flex flex-col lg:flex-row gap-6 lg:gap-8 max-w-6xl mx-auto">
+
+              {/* Left — service selector tabs */}
+              <div className="lg:w-72 xl:w-80 flex-shrink-0">
+                {/* Mobile: horizontal scroll tabs */}
+                <div className="flex lg:flex-col gap-2 overflow-x-auto lg:overflow-visible pb-2 lg:pb-0 snap-x snap-mandatory lg:snap-none scrollbar-none">
+                  {servicesData.map((s, i) => (
+                    <button
+                      key={s.title}
+                      onClick={() => setActiveTab(i)}
+                      className={`flex-shrink-0 snap-start lg:flex-shrink flex items-center gap-3 px-4 py-3 rounded-xl text-left transition-all duration-200 border group w-48 lg:w-full ${
+                        activeTab === i
+                          ? "bg-card border-primary/40 shadow-md"
+                          : "border-transparent hover:bg-secondary/60 hover:border-border"
+                      }`}
+                    >
+                      <div className={`w-8 h-8 rounded-lg ${s.iconBg} flex items-center justify-center flex-shrink-0`}>
+                        <s.icon className="w-4 h-4 text-white" />
+                      </div>
+                      <div className="min-w-0">
+                        <p className={`text-sm font-semibold truncate ${activeTab === i ? "text-foreground" : "text-muted-foreground group-hover:text-foreground"}`}>
+                          {s.title}
+                        </p>
+                        <p className="text-[10px] text-muted-foreground truncate hidden lg:block">{s.shortDesc}</p>
+                      </div>
+                      {activeTab === i && <ChevronRight className="w-4 h-4 text-primary ml-auto flex-shrink-0 hidden lg:block" />}
+                    </button>
+                  ))}
+                </div>
+                <p className="text-center text-xs text-muted-foreground mt-2 lg:hidden">← Swipe to see all →</p>
+              </div>
+
+              {/* Right — service detail panel */}
+              <div className="flex-1 min-w-0">
+                <AnimatePresence mode="wait">
+                  <motion.div
+                    key={activeTab}
+                    initial={{ opacity: 0, x: 16 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    exit={{ opacity: 0, x: -10 }}
+                    transition={{ duration: 0.22 }}
+                    className="h-full rounded-2xl border border-border bg-card overflow-hidden"
+                  >
+                    {/* Header bar */}
+                    <div className={`h-2 w-full bg-gradient-to-r ${active.color}`} />
+
+                    <div className="p-6 sm:p-8">
+                      {/* Title row */}
+                      <div className="flex items-start gap-4 mb-5">
+                        <div className={`w-12 h-12 rounded-xl ${active.iconBg} flex items-center justify-center flex-shrink-0 shadow-lg`}>
+                          <active.icon className="w-6 h-6 text-white" />
+                        </div>
+                        <div>
+                          <div className="flex items-center gap-2 mb-1">
+                            <h2 className="text-xl sm:text-2xl font-bold">{active.title}</h2>
+                            {active.tag && (
+                              <span className="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full bg-primary/10 text-primary border border-primary/20">
+                                {active.tag}
+                              </span>
+                            )}
+                          </div>
+                          <p className="text-muted-foreground text-sm">{active.shortDesc}</p>
+                        </div>
+                        {/* Stat */}
+                        <div className="ml-auto text-right flex-shrink-0">
+                          <div className={`text-2xl sm:text-3xl font-bold bg-gradient-to-r ${active.color} bg-clip-text text-transparent`}>{active.stat}</div>
+                          <div className="text-[10px] text-muted-foreground">{active.statLabel}</div>
+                        </div>
+                      </div>
+
+                      <p className="text-muted-foreground text-sm sm:text-base leading-relaxed mb-6 border-l-2 border-primary/30 pl-4">
+                        {active.fullDesc}
+                      </p>
+
+                      {/* Features + Benefits 2-col */}
+                      <div className="grid sm:grid-cols-2 gap-6 mb-6">
+                        {/* Features */}
+                        <div>
+                          <div className="flex items-center gap-2 mb-3">
+                            <Zap className="w-4 h-4 text-primary" />
+                            <h3 className="font-semibold text-sm">Key Features</h3>
+                          </div>
+                          <ul className="space-y-2">
+                            {active.features.map((f, i) => (
+                              <li key={i} className="flex items-start gap-2 text-sm text-muted-foreground">
+                                <Check className="w-3.5 h-3.5 text-emerald-500 flex-shrink-0 mt-0.5" />
+                                {f}
+                              </li>
+                            ))}
+                          </ul>
+                        </div>
+                        {/* Benefits */}
+                        <div>
+                          <div className="flex items-center gap-2 mb-3">
+                            <TrendingUp className="w-4 h-4 text-primary" />
+                            <h3 className="font-semibold text-sm">Business Benefits</h3>
+                          </div>
+                          <ul className="space-y-2">
+                            {active.benefits.map((b, i) => (
+                              <li key={i} className="flex items-start gap-2 text-sm text-muted-foreground">
+                                <div className={`w-1.5 h-1.5 rounded-full ${active.iconBg} mt-1.5 flex-shrink-0`} />
+                                {b}
+                              </li>
+                            ))}
+                          </ul>
+                        </div>
+                      </div>
+
+                      {/* CTA */}
+                      <div className="flex flex-col sm:flex-row gap-3 pt-4 border-t border-border">
+                        <Link to="/contact" className="flex-1 sm:flex-none">
+                          <Button className={`gradient-primary w-full sm:w-auto`}>
+                            Discuss This Service
+                            <ArrowRight className="ml-2 w-4 h-4" />
+                          </Button>
+                        </Link>
+                        <Link to="/projects" className="flex-1 sm:flex-none">
+                          <Button variant="outline" className="w-full sm:w-auto">
+                            View Case Studies
+                          </Button>
+                        </Link>
+                      </div>
+                    </div>
+                  </motion.div>
+                </AnimatePresence>
+              </div>
+            </div>
           </div>
         </section>
 
-        {/* Services Detail Sections */}
-        {servicesData.map((service, index) => (
-          <ServiceDetail key={index} service={service} index={index} />
-        ))}
+        {/* ── Quick-scan service cards grid ── */}
+        <section className="py-12 sm:py-16 bg-secondary/20">
+          <div className="container mx-auto px-4 sm:px-6">
+            <FadeUp className="text-center mb-8 sm:mb-10">
+              <h2 className="text-xl sm:text-2xl font-bold mb-2">All Services at a Glance</h2>
+              <p className="text-muted-foreground text-sm">Click any card to explore the full service detail above.</p>
+            </FadeUp>
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3 sm:gap-4 max-w-5xl mx-auto">
+              {servicesData.map((s, i) => (
+                <button
+                  key={s.title}
+                  onClick={() => {
+                    setActiveTab(i);
+                    document.querySelector(".services-explorer")?.scrollIntoView({ behavior: "smooth" });
+                    window.scrollTo({ top: 400, behavior: "smooth" });
+                  }}
+                  className={`group p-4 rounded-xl border text-left transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md ${
+                    activeTab === i
+                      ? "border-primary/40 bg-primary/5"
+                      : "border-border bg-card hover:border-primary/20"
+                  }`}
+                >
+                  <div className={`w-9 h-9 rounded-lg ${s.iconBg} flex items-center justify-center mb-3`}>
+                    <s.icon className="w-4 h-4 text-white" />
+                  </div>
+                  <p className="text-sm font-semibold leading-tight mb-1">{s.title}</p>
+                  <p className="text-[11px] text-muted-foreground line-clamp-2">{s.shortDesc}</p>
+                </button>
+              ))}
+            </div>
+          </div>
+        </section>
 
-        {/* CTA Section */}
-        <section className="py-12 sm:py-20 relative overflow-hidden">
-          <AICircuitLines className="opacity-20" />
-          <div className="absolute inset-0 bg-gradient-to-br from-primary/10 via-transparent to-accent/10"></div>
+        {/* ── CTA ── */}
+        <section className="py-14 sm:py-20 relative overflow-hidden">
+          <AICircuitLines className="opacity-15" />
+          <div className="absolute inset-0 bg-gradient-to-br from-primary/8 via-transparent to-violet-500/8" />
           <div className="container mx-auto px-4 sm:px-6 relative z-10 text-center">
-            <FadeUp className="max-w-3xl mx-auto">
-              <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-3 sm:mb-4">Ready to Transform Your Business?</h2>
-              <div className="h-1 w-12 sm:w-16 bg-gradient-to-r from-primary to-accent mx-auto rounded-full mb-4 sm:mb-6"></div>
-              <p className="text-sm sm:text-lg text-muted-foreground mb-8 sm:mb-10">
-                Let's discuss how our services can help you achieve your business goals and drive innovation
+            <FadeUp className="max-w-2xl mx-auto">
+              <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-4">Ready to Get Started?</h2>
+              <p className="text-muted-foreground text-sm sm:text-base mb-8">
+                Let's discuss which services align with your goals — free 30-min consultation.
               </p>
-              <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center">
+              <div className="flex flex-col sm:flex-row gap-3 justify-center">
                 <Link to="/contact">
-                  <Button size="lg" className="gradient-primary hover:shadow-lg hover:shadow-blue-500/50 transition-all duration-300 transform hover:scale-105 w-full sm:w-auto">
-                    Get Started Today
-                    <ArrowRight className="ml-2" size={20} />
+                  <Button size="lg" className="gradient-primary w-full sm:w-auto">
+                    Book Free Consultation
+                    <ArrowRight className="ml-2 w-4 h-4" />
                   </Button>
                 </Link>
                 <Link to="/projects">
-                  <Button size="lg" variant="outline" className="hover:bg-secondary transition-all duration-300 transform hover:scale-105 w-full sm:w-auto">
-                    View Our Work
+                  <Button size="lg" variant="outline" className="w-full sm:w-auto">
+                    See Our Work
                   </Button>
                 </Link>
               </div>

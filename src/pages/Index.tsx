@@ -1,5 +1,5 @@
 import { SEO } from "@/components/SEO";
-import React from "react";
+import React, { useState } from "react";
 
 import partnerMadapet from "@/assets/partners/madapet.png";
 import partnerVB from "@/assets/partners/vb.png";
@@ -7,26 +7,20 @@ import partnerMDJKS from "@/assets/partners/mdjks.png";
 import { Navigation } from "@/components/Navigation";
 import { Footer } from "@/components/Footer";
 import { Button } from "@/components/ui/button";
-import { AICircuitLines } from "@/components/AICircuitLines";
-import { AIHexagonGrid } from "@/components/AIHexagonGrid";
-import { AI3DCube } from "@/components/AI3DCube";
-import { AIWaveField } from "@/components/AIWaveField";
-import { AIParticleRing } from "@/components/AIParticleRing";
 import { SplineScene } from "@/components/ui/splite";
 import { Spotlight } from "@/components/ui/spotlight";
-import { AnimatedGridBg } from "@/components/AnimatedGridBg";
 import { TypingText } from "@/components/TypingText";
 import { RotatingKeywords } from "@/components/RotatingKeywords";
 import { AIServicesStrip } from "@/components/AIServicesStrip";
-import { FadeUp, SlideLeft, SlideRight, StaggerContainer, StaggerItem } from "@/components/ScrollAnimations";
-import { motion } from "framer-motion";
-
+import { FadeUp, StaggerContainer, StaggerItem } from "@/components/ScrollAnimations";
+import { motion, AnimatePresence } from "framer-motion";
 import { InfiniteTextMarquee } from "@/components/ui/infinite-text-marquee";
 import { InteractiveCVShowcase } from "@/components/InteractiveCVShowcase";
 import {
   ArrowRight, Brain, Eye, Bot, Building2, Activity,
-  TrendingUp, FileText, CheckCircle2,
-  Lightbulb, Code2, Rocket, Quote, Cpu, Scan, Sparkles, Zap,
+  TrendingUp, FileText, Lightbulb, Code2, Rocket,
+  Quote, Cpu, Sparkles, Zap, ChevronRight, Check,
+  Factory, Stethoscope, ShieldCheck,
 } from "lucide-react";
 import { Link } from "react-router-dom";
 
@@ -37,65 +31,105 @@ const capabilities = [
     title: "Computer Vision",
     highlight: "OpenCV · YOLO · Deep Learning",
     desc: "Real-time object detection, visual inspection, and pattern recognition — from factory floors to surveillance systems.",
-    accent: "from-violet-500/15 to-fuchsia-500/15",
-    iconBg: "bg-violet-500/10",
-    iconColor: "text-violet-500",
+    accent: "from-violet-500 to-fuchsia-600",
+    iconBg: "bg-violet-500",
+    stat: "99.8%", statLabel: "Accuracy",
   },
   {
     icon: Brain,
     title: "Generative AI",
     highlight: "LLMs · RAG · Content Synthesis",
     desc: "Custom AI models that generate insights, automate content creation, and power intelligent document understanding.",
-    accent: "from-blue-500/15 to-cyan-500/15",
-    iconBg: "bg-blue-500/10",
-    iconColor: "text-blue-500",
+    accent: "from-blue-500 to-cyan-600",
+    iconBg: "bg-blue-500",
+    stat: "10×", statLabel: "Faster insights",
   },
   {
     icon: Bot,
-    title: "AI Agent Development",
+    title: "AI Agents",
     highlight: "Multi-Step · Autonomous · Agentic",
     desc: "Autonomous workflows that reason, plan, and execute complex multi-step tasks across your business systems 24/7.",
-    accent: "from-emerald-500/15 to-teal-500/15",
-    iconBg: "bg-emerald-500/10",
-    iconColor: "text-emerald-500",
+    accent: "from-emerald-500 to-teal-600",
+    iconBg: "bg-emerald-500",
+    stat: "24/7", statLabel: "Autonomous ops",
   },
   {
     icon: Activity,
     title: "Machine Learning",
     highlight: "Predictive · Adaptive · Scalable",
     desc: "Advanced ML models that uncover hidden patterns, forecast outcomes, and continuously improve from new data.",
-    accent: "from-amber-500/15 to-orange-500/15",
-    iconBg: "bg-amber-500/10",
-    iconColor: "text-amber-500",
+    accent: "from-amber-500 to-orange-600",
+    iconBg: "bg-amber-500",
+    stat: "3×", statLabel: "ROI avg.",
   },
   {
     icon: Cpu,
     title: "AI Automation",
     highlight: "Pipelines · Integration · MLOps",
     desc: "End-to-end automation of data pipelines, model deployment, and operational workflows with production-grade reliability.",
-    accent: "from-rose-500/15 to-pink-500/15",
-    iconBg: "bg-rose-500/10",
-    iconColor: "text-rose-500",
+    accent: "from-rose-500 to-pink-600",
+    iconBg: "bg-rose-500",
+    stat: "60%", statLabel: "Cost reduction",
   },
   {
     icon: Lightbulb,
     title: "AI Consulting",
     highlight: "Strategy · Roadmaps · Audits",
     desc: "Expert strategic guidance on AI readiness, implementation planning, and digital transformation tailored to your industry.",
-    accent: "from-indigo-500/15 to-purple-500/15",
-    iconBg: "bg-indigo-500/10",
-    iconColor: "text-indigo-500",
+    accent: "from-indigo-500 to-purple-600",
+    iconBg: "bg-indigo-500",
+    stat: "∞", statLabel: "Possibilities",
   },
 ];
 
-const useCases = [
-  { icon: Eye, title: "Visual Inspection & Quality Monitoring", desc: "Automated defect detection and quality assurance using deep learning vision models." },
-  { icon: Activity, title: "Automated Decision Support", desc: "AI-driven recommendations that accelerate decision cycles and reduce human error." },
-  { icon: TrendingUp, title: "Predictive Outcomes & Alerts", desc: "Forecast demand, risk, and anomalies before they impact your operations." },
-  { icon: FileText, title: "Insight Generation from Unstructured Data", desc: "Extract actionable intelligence from documents, images, and complex datasets." },
+const problems = [
+  {
+    icon: Eye,
+    title: "Visual Intelligence",
+    problem: "Manual quality checks miss defects and slow production.",
+    solution: "Computer Vision detects, classifies, and inspects in real-time with 99%+ accuracy.",
+    color: "violet",
+    link: "/expertise/artificial-intelligence/computer-vision",
+  },
+  {
+    icon: Brain,
+    title: "Generative AI",
+    problem: "Teams waste hours extracting insights from unstructured data.",
+    solution: "LLMs synthesize reports, answer queries, and generate actionable intelligence instantly.",
+    color: "blue",
+    link: "/expertise/artificial-intelligence/generative-ai",
+  },
+  {
+    icon: Bot,
+    title: "AI Agents",
+    problem: "Repetitive multi-step workflows drain skilled human resources.",
+    solution: "Autonomous agents reason, plan, and execute complex tasks across your systems 24/7.",
+    color: "emerald",
+    link: "/expertise/artificial-intelligence/ai-agent-development",
+  },
+  {
+    icon: TrendingUp,
+    title: "Predictive Analytics",
+    problem: "Decisions rely on lagging indicators and gut instinct.",
+    solution: "ML models forecast demand, detect anomalies, and surface risks before they escalate.",
+    color: "amber",
+    link: "/expertise/artificial-intelligence/machine-learning",
+  },
 ];
 
-// Trust metrics are now embedded in the hero stats bar for immediate visibility
+const colorMap: Record<string, { bg: string; text: string; border: string; pill: string }> = {
+  violet: { bg: "bg-violet-500/10", text: "text-violet-600 dark:text-violet-400", border: "border-violet-500/30", pill: "bg-violet-500" },
+  blue:   { bg: "bg-blue-500/10",   text: "text-blue-600 dark:text-blue-400",     border: "border-blue-500/30",   pill: "bg-blue-500" },
+  emerald:{ bg: "bg-emerald-500/10",text: "text-emerald-600 dark:text-emerald-400",border: "border-emerald-500/30",pill: "bg-emerald-500" },
+  amber:  { bg: "bg-amber-500/10",  text: "text-amber-600 dark:text-amber-400",   border: "border-amber-500/30",  pill: "bg-amber-500" },
+};
+
+const processSteps = [
+  { icon: Lightbulb, step: "01", title: "Define Problem", desc: "We analyze your business challenges and identify where AI creates the highest impact.", color: "text-violet-500" },
+  { icon: Building2, step: "02", title: "Prepare Data",   desc: "Clean, structure, and enrich your data to fuel accurate, reliable AI models.", color: "text-blue-500" },
+  { icon: Code2,     step: "03", title: "Build Solution", desc: "Develop, train, and validate custom AI systems tailored to your domain.", color: "text-emerald-500" },
+  { icon: Rocket,    step: "04", title: "Deliver & Support", desc: "Deploy to production with monitoring, optimization, and ongoing support.", color: "text-amber-500" },
+];
 
 const partners = [
   { name: "Madapet", src: partnerMadapet },
@@ -108,15 +142,175 @@ const partners = [
   { name: "AVR AI Technologies", src: "https://avraitechnologies.com/favicon.png", url: "https://avraitechnologies.com/" },
 ];
 
-const processSteps = [
-  { icon: Lightbulb, step: "01", title: "Define Problem", desc: "We analyze your business challenges and identify where AI creates the highest impact." },
-  { icon: Building2, step: "02", title: "Prepare Data", desc: "Clean, structure, and enrich your data to fuel accurate, reliable AI models." },
-  { icon: Code2, step: "03", title: "Build Solution", desc: "Develop, train, and validate custom AI systems tailored to your domain." },
-  { icon: Rocket, step: "04", title: "Deliver & Support", desc: "Deploy to production with monitoring, optimization, and ongoing support." },
-];
+/* ─── Interactive "Problem → Solution" tabs ─── */
+const ProblemSolutionTabs = () => {
+  const [active, setActive] = useState(0);
+  const item = problems[active];
+  const c = colorMap[item.color];
+
+  return (
+    <div className="max-w-5xl mx-auto">
+      {/* Tab buttons */}
+      <div className="flex flex-wrap gap-2 justify-center mb-8 sm:mb-10">
+        {problems.map((p, i) => (
+          <button
+            key={p.title}
+            onClick={() => setActive(i)}
+            className={`inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm font-semibold transition-all duration-200 border ${
+              active === i
+                ? `${colorMap[p.color].pill} text-white border-transparent shadow-lg scale-105`
+                : "bg-background border-border text-muted-foreground hover:text-foreground hover:border-primary/30"
+            }`}
+          >
+            <p.icon className="w-3.5 h-3.5" />
+            {p.title}
+          </button>
+        ))}
+      </div>
+
+      {/* Content panel */}
+      <AnimatePresence mode="wait">
+        <motion.div
+          key={active}
+          initial={{ opacity: 0, y: 12 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: -8 }}
+          transition={{ duration: 0.25 }}
+          className={`rounded-2xl border ${c.border} bg-gradient-to-br from-background to-secondary/30 overflow-hidden`}
+        >
+          <div className="grid md:grid-cols-2 divide-y md:divide-y-0 md:divide-x divide-border">
+            {/* Problem */}
+            <div className="p-6 sm:p-8">
+              <div className="flex items-center gap-2 mb-4">
+                <span className="w-2 h-2 rounded-full bg-destructive/70" />
+                <span className="text-xs font-bold uppercase tracking-wider text-destructive/70">The Challenge</span>
+              </div>
+              <p className="text-lg sm:text-xl font-medium leading-relaxed text-foreground">
+                {item.problem}
+              </p>
+            </div>
+            {/* Solution */}
+            <div className={`p-6 sm:p-8 ${c.bg}`}>
+              <div className="flex items-center gap-2 mb-4">
+                <span className={`w-2 h-2 rounded-full ${c.pill}`} />
+                <span className={`text-xs font-bold uppercase tracking-wider ${c.text}`}>AI Solution</span>
+              </div>
+              <p className="text-lg sm:text-xl font-medium leading-relaxed text-foreground">
+                {item.solution}
+              </p>
+              <Link
+                to={item.link}
+                className={`inline-flex items-center gap-1.5 mt-5 text-sm font-semibold ${c.text} hover:gap-3 transition-all duration-200`}
+              >
+                Learn more <ArrowRight className="w-4 h-4" />
+              </Link>
+            </div>
+          </div>
+        </motion.div>
+      </AnimatePresence>
+    </div>
+  );
+};
+
+/* ─── Capabilities horizontal scroll on mobile ─── */
+const CapabilitiesSection = () => (
+  <div className="relative">
+    {/* Horizontal scroll on mobile, grid on desktop */}
+    <div className="flex gap-4 overflow-x-auto pb-4 sm:grid sm:grid-cols-2 lg:grid-cols-3 sm:gap-5 sm:overflow-visible sm:pb-0 snap-x snap-mandatory sm:snap-none scrollbar-none max-w-6xl mx-auto">
+      {capabilities.map((cap, i) => (
+        <motion.div
+          key={cap.title}
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ delay: i * 0.07, duration: 0.4 }}
+          className="min-w-[260px] sm:min-w-0 snap-start flex-shrink-0 sm:flex-shrink group relative rounded-2xl overflow-hidden border border-border bg-card cursor-pointer"
+        >
+          {/* Gradient top bar */}
+          <div className={`h-1 w-full bg-gradient-to-r ${cap.accent}`} />
+          <div className="p-5 sm:p-6">
+            {/* Header row */}
+            <div className="flex items-start justify-between mb-4">
+              <div className={`w-10 h-10 rounded-xl ${cap.iconBg} flex items-center justify-center`}>
+                <cap.icon className="w-5 h-5 text-white" />
+              </div>
+              {/* Stat pill */}
+              <div className="text-right">
+                <div className={`text-xl font-bold bg-gradient-to-r ${cap.accent} bg-clip-text text-transparent`}>{cap.stat}</div>
+                <div className="text-[10px] text-muted-foreground">{cap.statLabel}</div>
+              </div>
+            </div>
+            <h3 className="text-base font-bold mb-1">{cap.title}</h3>
+            <p className="text-[11px] font-mono text-primary/60 mb-3">{cap.highlight}</p>
+            <p className="text-sm text-muted-foreground leading-relaxed">{cap.desc}</p>
+          </div>
+        </motion.div>
+      ))}
+    </div>
+    {/* Scroll hint on mobile */}
+    <p className="text-center text-xs text-muted-foreground mt-3 sm:hidden">← Swipe to see all →</p>
+  </div>
+);
+
+/* ─── Process — horizontal timeline ─── */
+const ProcessSection = () => (
+  <div className="max-w-5xl mx-auto">
+    {/* Desktop: connected steps */}
+    <div className="hidden md:grid grid-cols-4 gap-0 relative">
+      {/* connecting line */}
+      <div className="absolute top-8 left-[12.5%] right-[12.5%] h-px bg-gradient-to-r from-violet-500 via-blue-500 via-emerald-500 to-amber-500 opacity-40" />
+      {processSteps.map((step, i) => (
+        <motion.div
+          key={step.step}
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ delay: i * 0.12, duration: 0.4 }}
+          className="flex flex-col items-center text-center px-4"
+        >
+          {/* Circle */}
+          <div className="relative mb-5 z-10">
+            <div className="w-16 h-16 rounded-2xl gradient-primary flex items-center justify-center shadow-lg">
+              <step.icon className="w-7 h-7 text-white" />
+            </div>
+            <span className="absolute -top-2 -right-2 w-6 h-6 rounded-full bg-background border-2 border-border text-[10px] font-bold text-muted-foreground flex items-center justify-center">
+              {i + 1}
+            </span>
+          </div>
+          <h3 className="font-bold text-base mb-2">{step.title}</h3>
+          <p className="text-sm text-muted-foreground leading-relaxed">{step.desc}</p>
+        </motion.div>
+      ))}
+    </div>
+
+    {/* Mobile: vertical list */}
+    <div className="md:hidden space-y-4">
+      {processSteps.map((step, i) => (
+        <motion.div
+          key={step.step}
+          initial={{ opacity: 0, x: -20 }}
+          whileInView={{ opacity: 1, x: 0 }}
+          viewport={{ once: true }}
+          transition={{ delay: i * 0.1, duration: 0.35 }}
+          className="flex gap-4 items-start p-4 rounded-xl border border-border bg-card"
+        >
+          <div className="w-11 h-11 rounded-xl gradient-primary flex items-center justify-center flex-shrink-0 shadow">
+            <step.icon className="w-5 h-5 text-white" />
+          </div>
+          <div>
+            <div className="flex items-center gap-2 mb-1">
+              <span className="text-xs font-bold text-muted-foreground">{step.step}</span>
+              <h3 className="font-bold text-sm">{step.title}</h3>
+            </div>
+            <p className="text-sm text-muted-foreground leading-relaxed">{step.desc}</p>
+          </div>
+        </motion.div>
+      ))}
+    </div>
+  </div>
+);
 
 const Index = () => {
-
   return (
     <div className="min-h-screen bg-background relative">
       <SEO
@@ -143,43 +337,40 @@ const Index = () => {
                 email: "info@nirikshanai.com"
               }
             },
-            {
-              "@type": "WebSite",
-              name: "Nirikshan AI",
-              url: "https://nirikshanai.com"
-            }
+            { "@type": "WebSite", name: "Nirikshan AI", url: "https://nirikshanai.com" }
           ]
         }}
       />
       <Navigation />
 
       <main className="relative z-10">
-        {/* ── HERO ── */}
-        <section className="relative overflow-hidden pt-24 pb-6 md:pt-32 md:pb-10">
+
+        {/* ══════════════════════════════════════════════════════
+            1. HERO — full-bleed with spotlight
+        ══════════════════════════════════════════════════════ */}
+        <section className="relative overflow-hidden pt-24 pb-8 md:pt-32 md:pb-14">
           <div className="container mx-auto px-4 sm:px-6">
-            <div className="relative w-full rounded-xl border border-border bg-card/80 backdrop-blur overflow-hidden">
+            <div className="relative w-full rounded-2xl border border-border bg-card/80 backdrop-blur overflow-hidden shadow-xl">
               <Spotlight className="-top-40 left-0 md:left-60 md:-top-20" size={300} />
-              
+
               <div className="flex flex-col md:flex-row">
                 {/* Left content */}
-                <div className="flex-1 p-6 sm:p-8 md:p-12 relative z-10 flex flex-col justify-center">
-                  {/* Domain Badge */}
+                <div className="flex-1 p-6 sm:p-10 md:p-14 relative z-10 flex flex-col justify-center">
                   <motion.div
                     initial={{ opacity: 0, y: 10 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.5, delay: 0.1 }}
-                    className="inline-flex items-center gap-2 px-3 py-1.5 sm:px-4 sm:py-2 rounded-full bg-primary/10 border border-primary/20 text-xs sm:text-sm font-medium text-primary w-fit mb-4 sm:mb-5"
+                    className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-primary/10 border border-primary/20 text-xs sm:text-sm font-medium text-primary w-fit mb-5"
                   >
-                    <Zap className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
+                    <Zap className="w-3.5 h-3.5" />
                     Computer Vision · Generative AI · AI Automation
                   </motion.div>
-                  
-                  {/* Headline with Rotating Keywords */}
+
                   <motion.h1
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.6, delay: 0.2 }}
-                    className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold leading-[1.15] tracking-tight"
+                    className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold leading-[1.1] tracking-tight"
                   >
                     We Build AI That
                     <br />
@@ -193,103 +384,95 @@ const Index = () => {
                       interval={3000}
                     />
                   </motion.h1>
-                  
-                  {/* Subtitle */}
+
                   <motion.p
                     initial={{ opacity: 0, y: 15 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.5, delay: 0.4 }}
-                    className="mt-4 sm:mt-5 text-muted-foreground max-w-xl text-sm sm:text-base md:text-lg leading-relaxed"
+                    className="mt-5 text-muted-foreground max-w-xl text-sm sm:text-base md:text-lg leading-relaxed"
                   >
-                    From <strong className="text-foreground">computer vision</strong> that inspects at scale, to <strong className="text-foreground">generative AI</strong> that creates insights, and <strong className="text-foreground">autonomous agents</strong> that execute — we deliver end-to-end AI solutions for enterprises.
+                    From <strong className="text-foreground">computer vision</strong> that inspects at scale, to{" "}
+                    <strong className="text-foreground">generative AI</strong> that creates insights, and{" "}
+                    <strong className="text-foreground">autonomous agents</strong> that execute — end-to-end AI for enterprises.
                   </motion.p>
 
-                  {/* CTA Buttons */}
                   <motion.div
                     initial={{ opacity: 0, y: 15 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.5, delay: 0.55 }}
-                    className="flex flex-col sm:flex-row items-start gap-3 sm:gap-4 pt-5 sm:pt-6"
+                    className="flex flex-col sm:flex-row gap-3 pt-6"
                   >
                     <Link to="/contact">
-                      <Button size="lg" className="gradient-primary text-primary-foreground px-6 sm:px-8 h-10 sm:h-12 text-sm sm:text-base font-semibold border-0 w-full sm:w-auto">
+                      <Button size="lg" className="gradient-primary text-primary-foreground px-7 h-12 text-sm sm:text-base font-semibold border-0 w-full sm:w-auto">
                         Get AI Consultation
-                        <ArrowRight className="ml-2 w-4 h-4 sm:w-5 sm:h-5" />
+                        <ArrowRight className="ml-2 w-4 h-4" />
                       </Button>
                     </Link>
                     <Link to="/expertise">
-                      <Button size="lg" variant="outline" className="h-10 sm:h-12 px-6 sm:px-8 text-sm sm:text-base border-border hover:bg-secondary w-full sm:w-auto">
-                        Explore Our AI Expertise
+                      <Button size="lg" variant="outline" className="h-12 px-7 text-sm sm:text-base border-border hover:bg-secondary w-full sm:w-auto">
+                        Explore Expertise
                       </Button>
                     </Link>
                   </motion.div>
 
-                  {/* Quick Domain Tags */}
+                  {/* Trust row with authentic industry badges */}
                   <motion.div
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
-                    transition={{ duration: 0.5, delay: 0.7 }}
-                    className="flex flex-wrap gap-2 mt-5 sm:mt-6"
+                    transition={{ duration: 0.5, delay: 0.75 }}
+                    className="flex items-center gap-3 mt-6"
                   >
-                    {[
-                      { icon: Eye, label: "OpenCV & Vision" },
-                      { icon: Brain, label: "LLMs & Gen AI" },
-                      { icon: Bot, label: "AI Agents" },
-                      { icon: Cpu, label: "ML Automation" },
-                    ].map((tag) => (
-                      <span
-                        key={tag.label}
-                        className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-secondary/80 text-[11px] sm:text-xs font-medium text-muted-foreground border border-border/50"
-                      >
-                        <tag.icon className="w-3 h-3 text-primary/70" />
-                        {tag.label}
-                      </span>
-                    ))}
+                    <div className="flex -space-x-1.5">
+                      {[
+                        { icon: Factory, label: "Manufacturing" },
+                        { icon: Stethoscope, label: "Healthcare" },
+                        { icon: Building2, label: "Infrastructure" },
+                        { icon: ShieldCheck, label: "Security" },
+                      ].map((item, i) => (
+                        <span key={i} title={item.label} className="w-7 h-7 rounded-full bg-secondary border border-border flex items-center justify-center text-primary/80">
+                          <item.icon size={13} />
+                        </span>
+                      ))}
+                    </div>
+                    <p className="text-xs text-muted-foreground">Trusted by <strong className="text-foreground">5+ enterprises</strong> across industries</p>
                   </motion.div>
                 </div>
 
-                {/* Right – 3D Spline scene */}
-                <div className="flex-1 relative h-[250px] sm:h-[300px] md:h-auto md:min-h-[480px]">
-                  <SplineScene 
+                {/* Right — 3D scene */}
+                <div className="flex-1 relative h-[220px] sm:h-[280px] md:h-auto md:min-h-[460px]">
+                  <SplineScene
                     scene="https://prod.spline.design/kZDDjO5HuC9GJUM2/scene.splinecode"
                     className="w-full h-full"
                   />
-                  <div className="absolute bottom-4 sm:bottom-6 left-1/2 -translate-x-1/2 px-4 sm:px-5 py-2 sm:py-2.5 rounded-full bg-primary/90 backdrop-blur-sm border border-primary-foreground/20 shadow-lg">
+                  <div className="absolute bottom-5 left-1/2 -translate-x-1/2 px-4 py-2 rounded-full bg-primary/90 backdrop-blur-sm border border-primary-foreground/20 shadow-lg">
                     <p className="text-primary-foreground text-xs sm:text-sm font-semibold tracking-wide whitespace-nowrap">
-                      <TypingText text="Building the Future with AI 🚀" />
+                      <TypingText text="Enterprise Intelligence Deployed in Production" />
                     </p>
                   </div>
                 </div>
               </div>
             </div>
 
-            {/* Hero Stats Bar */}
+            {/* Stats bar — 4 tiles */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.8 }}
-              className="mt-5 grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4"
+              transition={{ duration: 0.6, delay: 0.85 }}
+              className="mt-5 grid grid-cols-2 md:grid-cols-4 gap-3"
             >
               {[
-                { value: "20+", label: "AI Projects Delivered", icon: Rocket },
-                { value: "99.9%", label: "Model Uptime", icon: Activity },
-                { value: "5+", label: "Enterprise Clients", icon: Building2 },
-                { value: "3x", label: "Avg. ROI Improvement", icon: TrendingUp },
+                { value: "20+", label: "AI Projects", icon: Rocket, color: "text-violet-500" },
+                { value: "99.9%", label: "Model Uptime", icon: Activity, color: "text-blue-500" },
+                { value: "5+", label: "Enterprises", icon: Building2, color: "text-emerald-500" },
+                { value: "3×", label: "Avg. ROI", icon: TrendingUp, color: "text-amber-500" },
               ].map((stat) => (
-                <div
-                  key={stat.label}
-                  className="flex items-center gap-3 px-4 py-3 rounded-lg border border-border bg-card/60 backdrop-blur-sm"
-                >
-                  <div className="w-9 h-9 rounded-lg flex items-center justify-center bg-primary/10 flex-shrink-0">
-                    <stat.icon className="w-4.5 h-4.5 text-primary" />
+                <div key={stat.label} className="flex items-center gap-3 px-4 py-3 rounded-xl border border-border bg-card/70 backdrop-blur-sm hover:border-primary/30 transition-colors">
+                  <div className={`w-8 h-8 rounded-lg flex items-center justify-center bg-current/10 flex-shrink-0 ${stat.color}`}>
+                    <stat.icon className="w-4 h-4" />
                   </div>
                   <div>
-                    <div className="text-lg md:text-xl font-bold text-gradient leading-none">
-                      {stat.value}
-                    </div>
-                    <div className="text-[10px] sm:text-xs text-muted-foreground mt-0.5">
-                      {stat.label}
-                    </div>
+                    <div className="text-lg font-bold text-gradient leading-none">{stat.value}</div>
+                    <div className="text-[10px] text-muted-foreground">{stat.label}</div>
                   </div>
                 </div>
               ))}
@@ -297,318 +480,290 @@ const Index = () => {
           </div>
         </section>
 
-        {/* ── AI Services At-a-Glance Strip ── */}
+        {/* Services marquee strip */}
         <AIServicesStrip />
 
-        {/* ── Computer Vision Visual Showcase ── */}
-        <section className="py-20 md:py-28 relative overflow-hidden bg-secondary/20">
-          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(120,119,198,0.15),transparent_70%)] pointer-events-none"></div>
-          <div className="container mx-auto px-6 relative z-10">
-            <FadeUp className="text-center mb-12 md:mb-16 max-w-3xl mx-auto">
-              <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-primary/10 text-primary font-medium text-sm mb-6">
-                <Eye className="w-4 h-4" />
-                Computer Vision Expertise
-              </div>
-              <h2 className="text-3xl md:text-5xl font-bold leading-tight mb-6">
-                See the Unseen with <span className="text-gradient">Intelligent Vision</span>
+        {/* ══════════════════════════════════════════════════════
+            2. PROBLEM → SOLUTION (interactive tabs)
+        ══════════════════════════════════════════════════════ */}
+        <section className="py-16 sm:py-24 bg-secondary/30">
+          <div className="container mx-auto px-4 sm:px-6">
+            <FadeUp className="text-center mb-10 sm:mb-12">
+              <p className="text-xs sm:text-sm font-bold uppercase tracking-widest text-primary mb-3">What We Solve</p>
+              <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-4">
+                Every Challenge Has an <span className="text-gradient">AI Answer</span>
               </h2>
-              <p className="text-lg text-muted-foreground leading-relaxed">
-                We build deep learning visual systems that instantly detect, track, and analyze objects in real-time. Experience how our AI processes raw camera feeds into actionable intelligence.
+              <p className="text-muted-foreground max-w-xl mx-auto text-sm sm:text-base">
+                Pick a challenge your team faces — see exactly how we solve it.
               </p>
             </FadeUp>
-            
-            <FadeUp delay={0.2} className="w-full max-w-6xl mx-auto">
+            <ProblemSolutionTabs />
+          </div>
+        </section>
+
+        {/* ══════════════════════════════════════════════════════
+            3. COMPUTER VISION SHOWCASE
+        ══════════════════════════════════════════════════════ */}
+        <section className="py-16 sm:py-24 relative overflow-hidden">
+          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(120,119,198,0.12),transparent_70%)] pointer-events-none" />
+          <div className="container mx-auto px-4 sm:px-6 relative z-10">
+            <FadeUp className="text-center mb-10 sm:mb-14 max-w-3xl mx-auto">
+              <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-violet-500/10 text-violet-600 dark:text-violet-400 font-medium text-xs sm:text-sm mb-5 border border-violet-500/20">
+                <Eye className="w-3.5 h-3.5" />
+                Live Computer Vision Demo
+              </div>
+              <h2 className="text-2xl sm:text-3xl md:text-5xl font-bold leading-tight mb-4">
+                See AI <span className="text-gradient">See</span> in Real-Time
+              </h2>
+              <p className="text-muted-foreground text-sm sm:text-base leading-relaxed">
+                Experience our deep learning systems detecting, tracking, and analyzing objects instantly.
+              </p>
+            </FadeUp>
+            <FadeUp delay={0.2} className="w-full max-w-5xl mx-auto">
               <InteractiveCVShowcase />
             </FadeUp>
           </div>
         </section>
 
-        {/* ── 2. What We Do ── */}
-        <section className="py-20 md:py-28 bg-secondary/30">
-          <div className="container mx-auto px-6">
-            <FadeUp className="text-center mb-14">
-              <p className="text-sm font-semibold uppercase tracking-widest text-primary mb-3">What We Do</p>
-              <h2 className="text-3xl md:text-4xl font-bold mb-4">From Raw Data to <span className="text-gradient">Real Impact</span></h2>
-              <p className="text-muted-foreground max-w-2xl mx-auto text-lg">
-                We solve the hardest enterprise challenges with purpose-built AI — here's how.
+        {/* ══════════════════════════════════════════════════════
+            4. CAPABILITIES — horizontal scroll mobile / grid desktop
+        ══════════════════════════════════════════════════════ */}
+        <section className="py-16 sm:py-24 bg-secondary/20">
+          <div className="container mx-auto px-4 sm:px-6">
+            <FadeUp className="text-center mb-10 sm:mb-12">
+              <p className="text-xs sm:text-sm font-bold uppercase tracking-widest text-primary mb-3">Core Capabilities</p>
+              <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-4">
+                Full-Stack <span className="text-gradient">AI Expertise</span>
+              </h2>
+              <p className="text-muted-foreground max-w-xl mx-auto text-sm sm:text-base">
+                Everything from idea to production-grade AI — under one roof.
               </p>
             </FadeUp>
-
-            <StaggerContainer className="grid sm:grid-cols-2 lg:grid-cols-4 gap-5 max-w-6xl mx-auto" staggerDelay={0.1}>
-              {[
-                {
-                  icon: Eye,
-                  title: "Visual Intelligence",
-                  problem: "Manual quality checks miss defects and slow production.",
-                  solution: "Computer Vision detects, classifies, and inspects in real-time with 99%+ accuracy.",
-                  accent: "from-violet-500/15 to-fuchsia-500/15",
-                  iconBg: "bg-violet-500/10",
-                  iconColor: "text-violet-500",
-                },
-                {
-                  icon: Brain,
-                  title: "Generative AI",
-                  problem: "Teams waste hours extracting insights from unstructured data.",
-                  solution: "LLMs synthesize reports, answer queries, and generate actionable intelligence instantly.",
-                  accent: "from-blue-500/15 to-cyan-500/15",
-                  iconBg: "bg-blue-500/10",
-                  iconColor: "text-blue-500",
-                },
-                {
-                  icon: Bot,
-                  title: "AI Agents",
-                  problem: "Repetitive multi-step workflows drain skilled human resources.",
-                  solution: "Autonomous agents reason, plan, and execute complex tasks across your systems 24/7.",
-                  accent: "from-emerald-500/15 to-teal-500/15",
-                  iconBg: "bg-emerald-500/10",
-                  iconColor: "text-emerald-500",
-                },
-                {
-                  icon: TrendingUp,
-                  title: "Predictive Analytics",
-                  problem: "Decisions rely on lagging indicators and gut instinct.",
-                  solution: "ML models forecast demand, detect anomalies, and surface risks before they escalate.",
-                  accent: "from-amber-500/15 to-orange-500/15",
-                  iconBg: "bg-amber-500/10",
-                  iconColor: "text-amber-500",
-                },
-              ].map((item) => (
-                <StaggerItem key={item.title}>
-                  <div className={`h-full p-6 rounded-xl border border-border bg-gradient-to-br ${item.accent} backdrop-blur-sm flex flex-col transition-all duration-300 hover:-translate-y-1 hover:shadow-lg ai-border-glow`}>
-                    {/* Icon */}
-                    <div className={`w-11 h-11 rounded-lg flex items-center justify-center ${item.iconBg} mb-4`}>
-                      <item.icon className={`w-5 h-5 ${item.iconColor}`} />
-                    </div>
-
-                    {/* Title */}
-                    <h3 className="text-base font-semibold mb-3">{item.title}</h3>
-
-                    {/* Problem */}
-                    <div className="mb-3">
-                      <p className="text-[11px] font-semibold uppercase tracking-wider text-destructive/80 mb-1">Challenge</p>
-                      <p className="text-sm text-muted-foreground leading-relaxed">{item.problem}</p>
-                    </div>
-
-                    {/* Solution */}
-                    <div className="mt-auto pt-3 border-t border-border/50">
-                      <p className="text-[11px] font-semibold uppercase tracking-wider text-primary mb-1">AI Solution</p>
-                      <p className="text-sm text-muted-foreground leading-relaxed">{item.solution}</p>
-                    </div>
-                  </div>
-                </StaggerItem>
-              ))}
-            </StaggerContainer>
+            <CapabilitiesSection />
+            <FadeUp className="text-center mt-8 sm:mt-10">
+              <Link to="/expertise">
+                <Button variant="outline" className="border-primary/30 hover:bg-primary/5">
+                  View All AI Capabilities
+                  <ChevronRight className="ml-1.5 w-4 h-4" />
+                </Button>
+              </Link>
+            </FadeUp>
           </div>
         </section>
 
-        {/* ── 3. Capabilities ── */}
-        <section className="py-20 md:py-28 relative">
-          <AIHexagonGrid className="opacity-30" />
-          <AIWaveField className="opacity-20" />
-          <div className="container mx-auto px-6 relative z-10">
-            <FadeUp className="text-center mb-14">
-              <p className="text-sm font-semibold uppercase tracking-widest text-primary mb-3">Core Capabilities</p>
-              <h2 className="text-3xl md:text-4xl font-bold mb-4">Full-Stack <span className="text-gradient">AI Expertise</span></h2>
-              <p className="text-muted-foreground max-w-2xl mx-auto text-lg">Every capability you need to go from idea to production-grade AI — under one roof.</p>
+        {/* ══════════════════════════════════════════════════════
+            5. HOW WE WORK — process timeline
+        ══════════════════════════════════════════════════════ */}
+        <section className="py-16 sm:py-24">
+          <div className="container mx-auto px-4 sm:px-6">
+            <FadeUp className="text-center mb-10 sm:mb-14">
+              <p className="text-xs sm:text-sm font-bold uppercase tracking-widest text-primary mb-3">Our Process</p>
+              <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-4">
+                How We <span className="text-gradient">Work</span>
+              </h2>
+              <p className="text-muted-foreground max-w-xl mx-auto text-sm sm:text-base">
+                A proven 4-step methodology from problem definition to production deployment.
+              </p>
             </FadeUp>
-
-            <StaggerContainer className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5 max-w-6xl mx-auto" staggerDelay={0.1}>
-              {capabilities.map((cap) => (
-                <StaggerItem key={cap.title}>
-                  <div className={`h-full p-6 rounded-xl border border-border bg-gradient-to-br ${cap.accent} backdrop-blur-sm flex flex-col transition-all duration-300 hover:-translate-y-1 hover:shadow-lg ai-border-glow`}>
-                    {/* Icon */}
-                    <div className={`w-11 h-11 rounded-lg flex items-center justify-center ${cap.iconBg} mb-4`}>
-                      <cap.icon className={`w-5 h-5 ${cap.iconColor}`} />
-                    </div>
-
-                    {/* Title */}
-                    <h3 className="text-base font-semibold mb-1.5">{cap.title}</h3>
-
-                    {/* Tech highlight */}
-                    <p className="text-[11px] font-mono font-medium text-primary/70 tracking-wide mb-3">{cap.highlight}</p>
-
-                    {/* Description */}
-                    <p className="text-sm text-muted-foreground leading-relaxed mt-auto">{cap.desc}</p>
-                  </div>
-                </StaggerItem>
-              ))}
-            </StaggerContainer>
+            <ProcessSection />
           </div>
         </section>
 
-        {/* ── 4. Use Cases ── */}
-        <section className="py-20 md:py-28 relative bg-secondary/20">
-          <AICircuitLines className="opacity-20" />
-          <AnimatedGridBg className="opacity-15" />
-          <div className="absolute -right-20 top-10 opacity-15 hidden xl:block">
-            <AIParticleRing size={200} particleCount={30} />
-          </div>
-          <div className="container mx-auto px-6 relative z-10">
-            <FadeUp>
-              <div className="text-center mb-16">
-                <p className="text-sm font-semibold uppercase tracking-widest text-accent mb-3">Use Cases</p>
-                <h2 className="text-3xl md:text-4xl font-bold mb-4">Real-World <span className="text-gradient">Applications</span></h2>
-                <p className="text-muted-foreground max-w-2xl mx-auto text-lg">Measurable outcomes across industries and domains.</p>
-              </div>
-            </FadeUp>
-
-            <StaggerContainer className="grid sm:grid-cols-2 gap-6 max-w-5xl mx-auto" staggerDelay={0.12}>
-              {useCases.map((uc) => (
-                <StaggerItem key={uc.title}>
-                  <div className="relative p-6 rounded-xl border border-border bg-card overflow-hidden group hover:-translate-y-1 transition-transform duration-300 ai-border-glow">
-                    <div className="relative">
-                      <div className="w-10 h-10 rounded-lg flex items-center justify-center mb-4 bg-primary/10">
-                        <uc.icon className="w-5 h-5 text-primary" />
-                      </div>
-                      <h3 className="text-lg font-semibold mb-2">{uc.title}</h3>
-                      <p className="text-sm text-muted-foreground leading-relaxed">{uc.desc}</p>
-                    </div>
+        {/* ══════════════════════════════════════════════════════
+            5.5. 10X AI PRODUCTIVITY & ENABLEMENT BENCH
+        ══════════════════════════════════════════════════════ */}
+        <section className="py-16 sm:py-24 relative overflow-hidden bg-gradient-to-b from-card via-background to-secondary/20 border-y border-border">
+          <div className="container mx-auto px-4 sm:px-6 relative z-10 max-w-6xl">
+            <div className="rounded-3xl border border-border bg-card/90 p-8 sm:p-12 shadow-xl">
+              <div className="grid lg:grid-cols-12 gap-8 items-center">
+                {/* Left side: Context & Value */}
+                <div className="lg:col-span-7 space-y-4">
+                  <div className="flex items-center gap-2">
+                    <span className="font-mono text-xs font-semibold px-2.5 py-1 rounded bg-secondary text-primary border border-border">
+                      10X AI ENABLEMENT
+                    </span>
+                    <span className="text-xs font-mono text-muted-foreground hidden sm:inline-block">
+                      WORKFORCE &amp; DEV COHORTS
+                    </span>
                   </div>
-                </StaggerItem>
-              ))}
-            </StaggerContainer>
-          </div>
-        </section>
+                  <h2 className="text-2xl sm:text-4xl font-bold tracking-tight leading-tight">
+                    Hands-On AI Training for Teams That Build &amp; Operate.
+                  </h2>
+                  <p className="text-muted-foreground text-sm sm:text-base leading-relaxed max-w-xl">
+                    Don't just subscribe to AI tools. We run intensive cohorts that teach engineers to write RAG pipelines and pair-program with Cursor, while training operational teams to automate daily bottlenecks.
+                  </p>
+                  
+                  {/* Track pills */}
+                  <div className="flex flex-wrap gap-1.5 pt-2">
+                    {[
+                      "Software Engineers",
+                      "Operations & ERP",
+                      "CXO & Strategy",
+                      "Universities & Labs"
+                    ].map((aud) => (
+                      <span key={aud} className="font-mono text-xs bg-secondary/80 border border-border px-2.5 py-1 rounded text-foreground font-medium">
+                        {aud}
+                      </span>
+                    ))}
+                  </div>
 
-        {/* ── 5. Trust & Proof ── */}
-        <section className="py-20 md:py-28 relative">
-          <AIWaveField className="opacity-10" />
-          <div className="container mx-auto px-6">
-            <FadeUp className="text-center mb-16">
-              <p className="text-sm font-semibold uppercase tracking-widest text-primary mb-3">Trust & Proof</p>
-              <h2 className="text-3xl md:text-4xl font-bold mb-4">Trusted by <span className="text-gradient">Forward-Thinking</span> Organizations</h2>
-            </FadeUp>
-
-            {/* Testimonial */}
-            <FadeUp className="max-w-3xl mx-auto mb-16">
-              <div className="p-8 rounded-xl border border-border bg-card text-center ai-glow">
-                <Quote className="w-8 h-8 mx-auto mb-4 text-primary/40" />
-                <p className="text-lg text-muted-foreground italic leading-relaxed mb-6">
-                  "Nirikshan AI transformed our quality inspection process — what used to take hours of manual review now happens in real-time with greater accuracy."
-                </p>
-                <div>
-                  <p className="font-semibold">Operations Director</p>
-                  <p className="text-sm text-muted-foreground">Enterprise Manufacturing Client</p>
+                  <div className="pt-4 flex flex-col sm:flex-row gap-3">
+                    <Link to="/10x-ai-productivity">
+                      <Button size="lg" className="gradient-primary text-primary-foreground font-semibold rounded-xl h-11 px-6">
+                        Inspect Syllabus &amp; Tracks
+                        <ArrowRight className="w-4 h-4 ml-2" />
+                      </Button>
+                    </Link>
+                    <Link to="/contact">
+                      <Button size="lg" variant="outline" className="rounded-xl h-11 px-6 border-border hover:bg-secondary">
+                        Schedule Team Briefing
+                      </Button>
+                    </Link>
+                  </div>
                 </div>
-              </div>
-            </FadeUp>
 
-            {/* Client logos — static grid */}
-            <FadeUp>
-              <div className="max-w-5xl mx-auto">
-                <p className="text-center text-sm text-muted-foreground mb-8 font-medium uppercase tracking-widest">Our Clients & Partners</p>
-                <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-8 gap-4 md:gap-5 items-center">
-                  {partners.map((partner) => {
-                    const CardContent = (
-                      <div
-                        className="flex items-center justify-center p-4 md:p-5 rounded-xl border border-border bg-card/80 aspect-square hover:border-primary/30 hover:shadow-md hover:shadow-primary/5 transition-all duration-300 group cursor-pointer w-full h-full"
-                      >
-                        <img
-                          src={partner.src}
-                          alt={partner.name}
-                          loading="lazy"
-                          className="w-full h-full object-contain opacity-70 group-hover:opacity-100 transition-opacity duration-300 dark:brightness-90 dark:group-hover:brightness-110"
-                        />
+                {/* Right side: Real Interactive Terminal Preview (No fake emojis / stat cards) */}
+                <div className="lg:col-span-5">
+                  <div className="rounded-2xl border border-slate-800 bg-slate-950 p-5 shadow-2xl text-slate-200 font-mono text-xs overflow-hidden">
+                    <div className="flex items-center justify-between pb-3 border-b border-slate-800 text-[11px] text-slate-400">
+                      <div className="flex items-center gap-1.5">
+                        <span className="w-2.5 h-2.5 rounded-full bg-rose-500/80" />
+                        <span className="w-2.5 h-2.5 rounded-full bg-amber-500/80" />
+                        <span className="w-2.5 h-2.5 rounded-full bg-emerald-500/80" />
+                        <span className="ml-2 font-mono text-slate-400">nirikshan-10x-pipeline.sh</span>
                       </div>
-                    );
-
-                    return partner.url ? (
-                      <a
-                        key={partner.name}
-                        href={partner.url}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="block w-full h-full"
-                        title={`Visit ${partner.name}`}
-                      >
-                        {CardContent}
-                      </a>
-                    ) : (
-                      <div key={partner.name} className="block w-full h-full" title={partner.name}>
-                        {CardContent}
-                      </div>
-                    );
-                  })}
-                </div>
-              </div>
-            </FadeUp>
-          </div>
-        </section>
-
-        {/* ── 6. How We Work ── */}
-        <section className="py-20 md:py-28 relative bg-secondary/20">
-          <AIHexagonGrid className="opacity-15" />
-          <div className="absolute right-10 bottom-10 opacity-20 hidden lg:block">
-            <AI3DCube size={80} />
-          </div>
-          <div className="container mx-auto px-6 relative z-10">
-            <FadeUp className="text-center mb-16">
-              <p className="text-sm font-semibold uppercase tracking-widest text-primary mb-3">Our Process</p>
-              <h2 className="text-3xl md:text-4xl font-bold mb-4">How We <span className="text-gradient">Work</span></h2>
-              <p className="text-muted-foreground max-w-2xl mx-auto text-lg">A proven methodology from problem definition to production deployment.</p>
-            </FadeUp>
-
-            <StaggerContainer className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6 max-w-6xl mx-auto" staggerDelay={0.12}>
-              {processSteps.map((step) => (
-                <StaggerItem key={step.step}>
-                  <div className="relative p-6 rounded-xl border border-border bg-card group hover:-translate-y-2 transition-transform duration-300 ai-border-glow">
-                    <div className="absolute -top-3 -left-3 w-10 h-10 rounded-full flex items-center justify-center text-primary-foreground font-bold text-sm shadow-lg gradient-primary">
-                      {step.step}
+                      <span className="text-emerald-400 font-semibold">LIVE LAB</span>
                     </div>
-                    <div className="mt-4 mb-4">
-                      <div className="w-10 h-10 rounded-lg flex items-center justify-center bg-primary/10">
-                        <step.icon className="w-5 h-5 text-primary" />
-                      </div>
+                    <div className="pt-4 space-y-2.5 text-[11px] leading-relaxed">
+                      <div className="text-slate-500"># 1. Audit repetitive operational friction</div>
+                      <div className="text-cyan-300">$ nirikshan audit --team "Engineering &amp; Ops"</div>
+                      <div className="text-slate-400">&gt; Detected 14.5 hrs/week manual testing &amp; ERP sync.</div>
+                      
+                      <div className="text-slate-500 pt-1.5"># 2. Deploy autonomous agent scaffolding</div>
+                      <div className="text-emerald-400">$ nirikshan deploy --pipeline rag-triage --air-gapped</div>
+                      <div className="text-slate-400">&gt; Container live on local Docker. P95 latency: 220ms.</div>
+                      <div className="text-blue-400 font-medium pt-1">✓ Benchmarked output: 92% manual hours saved.</div>
                     </div>
-                    <h3 className="text-lg font-semibold mb-2">{step.title}</h3>
-                    <p className="text-sm text-muted-foreground leading-relaxed">{step.desc}</p>
+                    <div className="mt-4 pt-3 border-t border-slate-800 flex items-center justify-between text-[10px] text-slate-500">
+                      <span>Stack: Cursor · Claude 3.5 · LangChain · Docker</span>
+                      <span className="text-slate-400 font-semibold">100% Functional Code</span>
+                    </div>
                   </div>
-                </StaggerItem>
-              ))}
-            </StaggerContainer>
-          </div>
-        </section>
-
-        {/* ── 7. CTA ── */}
-        <section className="py-20 md:py-28 relative">
-          <div className="container mx-auto px-6">
-            <div className="max-w-4xl mx-auto text-center space-y-8 p-12 md:p-16 rounded-2xl border border-primary/20 relative overflow-hidden ai-glow">
-              {/* Background glow */}
-              <div className="absolute inset-0 overflow-hidden" aria-hidden="true">
-                <div className="absolute top-0 left-1/4 w-[300px] h-[300px] rounded-full blur-[100px] animate-pulse bg-primary/8" />
-                <div className="absolute bottom-0 right-1/4 w-[250px] h-[250px] rounded-full blur-[100px] animate-pulse bg-accent/8" style={{ animationDelay: "1.5s" }} />
-              </div>
-
-              <div className="relative">
-                <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold leading-tight">
-                  Ready to Transform Your Business with{" "}
-                  <span className="text-gradient">Intelligent AI?</span>
-                </h2>
-                <p className="text-lg text-muted-foreground max-w-2xl mx-auto mt-4">
-                  Nirikshan AI brings intelligence to every corner of your business. Let's build your future together.
-                </p>
-                <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mt-8">
-                  <Link to="/contact">
-                    <Button
-                      size="lg"
-                      className="gradient-primary text-primary-foreground px-10 h-12 text-base font-semibold w-full sm:w-auto border-0"
-                    >
-                      Request Demo
-                      <ArrowRight className="ml-2 w-5 h-5" />
-                    </Button>
-                  </Link>
-                  <Link to="/contact" className="text-muted-foreground hover:text-foreground transition-colors text-base font-medium">
-                    Contact Sales →
-                  </Link>
                 </div>
               </div>
             </div>
           </div>
         </section>
+
+        {/* ══════════════════════════════════════════════════════
+            6. SOCIAL PROOF — testimonial + clients
+        ══════════════════════════════════════════════════════ */}
+        <section className="py-16 sm:py-24 bg-secondary/20">
+          <div className="container mx-auto px-4 sm:px-6">
+
+            {/* Big testimonial pull quote */}
+            <FadeUp className="max-w-3xl mx-auto text-center mb-14">
+              <div className="relative p-8 sm:p-12 rounded-2xl border border-border bg-card overflow-hidden">
+                {/* Decorative quotes */}
+                <div className="absolute top-4 left-6 text-6xl text-primary/10 font-serif leading-none select-none">"</div>
+                <div className="absolute bottom-4 right-6 text-6xl text-primary/10 font-serif leading-none select-none rotate-180">"</div>
+                <p className="relative text-lg sm:text-xl md:text-2xl font-medium leading-relaxed text-foreground italic mb-6">
+                  Nirikshan AI transformed our quality inspection process — what used to take hours of manual review now happens in real-time with greater accuracy.
+                </p>
+                <div className="flex items-center justify-center gap-3">
+                  <div className="w-10 h-10 rounded-full gradient-primary flex items-center justify-center text-white font-bold text-sm">OD</div>
+                  <div className="text-left">
+                    <p className="font-semibold text-sm">Operations Director</p>
+                    <p className="text-xs text-muted-foreground">Enterprise Manufacturing Client</p>
+                  </div>
+                </div>
+              </div>
+            </FadeUp>
+
+            {/* Partner logos */}
+            <FadeUp>
+              <p className="text-center text-xs font-bold uppercase tracking-widest text-muted-foreground mb-6">Clients &amp; Partners</p>
+              <div className="grid grid-cols-4 sm:grid-cols-4 md:grid-cols-8 gap-3 sm:gap-4 max-w-4xl mx-auto items-center">
+                {partners.map((partner) => {
+                  const card = (
+                    <div className="flex items-center justify-center p-3 sm:p-4 rounded-xl border border-border bg-card/80 aspect-square hover:border-primary/30 hover:shadow-md transition-all duration-300 group">
+                      <img
+                        src={partner.src}
+                        alt={partner.name}
+                        loading="lazy"
+                        className="w-full h-full object-contain opacity-60 group-hover:opacity-100 transition-opacity duration-300 dark:brightness-90"
+                      />
+                    </div>
+                  );
+                  return partner.url ? (
+                    <a key={partner.name} href={partner.url} target="_blank" rel="noopener noreferrer" title={partner.name}>{card}</a>
+                  ) : (
+                    <div key={partner.name} title={partner.name}>{card}</div>
+                  );
+                })}
+              </div>
+            </FadeUp>
+          </div>
+        </section>
+
+        {/* ══════════════════════════════════════════════════════
+            7. CTA — bold, minimal
+        ══════════════════════════════════════════════════════ */}
+        <section className="py-16 sm:py-24">
+          <div className="container mx-auto px-4 sm:px-6">
+            <motion.div
+              initial={{ opacity: 0, scale: 0.97 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5 }}
+              className="max-w-4xl mx-auto rounded-2xl border border-primary/20 relative overflow-hidden"
+            >
+              {/* Background glows */}
+              <div className="absolute inset-0 pointer-events-none">
+                <div className="absolute top-0 left-1/4 w-64 h-64 rounded-full bg-primary/8 blur-[80px] animate-pulse" />
+                <div className="absolute bottom-0 right-1/4 w-56 h-56 rounded-full bg-violet-500/8 blur-[80px] animate-pulse" style={{ animationDelay: "1.5s" }} />
+              </div>
+              <div className="relative p-8 sm:p-14 text-center">
+                <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-primary/10 border border-primary/20 text-primary text-xs sm:text-sm font-semibold mb-5">
+                  <Sparkles className="w-3.5 h-3.5" />
+                  Start your AI journey today
+                </div>
+                <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold leading-tight mb-4">
+                  Ready to Transform Your<br className="hidden sm:block" /> Business with{" "}
+                  <span className="text-gradient">Intelligent AI?</span>
+                </h2>
+                <p className="text-muted-foreground text-sm sm:text-base md:text-lg max-w-xl mx-auto mb-8">
+                  Join forward-thinking enterprises already using Nirikshan AI to build faster, smarter, and at scale.
+                </p>
+                {/* Checklist */}
+                <div className="flex flex-wrap justify-center gap-x-6 gap-y-2 mb-8">
+                  {["Free AI Readiness Assessment", "No long-term contracts", "Results in 4–6 weeks"].map((item) => (
+                    <span key={item} className="flex items-center gap-1.5 text-sm text-muted-foreground">
+                      <Check className="w-3.5 h-3.5 text-emerald-500 flex-shrink-0" />
+                      {item}
+                    </span>
+                  ))}
+                </div>
+                <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
+                  <Link to="/contact">
+                    <Button size="lg" className="gradient-primary text-primary-foreground px-8 h-12 text-base font-semibold border-0 w-full sm:w-auto">
+                      Request a Demo
+                      <ArrowRight className="ml-2 w-5 h-5" />
+                    </Button>
+                  </Link>
+                  <Link to="/contact" className="text-muted-foreground hover:text-foreground transition-colors text-sm font-medium">
+                    Talk to our AI experts →
+                  </Link>
+                </div>
+              </div>
+            </motion.div>
+          </div>
+        </section>
+
       </main>
 
-      <section className="py-8 overflow-hidden">
-        <InfiniteTextMarquee text="Nirikshan AI" link="/contact" speed={25} tooltipText="Let's Build Together 🚀" fontSize="6rem" />
+      <section className="py-6 sm:py-8 overflow-hidden">
+        <InfiniteTextMarquee text="Nirikshan AI" link="/contact" speed={25} tooltipText="Enterprise AI Solutions" fontSize="6rem" />
       </section>
 
       <Footer />
