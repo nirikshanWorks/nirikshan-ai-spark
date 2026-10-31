@@ -11,7 +11,6 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import {
-  Sparkles,
   ArrowRight,
   CheckCircle2,
   Mail,
@@ -24,7 +23,9 @@ import {
   AlertCircle,
   ShieldCheck,
   Zap,
-  BookmarkCheck,
+  Terminal,
+  Clock,
+  Layers,
 } from "lucide-react";
 import { toast } from "sonner";
 
@@ -66,10 +67,30 @@ export const TenXEnquiryForm: React.FC<TenXEnquiryFormProps> = ({
   }, [prefilledProgramme, prefilledAudience]);
 
   const quickGoalChips = [
-    { label: "University MoUs & Capstones", audience: "Universities & Colleges", interest: "AI Career Accelerator (Universities)", text: "We are interested in discussing an academic partnership or credit-aligned AI capstone cohort for our engineering & computer science students." },
-    { label: "Enterprise Workflow Audit", audience: "Industries & Enterprises", interest: "AI Workforce Transformation (Industries)", text: "We want to audit manual operational bottlenecks across our business departments and deploy automated AI workflows." },
-    { label: "Executive Leadership Sprints", audience: "Management & Leadership", interest: "AI Leadership (Management)", text: "We want a private executive briefing and AI strategy roadmap for our management and leadership team." },
-    { label: "K-12 Student AI Workshop", audience: "Schools", interest: "AI Explorer (Schools)", text: "We are interested in organizing an AI awareness and creative storytelling workshop for high school students." },
+    {
+      label: "University MoUs & Capstones",
+      audience: "Universities & Colleges",
+      interest: "AI Career Accelerator (Universities)",
+      text: "We are interested in discussing an academic partnership or credit-aligned AI capstone cohort for our engineering & computer science students.",
+    },
+    {
+      label: "Enterprise Workflow Audit",
+      audience: "Industries & Enterprises",
+      interest: "AI Workforce Transformation (Industries)",
+      text: "We want to audit manual operational bottlenecks across our business departments and deploy automated AI workflows.",
+    },
+    {
+      label: "Executive Leadership Sprints",
+      audience: "Management & Leadership",
+      interest: "AI Leadership (Management)",
+      text: "We want a private executive briefing and AI strategy roadmap for our management and leadership team.",
+    },
+    {
+      label: "K-12 Student AI Workshop",
+      audience: "Schools",
+      interest: "AI Explorer (Schools)",
+      text: "We are interested in organizing an AI awareness and creative storytelling workshop for high school students.",
+    },
   ];
 
   const handleChipClick = (chip: typeof quickGoalChips[0]) => {
@@ -114,7 +135,7 @@ export const TenXEnquiryForm: React.FC<TenXEnquiryFormProps> = ({
     }
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(formData.workEmail.trim())) {
-      errors.workEmail = "Please enter a valid email address.";
+      errors.workEmail = "Please enter a valid work or institutional email address.";
     }
     if (!formData.organisation.trim()) {
       errors.organisation = "Organisation or institution name is required.";
@@ -166,7 +187,7 @@ export const TenXEnquiryForm: React.FC<TenXEnquiryFormProps> = ({
 
       setIsSubmitted(true);
       toast.success(
-        "Thank you! Your 10X AI Productivity inquiry has been received. Our team will contact you within 1 business day."
+        "Inquiry received. Our academic & workforce enablement team will respond within 24 hours."
       );
     } catch (error) {
       console.error("Submission failed:", error);
@@ -181,114 +202,121 @@ export const TenXEnquiryForm: React.FC<TenXEnquiryFormProps> = ({
   return (
     <section
       id="contact-inquiry"
-      className="py-20 lg:py-28 bg-gradient-to-b from-slate-900 via-slate-950 to-blue-950 text-white relative overflow-hidden"
+      className="py-20 lg:py-28 bg-techlight/40 dark:bg-charcoal border-t border-concrete/30 dark:border-charcoal-border text-charcoal dark:text-ivory relative"
     >
-      {/* Background ambient lighting */}
-      <div className="absolute inset-0 pointer-events-none">
-        <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-[700px] h-[350px] bg-blue-600/10 blur-[120px] rounded-full" />
-        <div className="absolute bottom-10 right-10 w-80 h-80 bg-violet-600/10 blur-[100px] rounded-full" />
-        <div
-          className="absolute inset-0 opacity-[0.03]"
-          style={{
-            backgroundImage: `radial-gradient(#ffffff 1px, transparent 1px)`,
-            backgroundSize: "28px 28px",
-          }}
-        />
-      </div>
-
-      <div className="container relative mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
-          {/* Left Column: Heading, Value Proposition & Real-Time Engagement Summary */}
-          <div className="lg:col-span-5 space-y-6">
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-500/20 text-blue-300 text-xs font-semibold uppercase tracking-wider border border-blue-400/30">
-              <Sparkles className="w-3.5 h-3.5 text-cyan-300" />
-              <span>Take The Next Step</span>
-            </div>
-
-            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight text-white leading-tight">
-              The Future Is AI-Powered.
-              <br />
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-cyan-300 to-violet-400">
-                Are Your People Ready?
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl">
+        {/* Section Header */}
+        <div className="border-b border-concrete/30 dark:border-charcoal-border pb-8 mb-12 flex flex-col md:flex-row md:items-end justify-between gap-4">
+          <div>
+            <div className="flex items-center gap-2 mb-2">
+              <span className="font-mono text-xs tracking-widest text-sage font-semibold uppercase">
+                SEC_08 // INQUIRY &amp; PARTNERSHIP DISPATCH
               </span>
+              <span className="text-concrete/40 dark:text-charcoal-border font-mono">/</span>
+              <span className="font-mono text-xs text-concrete dark:text-concrete-light">
+                DIRECT TO TRAINING DIVISION
+              </span>
+            </div>
+            <h2 className="font-serif text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-charcoal dark:text-ivory">
+              Partner With Our Enablement Lab.
             </h2>
+          </div>
+          <div className="font-mono text-xs text-concrete dark:text-concrete-light flex items-center gap-2">
+            <span className="inline-block w-2 h-2 bg-sage rounded-full animate-pulse" />
+            <span>DISPATCH GATEWAY ACTIVE • 24H SLA</span>
+          </div>
+        </div>
 
-            <p className="text-base text-slate-300 leading-relaxed">
-              Partner with Nirikshan AI to build practical AI skills, improve workflows, and prepare your organisation for an AI-enabled future.
-            </p>
-
-            {/* Live Engagement Preview Card */}
-            {(formData.audienceType || formData.areaOfInterest) && (
-              <div className="p-4 rounded-2xl bg-white/10 backdrop-blur-md border border-white/15 text-xs text-slate-200 animate-in fade-in slide-in-from-top-1 space-y-2">
-                <span className="text-[10px] font-mono font-bold text-cyan-300 uppercase tracking-wider block">
-                  Configured Engagement Focus:
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start">
+          {/* Left Column: Technical Value Proposition Dossier */}
+          <div className="lg:col-span-5 space-y-6">
+            <div className="border border-concrete/40 dark:border-charcoal-border bg-white dark:bg-charcoal-surface p-6 space-y-4">
+              <div className="flex items-center justify-between border-b border-concrete/20 dark:border-charcoal-border pb-3">
+                <span className="font-mono text-[11px] uppercase tracking-wider text-sage font-semibold flex items-center gap-2">
+                  <Terminal className="w-3.5 h-3.5" /> SPEC // ENGAGEMENT TOPOLOGY
                 </span>
-                <div className="flex justify-between items-center text-white font-semibold">
-                  <span>Audience: {formData.audienceType || "General"}</span>
-                  <span className="text-blue-300">{formData.areaOfInterest || "10X Track"}</span>
-                </div>
-                <p className="text-[11px] text-slate-300">
-                  Custom syllabus, tailored capstone deliverables, and expert practitioner mentorship will be bundled for this inquiry.
-                </p>
+                <span className="font-mono text-[10px] text-concrete">SYS_READY</span>
               </div>
-            )}
 
-            <div className="pt-2 border-t border-slate-800 space-y-4">
-              <div className="flex items-start gap-3">
-                <CheckCircle2 className="w-5 h-5 text-cyan-400 shrink-0 mt-0.5" />
-                <div>
-                  <div className="text-sm font-bold text-white">Customized Cohorts</div>
-                  <div className="text-xs text-slate-400">
-                    Bespoke curricula for school students, universities, and corporate business pods.
+              <p className="text-sm text-charcoal/80 dark:text-ivory/80 leading-relaxed font-sans">
+                Nirikshan AI delivers tailored workshops, university MoUs, credit-aligned capstone labs, and enterprise workflow automation sprints across India.
+              </p>
+
+              {/* Live Configured Preview Strip */}
+              {(formData.audienceType || formData.areaOfInterest) && (
+                <div className="p-3.5 border border-sage/40 bg-sage/5 font-mono text-xs space-y-1.5">
+                  <div className="text-[10px] text-sage font-bold tracking-wider uppercase flex items-center justify-between">
+                    <span>ACTIVE FORM TARGET</span>
+                    <span className="text-amber">CONFIGURED</span>
+                  </div>
+                  <div className="text-charcoal dark:text-ivory font-bold">
+                    {formData.areaOfInterest || "General AI Track"}
+                  </div>
+                  <div className="text-[11px] text-concrete">
+                    Audience: {formData.audienceType || "All Verticals"}
+                  </div>
+                </div>
+              )}
+
+              <div className="space-y-3 pt-2">
+                <div className="flex items-start gap-3 text-xs">
+                  <CheckCircle2 className="w-4 h-4 text-sage shrink-0 mt-0.5" />
+                  <div>
+                    <span className="font-semibold text-charcoal dark:text-ivory block">Bespoke Institution Syllabus</span>
+                    <span className="text-concrete text-[11px]">Mapped to AICTE, UGC, NEP 2020 or internal enterprise stack specs.</span>
+                  </div>
+                </div>
+
+                <div className="flex items-start gap-3 text-xs">
+                  <CheckCircle2 className="w-4 h-4 text-sage shrink-0 mt-0.5" />
+                  <div>
+                    <span className="font-semibold text-charcoal dark:text-ivory block">Hands-On Capstone Portfolios</span>
+                    <span className="text-concrete text-[11px]">Every participant deploys live code, RAG assistants, or edge vision models.</span>
+                  </div>
+                </div>
+
+                <div className="flex items-start gap-3 text-xs">
+                  <CheckCircle2 className="w-4 h-4 text-sage shrink-0 mt-0.5" />
+                  <div>
+                    <span className="font-semibold text-charcoal dark:text-ivory block">Auditable Productivity Gains</span>
+                    <span className="text-concrete text-[11px]">Measurable time savings and automated department workflows.</span>
                   </div>
                 </div>
               </div>
 
-              <div className="flex items-start gap-3">
-                <CheckCircle2 className="w-5 h-5 text-cyan-400 shrink-0 mt-0.5" />
-                <div>
-                  <div className="text-sm font-bold text-white">Actionable ROI</div>
-                  <div className="text-xs text-slate-400">
-                    Measure tangible time saved, manual tasks automated, and verifiable project portfolios.
-                  </div>
-                </div>
-              </div>
-
-              <div className="flex items-start gap-3">
-                <CheckCircle2 className="w-5 h-5 text-cyan-400 shrink-0 mt-0.5" />
-                <div>
-                  <div className="text-sm font-bold text-white">End-to-End Enablement</div>
-                  <div className="text-xs text-slate-400">
-                    From foundational literacy to enterprise workflow automation and proprietary AI tools.
-                  </div>
-                </div>
+              <div className="pt-4 border-t border-concrete/20 dark:border-charcoal-border flex items-center justify-between font-mono text-[11px]">
+                <span className="text-concrete">DIRECT CONTACT:</span>
+                <a
+                  href="mailto:info@nirikshanai.com"
+                  className="text-charcoal dark:text-ivory hover:text-amber font-semibold flex items-center gap-1 transition-colors"
+                >
+                  <Mail className="w-3.5 h-3.5 text-sage" />
+                  info@nirikshanai.com
+                </a>
               </div>
             </div>
 
-            <div className="pt-4 border-t border-slate-800 flex flex-col sm:flex-row gap-4">
-              <a
-                href="mailto:info@nirikshanai.com"
-                className="inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl text-xs font-semibold text-white bg-slate-800 hover:bg-slate-700 transition-colors border border-slate-700 w-full sm:w-auto"
-              >
-                <Mail className="w-3.5 h-3.5 text-blue-400" />
-                Contact Directly: info@nirikshanai.com
-              </a>
+            {/* Institutional Credentials Box */}
+            <div className="border border-concrete/30 dark:border-charcoal-border p-4 bg-techlight/30 dark:bg-charcoal/50 text-[11px] font-mono text-concrete space-y-1">
+              <div>LOCATION // Haridwar &amp; Dehradun Lab Facilities</div>
+              <div>ACCREDITATION // MSME Registered Technical Enterprise</div>
+              <div>GOVERNANCE // Zero-PII Corporate Confidentiality Ready</div>
             </div>
           </div>
 
-          {/* Right Column: Clean, Interactive Validated Enquiry Form */}
+          {/* Right Column: High-Precision Brutalist Enquiry Form */}
           <div className="lg:col-span-7">
-            <div className="bg-card rounded-3xl p-6 sm:p-8 md:p-10 text-foreground shadow-2xl relative border border-border">
+            <div className="border border-concrete/40 dark:border-charcoal-border bg-white dark:bg-charcoal-surface p-6 sm:p-8">
               {isSubmitted ? (
                 <div className="text-center py-12 px-4 space-y-4">
-                  <div className="w-16 h-16 rounded-full bg-emerald-100 dark:bg-emerald-950/60 text-emerald-600 dark:text-emerald-400 flex items-center justify-center mx-auto shadow-md">
-                    <CheckCircle2 className="w-8 h-8" />
+                  <div className="w-14 h-14 border border-sage bg-sage/10 text-sage flex items-center justify-center mx-auto">
+                    <CheckCircle2 className="w-7 h-7" />
                   </div>
-                  <h3 className="text-2xl font-bold text-foreground">
-                    Inquiry Received Successfully!
+                  <h3 className="font-serif text-2xl font-bold text-charcoal dark:text-ivory">
+                    Inquiry Transmitted Successfully.
                   </h3>
-                  <p className="text-sm text-muted-foreground max-w-md mx-auto leading-relaxed">
-                    Thank you for your interest in the Nirikshan AI 10X Productivity Initiative. Our education & transformation advisors will review your requirements and reach out within 1 business day.
+                  <p className="text-xs sm:text-sm text-concrete max-w-md mx-auto leading-relaxed">
+                    Thank you for your interest in the Nirikshan AI 10X Productivity Initiative. Our education &amp; workforce enablement team will review your specifications and contact you within 1 business day.
                   </p>
                   <Button
                     onClick={() => {
@@ -303,37 +331,37 @@ export const TenXEnquiryForm: React.FC<TenXEnquiryFormProps> = ({
                       });
                     }}
                     variant="outline"
-                    className="mt-4 text-xs font-semibold text-foreground border-border hover:bg-muted"
+                    className="rounded-none border-concrete/40 font-mono text-xs uppercase tracking-wider mt-4 hover:border-amber hover:text-amber"
                   >
                     Submit Another Inquiry
                   </Button>
                 </div>
               ) : (
-                <form ref={formRef} onSubmit={handleSubmit} className="space-y-4 sm:space-y-5">
-                  <div className="border-b border-border pb-3 mb-2">
-                    <h3 className="text-xl font-bold text-foreground">
-                      Express Interest / Cohort Partnership
+                <form ref={formRef} onSubmit={handleSubmit} className="space-y-5">
+                  <div className="border-b border-concrete/20 dark:border-charcoal-border pb-3">
+                    <span className="font-mono text-[10px] uppercase tracking-widest text-concrete block mb-1">
+                      INQUIRY SPECIFICATION SHEET
+                    </span>
+                    <h3 className="font-serif text-xl font-bold text-charcoal dark:text-ivory">
+                      Configure Institutional or Corporate Cohort
                     </h3>
-                    <p className="text-xs text-muted-foreground">
-                      Select a common goal preset or customize your requirements below:
-                    </p>
                   </div>
 
-                  {/* Interactive Quick Goal Chips */}
+                  {/* Quick Preset Objectives */}
                   <div>
-                    <span className="text-[11px] font-bold text-muted-foreground uppercase tracking-wider block mb-2">
-                      Quick Preset Objectives:
+                    <span className="font-mono text-[10px] font-bold text-concrete uppercase tracking-wider block mb-2">
+                      QUICK SELECTION PRESETS:
                     </span>
-                    <div className="flex flex-wrap gap-1.5">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
                       {quickGoalChips.map((chip) => (
                         <button
                           type="button"
                           key={chip.label}
                           onClick={() => handleChipClick(chip)}
-                          className="px-2.5 py-1 rounded-lg bg-muted/50 hover:bg-blue-50 dark:hover:bg-blue-950/60 border border-border hover:border-blue-400 text-[11px] text-muted-foreground hover:text-foreground transition-colors flex items-center gap-1"
+                          className="px-3 py-2 border border-concrete/30 dark:border-charcoal-border bg-techlight/30 dark:bg-charcoal text-left font-mono text-[11px] text-charcoal/80 dark:text-ivory/80 hover:border-amber hover:text-amber transition-colors flex items-center justify-between"
                         >
-                          <Zap className="w-3 h-3 text-blue-500 dark:text-cyan-400" />
-                          <span>{chip.label}</span>
+                          <span className="truncate">{chip.label}</span>
+                          <ArrowRight className="w-3 h-3 text-concrete shrink-0 ml-1" />
                         </button>
                       ))}
                     </div>
@@ -342,21 +370,21 @@ export const TenXEnquiryForm: React.FC<TenXEnquiryFormProps> = ({
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     {/* Full Name */}
                     <div>
-                      <label className="block text-xs font-semibold text-foreground mb-1.5">
-                        Full Name <span className="text-rose-500">*</span>
+                      <label className="block font-mono text-[11px] text-charcoal dark:text-ivory uppercase tracking-wider mb-1.5">
+                        Full Name <span className="text-amber">*</span>
                       </label>
                       <Input
                         type="text"
                         name="fullName"
                         value={formData.fullName}
                         onChange={handleChange}
-                        placeholder="Dr. Rajesh Sharma"
-                        className={`text-xs h-10 bg-background/80 border-border text-foreground placeholder:text-muted-foreground ${
-                          validationErrors.fullName ? "border-rose-500 ring-rose-200" : ""
+                        placeholder="e.g. Dr. Rajesh Sharma"
+                        className={`rounded-none text-xs h-10 border-concrete/40 dark:border-charcoal-border bg-white dark:bg-charcoal text-charcoal dark:text-ivory placeholder:text-concrete/60 focus-visible:ring-1 focus-visible:ring-amber focus-visible:border-amber ${
+                          validationErrors.fullName ? "border-amber ring-1 ring-amber" : ""
                         }`}
                       />
                       {validationErrors.fullName && (
-                        <p className="text-[11px] text-rose-500 mt-1">
+                        <p className="font-mono text-[10px] text-amber mt-1">
                           {validationErrors.fullName}
                         </p>
                       )}
@@ -364,21 +392,21 @@ export const TenXEnquiryForm: React.FC<TenXEnquiryFormProps> = ({
 
                     {/* Work Email */}
                     <div>
-                      <label className="block text-xs font-semibold text-foreground mb-1.5">
-                        Work / Institutional Email <span className="text-rose-500">*</span>
+                      <label className="block font-mono text-[11px] text-charcoal dark:text-ivory uppercase tracking-wider mb-1.5">
+                        Institutional / Work Email <span className="text-amber">*</span>
                       </label>
                       <Input
                         type="email"
                         name="workEmail"
                         value={formData.workEmail}
                         onChange={handleChange}
-                        placeholder="rajesh@institution.edu / company.com"
-                        className={`text-xs h-10 bg-background/80 border-border text-foreground placeholder:text-muted-foreground ${
-                          validationErrors.workEmail ? "border-rose-500 ring-rose-200" : ""
+                        placeholder="rajesh@institution.edu"
+                        className={`rounded-none text-xs h-10 border-concrete/40 dark:border-charcoal-border bg-white dark:bg-charcoal text-charcoal dark:text-ivory placeholder:text-concrete/60 focus-visible:ring-1 focus-visible:ring-amber focus-visible:border-amber ${
+                          validationErrors.workEmail ? "border-amber ring-1 ring-amber" : ""
                         }`}
                       />
                       {validationErrors.workEmail && (
-                        <p className="text-[11px] text-rose-500 mt-1">
+                        <p className="font-mono text-[10px] text-amber mt-1">
                           {validationErrors.workEmail}
                         </p>
                       )}
@@ -387,21 +415,21 @@ export const TenXEnquiryForm: React.FC<TenXEnquiryFormProps> = ({
 
                   {/* Organisation */}
                   <div>
-                    <label className="block text-xs font-semibold text-foreground mb-1.5">
-                      Organisation / School / University <span className="text-rose-500">*</span>
+                    <label className="block font-mono text-[11px] text-charcoal dark:text-ivory uppercase tracking-wider mb-1.5">
+                      Organisation / School / University <span className="text-amber">*</span>
                     </label>
                     <Input
                       type="text"
                       name="organisation"
                       value={formData.organisation}
                       onChange={handleChange}
-                      placeholder="e.g. Apex Institute of Technology / Tata Enterprises"
-                      className={`text-xs h-10 bg-background/80 border-border text-foreground placeholder:text-muted-foreground ${
-                        validationErrors.organisation ? "border-rose-500 ring-rose-200" : ""
+                      placeholder="e.g. Apex Institute of Technology / Enterprise Team"
+                      className={`rounded-none text-xs h-10 border-concrete/40 dark:border-charcoal-border bg-white dark:bg-charcoal text-charcoal dark:text-ivory placeholder:text-concrete/60 focus-visible:ring-1 focus-visible:ring-amber focus-visible:border-amber ${
+                        validationErrors.organisation ? "border-amber ring-1 ring-amber" : ""
                       }`}
                     />
                     {validationErrors.organisation && (
-                      <p className="text-[11px] text-rose-500 mt-1">
+                      <p className="font-mono text-[10px] text-amber mt-1">
                         {validationErrors.organisation}
                       </p>
                     )}
@@ -410,26 +438,26 @@ export const TenXEnquiryForm: React.FC<TenXEnquiryFormProps> = ({
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     {/* Audience Type */}
                     <div>
-                      <label className="block text-xs font-semibold text-foreground mb-1.5">
-                        Audience Type <span className="text-rose-500">*</span>
+                      <label className="block font-mono text-[11px] text-charcoal dark:text-ivory uppercase tracking-wider mb-1.5">
+                        Audience Classification <span className="text-amber">*</span>
                       </label>
                       <Select
                         value={formData.audienceType}
                         onValueChange={(val) => handleSelectChange("audienceType", val)}
                       >
-                        <SelectTrigger className={`text-xs h-10 bg-background/80 border-border text-foreground ${validationErrors.audienceType ? "border-rose-500" : ""}`}>
+                        <SelectTrigger className={`rounded-none text-xs h-10 border-concrete/40 dark:border-charcoal-border bg-white dark:bg-charcoal text-charcoal dark:text-ivory ${validationErrors.audienceType ? "border-amber ring-1 ring-amber" : ""}`}>
                           <SelectValue placeholder="Select Audience" />
                         </SelectTrigger>
-                        <SelectContent className="bg-popover border-border text-popover-foreground">
+                        <SelectContent className="rounded-none bg-white dark:bg-charcoal border border-concrete/40 dark:border-charcoal-border text-charcoal dark:text-ivory">
                           <SelectItem value="Schools">Schools (K-12 / High School)</SelectItem>
-                          <SelectItem value="Universities & Colleges">Universities & Colleges</SelectItem>
+                          <SelectItem value="Universities & Colleges">Universities &amp; Colleges</SelectItem>
                           <SelectItem value="Working Professionals">Working Professionals</SelectItem>
-                          <SelectItem value="Management & Leadership">Management & Leadership</SelectItem>
-                          <SelectItem value="Industries & Enterprises">Industries & Enterprises</SelectItem>
+                          <SelectItem value="Management & Leadership">Management &amp; Leadership</SelectItem>
+                          <SelectItem value="Industries & Enterprises">Industries &amp; Enterprises</SelectItem>
                         </SelectContent>
                       </Select>
                       {validationErrors.audienceType && (
-                        <p className="text-[11px] text-rose-500 mt-1">
+                        <p className="font-mono text-[10px] text-amber mt-1">
                           {validationErrors.audienceType}
                         </p>
                       )}
@@ -437,20 +465,20 @@ export const TenXEnquiryForm: React.FC<TenXEnquiryFormProps> = ({
 
                     {/* Area of Interest */}
                     <div>
-                      <label className="block text-xs font-semibold text-foreground mb-1.5">
-                        Area of Interest <span className="text-rose-500">*</span>
+                      <label className="block font-mono text-[11px] text-charcoal dark:text-ivory uppercase tracking-wider mb-1.5">
+                        Programme Track <span className="text-amber">*</span>
                       </label>
                       <Select
                         value={formData.areaOfInterest}
                         onValueChange={(val) => handleSelectChange("areaOfInterest", val)}
                       >
-                        <SelectTrigger className={`text-xs h-10 bg-background/80 border-border text-foreground ${validationErrors.areaOfInterest ? "border-rose-500" : ""}`}>
-                          <SelectValue placeholder="Select Interest" />
+                        <SelectTrigger className={`rounded-none text-xs h-10 border-concrete/40 dark:border-charcoal-border bg-white dark:bg-charcoal text-charcoal dark:text-ivory ${validationErrors.areaOfInterest ? "border-amber ring-1 ring-amber" : ""}`}>
+                          <SelectValue placeholder="Select Track" />
                         </SelectTrigger>
-                        <SelectContent className="bg-popover border-border text-popover-foreground">
+                        <SelectContent className="rounded-none bg-white dark:bg-charcoal border border-concrete/40 dark:border-charcoal-border text-charcoal dark:text-ivory">
                           <SelectItem value="AI Explorer (Schools)">AI Explorer (Schools)</SelectItem>
                           <SelectItem value="AI Career Accelerator (Universities)">AI Career Accelerator (Universities)</SelectItem>
-                          <SelectItem value="10X Professional (Working Professionals)">10X Professional (Professionals)</SelectItem>
+                          <SelectItem value="10X Professional (Professionals)">10X Professional (Professionals)</SelectItem>
                           <SelectItem value="AI Leadership (Management)">AI Leadership (Management)</SelectItem>
                           <SelectItem value="AI Workforce Transformation (Industries)">AI Workforce Transformation (Industries)</SelectItem>
                           <SelectItem value="Enterprise Workflow Automation">Enterprise Workflow Automation</SelectItem>
@@ -459,30 +487,30 @@ export const TenXEnquiryForm: React.FC<TenXEnquiryFormProps> = ({
                         </SelectContent>
                       </Select>
                       {validationErrors.areaOfInterest && (
-                        <p className="text-[11px] text-rose-500 mt-1">
+                        <p className="font-mono text-[10px] text-amber mt-1">
                           {validationErrors.areaOfInterest}
                         </p>
                       )}
                     </div>
                   </div>
 
-                  {/* Message / Goals */}
+                  {/* Message */}
                   <div>
-                    <label className="block text-xs font-semibold text-foreground mb-1.5">
-                      Tell Us About Your Goals & Team Size <span className="text-rose-500">*</span>
+                    <label className="block font-mono text-[11px] text-charcoal dark:text-ivory uppercase tracking-wider mb-1.5">
+                      Scope &amp; Expected Cohort Details <span className="text-amber">*</span>
                     </label>
                     <Textarea
                       name="message"
                       rows={3}
                       value={formData.message}
                       onChange={handleChange}
-                      placeholder="Please share details such as expected cohort size, primary departments involved, desired timeline, or key operational bottlenecks..."
-                      className={`text-xs resize-none bg-background/80 border-border text-foreground placeholder:text-muted-foreground ${
-                        validationErrors.message ? "border-rose-500 ring-rose-200" : ""
+                      placeholder="Specify expected cohort size, primary departments involved, desired timeline, or key technical goals..."
+                      className={`rounded-none text-xs resize-none border-concrete/40 dark:border-charcoal-border bg-white dark:bg-charcoal text-charcoal dark:text-ivory placeholder:text-concrete/60 focus-visible:ring-1 focus-visible:ring-amber focus-visible:border-amber ${
+                        validationErrors.message ? "border-amber ring-1 ring-amber" : ""
                       }`}
                     />
                     {validationErrors.message && (
-                      <p className="text-[11px] text-rose-500 mt-1">
+                      <p className="font-mono text-[10px] text-amber mt-1">
                         {validationErrors.message}
                       </p>
                     )}
@@ -493,26 +521,29 @@ export const TenXEnquiryForm: React.FC<TenXEnquiryFormProps> = ({
                     <Button
                       type="submit"
                       disabled={isSubmitting}
-                      className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 text-sm rounded-xl shadow-lg shadow-blue-500/25 transition-all flex items-center justify-center gap-2"
+                      className="w-full rounded-none bg-charcoal dark:bg-ivory text-ivory dark:text-charcoal hover:bg-amber dark:hover:bg-amber hover:text-white dark:hover:text-white font-mono text-xs uppercase tracking-wider py-6 transition-colors shadow-none flex items-center justify-center gap-2"
                     >
                       {isSubmitting ? (
                         <>
                           <Loader2 className="w-4 h-4 animate-spin" />
-                          <span>Submitting Inquiry...</span>
+                          <span>TRANSMITTING SPECIFICATION...</span>
                         </>
                       ) : (
                         <>
-                          <span>Submit 10X Initiative Inquiry</span>
-                          <Send className="w-4 h-4" />
+                          <span>DISPATCH 10X INITIATIVE INQUIRY</span>
+                          <Send className="w-3.5 h-3.5" />
                         </>
                       )}
                     </Button>
                   </div>
 
-                  <p className="text-[11px] text-muted-foreground text-center flex items-center justify-center gap-1.5 pt-1">
-                    <ShieldCheck className="w-3.5 h-3.5 text-blue-600 dark:text-cyan-400" />
-                    <span>Your data is protected. We respond to all institutional inquiries within 24 hours.</span>
-                  </p>
+                  <div className="flex items-center justify-between font-mono text-[10px] text-concrete pt-2 border-t border-concrete/20 dark:border-charcoal-border">
+                    <span className="flex items-center gap-1.5">
+                      <ShieldCheck className="w-3.5 h-3.5 text-sage" />
+                      NON-DISCLOSURE GUARANTEE
+                    </span>
+                    <span>RESPONSE GUARANTEE &lt;24H</span>
+                  </div>
                 </form>
               )}
             </div>

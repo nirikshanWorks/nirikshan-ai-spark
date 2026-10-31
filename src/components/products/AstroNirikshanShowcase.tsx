@@ -1,9 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { motion, AnimatePresence } from "framer-motion";
-import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Card } from "@/components/ui/card";
 import {
   Compass,
   Sparkles,
@@ -11,23 +8,14 @@ import {
   ExternalLink,
   ShieldCheck,
   CheckCircle2,
-  Orbit,
-  Star,
-  Sun,
-  Moon,
   Clock,
   Layers,
   Cpu,
   Lock,
-  Calendar,
-  Eye,
-  Info,
-  ChevronRight,
+  Award,
   Video,
   Phone,
-  FileText,
-  Flame,
-  Award,
+  FileText
 } from "lucide-react";
 import {
   ASTRO_NIRIKSHAN_META,
@@ -35,511 +23,404 @@ import {
   FEATURED_ASTROLOGERS,
   TECH_INNOVATION_PILLARS,
   ASTRO_NIRIKSHAN_EXTERNAL_URL,
-  heroMandalaImg,
-  zodiacEngravingsImg,
 } from "@/data/astroNirikshanData";
-import { FadeUp, StaggerContainer, StaggerItem } from "@/components/ScrollAnimations";
 
 export const AstroNirikshanShowcase: React.FC = () => {
   const handleLaunchAstro = () => {
-    // Open the official Astro Nirikshan platform in a new tab if configured
     window.open(ASTRO_NIRIKSHAN_EXTERNAL_URL, "_blank", "noopener,noreferrer");
   };
 
   return (
-    <section
-      id="astro-nirikshan"
-      className="relative bg-slate-950 text-slate-100 overflow-hidden selection:bg-amber-500 selection:text-slate-950 border-t border-amber-500/20"
-    >
-      {/* ─────────────────────────────────────────────────────────────
-          CELESTIAL BACKGROUND CANVAS & SACRED GEOMETRY OVERLAYS
-      ───────────────────────────────────────────────────────────── */}
-      <div className="absolute inset-0 pointer-events-none overflow-hidden">
-        {/* Soft Astrolabe Watermark */}
-        <div
-          className="absolute -top-40 -right-40 w-[800px] h-[800px] bg-no-repeat bg-contain opacity-[0.06] blur-[1px]"
-          style={{ backgroundImage: `url(${heroMandalaImg})` }}
-        />
-        <div
-          className="absolute bottom-10 -left-40 w-[700px] h-[700px] bg-no-repeat bg-contain opacity-[0.05]"
-          style={{ backgroundImage: `url(${zodiacEngravingsImg})` }}
-        />
+    <div className="bg-ivory dark:bg-charcoal text-charcoal dark:text-ivory selection:bg-burntamber selection:text-white font-sans">
+      {/* ══════════════════════════════════════════════════════
+          SECTION 01 — SHOWCASE HERO (Editorial Split-Screen)
+      ══════════════════════════════════════════════════════ */}
+      <section className="border-b border-concrete/40 dark:border-charcoal-border bg-charcoal text-ivory relative overflow-hidden">
+        <div className="absolute inset-0 tech-grid-bg opacity-20 pointer-events-none" />
 
-        {/* Ambient Cosmic Lights (Deep navy, warm amber/gold, cosmic blue) */}
-        <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-[900px] h-[400px] bg-blue-600/10 rounded-full blur-[140px]" />
-        <div className="absolute top-2/3 right-10 w-[500px] h-[500px] bg-amber-500/10 rounded-full blur-[120px]" />
-        <div className="absolute bottom-10 left-10 w-[600px] h-[600px] bg-indigo-500/10 rounded-full blur-[130px]" />
-      </div>
-
-      <div className="relative z-10">
-        {/* ─────────────────────────────────────────────────────────────
-            1. SHOWCASE HERO: WHERE SACRED COSMIC SCIENCES MEET AI PRECISION
-        ───────────────────────────────────────────────────────────── */}
-        <div className="pt-24 pb-20 sm:pt-32 sm:pb-28 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
-          <FadeUp className="text-center max-w-4xl mx-auto space-y-6">
-            {/* Top Eyebrow Emblem */}
-            <div className="inline-flex items-center gap-2.5 rounded-full border border-amber-500/30 bg-amber-500/10 px-4 py-1.5 text-xs font-mono tracking-[0.2em] text-amber-300 shadow-sm backdrop-blur-md">
-              <span className="w-2 h-2 rounded-full bg-amber-400 animate-pulse shadow-[0_0_8px_rgba(251,191,36,0.8)]" />
-              <span className="font-bold">{ASTRO_NIRIKSHAN_META.productName}</span>
-              <span className="text-slate-400">•</span>
-              <span className="text-amber-200/90">{ASTRO_NIRIKSHAN_META.hindiName}</span>
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 pt-16 pb-20 relative z-10">
+          <div className="flex items-center justify-between pb-4 mb-8 border-b border-charcoal-border text-[11px] font-mono tracking-widest text-concrete uppercase">
+            <div className="flex items-center gap-3">
+              <span className="w-2 h-2 bg-burntamber inline-block animate-pulse" />
+              <span>SEC_01 // COMPUTATIONAL JYOTISH &amp; COSMIC SCIENCES</span>
+              <span className="hidden sm:inline">//</span>
+              <span className="hidden sm:inline">ASTRO_NIRIKSHAN_CORE</span>
             </div>
+            <div className="flex items-center gap-3">
+              <span>CALCULATION: 100% CLIENT-SIDE</span>
+              <span>//</span>
+              <span className="text-sage font-bold">STATUS: PRODUCTION</span>
+            </div>
+          </div>
 
-            {/* Main Headline */}
-            <h2 className="text-3xl sm:text-5xl lg:text-6xl font-extrabold text-white tracking-tight leading-[1.12]">
-              Where Sacred Cosmic Sciences Meet{" "}
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-300 via-amber-400 to-amber-200">
-                AI Precision
-              </span>
-            </h2>
+          <div className="grid lg:grid-cols-12 gap-8 lg:gap-12 items-center">
+            <div className="lg:col-span-8 space-y-6">
+              <div className="inline-block px-3 py-1 text-[10px] font-mono uppercase tracking-[0.2em] bg-charcoal-surface border border-charcoal-border text-burntamber">
+                ANCIENT SCRIPTURAL MATHEMATICS <span className="text-concrete">·</span> MODERN CLIENT PRIVACY
+              </div>
 
-            {/* Supporting Subtitle */}
-            <p className="text-base sm:text-xl text-slate-300 font-normal leading-relaxed max-w-3xl mx-auto">
-              A flagship digital platform by{" "}
-              <strong className="text-white font-semibold">
-                {ASTRO_NIRIKSHAN_META.parentCompany}
-              </strong>
-              . Uniting ancient Vedic Jyotish, Chaldean numerological frequencies,
-              and spatial Vastu with client-side ephemeris calculations and revered
-              lineage masters.
-            </p>
-
-            {/* Quick Five Discipline Pills */}
-            <div className="pt-2 flex flex-wrap items-center justify-center gap-2 sm:gap-3">
-              {[
-                "Vedic Astrology",
-                "Chaldean Numerology",
-                "Vastu Shastra",
-                "Janam Kundli",
-                "Interactive Tarot",
-              ].map((label) => (
-                <span
-                  key={label}
-                  className="px-3.5 py-1.5 rounded-xl text-xs font-mono bg-white/5 border border-amber-500/20 text-amber-200/90 shadow-sm backdrop-blur-sm"
-                >
-                  ✦ {label}
+              <h1 className="text-4xl sm:text-6xl lg:text-7xl font-bold font-display tracking-tight leading-[1.02] text-ivory">
+                Where Sacred Cosmic Sciences
+                <br />
+                <span className="font-serif italic font-normal text-concrete">
+                  Meet <span className="text-burntamber">Mathematical Precision</span>.
                 </span>
-              ))}
-            </div>
+              </h1>
 
-            {/* CTAs */}
-            <div className="pt-4 flex flex-col sm:flex-row items-center justify-center gap-4">
-              <Button
-                onClick={handleLaunchAstro}
-                size="lg"
-                className="w-full sm:w-auto bg-gradient-to-r from-amber-500 via-amber-400 to-amber-500 hover:from-amber-600 hover:to-amber-500 text-slate-950 font-bold px-8 py-6 rounded-2xl shadow-xl shadow-amber-500/20 transition-all group"
-              >
-                <span>Launch Astro Nirikshan</span>
-                <ExternalLink className="w-4 h-4 ml-2 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
-              </Button>
+              <p className="text-base sm:text-lg text-concrete max-w-2xl leading-relaxed font-sans">
+                A specialized digital platform developed by <strong className="text-ivory">{ASTRO_NIRIKSHAN_META.parentCompany}</strong>. Uniting classical Vedic Jyotish, Chaldean numerological frequencies, Vastu spatial geometry, and Janam Kundli with 100% client-side ephemeris computation and revered lineage scholars.
+              </p>
 
-              <a href="#overview">
+              {/* Five Core Discipline Tags */}
+              <div className="pt-2 flex flex-wrap gap-2">
+                {[
+                  "Vedic Astrology",
+                  "Chaldean Numerology",
+                  "Vastu Shastra",
+                  "Janam Kundli",
+                  "Interactive Tarot",
+                ].map((label) => (
+                  <span
+                    key={label}
+                    className="px-3 py-1 text-xs font-mono bg-charcoal-surface border border-burntamber/30 text-burntamber"
+                  >
+                    // {label}
+                  </span>
+                ))}
+              </div>
+
+              <div className="pt-4 flex flex-wrap gap-4">
                 <Button
-                  variant="outline"
-                  size="lg"
-                  className="w-full sm:w-auto border-amber-500/30 hover:border-amber-400 hover:bg-amber-500/10 text-amber-200 bg-slate-900/60 px-8 py-6 rounded-2xl font-semibold backdrop-blur-sm"
+                  onClick={handleLaunchAstro}
+                  className="bg-burntamber hover:bg-burntamber/90 text-white font-mono uppercase tracking-wider text-xs px-8 h-12 rounded-none font-bold transition-all shadow-lg flex items-center gap-2"
                 >
-                  <span>Explore Product Overview</span>
-                  <ChevronRight className="w-4 h-4 ml-1" />
+                  <span>Launch Astro Nirikshan Platform</span>
+                  <ExternalLink size={14} />
                 </Button>
-              </a>
-            </div>
 
-            {/* Verification & Privacy Bar */}
-            <div className="pt-8 border-t border-slate-800/80 max-w-2xl mx-auto flex flex-wrap items-center justify-center gap-6 text-xs font-mono text-slate-400">
-              <span className="flex items-center gap-1.5 text-slate-300">
-                <ShieldCheck className="w-4 h-4 text-emerald-400" />
-                <span>100% Client-Side Privacy</span>
-              </span>
-              <span className="text-slate-700">•</span>
-              <span className="flex items-center gap-1.5 text-slate-300">
-                <Clock className="w-4 h-4 text-amber-400" />
-                <span>Sub-Second Ephemeris Computation</span>
-              </span>
-              <span className="text-slate-700">•</span>
-              <span className="flex items-center gap-1.5 text-slate-300">
-                <Award className="w-4 h-4 text-blue-400" />
-                <span>Verified Lineage Masters</span>
-              </span>
-            </div>
-          </FadeUp>
-        </div>
-
-        {/* ─────────────────────────────────────────────────────────────
-            2. PRODUCT OVERVIEW & FIVE CORE DISCIPLINES
-        ───────────────────────────────────────────────────────────── */}
-        <div id="overview" className="py-20 sm:py-28 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto border-t border-slate-800/80">
-          <div className="text-center max-w-3xl mx-auto mb-16 space-y-4">
-            <FadeUp>
-              <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-amber-500/10 border border-amber-500/30 text-xs font-semibold text-amber-300 uppercase tracking-[0.2em] mb-2">
-                <Layers className="w-3.5 h-3.5" />
-                Platform Overview
+                <a href="#disciplines">
+                  <Button
+                    variant="outline"
+                    className="border-charcoal-border text-ivory hover:border-burntamber hover:text-burntamber hover:bg-burntamber/5 text-xs font-mono uppercase tracking-wider px-7 h-12 rounded-none transition-all"
+                  >
+                    Inspect 5 Core Disciplines
+                  </Button>
+                </a>
               </div>
-              <h3 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-white tracking-tight">
-                {ASTRO_NIRIKSHAN_META.overviewHeading}
-              </h3>
-              <p className="text-sm sm:text-base text-slate-300 leading-relaxed">
-                {ASTRO_NIRIKSHAN_META.overviewDescription}
-              </p>
-            </FadeUp>
+            </div>
+
+            {/* Right Column: Architectural Privacy Guarantee */}
+            <div className="lg:col-span-4 border border-charcoal-border bg-charcoal-surface p-6 sm:p-8 space-y-6">
+              <div className="text-[10px] font-mono tracking-widest text-burntamber uppercase pb-2 border-b border-charcoal-border">
+                PRIVACY &amp; COMPUTATION BENCHMARKS
+              </div>
+
+              <div className="space-y-4 font-mono text-xs text-concrete">
+                <div>
+                  <div className="text-3xl font-bold font-display text-sage">100%</div>
+                  <div className="text-[10px] uppercase text-concrete tracking-wider mt-0.5">
+                    CLIENT-SIDE BROWSER PRIVACY
+                  </div>
+                  <p className="text-[10px] text-concrete/70 mt-0.5">
+                    Birth date, time, and coordinates are never transmitted or stored on cloud servers.
+                  </p>
+                </div>
+
+                <div className="border-t border-charcoal-border/70 pt-3">
+                  <div className="text-3xl font-bold font-display text-ivory">&lt;0.2s</div>
+                  <div className="text-[10px] uppercase text-concrete tracking-wider mt-0.5">
+                    EPHEMERIS CALCULATION TIME
+                  </div>
+                  <p className="text-[10px] text-concrete/70 mt-0.5">
+                    Sub-second planetary degrees, dasha periods, and nakshatra calculations.
+                  </p>
+                </div>
+
+                <div className="border-t border-charcoal-border/70 pt-3">
+                  <div className="text-3xl font-bold font-display text-burntamber">VERIFIED</div>
+                  <div className="text-[10px] uppercase text-concrete tracking-wider mt-0.5">
+                    LINEAGE SCHOLAR AUDITED
+                  </div>
+                  <p className="text-[10px] text-concrete/70 mt-0.5">
+                    Traditional Parashari &amp; Jaimini mathematical algorithms verified by scholars.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ══════════════════════════════════════════════════════
+          SECTION 02 — THE FIVE CORE DISCIPLINES
+      ══════════════════════════════════════════════════════ */}
+      <section id="disciplines" className="py-16 md:py-24 border-b border-concrete/40 dark:border-charcoal-border bg-ivory dark:bg-charcoal">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6">
+          <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 pb-4 border-b border-concrete/30 dark:border-charcoal-border gap-4">
+            <div>
+              <span className="text-[11px] font-mono tracking-widest text-burntamber uppercase block mb-1">
+                SEC_02 // SYSTEM DISCIPLINES &amp; MODULES
+              </span>
+              <h2 className="text-3xl sm:text-5xl font-bold font-display tracking-tight text-charcoal dark:text-ivory">
+                Five Classical Disciplines.
+                <br />
+                Deterministic Algorithms.
+              </h2>
+            </div>
+            <p className="text-xs font-mono text-concrete-dark dark:text-concrete max-w-md">
+              EVERY CALCULATION RUNS ENTIRELY INSIDE YOUR LOCAL WEB BROWSER WITH ZERO INTERMEDIARY DATA EXFILTRATION.
+            </p>
           </div>
 
-          {/* Five Visual Feature Blocks */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
             {ASTRO_FEATURE_BLOCKS.map((block, idx) => (
-              <FadeUp key={block.id} delay={idx * 0.08}>
-                <Card
-                  className={`h-full flex flex-col justify-between overflow-hidden rounded-3xl border border-amber-500/25 bg-gradient-to-b from-slate-900/90 to-slate-950/90 text-white shadow-xl hover:border-amber-400/50 hover:shadow-amber-500/10 transition-all duration-300 group ${
-                    idx === 4 ? "md:col-span-2 lg:col-span-1" : ""
-                  }`}
-                >
-                  <div>
-                    {/* Visual Artwork Banner */}
-                    <div className="relative aspect-[16/10] w-full overflow-hidden bg-slate-950">
-                      <img
-                        src={block.image}
-                        alt={block.discipline}
-                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
-                        loading="lazy"
-                      />
-                      <div className="absolute inset-0 bg-gradient-to-t from-slate-900 via-slate-900/40 to-transparent" />
+              <div
+                key={block.id}
+                className="p-6 border border-concrete/40 dark:border-charcoal-border bg-white dark:bg-charcoal-surface flex flex-col justify-between space-y-4 hover:border-burntamber transition-all group"
+              >
+                <div>
+                  <div className="flex items-center justify-between pb-3 mb-3 border-b border-concrete/20 dark:border-charcoal-border text-[10px] font-mono">
+                    <span className="text-burntamber font-bold">0{idx + 1} //</span>
+                    <span className="text-concrete uppercase">{block.discipline}</span>
+                  </div>
 
-                      <div className="absolute top-3 left-3">
-                        <Badge className="bg-slate-950/80 text-amber-300 border-amber-500/30 text-[10px] font-mono tracking-wider uppercase backdrop-blur-md">
-                          {block.discipline}
-                        </Badge>
-                      </div>
-
-                      <div className="absolute bottom-3 right-3">
-                        <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-slate-950/70 border border-slate-700 text-slate-300 backdrop-blur-md">
-                          Lead: {block.expertLead.split("&")[0].trim()}
-                        </span>
-                      </div>
-                    </div>
-
-                    {/* Content Section */}
-                    <div className="p-6">
-                      <h4 className="text-xl font-bold text-white group-hover:text-amber-300 transition-colors mb-2">
-                        {block.title}
-                      </h4>
-
-                      <p className="text-xs sm:text-sm text-slate-300 leading-relaxed mb-4">
-                        {block.shortDesc}
-                      </p>
-
-                      <p className="text-xs text-slate-400 leading-relaxed mb-5 line-clamp-2">
-                        {block.detailedDesc}
-                      </p>
-
-                      {/* Capabilities checklist */}
-                      <div className="space-y-2 mb-6">
-                        <div className="text-[10px] font-mono uppercase tracking-wider text-amber-400/90 font-bold">
-                          Core Capabilities:
-                        </div>
-                        <ul className="space-y-1.5">
-                          {block.capabilities.map((cap, i) => (
-                            <li
-                              key={i}
-                              className="text-xs text-slate-300 flex items-start gap-2"
-                            >
-                              <CheckCircle2 className="w-3.5 h-3.5 text-amber-400 flex-shrink-0 mt-0.5" />
-                              <span className="truncate">{cap}</span>
-                            </li>
-                          ))}
-                        </ul>
-                      </div>
-
-                      {/* Tags */}
-                      <div className="flex flex-wrap gap-1.5">
-                        {block.tags.map((tag) => (
-                          <span
-                            key={tag}
-                            className="text-[10px] font-mono px-2 py-0.5 rounded-md bg-white/5 border border-slate-800 text-slate-300"
-                          >
-                            {tag}
-                          </span>
-                        ))}
-                      </div>
+                  {/* Artwork Screenshot */}
+                  <div className="aspect-[16/10] overflow-hidden border border-concrete/30 dark:border-charcoal-border bg-charcoal mb-4 relative">
+                    <img
+                      src={block.image}
+                      alt={block.discipline}
+                      className="w-full h-full object-cover grayscale contrast-125 group-hover:grayscale-0 transition-all duration-500"
+                    />
+                    <div className="absolute bottom-2 left-2 bg-charcoal/90 px-2 py-0.5 text-[9px] font-mono text-burntamber border border-charcoal-border">
+                      LEAD: {block.expertLead.split("&")[0].trim()}
                     </div>
                   </div>
 
-                  <div className="p-6 pt-0">
-                    <Button
-                      onClick={handleLaunchAstro}
-                      variant="outline"
-                      className="w-full rounded-xl border-amber-500/30 bg-slate-950/60 hover:bg-amber-500 hover:text-slate-950 hover:border-amber-400 text-amber-200 text-xs font-semibold py-2.5 transition-all flex items-center justify-center gap-1.5 group/subbtn"
-                    >
-                      <span>Explore {block.discipline}</span>
-                      <ArrowRight className="w-3.5 h-3.5 transition-transform group-hover/subbtn:translate-x-1" />
-                    </Button>
-                  </div>
-                </Card>
-              </FadeUp>
-            ))}
-          </div>
-        </div>
+                  <h3 className="text-xl font-bold font-display text-charcoal dark:text-ivory group-hover:text-burntamber transition-colors mb-2">
+                    {block.title}
+                  </h3>
 
-        {/* ─────────────────────────────────────────────────────────────
-            3. MEET THE ASTROLOGERS (GENUINE LINEAGE MASTERS)
-        ───────────────────────────────────────────────────────────── */}
-        <div id="astrologers" className="py-20 sm:py-28 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto border-t border-slate-800/80 bg-gradient-to-b from-slate-950 via-[#0a1024] to-slate-950">
-          <div className="text-center max-w-3xl mx-auto mb-16 space-y-4">
-            <FadeUp>
-              <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-amber-500/10 border border-amber-500/30 text-xs font-semibold text-amber-300 uppercase tracking-[0.2em] mb-2">
-                <Award className="w-3.5 h-3.5" />
-                Guiding Lineage
-              </div>
-              <h3 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-white tracking-tight">
-                Meet Our Astrologers
-              </h3>
-              <p className="text-sm sm:text-base text-slate-300 leading-relaxed">
-                Direct personal guidance and algorithmic verification by eminent
-                lineage scholars dedicated to scriptural authenticity, mathematical
-                rigor, and compassionate clarity.
-              </p>
-            </FadeUp>
-          </div>
+                  <p className="text-xs font-sans text-concrete-dark dark:text-concrete leading-relaxed mb-4">
+                    {block.shortDesc}
+                  </p>
 
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 max-w-6xl mx-auto">
-            {FEATURED_ASTROLOGERS.map((astrologer, idx) => (
-              <FadeUp key={astrologer.name} delay={idx * 0.1}>
-                <Card className="h-full rounded-3xl border border-amber-500/30 bg-slate-900/80 p-6 sm:p-8 backdrop-blur text-white flex flex-col justify-between hover:border-amber-400/60 transition-all duration-300 shadow-xl">
-                  <div className="space-y-6">
-                    <div className="flex flex-col sm:flex-row gap-5 items-start">
-                      {/* Astrologer Portrait */}
-                      <div className="relative shrink-0">
-                        <img
-                          src={astrologer.image}
-                          alt={astrologer.name}
-                          className="w-28 h-28 sm:w-32 sm:h-32 rounded-2xl object-cover border-2 border-amber-500/30 shadow-lg"
-                        />
-                        <span className="absolute -bottom-2 -right-1 flex items-center gap-1 bg-emerald-700 text-white text-[10px] font-mono px-2 py-0.5 rounded-full shadow-sm">
-                          <span className="w-1.5 h-1.5 rounded-full bg-emerald-300 animate-ping" />
-                          Verified Master
-                        </span>
+                  <div className="space-y-1.5 pt-3 border-t border-concrete/15 dark:border-charcoal-border text-[11px] font-mono text-concrete-dark dark:text-concrete">
+                    <div className="text-[10px] font-bold text-burntamber uppercase mb-1">CAPABILITIES:</div>
+                    {block.capabilities.slice(0, 3).map((cap, i) => (
+                      <div key={i} className="flex items-center gap-1.5">
+                        <span className="w-1 h-1 bg-burntamber inline-block" />
+                        <span className="truncate">{cap}</span>
                       </div>
-
-                      <div className="space-y-1.5 flex-1 min-w-0">
-                        <div className="flex items-center justify-between">
-                          <span className="text-xs font-mono text-amber-400 font-semibold uppercase tracking-wider">
-                            {astrologer.experience}
-                          </span>
-                          <span className="text-[11px] font-mono text-slate-400">
-                            ★ {astrologer.rating}
-                          </span>
-                        </div>
-
-                        <h4 className="text-2xl sm:text-3xl font-extrabold text-white">
-                          {astrologer.name}
-                        </h4>
-
-                        {astrologer.hindiName && (
-                          <div className="text-xs font-mono text-amber-200/80">
-                            {astrologer.hindiName}
-                          </div>
-                        )}
-
-                        <p className="text-xs font-mono text-amber-300 font-medium">
-                          {astrologer.title}
-                        </p>
-                      </div>
-                    </div>
-
-                    {/* Bio */}
-                    <p className="text-sm leading-relaxed text-slate-300">
-                      {astrologer.bio}
-                    </p>
-
-                    {/* Specialisations */}
-                    <div className="space-y-2">
-                      <div className="text-[11px] font-mono uppercase tracking-wider text-amber-400/90 font-semibold">
-                        Specialisations:
-                      </div>
-                      <div className="flex flex-wrap gap-2">
-                        {astrologer.specialisations.map((spec) => (
-                          <span
-                            key={spec}
-                            className="text-xs font-mono px-3 py-1 rounded-xl bg-amber-500/10 border border-amber-500/20 text-amber-200"
-                          >
-                            {spec}
-                          </span>
-                        ))}
-                      </div>
-                    </div>
-
-                    {/* Focus Areas */}
-                    <div className="space-y-1.5 pt-2 border-t border-slate-800">
-                      <div className="text-[11px] font-mono uppercase tracking-wider text-slate-400 font-semibold mb-2">
-                        Focus Areas:
-                      </div>
-                      <ul className="space-y-1">
-                        {astrologer.focusAreas.map((fa, i) => (
-                          <li
-                            key={i}
-                            className="text-xs text-slate-300 flex items-center gap-2"
-                          >
-                            <span className="w-1.5 h-1.5 rounded-full bg-amber-400 flex-shrink-0" />
-                            <span>{fa}</span>
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-                  </div>
-
-                  {/* Consultation Action */}
-                  <div className="pt-6 mt-6 border-t border-slate-800 flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-4">
-                    <div className="flex items-center gap-3 text-xs font-mono text-slate-400">
-                      <span className="flex items-center gap-1 text-slate-300">
-                        <Video className="w-3.5 h-3.5 text-amber-400" /> Video
-                      </span>
-                      <span>•</span>
-                      <span className="flex items-center gap-1 text-slate-300">
-                        <Phone className="w-3.5 h-3.5 text-amber-400" /> Audio
-                      </span>
-                      <span>•</span>
-                      <span className="flex items-center gap-1 text-slate-300">
-                        <FileText className="w-3.5 h-3.5 text-amber-400" /> PDF Dossier
-                      </span>
-                    </div>
-
-                    <Button
-                      onClick={handleLaunchAstro}
-                      className="bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold rounded-xl text-xs px-5 py-2.5 shadow-md shadow-amber-500/20"
-                    >
-                      <span>Consult {astrologer.name.split(" ")[1]}</span>
-                      <ArrowRight className="w-3.5 h-3.5 ml-1.5" />
-                    </Button>
-                  </div>
-                </Card>
-              </FadeUp>
-            ))}
-          </div>
-        </div>
-
-        {/* ─────────────────────────────────────────────────────────────
-            4. TECHNOLOGY & INNOVATION (RIGOROUS & ETHICAL)
-        ───────────────────────────────────────────────────────────── */}
-        <div id="technology" className="py-20 sm:py-28 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto border-t border-slate-800/80 bg-slate-900/40">
-          <div className="text-center max-w-3xl mx-auto mb-16 space-y-4">
-            <FadeUp>
-              <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-blue-500/10 border border-blue-500/30 text-xs font-semibold text-blue-300 uppercase tracking-[0.2em] mb-2">
-                <Cpu className="w-3.5 h-3.5 text-blue-400" />
-                Technical Architecture
-              </div>
-              <h3 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-white tracking-tight">
-                Technology &amp; Innovation
-              </h3>
-              <p className="text-sm sm:text-base text-slate-300 leading-relaxed">
-                How Nirikshan AI Pvt. Ltd. applies modern software engineering,
-                client-side mathematical computation, and privacy-first architecture
-                to ancient cultural sciences.
-              </p>
-            </FadeUp>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto">
-            {TECH_INNOVATION_PILLARS.map((pillar, idx) => (
-              <FadeUp key={pillar.title} delay={idx * 0.06}>
-                <div className="h-full rounded-3xl border border-slate-800 bg-slate-900/90 p-6 flex flex-col justify-between hover:border-amber-500/40 transition-all shadow-md group">
-                  <div>
-                    <div className="flex items-center justify-between mb-4">
-                      <span className="text-[10px] font-mono px-2.5 py-1 rounded-md bg-white/5 border border-slate-700 text-amber-300">
-                        {pillar.badge}
-                      </span>
-                      <CheckCircle2 className="w-4 h-4 text-emerald-400" />
-                    </div>
-
-                    <h4 className="text-lg font-bold text-white mb-2 group-hover:text-amber-300 transition-colors">
-                      {pillar.title}
-                    </h4>
-
-                    <p className="text-xs sm:text-sm text-slate-300 leading-relaxed mb-4">
-                      {pillar.description}
-                    </p>
-                  </div>
-
-                  <div className="pt-3 border-t border-slate-800 text-[11px] font-mono text-slate-400">
-                    <span className="text-amber-400 font-semibold">Engine: </span>
-                    {pillar.highlight}
+                    ))}
                   </div>
                 </div>
-              </FadeUp>
+
+                <div className="pt-4 border-t border-concrete/20 dark:border-charcoal-border flex items-center justify-between">
+                  <Button
+                    onClick={handleLaunchAstro}
+                    variant="outline"
+                    className="border-concrete/40 dark:border-charcoal-border hover:border-burntamber hover:text-burntamber text-xs font-mono uppercase tracking-wider w-full rounded-none h-10"
+                  >
+                    <span>Launch {block.discipline}</span>
+                    <ArrowRight size={13} className="ml-1.5" />
+                  </Button>
+                </div>
+              </div>
             ))}
           </div>
+        </div>
+      </section>
 
-          {/* Ethical Charter Box */}
-          <div className="mt-12 max-w-4xl mx-auto rounded-3xl border border-amber-500/20 bg-amber-500/5 p-6 sm:p-8 backdrop-blur">
-            <div className="flex items-start gap-4">
-              <div className="w-10 h-10 rounded-2xl bg-amber-500/10 border border-amber-500/30 flex items-center justify-center text-amber-400 shrink-0 mt-1">
-                <Info className="w-5 h-5" />
-              </div>
-              <div className="space-y-1 text-xs text-slate-300 leading-relaxed">
-                <h5 className="font-bold text-sm text-amber-200">
-                  Ethical &amp; Transparent Technology Disclosure
-                </h5>
-                <p>
-                  Astro Nirikshan uses algorithmic precision to compute ephemeris
-                  angles, house cusps, Chaldean sound frequency values, and 36-point
-                  Guna scores. We do not claim that artificial intelligence generates
-                  supernatural or mystical prophecies. Instead, our technology brings
-                  unmatched computational speed, intuitive user interaction, and
-                  absolute client-side privacy to traditional cultural sciences.
-                </p>
-              </div>
+      {/* ══════════════════════════════════════════════════════
+          SECTION 03 — SCHOLAR LINEAGE DOSSIERS
+      ══════════════════════════════════════════════════════ */}
+      <section id="scholars" className="py-16 md:py-24 border-b border-concrete/40 dark:border-charcoal-border bg-techlight/30 dark:bg-charcoal-surface">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6">
+          <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 pb-4 border-b border-concrete/30 dark:border-charcoal-border gap-4">
+            <div>
+              <span className="text-[11px] font-mono tracking-widest text-burntamber uppercase block mb-1">
+                SEC_03 // VERIFIED LINEAGE SCHOLARS
+              </span>
+              <h2 className="text-3xl sm:text-5xl font-bold font-display tracking-tight text-charcoal dark:text-ivory">
+                Scriptural Authenticity.
+                <br />
+                Eminent Practitioners.
+              </h2>
             </div>
+            <p className="text-xs font-mono text-concrete-dark dark:text-concrete max-w-md">
+              ALGORITHMIC VERIFICATION AND PERSONAL CONSULTATIONS GUIDED BY RESPECTED LINEAGE MASTERS.
+            </p>
+          </div>
+
+          <div className="grid md:grid-cols-2 gap-8">
+            {FEATURED_ASTROLOGERS.map((astrologer) => (
+              <div
+                key={astrologer.name}
+                className="p-6 sm:p-8 border border-concrete/40 dark:border-charcoal-border bg-white dark:bg-charcoal flex flex-col justify-between space-y-6 hover:border-burntamber transition-all group"
+              >
+                <div className="space-y-4">
+                  <div className="grid sm:grid-cols-12 gap-6 items-start">
+                    <div className="sm:col-span-5 aspect-[4/5] border border-charcoal/20 dark:border-charcoal-border overflow-hidden bg-charcoal relative">
+                      <img
+                        src={astrologer.image}
+                        alt={astrologer.name}
+                        className="w-full h-full object-cover grayscale contrast-125 group-hover:grayscale-0 transition-all duration-500"
+                      />
+                      <div className="absolute bottom-2 left-2 bg-charcoal/90 px-2 py-0.5 text-[8px] font-mono text-burntamber border border-charcoal-border">
+                        VERIFIED MASTER · {astrologer.rating} ★
+                      </div>
+                    </div>
+
+                    <div className="sm:col-span-7 space-y-2">
+                      <div className="text-[10px] font-mono text-burntamber tracking-widest uppercase font-semibold">
+                        {astrologer.experience} EXPERIENCE
+                      </div>
+                      <h3 className="text-2xl font-bold font-display text-charcoal dark:text-ivory group-hover:text-burntamber transition-colors">
+                        {astrologer.name}
+                      </h3>
+                      {astrologer.hindiName && (
+                        <div className="text-xs font-mono text-concrete">
+                          {astrologer.hindiName}
+                        </div>
+                      )}
+                      <div className="text-xs font-mono text-sage font-bold">
+                        {astrologer.title}
+                      </div>
+                      <p className="text-xs font-sans text-concrete-dark dark:text-concrete leading-relaxed pt-1">
+                        {astrologer.bio}
+                      </p>
+                    </div>
+                  </div>
+
+                  {/* Specialisations */}
+                  <div className="pt-3 border-t border-concrete/15 dark:border-charcoal-border space-y-1.5">
+                    <div className="text-[10px] font-mono uppercase tracking-wider text-burntamber font-bold">
+                      SPECIALISATIONS:
+                    </div>
+                    <div className="flex flex-wrap gap-1.5">
+                      {astrologer.specialisations.map((spec) => (
+                        <span
+                          key={spec}
+                          className="text-[10px] font-mono px-2 py-0.5 border border-concrete/30 dark:border-charcoal-border bg-techlight dark:bg-charcoal-surface text-charcoal dark:text-ivory"
+                        >
+                          {spec}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+
+                <div className="pt-4 border-t border-concrete/20 dark:border-charcoal-border flex items-center justify-between">
+                  <div className="flex items-center gap-2 text-[10px] font-mono text-concrete">
+                    <Video size={12} className="text-burntamber" /> Video
+                    <span>·</span>
+                    <Phone size={12} className="text-burntamber" /> Audio
+                    <span>·</span>
+                    <FileText size={12} className="text-burntamber" /> Dossier
+                  </div>
+                  <Button
+                    onClick={handleLaunchAstro}
+                    className="bg-charcoal text-ivory border border-charcoal hover:bg-burntamber hover:border-burntamber hover:text-white text-xs font-mono uppercase tracking-wider px-5 h-9 rounded-none font-bold transition-all shadow-sm"
+                  >
+                    Consult Master →
+                  </Button>
+                </div>
+              </div>
+            ))}
           </div>
         </div>
+      </section>
 
-        {/* ─────────────────────────────────────────────────────────────
-            6. PRODUCT CALL TO ACTION (CTA)
-        ───────────────────────────────────────────────────────────── */}
-        <div className="py-24 sm:py-32 px-4 sm:px-6 lg:px-8 max-w-5xl mx-auto text-center border-t border-slate-800/80">
-          <FadeUp className="space-y-6">
-            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-amber-500/15 border border-amber-500/30 text-xs font-semibold text-amber-300 uppercase tracking-[0.2em]">
-              <Compass className="w-3.5 h-3.5" />
-              Begin Your Cosmic Journey
+      {/* ══════════════════════════════════════════════════════
+          SECTION 04 — TECH ARCHITECTURE & ZERO-LEAKAGE PRIVACY
+      ══════════════════════════════════════════════════════ */}
+      <section className="py-16 md:py-24 border-b border-concrete/40 dark:border-charcoal-border bg-ivory dark:bg-charcoal">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6">
+          <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 pb-4 border-b border-concrete/30 dark:border-charcoal-border gap-4">
+            <div>
+              <span className="text-[11px] font-mono tracking-widest text-sage uppercase block mb-1">
+                SEC_04 // MATHEMATICAL RIGOR &amp; ZERO LEAKAGE
+              </span>
+              <h2 className="text-3xl sm:text-5xl font-bold font-display tracking-tight text-charcoal dark:text-ivory">
+                Technology &amp; Innovation.
+              </h2>
             </div>
-
-            <h3 className="text-3xl sm:text-5xl lg:text-6xl font-extrabold text-white tracking-tight leading-tight">
-              {ASTRO_NIRIKSHAN_META.ctaHeading}
-            </h3>
-
-            <p className="text-base sm:text-lg text-slate-300 max-w-2xl mx-auto leading-relaxed">
-              {ASTRO_NIRIKSHAN_META.ctaDescription}
+            <p className="text-xs font-mono text-concrete-dark dark:text-concrete max-w-md">
+              HOW MODERN BROWSER SANDBOXING AND HIGH-PRECISION MATHEMATICAL EPHEMERIS SECURE USER BIRTH METRICS.
             </p>
+          </div>
 
-            <div className="pt-4 flex flex-col sm:flex-row items-center justify-center gap-4">
-              <Button
-                onClick={handleLaunchAstro}
-                size="lg"
-                className="w-full sm:w-auto bg-gradient-to-r from-amber-500 via-amber-400 to-amber-500 hover:from-amber-600 hover:to-amber-500 text-slate-950 font-bold px-9 py-6 rounded-2xl shadow-2xl shadow-amber-500/25 transition-all group"
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {TECH_INNOVATION_PILLARS.map((pillar) => (
+              <div
+                key={pillar.title}
+                className="p-6 border border-concrete/40 dark:border-charcoal-border bg-white dark:bg-charcoal-surface flex flex-col justify-between space-y-4 hover:border-sage transition-all group"
               >
-                <span>Launch Astro Nirikshan</span>
-                <ExternalLink className="w-4 h-4 ml-2 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
-              </Button>
-
-              <Link to="/about">
-                <Button
-                  variant="outline"
-                  size="lg"
-                  className="w-full sm:w-auto border-slate-700 hover:border-slate-500 text-slate-200 bg-slate-900/60 px-8 py-6 rounded-2xl font-semibold backdrop-blur-sm"
-                >
-                  <span>Discover Nirikshan AI</span>
-                  <ChevronRight className="w-4 h-4 ml-1" />
-                </Button>
-              </Link>
-            </div>
-
-            {/* Subtle Cultural Disclaimer */}
-            <p className="pt-10 text-[11px] text-slate-400 max-w-3xl mx-auto leading-relaxed border-t border-slate-800/80 italic">
-              {ASTRO_NIRIKSHAN_META.disclaimer}
-            </p>
-          </FadeUp>
+                <div>
+                  <div className="flex items-center justify-between pb-3 mb-3 border-b border-concrete/20 dark:border-charcoal-border text-[10px] font-mono">
+                    <span className="text-burntamber font-bold">{pillar.badge}</span>
+                    <span className="text-sage font-bold">VERIFIED</span>
+                  </div>
+                  <h3 className="text-xl font-bold font-display text-charcoal dark:text-ivory group-hover:text-burntamber transition-colors mb-2">
+                    {pillar.title}
+                  </h3>
+                  <p className="text-xs font-sans text-concrete-dark dark:text-concrete leading-relaxed">
+                    {pillar.description}
+                  </p>
+                </div>
+                <div className="pt-3 border-t border-concrete/15 dark:border-charcoal-border text-[10px] font-mono text-concrete">
+                  ARCHITECTURE: DETERMINISTIC LOCAL KERNEL
+                </div>
+              </div>
+            ))}
+          </div>
         </div>
-      </div>
-    </section>
+      </section>
+
+      {/* ══════════════════════════════════════════════════════
+          SECTION 05 — TECHNICAL CTA
+      ══════════════════════════════════════════════════════ */}
+      <section className="py-20 md:py-28 bg-charcoal text-ivory relative overflow-hidden border-b border-charcoal-border">
+        <div className="absolute inset-0 tech-grid-bg opacity-15 pointer-events-none" />
+
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 relative z-10 text-center">
+          <div className="inline-block px-3 py-1 mb-6 text-[10px] font-mono uppercase tracking-[0.2em] bg-charcoal-surface border border-charcoal-border text-burntamber">
+            SEC_05 // OFFICIAL PLATFORM ACCESS
+          </div>
+
+          <h2 className="text-3xl sm:text-5xl md:text-6xl font-bold font-display tracking-tight text-ivory leading-tight max-w-3xl mx-auto mb-6">
+            Begin Your Celestial Analysis
+            <br />
+            <span className="font-serif italic font-normal text-concrete">
+              with Complete Computational Privacy.
+            </span>
+          </h2>
+
+          <p className="text-sm sm:text-base text-concrete max-w-xl mx-auto leading-relaxed mb-8 font-sans">
+            Calculate your Janam Kundli, explore Chaldean name numbers, analyze Vastu floorplans, and consult verified lineage scholars in real time.
+          </p>
+
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+            <Button
+              onClick={handleLaunchAstro}
+              className="bg-burntamber hover:bg-burntamber/90 text-white border border-burntamber text-xs font-mono uppercase tracking-wider px-8 h-12 rounded-none font-bold transition-all shadow-lg flex items-center gap-2"
+            >
+              <span>Launch Astro Nirikshan Portal</span>
+              <ExternalLink size={14} />
+            </Button>
+            <Link to="/products">
+              <Button
+                variant="outline"
+                className="border-charcoal-border text-concrete hover:text-burntamber hover:border-burntamber text-xs font-mono uppercase tracking-wider px-8 h-12 rounded-none transition-all"
+              >
+                Return to Product Suite
+              </Button>
+            </Link>
+          </div>
+        </div>
+      </section>
+    </div>
   );
 };
 
 export default AstroNirikshanShowcase;
-

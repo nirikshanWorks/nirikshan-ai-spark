@@ -1,616 +1,497 @@
+import React from "react";
 import { SEO } from "@/components/SEO";
-import { Footer } from "@/components/Footer";
 import { Navigation } from "@/components/Navigation";
+import { Footer } from "@/components/Footer";
 import { Button } from "@/components/ui/button";
-import { useScrollAnimation } from "@/hooks/use-scroll-animation";
-import { WorldMap } from "@/components/ui/map";
-import { HeroParticles } from "@/components/HeroParticles";
-import { FloatingElements } from "@/components/FloatingElements";
+import { Link } from "react-router-dom";
 import {
   ArrowRight,
-  Award,
-  BarChart3,
-  Briefcase,
-  Eye,
-  Flag,
-  Globe2,
-  Layers,
   ShieldCheck,
-  Smile,
-  Sparkles,
+  Cpu,
+  Layers,
+  Globe2,
+  Terminal,
+  Activity,
+  Building2,
+  Lock,
   Target,
-  TrendingUp,
-  Users,
-  Zap,
+  Rocket,
   CheckCircle2,
+  BarChart3,
+  Award,
+  Users2,
+  Zap,
+  Server
 } from "lucide-react";
-import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
-import { motion, AnimatePresence } from "framer-motion";
 
-/* ─────────────────────────────────────────────────────── */
-/*  Animated counter                                        */
-/* ─────────────────────────────────────────────────────── */
-const AnimatedCounter = ({
-  end,
-  duration = 2000,
-}: {
-  end: number;
-  duration?: number;
-}) => {
-  const [count, setCount] = useState(0);
-  const { ref, isVisible } = useScrollAnimation(0.5);
+import anshulImage from "@/assets/team/anshul.png";
+import vikramImage from "@/assets/team/vikram-biyani.jpg";
 
-  useEffect(() => {
-    if (isVisible) {
-      let start = 0;
-      const increment = end / (duration / 16);
-      const timer = setInterval(() => {
-        start += increment;
-        if (start >= end) {
-          setCount(end);
-          clearInterval(timer);
-        } else {
-          setCount(Math.ceil(start));
-        }
-      }, 16);
-      return () => clearInterval(timer);
+export const About = () => {
+  const differentiators = [
+    {
+      num: "01",
+      tag: "AIR_GAP // SECURITY",
+      title: "Air-Gapped by Design",
+      desc: "Every perception model executes 100% on-premise on edge GPU hardware. Zero recurring cloud streaming, zero external socket leakage, and zero recurring egress costs.",
+      spec: "100% LOCAL LAN ISOLATION"
+    },
+    {
+      num: "02",
+      tag: "DETERMINISM // PERFORMANCE",
+      title: "Sub-15ms Determinism",
+      desc: "Hardware-level TensorRT INT8 quantization delivering sub-15ms frame-to-relay latency. Ideal for high-speed industrial conveyor sorting and perimeter security gates.",
+      spec: "<15ms CUDA KERNEL INFERENCE"
+    },
+    {
+      num: "03",
+      tag: "HARDWARE // CO_DESIGN",
+      title: "Full-Stack Embedded Engineering",
+      desc: "We engineer the physical topology — from industrial camera mounting and focal-length optics to Jetson Orin edge stations and SCADA/PLC digital relays.",
+      spec: "TURNKEY FIELD INTEGRATION"
+    },
+    {
+      num: "04",
+      tag: "AUDITABILITY // RELIABILITY",
+      title: "Deterministic State Machines",
+      desc: "Probabilistic AI inferences are bounded by deterministic verification gates, producing mathematically verified audit logs for regulatory compliance.",
+      spec: "FULL AUDIT TRAIL LOGGING"
     }
-  }, [isVisible, end, duration]);
+  ];
 
-  return <span ref={ref as React.RefObject<HTMLSpanElement>}>{count}</span>;
-};
+  const facilities = [
+    {
+      code: "FACILITY_01",
+      city: "Haridwar, Uttarakhand",
+      name: "Hardware & Sensor Prototyping Testbed",
+      role: "EDGE SENSORS & EMBEDDED CUDA INTEGRATION",
+      desc: "Specialized in testing ruggedized IP camera topologies, thermal dissipation housings, solar-powered edge microcontrollers, and real-time SCADA/PLC pneumatic relay interfaces.",
+      specs: ["Industrial Camera Test Rig", "Solar + Battery Edge Station", "Jetson Orin Clustering"]
+    },
+    {
+      code: "FACILITY_02",
+      city: "Dehradun, Uttarakhand",
+      name: "Vision Model Training & Web Platforms",
+      role: "MODEL QUANTIZATION & DISTRIBUTED SYSTEMS",
+      desc: "Focuses on neural backbone training, custom synthetic dataset generation, INT8 TensorRT kernel compilation, and enterprise multi-camera RTSP ingestion management consoles.",
+      specs: ["High-Throughput RTSP Mesh", "CUDA Kernel Quantization Lab", "Zero-PII Data Pipelines"]
+    }
+  ];
 
-/* ─────────────────────────────────────────────────────── */
-/*  Data                                                    */
-/* ─────────────────────────────────────────────────────── */
-const differentiators = [
-  {
-    icon: Globe2,
-    tag: "01 — Global",
-    title: "Global Mindset, Local Delivery",
-    description:
-      "Hybrid squads blend global expertise with local cultural fluency so programs land smoothly in every market we serve.",
-    highlight: "Markets across 5 continents",
-    color: "from-blue-500 to-cyan-500",
-    bg: "from-blue-50 to-cyan-50 dark:from-blue-950/40 dark:to-cyan-950/40",
-  },
-  {
-    icon: ShieldCheck,
-    tag: "02 — Security",
-    title: "Secure by Design",
-    description:
-      "Security architects embed governance, compliance, and data privacy accelerators into every solution from day zero.",
-    highlight: "Zero-trust architecture by default",
-    color: "from-violet-500 to-purple-500",
-    bg: "from-violet-50 to-purple-50 dark:from-violet-950/40 dark:to-purple-950/40",
-  },
-  {
-    icon: Layers,
-    tag: "03 — Full-Stack",
-    title: "Full-Stack Innovation",
-    description:
-      "From strategy to design, engineering, and AI operations, cross-functional pods accelerate outcomes end to end.",
-    highlight: "Strategy → Design → Engineering → AI Ops",
-    color: "from-orange-500 to-amber-500",
-    bg: "from-orange-50 to-amber-50 dark:from-orange-950/40 dark:to-amber-950/40",
-  },
-  {
-    icon: BarChart3,
-    tag: "04 — Results",
-    title: "Proof in Performance",
-    description:
-      "Transparent KPIs, ROI scorecards, and executive dashboards keep momentum measurable and decisions data-backed.",
-    highlight: "95% client satisfaction rate",
-    color: "from-emerald-500 to-teal-500",
-    bg: "from-emerald-50 to-teal-50 dark:from-emerald-950/40 dark:to-teal-950/40",
-  },
-];
-
-const milestones = [
-  {
-    year: "2024",
-    title: "The Beginning",
-    description:
-      "Our journey started with the Sochilhive community — organising hackathons and teaching events that sparked creativity and collaboration among aspiring developers.",
-    color: "bg-blue-500",
-    ring: "ring-blue-500/30",
-  },
-  {
-    year: "Late 2024",
-    title: "Birth of Nirikshan AI",
-    description:
-      "As our vision expanded beyond events, we rebranded to Nirikshan AI and began crafting AI-powered solutions that put purposeful technology into people's hands.",
-    color: "bg-violet-500",
-    ring: "ring-violet-500/30",
-  },
-  {
-    year: "2025",
-    title: "Incorporation",
-    description:
-      "Nirikshan AI Private Limited was officially established, marking our evolution from a student-led initiative into a registered technology company with global ambitions.",
-    color: "bg-orange-500",
-    ring: "ring-orange-500/30",
-  },
-  {
-    year: "2025 Onwards",
-    title: "Expanding Horizons",
-    description:
-      "We started partnering with national and international clients, delivering impactful AI solutions that bridge research, innovation, and real-world applications.",
-    color: "bg-emerald-500",
-    ring: "ring-emerald-500/30",
-  },
-];
-
-/* ─────────────────────────────────────────────────────── */
-/*  Component                                               */
-/* ─────────────────────────────────────────────────────── */
-const About = () => {
-  const statsRef = useScrollAnimation(0.3);
-  const timelineRef = useScrollAnimation(0.2);
-  const [revealedMilestones, setRevealedMilestones] = useState(0);
-
-  useEffect(() => {
-    if (!timelineRef.isVisible) return;
-    if (revealedMilestones >= milestones.length) return;
-    const timer = setTimeout(() => {
-      setRevealedMilestones((prev) => Math.min(prev + 1, milestones.length));
-    }, 500);
-    return () => clearTimeout(timer);
-  }, [timelineRef.isVisible, revealedMilestones, milestones.length]);
+  const milestones = [
+    {
+      phase: "01",
+      year: "2024",
+      title: "Genesis at Dev Bhoomi",
+      desc: "Initiated as a deep-tech research collective at Dev Bhoomi's IEC Innovation Lab, experimenting with neural backbones and edge vision prototyping."
+    },
+    {
+      phase: "02",
+      year: "2024",
+      title: "MSME Formalization",
+      desc: "Registered as an MSME entity, establishing structured R&D sprints, academic partnerships, and hands-on developer training workshops."
+    },
+    {
+      phase: "03",
+      year: "Late 2024",
+      title: "Evolution into Nirikshan AI",
+      desc: "Pivoted entirely to building commercial AI products and air-gapped industrial vision systems, testing prototypes in Uttarakhand industrial clusters."
+    },
+    {
+      phase: "04",
+      year: "2025",
+      title: "Private Limited Incorporation",
+      desc: "Incorporated as Nirikshan AI Private Limited (MCA India CIN: U72900UR2023PTC015792) to support enterprise contracts and industrial deployments."
+    },
+    {
+      phase: "05",
+      year: "2025+",
+      title: "National & Global Deployments",
+      desc: "Active production deployments across automotive component manufacturing, perimeter defense, grassroots agritech, and institutional education."
+    }
+  ];
 
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen bg-ivory dark:bg-charcoal text-charcoal dark:text-ivory selection:bg-sage selection:text-charcoal font-sans">
       <SEO
-        title="About Us — Nirikshan AI"
-        description="Learn about Nirikshan AI's mission, values, and the team driving AI innovation across industries worldwide."
+        title="About Us // Corporate Profile & Facilities | Nirikshan AI"
+        description="Nirikshan AI Private Limited is a research-driven AI and product engineering company. Discover our mission, facility locations in Haridwar & Dehradun, and technical capabilities."
         canonical="https://nirikshanai.com/about"
       />
       <Navigation />
 
-      <main className="pt-16">
+      <main className="relative pt-20">
+        {/* ══════════════════════════════════════════════════════
+            SECTION 01 — HERO (Editorial Split-Screen)
+        ══════════════════════════════════════════════════════ */}
+        <section className="border-b border-concrete/40 dark:border-charcoal-border bg-ivory dark:bg-charcoal relative overflow-hidden">
+          <div className="absolute inset-0 tech-grid-bg opacity-40 pointer-events-none" />
 
-        {/* ── HERO ─────────────────────────────────────────── */}
-        <section className="relative h-[420px] md:h-[520px] overflow-hidden">
-          <video
-            src="https://res.cloudinary.com/dch0uyw8e/video/upload/v1760826173/6_wrsepd.mp4"
-            autoPlay
-            muted
-            loop
-            playsInline
-            className="absolute inset-0 w-full h-full object-cover"
-          />
-          <div className="absolute inset-0 bg-gradient-to-r from-slate-950/92 via-slate-900/70 to-slate-900/30" />
-          <div className="absolute inset-0 bg-gradient-to-t from-slate-950/70 via-transparent to-transparent" />
-          <HeroParticles />
-          <FloatingElements count={6} />
-
-          <div className="relative z-10 container mx-auto px-6 h-full flex items-center">
-            <div className="max-w-2xl">
-              <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/10 backdrop-blur border border-white/20 text-white/90 text-sm font-medium mb-6">
-                <Sparkles size={14} className="text-accent animate-pulse" />
-                <span>AI-First Innovation Company</span>
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 pt-14 pb-16 md:py-24 relative z-10">
+            {/* Top Monospace Section Label */}
+            <div className="flex items-center justify-between pb-4 mb-8 border-b border-concrete/30 dark:border-charcoal-border text-[11px] font-mono tracking-widest text-concrete-dark dark:text-concrete uppercase">
+              <div className="flex items-center gap-3">
+                <span className="w-2 h-2 bg-sage inline-block animate-pulse" />
+                <span>SEC_01 // CORPORATE PROFILE &amp; INFRASTRUCTURE</span>
+                <span className="hidden sm:inline">//</span>
+                <span className="hidden sm:inline">NIRIKSHAN AI PRIVATE LIMITED</span>
               </div>
-              <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold text-white mb-5 leading-tight">
-                About{" "}
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-violet-400">
-                  Nirikshan AI
-                </span>
-              </h1>
-              <p className="text-base md:text-lg text-white/80 max-w-xl leading-relaxed">
-                Specialists in OpenCV, Generative AI, and Agentic AI —
-                crafting intelligent systems that combine vision, reasoning,
-                and autonomy for enterprises worldwide.
-              </p>
+              <div className="flex items-center gap-3">
+                <span>CIN: U72900UR2023PTC015792</span>
+                <span>//</span>
+                <span className="text-sage font-bold">STATUS: ACTIVE &amp; AUDITED</span>
+              </div>
+            </div>
+
+            <div className="grid lg:grid-cols-12 gap-8 lg:gap-12 items-stretch">
+              {/* Left Column: Narrative (7 cols) */}
+              <div className="lg:col-span-7 flex flex-col justify-between space-y-6">
+                <div>
+                  <div className="inline-block px-3 py-1 mb-6 text-[10px] font-mono uppercase tracking-[0.2em] bg-techlight dark:bg-charcoal-surface border border-concrete/40 dark:border-charcoal-border text-charcoal dark:text-ivory">
+                    DEEP TECH PRODUCT ENGINEERING <span className="text-burntamber font-bold">·</span> UTTARAKHAND, INDIA
+                  </div>
+
+                  <h1 className="text-4xl sm:text-6xl lg:text-7xl font-bold font-display tracking-tight leading-[1.02] text-charcoal dark:text-ivory">
+                    Engineering
+                    <br />
+                    Intelligence.
+                    <br />
+                    <span className="font-serif italic font-normal text-concrete-dark dark:text-concrete">
+                      From Research Lab to <span className="text-burntamber">Industrial Reality</span>.
+                    </span>
+                  </h1>
+
+                  <p className="mt-6 text-base sm:text-lg text-concrete-dark dark:text-concrete max-w-xl leading-relaxed font-sans">
+                    Nirikshan AI Private Limited is an advanced artificial intelligence technology and product engineering company. We build ruggedized, air-gapped perception systems that combine high-speed computer vision, private generative intelligence, and deterministic autonomous agents for critical real-world applications.
+                  </p>
+                </div>
+
+                <div className="pt-4 flex flex-wrap gap-4">
+                  <Link to="/who-we-are">
+                    <Button className="bg-charcoal text-ivory border border-charcoal hover:bg-burntamber hover:border-burntamber hover:text-white text-xs font-mono uppercase tracking-wider px-7 h-12 rounded-none font-bold transition-all shadow-sm">
+                      Meet Leadership &amp; Team <ArrowRight size={14} className="ml-2" />
+                    </Button>
+                  </Link>
+                  <Link to="/contact">
+                    <Button variant="outline" className="border-concrete/60 dark:border-charcoal-border text-charcoal dark:text-ivory hover:border-burntamber hover:text-burntamber hover:bg-burntamber/5 text-xs font-mono uppercase tracking-wider px-7 h-12 rounded-none font-semibold transition-all">
+                      Consult Engineering Team
+                    </Button>
+                  </Link>
+                </div>
+              </div>
+
+              {/* Right Column: Key Corporate Metrics (5 cols) */}
+              <div className="lg:col-span-5 border border-charcoal/30 dark:border-charcoal-border bg-charcoal text-ivory p-6 sm:p-8 flex flex-col justify-between shadow-2xl">
+                <div>
+                  <div className="flex items-center justify-between pb-3 mb-6 border-b border-charcoal-border text-[10px] font-mono text-concrete">
+                    <span className="flex items-center gap-1.5 text-sage font-bold">
+                      <span className="w-1.5 h-1.5 bg-sage inline-block animate-pulse" />
+                      SYSTEM ARCHITECTURE BENCHMARKS
+                    </span>
+                    <span>Q4_2026</span>
+                  </div>
+
+                  <div className="space-y-6">
+                    <div>
+                      <div className="text-3xl sm:text-4xl font-bold font-display text-sage">
+                        &lt;15ms
+                      </div>
+                      <div className="text-[11px] font-mono text-concrete uppercase tracking-wider mt-1">
+                        DETERMINISTIC EDGE INFERENCE
+                      </div>
+                      <p className="text-[11px] font-mono text-concrete/70 mt-0.5">
+                        Sub-frame processing with zero public cloud transmission latency.
+                      </p>
+                    </div>
+
+                    <div className="border-t border-charcoal-border/70 pt-4">
+                      <div className="text-3xl sm:text-4xl font-bold font-display text-ivory">
+                        99.8%
+                      </div>
+                      <div className="text-[11px] font-mono text-concrete uppercase tracking-wider mt-1">
+                        OPTICAL DEFECT PRECISION
+                      </div>
+                      <p className="text-[11px] font-mono text-concrete/70 mt-0.5">
+                        Verified micro-blemish and crack classification on active conveyor lines.
+                      </p>
+                    </div>
+
+                    <div className="border-t border-charcoal-border/70 pt-4">
+                      <div className="text-3xl sm:text-4xl font-bold font-display text-burntamber">
+                        100%
+                      </div>
+                      <div className="text-[11px] font-mono text-concrete uppercase tracking-wider mt-1">
+                        ON-PREMISE AIR-GAP PRIVACY
+                      </div>
+                      <p className="text-[11px] font-mono text-concrete/70 mt-0.5">
+                        Zero telemetry or frames transmitted outside client local area networks.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="pt-6 border-t border-charcoal-border text-[10px] font-mono text-concrete flex items-center justify-between">
+                  <span>INCORPORATION: MCA INDIA</span>
+                  <span className="text-sage font-bold">CIN VERIFIED</span>
+                </div>
+              </div>
             </div>
           </div>
         </section>
 
-        {/* ── STATS BAR ────────────────────────────────────── */}
-        <section
-          className="py-14 bg-gradient-to-br from-slate-900 to-slate-800"
-          ref={statsRef.ref}
-        >
-          <div className="container mx-auto px-6">
-            <div
-              className={`grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-0 md:divide-x md:divide-white/10 transition-all duration-1000 ${
-                statsRef.isVisible
-                  ? "opacity-100 translate-y-0"
-                  : "opacity-0 translate-y-8"
-              }`}
-            >
-              {[
-                { value: 50, suffix: "+", label: "Projects Completed", icon: Briefcase },
-                { value: 30, suffix: "+", label: "Happy Clients", icon: Smile },
-                { value: 95, suffix: "%", label: "Success Rate", icon: TrendingUp },
-                { value: 5, suffix: "", label: "Countries Served", icon: Flag },
-              ].map((stat, idx) => (
-                <div key={idx} className="text-center md:px-8">
-                  <div className="text-5xl sm:text-6xl font-black text-white mb-1 tabular-nums">
-                    <AnimatedCounter end={stat.value} />
-                    <span className="text-accent">{stat.suffix}</span>
+        {/* ══════════════════════════════════════════════════════
+            SECTION 02 — FACILITY TOPOLOGY (Haridwar & Dehradun)
+        ══════════════════════════════════════════════════════ */}
+        <section className="py-16 md:py-24 border-b border-concrete/40 dark:border-charcoal-border bg-techlight/30 dark:bg-charcoal-surface">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6">
+            <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 pb-4 border-b border-concrete/30 dark:border-charcoal-border gap-4">
+              <div>
+                <span className="text-[11px] font-mono tracking-widest text-sage uppercase block mb-1">
+                  SEC_02 // R&amp;D FACILITY TOPOLOGY
+                </span>
+                <h2 className="text-3xl sm:text-5xl font-bold font-display tracking-tight text-charcoal dark:text-ivory">
+                  Two Dedicated Labs.
+                  <br />
+                  One Unified Architecture.
+                </h2>
+              </div>
+              <p className="text-xs font-mono text-concrete-dark dark:text-concrete max-w-md">
+                ENGINEERING FACILITIES OPTIMIZED FOR EMBEDDED HARDWARE PROTOTYPING AND QUANTIZED VISION MODEL TRAINING.
+              </p>
+            </div>
+
+            <div className="grid md:grid-cols-2 gap-8">
+              {facilities.map((fac) => (
+                <div
+                  key={fac.code}
+                  className="p-8 border border-concrete/40 dark:border-charcoal-border bg-white dark:bg-charcoal flex flex-col justify-between space-y-6 hover:border-sage transition-all group"
+                >
+                  <div className="space-y-4">
+                    <div className="flex items-center justify-between pb-3 border-b border-concrete/20 dark:border-charcoal-border text-xs font-mono text-concrete">
+                      <span className="text-sage font-bold">{fac.code} //</span>
+                      <span>{fac.city.toUpperCase()}</span>
+                    </div>
+
+                    <h3 className="text-2xl font-bold font-display text-charcoal dark:text-ivory group-hover:text-burntamber transition-colors">
+                      {fac.name}
+                    </h3>
+                    <div className="text-[11px] font-mono text-sage tracking-wider uppercase font-semibold">
+                      {fac.role}
+                    </div>
+                    <p className="text-xs font-sans text-concrete-dark dark:text-concrete leading-relaxed">
+                      {fac.desc}
+                    </p>
                   </div>
-                  <p className="text-white/50 text-sm font-medium uppercase tracking-wider">
-                    {stat.label}
-                  </p>
+
+                  <div className="border-t border-concrete/20 dark:border-charcoal-border pt-4 space-y-1.5 text-xs font-mono">
+                    <div className="text-[10px] text-concrete uppercase mb-1">FACILITY SPECIFICATIONS:</div>
+                    {fac.specs.map((sp) => (
+                      <div key={sp} className="flex items-center gap-2 text-concrete-dark dark:text-concrete">
+                        <span className="w-1.5 h-1.5 bg-sage inline-block" />
+                        <span>{sp}</span>
+                      </div>
+                    ))}
+                  </div>
                 </div>
               ))}
             </div>
           </div>
         </section>
 
-        {/* ── MISSION / VISION ─────────────────────────────── */}
-        <section className="py-20 lg:py-28">
-          <div className="container mx-auto px-6">
-            {/* Section label */}
-            <div className="text-center mb-14">
-              <span className="inline-block px-4 py-1.5 rounded-full bg-primary/10 text-primary text-sm font-semibold tracking-wide mb-3">
-                Who We Are
-              </span>
-              <h2 className="text-3xl md:text-4xl font-bold">
-                Purpose & Direction
-              </h2>
+        {/* ══════════════════════════════════════════════════════
+            SECTION 03 — TECHNICAL DIFFERENTIATORS
+        ══════════════════════════════════════════════════════ */}
+        <section className="py-16 md:py-24 border-b border-concrete/40 dark:border-charcoal-border bg-ivory dark:bg-charcoal">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6">
+            <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 pb-4 border-b border-concrete/30 dark:border-charcoal-border gap-4">
+              <div>
+                <span className="text-[11px] font-mono tracking-widest text-sage uppercase block mb-1">
+                  SEC_03 // CORE DIFFERENTIATORS
+                </span>
+                <h2 className="text-3xl sm:text-5xl font-bold font-display tracking-tight text-charcoal dark:text-ivory">
+                  Engineered Beyond
+                  <br />
+                  Conventional SaaS.
+                </h2>
+              </div>
+              <p className="text-xs font-mono text-concrete-dark dark:text-concrete max-w-md">
+                HOW NIRIKSHAN AI DELIVERS DETERMINISTIC PERFORMANCE WHERE GENERIC CLOUD-BASED APIS CANNOT COMPETE.
+              </p>
             </div>
 
-            {/* Two panels */}
-            <div className="grid lg:grid-cols-2 gap-6 lg:gap-8">
-              {/* Mission */}
-              <div className="relative rounded-3xl overflow-hidden border border-blue-200/40 dark:border-blue-900/40 bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-blue-950/30 dark:to-indigo-950/30 p-8 lg:p-10">
-                <div className="absolute top-0 left-0 w-1 h-full bg-gradient-to-b from-blue-500 to-violet-500 rounded-l-3xl" />
-                <div className="flex items-center gap-3 mb-6">
-                  <div className="w-10 h-10 rounded-xl bg-blue-500 flex items-center justify-center flex-shrink-0">
-                    <Target className="text-white" size={20} />
+            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+              {differentiators.map((diff) => (
+                <div
+                  key={diff.num}
+                  className="p-6 border border-concrete/40 dark:border-charcoal-border bg-white dark:bg-charcoal-surface flex flex-col justify-between space-y-4 hover:border-sage transition-all group"
+                >
+                  <div>
+                    <div className="flex items-center justify-between pb-3 mb-3 border-b border-concrete/20 dark:border-charcoal-border text-xs font-mono">
+                      <span className="text-sage font-bold">{diff.num} //</span>
+                      <span className="text-[10px] text-concrete">{diff.tag}</span>
+                    </div>
+                    <h3 className="text-xl font-bold font-display text-charcoal dark:text-ivory group-hover:text-burntamber transition-colors mb-2">
+                      {diff.title}
+                    </h3>
+                    <p className="text-xs font-sans text-concrete-dark dark:text-concrete leading-relaxed">
+                      {diff.desc}
+                    </p>
                   </div>
-                  <span className="text-xs uppercase tracking-widest font-semibold text-blue-600 dark:text-blue-400">
-                    Our Mission
-                  </span>
+
+                  <div className="pt-3 border-t border-concrete/15 dark:border-charcoal-border text-[10px] font-mono text-sage font-bold flex items-center gap-1.5">
+                    <span className="w-1.5 h-1.5 bg-sage inline-block" />
+                    <span>{diff.spec}</span>
+                  </div>
                 </div>
-                <h3 className="text-2xl font-bold mb-4 leading-snug">
-                  Making AI simple,{" "}
-                  <span className="text-blue-600 dark:text-blue-400">
-                    affordable & useful
-                  </span>{" "}
-                  for every business
-                </h3>
-                <p className="text-muted-foreground leading-relaxed mb-4 text-sm md:text-base">
-                  We're here to bring the power of AI to everyone — not just
-                  the big players. Think of us as your local AI partner, making
-                  smart technology practical for businesses of any size.
-                </p>
-                <ul className="space-y-2.5">
-                  {[
-                    "No corporate jargon, just real solutions",
-                    "Tailored to your industry & goals",
-                    "Genuine partnership, not vendor lock-in",
-                  ].map((item) => (
-                    <li key={item} className="flex items-center gap-2.5 text-sm text-muted-foreground">
-                      <CheckCircle2 size={16} className="text-blue-500 flex-shrink-0" />
-                      {item}
-                    </li>
-                  ))}
-                </ul>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* ══════════════════════════════════════════════════════
+            SECTION 04 — PURPOSE & OPERATIONAL CHARTER
+        ══════════════════════════════════════════════════════ */}
+        <section className="py-16 md:py-24 border-b border-concrete/40 dark:border-charcoal-border bg-techlight/30 dark:bg-charcoal">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6">
+            <div className="grid md:grid-cols-2 gap-8">
+              {/* Mission */}
+              <div className="p-8 border border-concrete/40 dark:border-charcoal-border bg-white dark:bg-charcoal-surface flex flex-col justify-between space-y-6 hover:border-sage transition-all">
+                <div className="space-y-4">
+                  <div className="flex items-center justify-between pb-4 border-b border-concrete/20 dark:border-charcoal-border text-xs font-mono">
+                    <span className="text-sage font-bold">CHARTER_01 // OUR MISSION</span>
+                    <Target size={18} className="text-sage" />
+                  </div>
+                  <h3 className="text-2xl sm:text-3xl font-bold font-display text-charcoal dark:text-ivory">
+                    Empowering Physical Operations Through Deterministic AI.
+                  </h3>
+                  <p className="text-sm font-sans text-concrete-dark dark:text-concrete leading-relaxed">
+                    To deliver reliable, air-gapped computer vision, private generative AI, and autonomous agent systems that eliminate cloud latency, guarantee data sovereignty, and operate dependably in mission-critical industrial environments.
+                  </p>
+                </div>
+                <div className="pt-4 border-t border-concrete/15 dark:border-charcoal-border text-xs font-mono text-concrete-dark dark:text-concrete space-y-1.5">
+                  <div className="flex items-center gap-2">
+                    <CheckCircle2 size={13} className="text-sage" />
+                    <span>Zero cloud lock-in or recurring cloud costs</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <CheckCircle2 size={13} className="text-sage" />
+                    <span>Sub-20ms edge hardware execution</span>
+                  </div>
+                </div>
               </div>
 
               {/* Vision */}
-              <div className="relative rounded-3xl overflow-hidden border border-violet-200/40 dark:border-violet-900/40 bg-gradient-to-br from-violet-50 to-purple-50 dark:from-violet-950/30 dark:to-purple-950/30 p-8 lg:p-10">
-                <div className="absolute top-0 left-0 w-1 h-full bg-gradient-to-b from-violet-500 to-pink-500 rounded-l-3xl" />
-                <div className="flex items-center gap-3 mb-6">
-                  <div className="w-10 h-10 rounded-xl bg-violet-500 flex items-center justify-center flex-shrink-0">
-                    <Eye className="text-white" size={20} />
+              <div className="p-8 border border-concrete/40 dark:border-charcoal-border bg-white dark:bg-charcoal-surface flex flex-col justify-between space-y-6 hover:border-sage transition-all">
+                <div className="space-y-4">
+                  <div className="flex items-center justify-between pb-4 border-b border-concrete/20 dark:border-charcoal-border text-xs font-mono">
+                    <span className="text-burntamber font-bold">CHARTER_02 // OUR VISION</span>
+                    <Rocket size={18} className="text-burntamber" />
                   </div>
-                  <span className="text-xs uppercase tracking-widest font-semibold text-violet-600 dark:text-violet-400">
-                    Our Vision
-                  </span>
-                </div>
-                <h3 className="text-2xl font-bold mb-4 leading-snug">
-                  AI as a{" "}
-                  <span className="text-violet-600 dark:text-violet-400">
-                    practical tool
-                  </span>{" "}
-                  for every enterprise
-                </h3>
-                <p className="text-muted-foreground leading-relaxed mb-4 text-sm md:text-base">
-                  To be the global leader in AI-powered business transformation,
-                  recognised for turning visionary ideas into tangible,
-                  measurable outcomes — across startups and established enterprises.
-                </p>
-                <ul className="space-y-2.5">
-                  {[
-                    "Global leader in AI transformation",
-                    "Barriers of complexity removed",
-                    "Data-backed decisions at every level",
-                  ].map((item) => (
-                    <li key={item} className="flex items-center gap-2.5 text-sm text-muted-foreground">
-                      <CheckCircle2 size={16} className="text-violet-500 flex-shrink-0" />
-                      {item}
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* ── CORE VALUES ──────────────────────────────────── */}
-        <section className="py-20 bg-secondary/30">
-          <div className="container mx-auto px-6">
-            <div className="text-center mb-14">
-              <span className="inline-block px-4 py-1.5 rounded-full bg-primary/10 text-primary text-sm font-semibold tracking-wide mb-3">
-                What Guides Us
-              </span>
-              <h2 className="text-3xl md:text-4xl font-bold">Core Values</h2>
-            </div>
-
-            <div className="grid md:grid-cols-3 gap-6">
-              {[
-                {
-                  icon: Users,
-                  title: "Client-Centric",
-                  desc: "Your success is our success. Every solution is tailored to deliver measurable value and exceed expectations.",
-                  color: "text-blue-500",
-                  bg: "bg-blue-500/10",
-                },
-                {
-                  icon: Award,
-                  title: "Excellence",
-                  desc: "We maintain the highest standards — from code quality to delivery. Excellence is a continuous commitment, not a destination.",
-                  color: "text-violet-500",
-                  bg: "bg-violet-500/10",
-                },
-                {
-                  icon: Zap,
-                  title: "Innovation",
-                  desc: "We stay at the forefront of AI advancements, creating forward-thinking solutions that keep our partners ahead of the curve.",
-                  color: "text-amber-500",
-                  bg: "bg-amber-500/10",
-                },
-              ].map((value) => (
-                <div
-                  key={value.title}
-                  className="group p-8 bg-card rounded-2xl border border-border hover:border-primary/30 hover:shadow-xl transition-all duration-300"
-                >
-                  <div
-                    className={`w-14 h-14 rounded-2xl ${value.bg} flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300`}
-                  >
-                    <value.icon className={`${value.color}`} size={28} />
-                  </div>
-                  <h3 className="text-xl font-bold mb-3">{value.title}</h3>
-                  <p className="text-muted-foreground text-sm leading-relaxed">
-                    {value.desc}
+                  <h3 className="text-2xl sm:text-3xl font-bold font-display text-charcoal dark:text-ivory">
+                    Making India a Global Benchmark in Real-World AI Engineering.
+                  </h3>
+                  <p className="text-sm font-sans text-concrete-dark dark:text-concrete leading-relaxed">
+                    To build a future where enterprises, universities, and rural communities can deploy resilient artificial intelligence to solve concrete physical and economic challenges — from factory floors to Himalayan farmlands.
                   </p>
                 </div>
-              ))}
+                <div className="pt-4 border-t border-concrete/15 dark:border-charcoal-border text-xs font-mono text-concrete-dark dark:text-concrete space-y-1.5">
+                  <div className="flex items-center gap-2">
+                    <CheckCircle2 size={13} className="text-burntamber" />
+                    <span>Academic rigor blended with industrial hardware</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <CheckCircle2 size={13} className="text-burntamber" />
+                    <span>Grassroots technologies scaled to enterprise scale</span>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </section>
 
-        {/* ── MID-PAGE CTA STRIP ───────────────────────────── */}
-        <section className="py-14 bg-gradient-to-r from-primary/90 to-accent/90">
-          <div className="container mx-auto px-6 flex flex-col sm:flex-row items-center justify-between gap-6">
-            <div>
-              <h3 className="text-2xl font-bold text-white mb-1">
-                Ready to transform with AI?
-              </h3>
-              <p className="text-white/75 text-sm">
-                Book a free 30-minute AI readiness call — no strings attached.
+        {/* ══════════════════════════════════════════════════════
+            SECTION 05 — CHRONOLOGICAL MILESTONES (Timeline)
+        ══════════════════════════════════════════════════════ */}
+        <section className="py-16 md:py-24 border-b border-concrete/40 dark:border-charcoal-border bg-ivory dark:bg-charcoal">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6">
+            <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 pb-4 border-b border-concrete/30 dark:border-charcoal-border gap-4">
+              <div>
+                <span className="text-[11px] font-mono tracking-widest text-sage uppercase block mb-1">
+                  SEC_05 // INSTITUTIONAL TRAJECTORY
+                </span>
+                <h2 className="text-3xl sm:text-5xl font-bold font-display tracking-tight text-charcoal dark:text-ivory">
+                  From Campus Prototype
+                  <br />
+                  to Licensed Company.
+                </h2>
+              </div>
+              <p className="text-xs font-mono text-concrete-dark dark:text-concrete max-w-md">
+                KEY MOMENTS IN NIRIKSHAN AI'S EVOLUTION FROM A STUDENT COLLECTIVE TO A REGISTERED ENTERPRISE FIRM.
               </p>
             </div>
-            <Link to="/contact" className="flex-shrink-0">
-              <Button
-                size="lg"
-                variant="secondary"
-                className="font-semibold shadow-lg hover:shadow-xl transition-all"
-              >
-                Book Free Call
-                <ArrowRight className="ml-2" size={18} />
-              </Button>
-            </Link>
-          </div>
-        </section>
 
-        {/* ── DIFFERENTIATORS ──────────────────────────────── */}
-        <section className="py-20 lg:py-28">
-          <div className="container mx-auto px-6">
-            <div className="text-center mb-14">
-              <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-primary/10 text-primary text-sm font-semibold mb-3">
-                <Sparkles size={14} />
-                Why Partners Choose Us
-              </span>
-              <h2 className="text-3xl md:text-4xl font-bold">
-                The Nirikshan Advantage
-              </h2>
-            </div>
-
-            <div className="space-y-5">
-              {differentiators.map((item, idx) => (
-                <motion.div
-                  key={item.title}
-                  initial={{ opacity: 0, x: idx % 2 === 0 ? -24 : 24 }}
-                  whileInView={{ opacity: 1, x: 0 }}
-                  viewport={{ once: true, amount: 0.3 }}
-                  transition={{ duration: 0.5, delay: idx * 0.1 }}
-                  className={`group flex flex-col sm:flex-row gap-6 p-6 sm:p-8 rounded-2xl bg-gradient-to-br ${item.bg} border border-transparent hover:border-primary/20 transition-all duration-300`}
+            <div className="grid md:grid-cols-2 lg:grid-cols-5 gap-4">
+              {milestones.map((m) => (
+                <div
+                  key={m.phase}
+                  className="p-5 border border-concrete/40 dark:border-charcoal-border bg-white dark:bg-charcoal-surface flex flex-col justify-between space-y-4 hover:border-sage transition-all group"
                 >
-                  {/* Icon + tag */}
-                  <div className="flex-shrink-0 flex sm:flex-col items-center sm:items-start gap-4 sm:gap-2 sm:w-36">
-                    <div
-                      className={`w-12 h-12 rounded-xl bg-gradient-to-br ${item.color} flex items-center justify-center shadow-md group-hover:scale-105 transition-transform`}
-                    >
-                      <item.icon className="text-white" size={22} />
+                  <div>
+                    <div className="flex items-center justify-between pb-3 mb-3 border-b border-concrete/20 dark:border-charcoal-border text-[10px] font-mono">
+                      <span className="text-sage font-bold">PHASE_{m.phase}</span>
+                      <span className="text-concrete uppercase">{m.year}</span>
                     </div>
-                    <span className="text-xs font-semibold uppercase tracking-widest text-muted-foreground">
-                      {item.tag}
-                    </span>
-                  </div>
-
-                  {/* Text */}
-                  <div className="flex-1 min-w-0">
-                    <h3 className="text-lg sm:text-xl font-bold mb-2">
-                      {item.title}
+                    <h3 className="text-base font-bold font-display text-charcoal dark:text-ivory group-hover:text-burntamber transition-colors mb-2">
+                      {m.title}
                     </h3>
-                    <p className="text-muted-foreground text-sm leading-relaxed mb-3">
-                      {item.description}
+                    <p className="text-xs font-sans text-concrete-dark dark:text-concrete leading-relaxed">
+                      {m.desc}
                     </p>
-                    <span
-                      className={`inline-block text-xs font-semibold px-3 py-1 rounded-full bg-gradient-to-r ${item.color} text-white`}
-                    >
-                      {item.highlight}
-                    </span>
                   </div>
-                </motion.div>
+                  <div className="pt-3 border-t border-concrete/15 dark:border-charcoal-border text-[9px] font-mono text-concrete flex items-center gap-1.5">
+                    <span className="w-1.5 h-1.5 bg-sage inline-block" />
+                    <span>MILESTONE VERIFIED</span>
+                  </div>
+                </div>
               ))}
             </div>
           </div>
         </section>
 
-        {/* ── TIMELINE ─────────────────────────────────────── */}
-        <section
-          className="py-20 bg-secondary/20"
-          ref={timelineRef.ref}
-        >
-          <div className="container mx-auto px-6">
-            <div className="text-center mb-14">
-              <span className="inline-block px-4 py-1.5 rounded-full bg-primary/10 text-primary text-sm font-semibold tracking-wide mb-3">
-                Our Story
+        {/* ══════════════════════════════════════════════════════
+            SECTION 06 — TECHNICAL CTA
+        ══════════════════════════════════════════════════════ */}
+        <section className="py-20 md:py-28 bg-charcoal text-ivory relative overflow-hidden border-b border-charcoal-border">
+          <div className="absolute inset-0 tech-grid-bg opacity-15 pointer-events-none" />
+
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 relative z-10 text-center">
+            <div className="inline-block px-3 py-1 mb-6 text-[10px] font-mono uppercase tracking-[0.2em] bg-charcoal-surface border border-charcoal-border text-sage">
+              SEC_06 // TECHNICAL FEASIBILITY
+            </div>
+
+            <h2 className="text-3xl sm:text-5xl font-bold font-display tracking-tight text-ivory leading-tight max-w-3xl mx-auto mb-6">
+              Have an Operational Challenge?
+              <br />
+              <span className="font-serif italic font-normal text-concrete">
+                Let's Engineer the Solution.
               </span>
-              <h2 className="text-3xl md:text-4xl font-bold mb-3">
-                Milestones on Our Journey
-              </h2>
-              <p className="text-muted-foreground max-w-xl mx-auto text-sm md:text-base">
-                From a student-led community to a global AI company — in
-                under two years.
-              </p>
-            </div>
+            </h2>
 
-            {/* Timeline */}
-            <div className="relative max-w-2xl mx-auto">
-              {/* Vertical line */}
-              <div className="absolute left-6 top-0 bottom-0 w-px bg-gradient-to-b from-primary via-accent to-primary opacity-30" />
+            <p className="text-sm sm:text-base text-concrete max-w-xl mx-auto leading-relaxed mb-8 font-sans">
+              Connect directly with our system architects in Haridwar or Dehradun to analyze your camera topologies, model constraints, and edge hardware requirements.
+            </p>
 
-              <div className="space-y-8">
-                <AnimatePresence>
-                  {milestones.map((milestone, idx) => {
-                    if (idx >= revealedMilestones) return null;
-                    return (
-                      <motion.div
-                        key={milestone.year}
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.45, ease: "easeOut" }}
-                        className="relative pl-16"
-                      >
-                        {/* Dot */}
-                        <div
-                          className={`absolute left-3.5 top-4 w-5 h-5 rounded-full ${milestone.color} ring-4 ${milestone.ring} bg-white flex items-center justify-center shadow-sm`}
-                        >
-                          <div className="w-2 h-2 rounded-full bg-white" />
-                        </div>
-
-                        {/* Card */}
-                        <div className="rounded-2xl bg-card border border-border p-5 shadow-sm hover:shadow-md transition-shadow">
-                          <span
-                            className={`inline-block text-xs font-bold px-3 py-1 rounded-full text-white ${milestone.color} mb-3`}
-                          >
-                            {milestone.year}
-                          </span>
-                          <h3 className="text-lg font-bold mb-1.5">
-                            {milestone.title}
-                          </h3>
-                          <p className="text-muted-foreground text-sm leading-relaxed">
-                            {milestone.description}
-                          </p>
-                        </div>
-                      </motion.div>
-                    );
-                  })}
-                </AnimatePresence>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* ── WORLD MAP ────────────────────────────────────── */}
-        <section className="py-16 md:py-24 bg-card">
-          <div className="container mx-auto px-4 sm:px-6">
-            <div className="text-center mb-10">
-              <p className="text-xs sm:text-sm font-semibold uppercase tracking-widest text-primary mb-2">
-                Global Presence
-              </p>
-              <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-3">
-                Our{" "}
-                <span className="text-gradient">Worldwide</span> Network
-              </h2>
-              <p className="text-muted-foreground max-w-xl mx-auto text-sm md:text-base">
-                Connecting with clients and partners across continents to
-                deliver AI-powered solutions globally.
-              </p>
-            </div>
-            <div className="max-w-5xl mx-auto rounded-2xl border border-border bg-secondary/20 overflow-hidden p-2 sm:p-4">
-              <WorldMap
-                dots={[
-                  {
-                    start: { lat: 28.6139, lng: 77.209, label: "New Delhi" },
-                    end: { lat: -26.2041, lng: 28.0473, label: "South Africa" },
-                  },
-                  {
-                    start: { lat: 28.6139, lng: 77.209, label: "New Delhi" },
-                    end: { lat: 1.3521, lng: 103.8198, label: "Singapore" },
-                  },
-                  {
-                    start: { lat: 28.6139, lng: 77.209, label: "New Delhi" },
-                    end: { lat: 40.7128, lng: -74.006, label: "New York" },
-                  },
-                  {
-                    start: { lat: 28.6139, lng: 77.209, label: "New Delhi" },
-                    end: { lat: 51.5074, lng: -0.1278, label: "London" },
-                  },
-                  {
-                    start: { lat: 28.6139, lng: 77.209, label: "New Delhi" },
-                    end: { lat: 25.2048, lng: 55.2708, label: "Dubai" },
-                  },
-                ]}
-                lineColor="hsl(var(--primary))"
-                showLabels={
-                  typeof window !== "undefined" && window.innerWidth > 640
-                }
-              />
-            </div>
-          </div>
-        </section>
-
-        {/* ── BOTTOM CTA ───────────────────────────────────── */}
-        <section className="py-20 relative overflow-hidden">
-          <div className="absolute inset-0 bg-gradient-to-br from-blue-500/8 via-transparent to-violet-500/8" />
-          <div className="container mx-auto px-6 relative z-10 text-center">
-            <div className="max-w-2xl mx-auto">
-              <h2 className="text-3xl md:text-4xl font-bold mb-4">
-                Join Us on This Journey
-              </h2>
-              <div className="h-1 w-16 bg-gradient-to-r from-blue-500 to-violet-500 mx-auto rounded-full mb-6" />
-              <p className="text-muted-foreground mb-10 text-sm md:text-base max-w-lg mx-auto">
-                Whether you're looking for a technology partner or want to be
-                part of our team, we'd love to hear from you.
-              </p>
-              <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                <Link to="/contact">
-                  <Button
-                    size="lg"
-                    className="gradient-primary hover:shadow-lg hover:shadow-primary/30 transition-all w-full sm:w-auto"
-                  >
-                    Get in Touch
-                    <ArrowRight className="ml-2" size={18} />
-                  </Button>
-                </Link>
-                <Link to="/careers">
-                  <Button
-                    size="lg"
-                    variant="outline"
-                    className="hover:bg-secondary transition-all w-full sm:w-auto"
-                  >
-                    Explore Careers
-                  </Button>
-                </Link>
-              </div>
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+              <Link to="/contact">
+                <Button className="bg-charcoal text-ivory border border-charcoal-border hover:bg-burntamber hover:border-burntamber hover:text-white text-xs font-mono uppercase tracking-wider px-8 h-12 rounded-none font-bold transition-all shadow-lg">
+                  Initiate Technical Consultation <ArrowRight size={14} className="ml-2" />
+                </Button>
+              </Link>
+              <Link to="/who-we-are">
+                <Button variant="outline" className="border-charcoal-border text-concrete hover:text-burntamber hover:border-burntamber text-xs font-mono uppercase tracking-wider px-8 h-12 rounded-none transition-all">
+                  Examine Leadership Dossiers
+                </Button>
+              </Link>
             </div>
           </div>
         </section>

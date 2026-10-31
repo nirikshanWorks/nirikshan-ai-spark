@@ -1,471 +1,715 @@
-import SwitchToggleThemeDemo from "@/components/ui/toggle-theme";
 import { Button } from "@/components/ui/button";
+import SwitchToggleThemeDemo from "@/components/ui/toggle-theme";
 import {
-  NavigationMenu,
-  NavigationMenuContent,
-  NavigationMenuItem,
-  NavigationMenuLink,
-  NavigationMenuList,
-  NavigationMenuTrigger,
-} from "@/components/ui/navigation-menu";
-import { Menu, X, Camera, Sparkles, GraduationCap } from "lucide-react";
-import { useEffect, useLayoutEffect, useRef, useState } from "react";
+  Menu,
+  X,
+  Eye,
+  Brain,
+  Bot,
+  Factory,
+  ArrowRight,
+  Sparkles,
+  GraduationCap,
+  Layers,
+  ShieldCheck,
+  ChevronRight,
+  ChevronDown
+} from "lucide-react";
+import { useEffect, useRef, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
-
-import { expertiseCategories } from "@/pages/expertise/expertiseData";
-
-const navigationCategories = expertiseCategories.map((category) => ({
-  title: category.title,
-  slug: category.slug,
-  items: category.services.map((service) => ({
-    title: service.title,
-    description: service.description,
-    href: `/expertise/${category.slug}/${service.slug}`,
-  })),
-}));
-
-const navLinks = [
-  { label: "About", path: "/about" },
-  { label: "Case Studies", path: "/case-studies" },
-  { label: "Blog", path: "/blog" },
-  { label: "Careers", path: "/careers" },
-  { label: "Who We Are", path: "/who-we-are" },
-];
-
-// Bottom nav height constant — keep in sync with MobileBottomNav.tsx
-const BOTTOM_NAV_HEIGHT = 64; // px — roughly 4rem (icon + label + padding)
 
 export const Navigation = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [mobileExpertiseOpen, setMobileExpertiseOpen] = useState(false);
-  const [mobileProductsOpen, setMobileProductsOpen] = useState(false);
-  const [desktopMenuValue, setDesktopMenuValue] = useState<string | undefined>(undefined);
+  const [mobileSection, setMobileSection] = useState<string | null>(null);
+
+  // Desktop active dropdown state: 'solutions' | 'products' | null
+  const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
+  const closeTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+
   const [scrolled, setScrolled] = useState(false);
-  const desktopMenuOpen = Boolean(desktopMenuValue);
   const navRef = useRef<HTMLElement | null>(null);
-  const [headerHeight, setHeaderHeight] = useState(56); // default 14 = 56px
   const location = useLocation();
 
-  const toggleMobileMenu = () => {
-    setMobileMenuOpen((prev) => {
-      const next = !prev;
-      if (!next) {
-        setMobileExpertiseOpen(false);
-        setMobileProductsOpen(false);
-      }
-      return next;
-    });
-  };
-
-  const closeMobileMenu = () => {
-    setMobileMenuOpen(false);
-    setMobileExpertiseOpen(false);
-    setMobileProductsOpen(false);
-  };
-
-  // Close menu on route change
+  // Clear dropdown & mobile on route change
   useEffect(() => {
-    closeMobileMenu();
+    setMobileMenuOpen(false);
+    setMobileSection(null);
+    setActiveDropdown(null);
   }, [location.pathname]);
 
+  // Scroll detection
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 10);
+    const onScroll = () => setScrolled(window.scrollY > 15);
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  // Lock body scroll only when desktop dropdown is open; mobile drawer handles its own scroll
+  // Click outside to close dropdown
   useEffect(() => {
-    if (desktopMenuOpen) {
-      const orig = document.body.style.overflow;
-      document.body.style.overflow = "hidden";
-      return () => { document.body.style.overflow = orig; };
-    }
-    document.body.style.overflow = "";
-    return undefined;
-  }, [desktopMenuOpen]);
-
-  useLayoutEffect(() => {
-    const update = () => {
-      const h = navRef.current?.getBoundingClientRect().height ?? 56;
-      setHeaderHeight(h);
+    const handleClickOutside = (e: MouseEvent) => {
+      if (navRef.current && !navRef.current.contains(e.target as Node)) {
+        setActiveDropdown(null);
+      }
     };
-    update();
-    window.addEventListener("resize", update);
-    let observer: MutationObserver | null = null;
-    if (navRef.current && "MutationObserver" in window) {
-      observer = new MutationObserver(update);
-      observer.observe(navRef.current, { childList: true, subtree: true, attributes: true });
-    }
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        setActiveDropdown(null);
+        setMobileMenuOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    document.addEventListener("keydown", handleKeyDown);
     return () => {
-      window.removeEventListener("resize", update);
-      if (observer) observer.disconnect();
+      document.removeEventListener("mousedown", handleClickOutside);
+      document.removeEventListener("keydown", handleKeyDown);
     };
   }, []);
 
-  useEffect(() => {
-    setDesktopMenuValue(undefined);
-  }, [location.pathname]);
+  // Hover handlers with grace period
+  const handleMouseEnter = (menuName: string) => {
+    if (closeTimeoutRef.current) {
+      clearTimeout(closeTimeoutRef.current);
+      closeTimeoutRef.current = null;
+    }
+    setActiveDropdown(menuName);
+  };
+
+  const handleMouseLeave = () => {
+    if (closeTimeoutRef.current) clearTimeout(closeTimeoutRef.current);
+    closeTimeoutRef.current = setTimeout(() => {
+      setActiveDropdown(null);
+    }, 180);
+  };
 
   return (
     <>
-      {/* ── Top nav bar ── */}
       <nav
         ref={navRef}
-        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-200 border-b ${
           scrolled
-            ? "bg-background/90 backdrop-blur-xl border-b border-border shadow-sm"
-            : "bg-background/70 backdrop-blur-md border-b border-transparent"
+            ? "bg-ivory/95 dark:bg-charcoal/95 backdrop-blur-md border-concrete/40 dark:border-charcoal-border shadow-sm"
+            : "bg-ivory dark:bg-charcoal border-concrete/30 dark:border-charcoal-border"
         }`}
       >
-        <div className="mx-auto flex w-full max-w-7xl items-center justify-between px-4 sm:px-6">
-          <div className="flex h-14 sm:h-16 w-full items-center justify-between">
-
-            {/* Logo */}
-            <Link to="/" className="flex items-center gap-2 sm:gap-3 group shrink-0" onClick={closeMobileMenu}>
-              <img
-                src="/nirikshan-ai-logo.png"
-                alt="Nirikshan AI Pvt. Ltd."
-                className="h-9 sm:h-10 lg:h-14 w-auto transition-transform duration-300 group-hover:scale-105"
-              />
-              <span className="text-base sm:text-lg font-bold font-heading text-foreground select-none">
-                Nirikshan <span className="text-gradient">AI</span>
-              </span>
-            </Link>
-
-            {/* ── Desktop nav ── */}
-            <div className="hidden lg:flex items-center gap-1">
-              <NavigationMenu value={desktopMenuValue} onValueChange={setDesktopMenuValue}>
-                <NavigationMenuList>
-                  {/* Products Dropdown */}
-                  <NavigationMenuItem value="products">
-                    <NavigationMenuTrigger className="bg-transparent text-sm font-medium text-muted-foreground hover:text-foreground h-9 px-3">
-                      Products
-                    </NavigationMenuTrigger>
-                    <NavigationMenuContent className="animate-in slide-in-from-top-4 fade-in duration-300">
-                      <div className="w-[340px] md:w-[480px] p-4">
-                        <div className="mb-2 px-2 flex items-center justify-between">
-                          <h4 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
-                            Nirikshan AI Platforms
-                          </h4>
-                          <Link
-                            to="/products"
-                            className="text-xs text-primary hover:underline"
-                            onClick={() => setDesktopMenuValue(undefined)}
-                          >
-                            All Platforms →
-                          </Link>
-                        </div>
-                        <div className="space-y-1.5">
-                          {/* 1. Computer Vision AI */}
-                          <Link
-                            to="/products?suite=vision"
-                            onClick={() => setDesktopMenuValue(undefined)}
-                            className="flex items-start gap-3 p-2.5 rounded-xl hover:bg-accent hover:text-accent-foreground transition-colors group"
-                          >
-                            <div className="w-9 h-9 rounded-xl bg-blue-500/10 text-blue-600 dark:text-blue-400 flex items-center justify-center shrink-0 mt-0.5">
-                              <Camera className="w-4 h-4" />
-                            </div>
-                            <div className="min-w-0">
-                              <div className="text-sm font-bold text-foreground group-hover:text-primary transition-colors flex items-center gap-1.5">
-                                <span>Computer Vision AI</span>
-                                <span className="text-[10px] font-mono px-1.5 py-0.2 rounded bg-primary/10 text-primary">Enterprise</span>
-                              </div>
-                              <p className="line-clamp-2 text-xs leading-snug text-muted-foreground mt-0.5">
-                                Real-time workplace safety, PPE compliance, perimeter security, ANPR &amp; quality defect detection.
-                              </p>
-                            </div>
-                          </Link>
-
-                          {/* 2. Astro Nirikshan */}
-                          <Link
-                            to="/products/astro-nirikshan"
-                            onClick={() => setDesktopMenuValue(undefined)}
-                            className="flex items-start gap-3 p-2.5 rounded-xl hover:bg-accent hover:text-accent-foreground transition-colors group"
-                          >
-                            <div className="w-9 h-9 rounded-xl bg-amber-500/10 text-amber-600 dark:text-amber-400 flex items-center justify-center shrink-0 mt-0.5">
-                              <Sparkles className="w-4 h-4 text-amber-500" />
-                            </div>
-                            <div className="min-w-0">
-                              <div className="text-sm font-bold text-foreground group-hover:text-amber-500 transition-colors flex items-center gap-1.5">
-                                <span>Astro Nirikshan</span>
-                                <span className="text-[10px] font-mono px-1.5 py-0.2 rounded bg-amber-500/15 text-amber-500">Holistic AI</span>
-                              </div>
-                              <p className="line-clamp-2 text-xs leading-snug text-muted-foreground mt-0.5">
-                                Vedic Jyotish, Chaldean numerology, Vastu Shastra &amp; Janam Kundli with 100% client-side privacy.
-                              </p>
-                            </div>
-                          </Link>
-
-                          {/* 3. 10X AI Productivity */}
-                          <Link
-                            to="/10x-ai-productivity"
-                            onClick={() => setDesktopMenuValue(undefined)}
-                            className="flex items-start gap-3 p-2.5 rounded-xl hover:bg-accent hover:text-accent-foreground transition-colors group"
-                          >
-                            <div className="w-9 h-9 rounded-xl bg-violet-500/10 text-violet-600 dark:text-violet-400 flex items-center justify-center shrink-0 mt-0.5">
-                              <GraduationCap className="w-4 h-4 text-violet-500" />
-                            </div>
-                            <div className="min-w-0">
-                              <div className="text-sm font-bold text-foreground group-hover:text-violet-500 transition-colors flex items-center gap-1.5">
-                                <span>10X AI Productivity</span>
-                                <span className="text-[10px] font-mono px-1.5 py-0.2 rounded bg-violet-500/15 text-violet-500">Education</span>
-                              </div>
-                              <p className="line-clamp-2 text-xs leading-snug text-muted-foreground mt-0.5">
-                                Practical AI training for schools, universities, corporate teams, and manufacturing workforces.
-                              </p>
-                            </div>
-                          </Link>
-                        </div>
-                      </div>
-                    </NavigationMenuContent>
-                  </NavigationMenuItem>
-
-                  {/* Expertise Dropdown */}
-                  <NavigationMenuItem value="expertise">
-                    <NavigationMenuTrigger className="bg-transparent text-sm font-medium text-muted-foreground hover:text-foreground h-9 px-3">
-                      Expertise
-                    </NavigationMenuTrigger>
-                    <NavigationMenuContent className="animate-in slide-in-from-top-4 fade-in duration-300">
-                      <div className="w-[320px] md:w-[500px] p-4">
-                        <div className="mb-3 px-3 flex items-center justify-between">
-                          <h4 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
-                            {navigationCategories[0]?.title}
-                          </h4>
-                          <Link to={`/expertise/${navigationCategories[0]?.slug}`} className="text-xs text-primary hover:underline">
-                            View All
-                          </Link>
-                        </div>
-                        <ul className="grid grid-cols-1 md:grid-cols-2 gap-2">
-                          {navigationCategories[0]?.items.map((item) => (
-                            <li key={item.title}>
-                              <NavigationMenuLink asChild>
-                                <Link
-                                  to={item.href}
-                                  className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground"
-                                >
-                                  <div className="text-sm font-medium leading-none text-foreground">{item.title}</div>
-                                  <p className="line-clamp-2 text-xs leading-snug text-muted-foreground mt-1.5">
-                                    {item.description}
-                                  </p>
-                                </Link>
-                              </NavigationMenuLink>
-                            </li>
-                          ))}
-                        </ul>
-                      </div>
-                    </NavigationMenuContent>
-                  </NavigationMenuItem>
-                </NavigationMenuList>
-              </NavigationMenu>
-
-              {navLinks.map((link) => (
-                <Link
-                  key={link.path}
-                  to={link.path}
-                  className={`text-sm font-medium px-3 py-2 rounded-md transition-colors duration-200 ${
-                    location.pathname === link.path
-                      ? "text-primary bg-primary/10"
-                      : "text-muted-foreground hover:text-foreground hover:bg-muted"
-                  }`}
-                >
-                  {link.label}
-                </Link>
-              ))}
-
-              <Link to="/contact" className="ml-2">
-                <Button size="sm" className="gradient-primary text-primary-foreground font-medium">
-                  Contact
-                </Button>
-              </Link>
-
-              <SwitchToggleThemeDemo />
-            </div>
-
-            {/* ── Mobile right controls ── */}
-            <div className="lg:hidden flex items-center gap-2">
-              <SwitchToggleThemeDemo />
-              <button
-                onClick={toggleMobileMenu}
-                aria-expanded={mobileMenuOpen}
-                aria-controls="mobile-navigation"
-                aria-label={mobileMenuOpen ? "Close menu" : "Open menu"}
-                className="flex items-center justify-center w-10 h-10 rounded-xl hover:bg-secondary/80 transition-colors"
-              >
-                {mobileMenuOpen ? <X size={22} /> : <Menu size={22} />}
-              </button>
-            </div>
-
+        {/* Technical Sub-bar / Telemetry */}
+        <div className="hidden md:flex items-center justify-between px-6 py-1 bg-techlight dark:bg-charcoal-surface border-b border-concrete/20 dark:border-charcoal-border text-[10px] font-mono tracking-widest text-concrete-dark dark:text-concrete">
+          <div className="flex items-center gap-4">
+            <span className="flex items-center gap-1.5">
+              <span className="w-1.5 h-1.5 bg-sage inline-block" />
+              NIRIKSHAN AI PRIVATE LIMITED
+            </span>
+            <span className="text-concrete/60">|</span>
+            <span>SYSTEM_NODE: IND-DELHI-01</span>
+          </div>
+          <div className="flex items-center gap-4">
+            <span>CORE_LATENCY: 14MS</span>
+            <span className="text-concrete/60">|</span>
+            <span>ARCHITECTURE: EDGE_INFERENCE_v2.4</span>
           </div>
         </div>
-      </nav>
 
-      {/* ── Mobile navigation drawer ── */}
-      {mobileMenuOpen && (
-        <>
-          {/* Backdrop */}
-          <div
-            className="fixed inset-0 z-[45] lg:hidden bg-black/20 backdrop-blur-[2px]"
-            onClick={closeMobileMenu}
-            aria-hidden="true"
-          />
-
-          {/* Drawer panel */}
-          <div
-            id="mobile-navigation"
-            role="dialog"
-            aria-modal="true"
-            aria-label="Navigation menu"
-            className="fixed left-0 right-0 z-[48] lg:hidden overflow-y-auto overscroll-contain bg-background border-b border-border shadow-xl animate-in fade-in slide-in-from-top-3 duration-200"
-            style={{
-              top: headerHeight,
-              maxHeight: `calc(100dvh - ${headerHeight}px - ${BOTTOM_NAV_HEIGHT}px - env(safe-area-inset-bottom, 0px))`,
-            }}
+        {/* Main Bar */}
+        <div className="mx-auto flex w-full max-w-7xl items-center justify-between px-4 sm:px-6 h-16 relative">
+          {/* Logo */}
+          <Link
+            to="/"
+            className="flex items-center gap-3 group shrink-0"
+            aria-label="Nirikshan AI Home"
+            onClick={() => setActiveDropdown(null)}
           >
-            <div className="px-4 pt-3 pb-5 space-y-2">
+            <div className="w-9 h-9 border border-charcoal/30 dark:border-concrete/40 flex items-center justify-center bg-white dark:bg-charcoal-surface">
+              <img
+                src="/favicon.png"
+                alt="Nirikshan AI"
+                className="w-6 h-6 object-contain"
+              />
+            </div>
+            <div className="flex flex-col">
+              <span className="text-base font-bold font-display tracking-tight text-charcoal dark:text-ivory leading-none">
+                NIRIKSHAN <span className="text-sage dark:text-sage-light">AI</span>
+              </span>
+              <span className="text-[9px] font-mono uppercase tracking-[0.2em] text-concrete-dark dark:text-concrete mt-0.5">
+                ENGINEERING INTELLIGENCE
+              </span>
+            </div>
+          </Link>
 
-              {/* Quick CTA row */}
-              <div className="grid grid-cols-2 gap-2 pb-1">
-                <Link
-                  to="/contact"
-                  onClick={closeMobileMenu}
-                  className="flex items-center justify-center rounded-xl py-3 gradient-primary text-white text-sm font-semibold"
-                >
-                  Get in Touch
-                </Link>
-                <Link
-                  to="/about"
-                  onClick={closeMobileMenu}
-                  className="flex items-center justify-center rounded-xl py-3 bg-secondary text-foreground text-sm font-semibold border border-border"
-                >
-                  About Us
-                </Link>
-              </div>
-
-              <div className="border-t border-border/60" />
-
-              {/* Products accordion */}
+          {/* Desktop Navigation Menu */}
+          <div className="hidden lg:flex items-center gap-1">
+            {/* 1. Solutions Dropdown */}
+            <div
+              className="relative"
+              onMouseEnter={() => handleMouseEnter("solutions")}
+              onMouseLeave={handleMouseLeave}
+            >
               <button
-                className="flex w-full items-center justify-between gap-2 rounded-xl px-4 py-3.5 text-sm font-semibold hover:bg-secondary transition-colors text-left"
-                onClick={() => setMobileProductsOpen((prev) => !prev)}
+                onClick={() => setActiveDropdown(activeDropdown === "solutions" ? null : "solutions")}
+                className={`inline-flex items-center gap-1.5 h-9 px-3.5 text-xs font-mono uppercase tracking-wider text-charcoal dark:text-ivory transition-all border-b-2 ${
+                  activeDropdown === "solutions"
+                    ? "border-sage-deep bg-sage/10 font-bold text-sage-deep dark:text-sage-light dark:border-sage"
+                    : "border-transparent hover:border-b-burntamber hover:text-burntamber hover:bg-burntamber/5"
+                }`}
+                aria-expanded={activeDropdown === "solutions"}
               >
-                <div className="flex items-center gap-2">
-                  <span>Products &amp; Platforms</span>
-                  <span className="text-[10px] font-mono px-1.5 py-0.5 rounded bg-primary/10 text-primary">3</span>
-                </div>
-                <span
-                  className={`text-muted-foreground transition-transform duration-200 ${
-                    mobileProductsOpen ? "rotate-180" : ""
+                <span>Solutions</span>
+                <ChevronDown
+                  size={12}
+                  className={`transition-transform duration-200 ${
+                    activeDropdown === "solutions" ? "rotate-180 text-burntamber" : "text-concrete"
                   }`}
-                >
-                  ▾
-                </span>
+                />
               </button>
 
-              {mobileProductsOpen && (
-                <div className="space-y-1 bg-secondary/40 rounded-xl p-2 mx-1 animate-in fade-in slide-in-from-top-2 duration-150">
-                  <Link
-                    to="/products?suite=vision"
-                    className="flex items-center justify-between px-3 py-2.5 text-sm text-foreground hover:text-primary hover:bg-background/70 rounded-lg transition-colors"
-                    onClick={closeMobileMenu}
-                  >
-                    <div className="flex items-center gap-2">
-                      <Camera className="w-4 h-4 text-primary" />
-                      <span>Computer Vision AI</span>
-                    </div>
-                    <span className="text-[10px] font-mono text-muted-foreground">Enterprise</span>
-                  </Link>
-
-                  <Link
-                    to="/products/astro-nirikshan"
-                    className="flex items-center justify-between px-3 py-2.5 text-sm text-foreground hover:text-amber-500 hover:bg-background/70 rounded-lg transition-colors"
-                    onClick={closeMobileMenu}
-                  >
-                    <div className="flex items-center gap-2">
-                      <Sparkles className="w-4 h-4 text-amber-500" />
-                      <span>Astro Nirikshan</span>
-                    </div>
-                    <span className="text-[10px] font-mono text-amber-500 font-semibold">Holistic AI</span>
-                  </Link>
-
-                  <Link
-                    to="/10x-ai-productivity"
-                    className="flex items-center justify-between px-3 py-2.5 text-sm text-foreground hover:text-violet-500 hover:bg-background/70 rounded-lg transition-colors"
-                    onClick={closeMobileMenu}
-                  >
-                    <div className="flex items-center gap-2">
-                      <GraduationCap className="w-4 h-4 text-violet-500" />
-                      <span>10X AI Productivity</span>
-                    </div>
-                    <span className="text-[10px] font-mono text-violet-500">Training</span>
-                  </Link>
-                </div>
-              )}
-
-              {/* Expertise accordion */}
-              <button
-                className="flex w-full items-center justify-between gap-2 rounded-xl px-4 py-3.5 text-sm font-semibold hover:bg-secondary transition-colors text-left"
-                onClick={() => setMobileExpertiseOpen((prev) => !prev)}
-              >
-                <span>Expertise</span>
-                <span
-                  className={`text-muted-foreground transition-transform duration-200 ${
-                    mobileExpertiseOpen ? "rotate-180" : ""
-                  }`}
+              {/* Solutions Dropdown Section Box */}
+              {activeDropdown === "solutions" && (
+                <div
+                  className="absolute top-full left-0 pt-2 z-50 w-[580px] animate-in fade-in slide-in-from-top-2 duration-150"
+                  onMouseEnter={() => handleMouseEnter("solutions")}
+                  onMouseLeave={handleMouseLeave}
                 >
-                  ▾
-                </span>
-              </button>
+                  <div className="border border-concrete/40 dark:border-charcoal-border bg-ivory dark:bg-charcoal p-5 shadow-2xl">
+                    {/* Header */}
+                    <div className="flex items-center justify-between pb-3 mb-4 border-b border-concrete/30 dark:border-charcoal-border">
+                      <div className="flex items-center gap-2 text-[10px] font-mono tracking-widest text-concrete-dark dark:text-concrete uppercase">
+                        <span className="w-1.5 h-1.5 bg-sage inline-block" />
+                        <span>// CORE ENGINEERING SOLUTIONS</span>
+                      </div>
+                      <Link
+                        to="/services"
+                        onClick={() => setActiveDropdown(null)}
+                        className="text-[11px] font-mono font-bold text-sage hover:underline flex items-center gap-1"
+                      >
+                        ALL CAPABILITIES <ArrowRight size={12} />
+                      </Link>
+                    </div>
 
-              {mobileExpertiseOpen && (
-                <div className="space-y-0.5 bg-secondary/40 rounded-xl p-2 mx-1 animate-in fade-in slide-in-from-top-2 duration-150">
-                  {navigationCategories[0]?.items.map((item) => (
-                    <Link
-                      key={item.title}
-                      to={item.href}
-                      className="block px-3 py-2.5 text-sm text-muted-foreground hover:text-primary hover:bg-background/70 rounded-lg transition-colors"
-                      onClick={closeMobileMenu}
-                    >
-                      {item.title}
-                    </Link>
-                  ))}
-                  <div className="border-t border-border/50 mt-1 pt-1">
-                    <Link
-                      to={`/expertise/${navigationCategories[0]?.slug}`}
-                      className="block px-3 py-2.5 text-sm font-semibold text-primary rounded-lg transition-colors"
-                      onClick={closeMobileMenu}
-                    >
-                      View All {navigationCategories[0]?.title} →
-                    </Link>
+                    {/* 2x2 Grid */}
+                    <div className="grid grid-cols-2 gap-3">
+                      {/* Computer Vision */}
+                      <Link
+                        to="/expertise/artificial-intelligence/computer-vision"
+                        onClick={() => setActiveDropdown(null)}
+                        className="p-3 border border-concrete/30 dark:border-charcoal-border bg-white dark:bg-charcoal-surface hover:border-sage hover:bg-sage/5 transition-all group"
+                      >
+                        <div className="flex items-center gap-2 mb-1">
+                          <Eye size={15} className="text-sage" />
+                          <span className="text-xs font-mono font-bold uppercase tracking-wider text-charcoal dark:text-ivory group-hover:text-sage transition-colors">
+                            01 Computer Vision
+                          </span>
+                        </div>
+                        <p className="text-[11px] text-concrete-dark dark:text-concrete leading-snug">
+                          Real-time edge inspection, PPE safety detection, ANPR, defect analysis.
+                        </p>
+                      </Link>
+
+                      {/* Generative AI */}
+                      <Link
+                        to="/expertise/artificial-intelligence/generative-ai"
+                        onClick={() => setActiveDropdown(null)}
+                        className="p-3 border border-concrete/30 dark:border-charcoal-border bg-white dark:bg-charcoal-surface hover:border-sage hover:bg-sage/5 transition-all group"
+                      >
+                        <div className="flex items-center gap-2 mb-1">
+                          <Brain size={15} className="text-sage" />
+                          <span className="text-xs font-mono font-bold uppercase tracking-wider text-charcoal dark:text-ivory group-hover:text-sage transition-colors">
+                            02 Generative AI
+                          </span>
+                        </div>
+                        <p className="text-[11px] text-concrete-dark dark:text-concrete leading-snug">
+                          Enterprise LLMs, private RAG pipelines, intelligent document synthesis.
+                        </p>
+                      </Link>
+
+                      {/* Agentic AI */}
+                      <Link
+                        to="/expertise/artificial-intelligence/ai-agent-development"
+                        onClick={() => setActiveDropdown(null)}
+                        className="p-3 border border-concrete/30 dark:border-charcoal-border bg-white dark:bg-charcoal-surface hover:border-sage hover:bg-sage/5 transition-all group"
+                      >
+                        <div className="flex items-center gap-2 mb-1">
+                          <Bot size={15} className="text-sage" />
+                          <span className="text-xs font-mono font-bold uppercase tracking-wider text-charcoal dark:text-ivory group-hover:text-sage transition-colors">
+                            03 Agentic AI
+                          </span>
+                        </div>
+                        <p className="text-[11px] text-concrete-dark dark:text-concrete leading-snug">
+                          Multi-step autonomous workflows, self-healing execution, tool synthesis.
+                        </p>
+                      </Link>
+
+                      {/* Industrial Automation */}
+                      <Link
+                        to="/expertise/artificial-intelligence/ai-consulting"
+                        onClick={() => setActiveDropdown(null)}
+                        className="p-3 border border-concrete/30 dark:border-charcoal-border bg-white dark:bg-charcoal-surface hover:border-sage hover:bg-sage/5 transition-all group"
+                      >
+                        <div className="flex items-center gap-2 mb-1">
+                          <Factory size={15} className="text-sage" />
+                          <span className="text-xs font-mono font-bold uppercase tracking-wider text-charcoal dark:text-ivory group-hover:text-sage transition-colors">
+                            04 Industrial AI
+                          </span>
+                        </div>
+                        <p className="text-[11px] text-concrete-dark dark:text-concrete leading-snug">
+                          SCADA/PLC integration, predictive maintenance, edge camera streaming.
+                        </p>
+                      </Link>
+                    </div>
+
+                    {/* Bottom Status Strip */}
+                    <div className="mt-4 pt-3 border-t border-concrete/20 dark:border-charcoal-border flex items-center justify-between text-[10px] font-mono text-concrete">
+                      <span>DEPLOYMENT: AIR-GAPPED ON-PREMISE</span>
+                      <span className="text-sage font-bold">4 PRODUCTION ENGINES ACTIVE</span>
+                    </div>
                   </div>
                 </div>
               )}
+            </div>
 
-              {/* Nav links — 2-column grid */}
-              <div className="grid grid-cols-2 gap-2 pt-1">
-                {navLinks.slice(1).map((link) => (
-                  <Link
-                    key={link.path}
-                    to={link.path}
-                    className={`flex items-center rounded-xl px-4 py-3.5 text-sm font-semibold transition-colors ${
-                      location.pathname === link.path
-                        ? "bg-primary/10 text-primary"
-                        : "bg-secondary/50 hover:bg-secondary text-foreground"
-                    }`}
-                    onClick={closeMobileMenu}
-                  >
-                    {link.label}
-                  </Link>
-                ))}
+            {/* 2. Products Dropdown */}
+            <div
+              className="relative"
+              onMouseEnter={() => handleMouseEnter("products")}
+              onMouseLeave={handleMouseLeave}
+            >
+              <button
+                onClick={() => setActiveDropdown(activeDropdown === "products" ? null : "products")}
+                className={`inline-flex items-center gap-1.5 h-9 px-3.5 text-xs font-mono uppercase tracking-wider text-charcoal dark:text-ivory transition-all border-b-2 ${
+                  activeDropdown === "products"
+                    ? "border-sage-deep bg-sage/10 font-bold text-sage-deep dark:text-sage-light dark:border-sage"
+                    : "border-transparent hover:border-b-burntamber hover:text-burntamber hover:bg-burntamber/5"
+                }`}
+                aria-expanded={activeDropdown === "products"}
+              >
+                <span>Products</span>
+                <ChevronDown
+                  size={12}
+                  className={`transition-transform duration-200 ${
+                    activeDropdown === "products" ? "rotate-180 text-burntamber" : "text-concrete"
+                  }`}
+                />
+              </button>
+
+              {/* Products Dropdown Section Box */}
+              {activeDropdown === "products" && (
+                <div
+                  className="absolute top-full left-0 pt-2 z-50 w-[620px] animate-in fade-in slide-in-from-top-2 duration-150"
+                  onMouseEnter={() => handleMouseEnter("products")}
+                  onMouseLeave={handleMouseLeave}
+                >
+                  <div className="border border-concrete/40 dark:border-charcoal-border bg-ivory dark:bg-charcoal p-5 shadow-2xl">
+                    {/* Header */}
+                    <div className="flex items-center justify-between pb-3 mb-4 border-b border-concrete/30 dark:border-charcoal-border">
+                      <div className="flex items-center gap-2 text-[10px] font-mono tracking-widest text-concrete-dark dark:text-concrete uppercase">
+                        <span className="w-1.5 h-1.5 bg-sage inline-block" />
+                        <span>// PRODUCTION SYSTEMS &amp; PLATFORMS</span>
+                      </div>
+                      <Link
+                        to="/products"
+                        onClick={() => setActiveDropdown(null)}
+                        className="text-[11px] font-mono font-bold text-sage hover:underline flex items-center gap-1"
+                      >
+                        ALL PLATFORMS <ArrowRight size={12} />
+                      </Link>
+                    </div>
+
+                    {/* 2x2 Grid */}
+                    <div className="grid grid-cols-2 gap-3">
+                      {/* Nirikshan Vision Systems */}
+                      <Link
+                        to="/products/vision-systems"
+                        onClick={() => setActiveDropdown(null)}
+                        className="p-3 border border-concrete/30 dark:border-charcoal-border bg-white dark:bg-charcoal-surface hover:border-sage hover:bg-sage/5 transition-all group"
+                      >
+                        <div className="flex items-center gap-2 mb-1">
+                          <ShieldCheck size={15} className="text-sage" />
+                          <span className="text-xs font-mono font-bold uppercase tracking-wider text-charcoal dark:text-ivory group-hover:text-sage transition-colors">
+                            01 Vision Systems
+                          </span>
+                        </div>
+                        <p className="text-[11px] text-concrete-dark dark:text-concrete leading-snug">
+                          Industrial vision suite: PPE compliance, surface defect, ANPR, fire alerts.
+                        </p>
+                      </Link>
+
+                      {/* Astro Nirikshan */}
+                      <Link
+                        to="/products/astro-nirikshan"
+                        onClick={() => setActiveDropdown(null)}
+                        className="p-3 border border-concrete/30 dark:border-charcoal-border bg-white dark:bg-charcoal-surface hover:border-burntamber hover:bg-burntamber/5 transition-all group"
+                      >
+                        <div className="flex items-center gap-2 mb-1">
+                          <Sparkles size={15} className="text-burntamber" />
+                          <span className="text-xs font-mono font-bold uppercase tracking-wider text-charcoal dark:text-ivory group-hover:text-burntamber transition-colors">
+                            02 Astro Nirikshan
+                          </span>
+                        </div>
+                        <p className="text-[11px] text-concrete-dark dark:text-concrete leading-snug">
+                          Vedic astrology, Chaldean numerology, Kundli with 100% client privacy.
+                        </p>
+                      </Link>
+
+                      {/* 10X AI Productivity */}
+                      <Link
+                        to="/products/10x-ai-productivity"
+                        onClick={() => setActiveDropdown(null)}
+                        className="p-3 border border-concrete/30 dark:border-charcoal-border bg-white dark:bg-charcoal-surface hover:border-sage hover:bg-sage/5 transition-all group"
+                      >
+                        <div className="flex items-center gap-2 mb-1">
+                          <GraduationCap size={15} className="text-sage" />
+                          <span className="text-xs font-mono font-bold uppercase tracking-wider text-charcoal dark:text-ivory group-hover:text-sage transition-colors">
+                            03 10X AI Training
+                          </span>
+                        </div>
+                        <p className="text-[11px] text-concrete-dark dark:text-concrete leading-snug">
+                          Practical AI training for schools, universities, and corporate workforces.
+                        </p>
+                      </Link>
+
+                      {/* All Products Directory */}
+                      <Link
+                        to="/products"
+                        onClick={() => setActiveDropdown(null)}
+                        className="p-3 border border-concrete/30 dark:border-charcoal-border bg-white dark:bg-charcoal-surface hover:border-sage hover:bg-sage/5 transition-all group"
+                      >
+                        <div className="flex items-center gap-2 mb-1">
+                          <Layers size={15} className="text-sage" />
+                          <span className="text-xs font-mono font-bold uppercase tracking-wider text-charcoal dark:text-ivory group-hover:text-sage transition-colors">
+                            04 All Products
+                          </span>
+                        </div>
+                        <p className="text-[11px] text-concrete-dark dark:text-concrete leading-snug">
+                          Full portfolio directory, computer vision model registry &amp; benchmarks.
+                        </p>
+                      </Link>
+                    </div>
+
+                    {/* Bottom Status Strip */}
+                    <div className="mt-4 pt-3 border-t border-concrete/20 dark:border-charcoal-border flex items-center justify-between text-[10px] font-mono text-concrete">
+                      <span>DATA PRIVACY: ZERO RECURRING CLOUD TRANSMISSION</span>
+                      <span className="text-sage font-bold">100% AUDIT READY</span>
+                    </div>
+                  </div>
+                </div>
+              )}
+            </div>
+
+            {/* 3. Research Link */}
+            <Link
+              to="/case-studies"
+              onClick={() => setActiveDropdown(null)}
+              className={`inline-flex items-center h-9 px-3.5 text-xs font-mono uppercase tracking-wider text-charcoal dark:text-ivory transition-all border-b-2 ${
+                location.pathname === "/case-studies"
+                  ? "border-sage-deep text-sage-deep dark:border-sage dark:text-sage font-bold bg-sage/10"
+                  : "border-transparent hover:border-b-burntamber hover:text-burntamber hover:bg-burntamber/5"
+              }`}
+            >
+              Research
+            </Link>
+
+            {/* 4. Company Dropdown */}
+            <div
+              className="relative"
+              onMouseEnter={() => handleMouseEnter("company")}
+              onMouseLeave={handleMouseLeave}
+            >
+              <button
+                onClick={() => setActiveDropdown(activeDropdown === "company" ? null : "company")}
+                className={`inline-flex items-center gap-1.5 h-9 px-3.5 text-xs font-mono uppercase tracking-wider text-charcoal dark:text-ivory transition-all border-b-2 ${
+                  activeDropdown === "company" || location.pathname === "/about" || location.pathname === "/who-we-are"
+                    ? "border-sage-deep bg-sage/10 font-bold text-sage-deep dark:text-sage-light dark:border-sage"
+                    : "border-transparent hover:border-b-burntamber hover:text-burntamber hover:bg-burntamber/5"
+                }`}
+                aria-expanded={activeDropdown === "company"}
+              >
+                <span>Company</span>
+                <ChevronDown
+                  size={12}
+                  className={`transition-transform duration-200 ${
+                    activeDropdown === "company" ? "rotate-180 text-burntamber" : "text-concrete"
+                  }`}
+                />
+              </button>
+
+              {/* Company Dropdown Section Box */}
+              {activeDropdown === "company" && (
+                <div
+                  className="absolute top-full left-0 pt-2 z-50 w-[540px] animate-in fade-in slide-in-from-top-2 duration-150"
+                  onMouseEnter={() => handleMouseEnter("company")}
+                  onMouseLeave={handleMouseLeave}
+                >
+                  <div className="border border-concrete/40 dark:border-charcoal-border bg-ivory dark:bg-charcoal p-5 shadow-2xl">
+                    <div className="flex items-center justify-between pb-3 mb-4 border-b border-concrete/30 dark:border-charcoal-border">
+                      <div className="flex items-center gap-2 text-[10px] font-mono tracking-widest text-concrete-dark dark:text-concrete uppercase">
+                        <span className="w-1.5 h-1.5 bg-sage inline-block" />
+                        <span>// INSTITUTIONAL IDENTITY &amp; PEOPLE</span>
+                      </div>
+                      <Link
+                        to="/about"
+                        onClick={() => setActiveDropdown(null)}
+                        className="text-[11px] font-mono font-bold text-sage hover:underline flex items-center gap-1"
+                      >
+                        OVERVIEW <ArrowRight size={12} />
+                      </Link>
+                    </div>
+
+                    <div className="grid grid-cols-2 gap-3">
+                      <Link
+                        to="/who-we-are"
+                        onClick={() => setActiveDropdown(null)}
+                        className="p-3 border border-concrete/30 dark:border-charcoal-border bg-white dark:bg-charcoal-surface hover:border-sage hover:bg-sage/5 transition-all group"
+                      >
+                        <div className="text-xs font-mono font-bold uppercase tracking-wider text-charcoal dark:text-ivory group-hover:text-sage transition-colors mb-1">
+                          01 Who We Are
+                        </div>
+                        <p className="text-[11px] text-concrete-dark dark:text-concrete leading-snug">
+                          Executive leadership, Dev Bhoomi roots, values &amp; team culture.
+                        </p>
+                      </Link>
+
+                      <Link
+                        to="/about"
+                        onClick={() => setActiveDropdown(null)}
+                        className="p-3 border border-concrete/30 dark:border-charcoal-border bg-white dark:bg-charcoal-surface hover:border-sage hover:bg-sage/5 transition-all group"
+                      >
+                        <div className="text-xs font-mono font-bold uppercase tracking-wider text-charcoal dark:text-ivory group-hover:text-sage transition-colors mb-1">
+                          02 About Lab
+                        </div>
+                        <p className="text-[11px] text-concrete-dark dark:text-concrete leading-snug">
+                          Organization, facility coordinates, and technological capabilities.
+                        </p>
+                      </Link>
+
+                      <Link
+                        to="/journey"
+                        onClick={() => setActiveDropdown(null)}
+                        className="p-3 border border-concrete/30 dark:border-charcoal-border bg-white dark:bg-charcoal-surface hover:border-sage hover:bg-sage/5 transition-all group"
+                      >
+                        <div className="text-xs font-mono font-bold uppercase tracking-wider text-charcoal dark:text-ivory group-hover:text-sage transition-colors mb-1">
+                          03 Timeline
+                        </div>
+                        <p className="text-[11px] text-concrete-dark dark:text-concrete leading-snug">
+                          Milestones from student research to registered enterprise firm.
+                        </p>
+                      </Link>
+
+                      <Link
+                        to="/testimonials"
+                        onClick={() => setActiveDropdown(null)}
+                        className="p-3 border border-concrete/30 dark:border-charcoal-border bg-white dark:bg-charcoal-surface hover:border-sage hover:bg-sage/5 transition-all group"
+                      >
+                        <div className="text-xs font-mono font-bold uppercase tracking-wider text-charcoal dark:text-ivory group-hover:text-sage transition-colors mb-1">
+                          04 Endorsements
+                        </div>
+                        <p className="text-[11px] text-concrete-dark dark:text-concrete leading-snug">
+                          Academic &amp; enterprise client feedback on our prototypes.
+                        </p>
+                      </Link>
+                    </div>
+
+                    <div className="mt-4 pt-3 border-t border-concrete/20 dark:border-charcoal-border flex items-center justify-between text-[10px] font-mono text-concrete">
+                      <span>LOCATION: HARIDWAR &amp; DEHRADUN</span>
+                      <span className="text-sage font-bold">MCA REGISTERED</span>
+                    </div>
+                  </div>
+                </div>
+              )}
+            </div>
+
+            {/* 5. Careers Link */}
+            <Link
+              to="/careers"
+              onClick={() => setActiveDropdown(null)}
+              className={`inline-flex items-center h-9 px-3.5 text-xs font-mono uppercase tracking-wider text-charcoal dark:text-ivory transition-all border-b-2 ${
+                location.pathname === "/careers"
+                  ? "border-sage-deep text-sage-deep dark:border-sage dark:text-sage font-bold bg-sage/10"
+                  : "border-transparent hover:border-b-burntamber hover:text-burntamber hover:bg-burntamber/5"
+              }`}
+            >
+              Careers
+            </Link>
+          </div>
+
+          {/* Right Action & Theme Toggle */}
+          <div className="flex items-center gap-3">
+            <SwitchToggleThemeDemo />
+
+            <Link to="/contact" className="hidden sm:inline-flex">
+              <Button
+                className="bg-charcoal text-ivory hover:bg-burntamber hover:border-burntamber hover:text-white text-xs font-mono uppercase tracking-wider px-5 h-9 rounded-none border border-charcoal transition-all font-semibold"
+              >
+                Let's Talk
+              </Button>
+            </Link>
+
+            {/* Mobile menu hamburger */}
+            <button
+              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+              className="lg:hidden p-2 text-charcoal dark:text-ivory border border-concrete/40 dark:border-charcoal-border hover:border-burntamber hover:text-burntamber transition-colors"
+              aria-label="Toggle Navigation Menu"
+            >
+              {mobileMenuOpen ? <X size={20} /> : <Menu size={20} />}
+            </button>
+          </div>
+        </div>
+
+        {/* ── Mobile Navigation Drawer ── */}
+        {mobileMenuOpen && (
+          <div className="lg:hidden border-t border-concrete/40 dark:border-charcoal-border bg-ivory dark:bg-charcoal p-5 max-h-[calc(100vh-4rem)] overflow-y-auto">
+            <div className="space-y-4">
+              <div className="text-[10px] font-mono tracking-widest text-concrete-dark dark:text-concrete uppercase">
+                // NAVIGATION PROTOCOL
               </div>
 
+              {/* Solutions Accordion */}
+              <div>
+                <button
+                  onClick={() => setMobileSection(mobileSection === "solutions" ? null : "solutions")}
+                  className="w-full flex items-center justify-between py-2 text-sm font-mono uppercase tracking-wider text-charcoal dark:text-ivory border-b border-concrete/20 dark:border-charcoal-border"
+                >
+                  <span>Solutions</span>
+                  <ChevronRight
+                    size={16}
+                    className={`transition-transform ${mobileSection === "solutions" ? "rotate-90 text-sage" : ""}`}
+                  />
+                </button>
+                {mobileSection === "solutions" && (
+                  <div className="pl-4 py-2 space-y-2 border-l border-sage/40 mt-2 bg-techlight/50 dark:bg-charcoal-surface/50">
+                    <Link
+                      to="/expertise/artificial-intelligence/computer-vision"
+                      className="block text-xs font-mono py-1 text-charcoal dark:text-ivory hover:text-sage"
+                    >
+                      01 Computer Vision
+                    </Link>
+                    <Link
+                      to="/expertise/artificial-intelligence/generative-ai"
+                      className="block text-xs font-mono py-1 text-charcoal dark:text-ivory hover:text-sage"
+                    >
+                      02 Generative AI
+                    </Link>
+                    <Link
+                      to="/expertise/artificial-intelligence/ai-agent-development"
+                      className="block text-xs font-mono py-1 text-charcoal dark:text-ivory hover:text-sage"
+                    >
+                      03 Agentic AI
+                    </Link>
+                    <Link
+                      to="/expertise/artificial-intelligence/ai-consulting"
+                      className="block text-xs font-mono py-1 text-charcoal dark:text-ivory hover:text-sage"
+                    >
+                      04 Industrial Automation
+                    </Link>
+                  </div>
+                )}
+              </div>
+
+              {/* Products Accordion */}
+              <div>
+                <button
+                  onClick={() => setMobileSection(mobileSection === "products" ? null : "products")}
+                  className="w-full flex items-center justify-between py-2 text-sm font-mono uppercase tracking-wider text-charcoal dark:text-ivory border-b border-concrete/20 dark:border-charcoal-border"
+                >
+                  <span>Products</span>
+                  <ChevronRight
+                    size={16}
+                    className={`transition-transform ${mobileSection === "products" ? "rotate-90 text-sage" : ""}`}
+                  />
+                </button>
+                {mobileSection === "products" && (
+                  <div className="pl-4 py-2 space-y-2 border-l border-sage/40 mt-2 bg-techlight/50 dark:bg-charcoal-surface/50">
+                    <Link
+                      to="/products/vision-systems"
+                      className="block text-xs font-mono py-1 text-charcoal dark:text-ivory hover:text-sage"
+                    >
+                      01 Nirikshan Vision Systems
+                    </Link>
+                    <Link
+                      to="/products/astro-nirikshan"
+                      className="block text-xs font-mono py-1 text-burntamber hover:underline"
+                    >
+                      02 Astro Nirikshan
+                    </Link>
+                    <Link
+                      to="/products/10x-ai-productivity"
+                      className="block text-xs font-mono py-1 text-charcoal dark:text-ivory hover:text-sage"
+                    >
+                      03 10X AI Productivity Training
+                    </Link>
+                    <Link
+                      to="/products"
+                      className="block text-xs font-mono py-1 text-concrete hover:text-charcoal dark:hover:text-ivory"
+                    >
+                      04 All Products Directory
+                    </Link>
+                  </div>
+                )}
+              </div>
+
+              <Link
+                to="/case-studies"
+                className="block py-2 text-sm font-mono uppercase tracking-wider text-charcoal dark:text-ivory border-b border-concrete/20 dark:border-charcoal-border"
+              >
+                Research &amp; Case Studies
+              </Link>
+
+              {/* Company Accordion */}
+              <div>
+                <button
+                  onClick={() => setMobileSection(mobileSection === "company" ? null : "company")}
+                  className="w-full flex items-center justify-between py-2 text-sm font-mono uppercase tracking-wider text-charcoal dark:text-ivory border-b border-concrete/20 dark:border-charcoal-border"
+                >
+                  <span>Company</span>
+                  <ChevronRight
+                    size={16}
+                    className={`transition-transform ${mobileSection === "company" ? "rotate-90 text-sage" : ""}`}
+                  />
+                </button>
+                {mobileSection === "company" && (
+                  <div className="pl-4 py-2 space-y-2 border-l border-sage/40 mt-2 bg-techlight/50 dark:bg-charcoal-surface/50">
+                    <Link
+                      to="/who-we-are"
+                      className="block text-xs font-mono py-1 text-charcoal dark:text-ivory hover:text-sage font-bold"
+                    >
+                      01 Who We Are &amp; Leadership
+                    </Link>
+                    <Link
+                      to="/about"
+                      className="block text-xs font-mono py-1 text-charcoal dark:text-ivory hover:text-sage"
+                    >
+                      02 About Lab &amp; Facilities
+                    </Link>
+                    <Link
+                      to="/journey"
+                      className="block text-xs font-mono py-1 text-charcoal dark:text-ivory hover:text-sage"
+                    >
+                      03 Timeline &amp; Milestones
+                    </Link>
+                    <Link
+                      to="/testimonials"
+                      className="block text-xs font-mono py-1 text-charcoal dark:text-ivory hover:text-sage"
+                    >
+                      04 Testimonials &amp; Endorsements
+                    </Link>
+                  </div>
+                )}
+              </div>
+
+              <Link
+                to="/careers"
+                className="block py-2 text-sm font-mono uppercase tracking-wider text-charcoal dark:text-ivory border-b border-concrete/20 dark:border-charcoal-border"
+              >
+                Careers
+              </Link>
+
+              <div className="pt-4">
+                <Link to="/contact" className="block w-full">
+                  <Button className="w-full bg-charcoal text-ivory dark:bg-sage dark:text-charcoal text-xs font-mono uppercase tracking-wider h-11 rounded-none font-semibold">
+                    Let's Talk →
+                  </Button>
+                </Link>
+              </div>
             </div>
           </div>
-        </>
-      )}
-
-      {/* Spacer so content doesn't hide under the fixed nav */}
-      <div aria-hidden="true" style={{ height: headerHeight }} />
+        )}
+      </nav>
     </>
   );
 };

@@ -64,8 +64,8 @@
 /* ─── Design System ─── */
 @layer base {
   :root {
-    --background: 240 100% 98%;
-    --foreground: 240 29% 23%;
+    --background: 60 19% 95%; /* Technical Ivory #F5F5F0 */
+    --foreground: 140 6% 10%; /* Technical Charcoal #171A18 */
 
     --card: 0 0% 100%;
     --card-foreground: 240 29% 23%;
@@ -73,29 +73,29 @@
     --popover: 0 0% 100%;
     --popover-foreground: 240 29% 23%;
 
-    --primary: 259 56% 57%;
+    --primary: 89 20% 61%; /* Primary Sage Green #9CAF88 */
     --primary-foreground: 0 0% 100%;
 
-    --secondary: 249 100% 94%;
-    --secondary-foreground: 248 33% 38%;
+    --secondary: 60 6% 91%; /* Light Grey #E9E9E5 */
+    --secondary-foreground: 140 6% 10%;
 
-    --muted: 240 63% 96%;
+    --muted: 60 6% 91%;
     --muted-foreground: 240 13% 48%;
 
-    --accent: 220 100% 93%;
+    --accent: 25 100% 40%; /* Burnt Amber #CC5500 */
     --accent-foreground: 240 29% 23%;
 
     --destructive: 351 100% 66%;
     --destructive-foreground: 0 0% 100%;
 
-    --border: 240 43% 91%;
+    --border: 0 0% 75%; /* Concrete Grey */
     --input: 240 43% 91%;
     --ring: 259 56% 57%;
 
-    --radius: 0.5rem;
+    --radius: 0px; /* Modern Brutalism Sharp Containers */
 
-    --gradient-start: 259 56% 57%;
-    --gradient-end: 220 100% 93%;
+    --gradient-start: 89 20% 61%; /* Sage Green */
+    --gradient-end: 89 25% 48%;
 
     --sidebar-background: 240 63% 96%;
     --sidebar-foreground: 240 29% 23%;
@@ -108,16 +108,16 @@
   }
 
   .dark {
-    --background: 240 29% 8%;
-    --foreground: 240 53% 92%;
+    --background: 140 6% 10%; /* Technical Charcoal #171A18 */
+    --foreground: 60 19% 95%; /* Technical Ivory #F5F5F0 */
 
-    --card: 240 29% 14%;
+    --card: 140 6% 13%; /* Charcoal Surface #1F2320 */
     --card-foreground: 240 53% 92%;
 
     --popover: 240 29% 14%;
     --popover-foreground: 240 53% 92%;
 
-    --primary: 258 100% 78%;
+    --primary: 89 25% 65%; /* Sage Green */
     --primary-foreground: 240 29% 8%;
 
     --secondary: 243 33% 25%;
@@ -126,18 +126,18 @@
     --muted: 240 33% 20%;
     --muted-foreground: 240 25% 69%;
 
-    --accent: 240 33% 28%;
+    --accent: 25 100% 45%; /* Burnt Amber */
     --accent-foreground: 240 53% 92%;
 
     --destructive: 351 100% 66%;
     --destructive-foreground: 0 0% 100%;
 
-    --border: 240 27% 25%;
+    --border: 140 6% 22%; /* Technical Border */
     --input: 240 27% 25%;
     --ring: 258 100% 78%;
 
-    --gradient-start: 258 100% 78%;
-    --gradient-end: 240 33% 28%;
+    --gradient-start: 89 25% 65%;
+    --gradient-end: 89 25% 48%;
 
     --sidebar-background: 240 29% 14%;
     --sidebar-foreground: 240 53% 92%;
@@ -220,6 +220,27 @@
       linear-gradient(hsl(var(--border) / 0.15) 1px, transparent 1px),
       linear-gradient(90deg, hsl(var(--border) / 0.15) 1px, transparent 1px);
     background-size: 60px 60px;
+  }
+
+  /* ─── Technical Editorial Brutalism ─── */
+  .tech-grid-bg {
+    background-image:
+      linear-gradient(to right, rgba(167, 167, 167, 0.15) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(167, 167, 167, 0.15) 1px, transparent 1px);
+    background-size: 32px 32px;
+  }
+  .tech-crosshair {
+    position: relative;
+  }
+  .tech-label {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.6875rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+  }
+  .sharp-panel {
+    border: 1px solid rgba(167, 167, 167, 0.35);
+    border-radius: 0px;
   }
 
   /* ─── AI Glow effects ─── */

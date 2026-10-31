@@ -63,7 +63,7 @@ const TRACKS = [
   {
     id: "tech-for-good",
     title: "Tech for Good (AI & Software)",
-    description: "Develop software solutions, mobile apps, and machine learning pipelines designed to solve grassroots rural challenges. Work on projects like Manorma Krishi Rakshak.",
+    description: "Develop software solutions, mobile apps, and machine learning pipelines designed to solve grassroots rural challenges with edge AI and computer vision.",
     icon: Rocket,
     color: "text-emerald-600 bg-emerald-500/10 dark:text-emerald-400 dark:bg-emerald-500/20"
   },

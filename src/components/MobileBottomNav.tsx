@@ -1,12 +1,11 @@
-import { Home, Package, Layers, Phone, Menu } from "lucide-react";
+import { Home, Package, Layers, Phone } from "lucide-react";
 import { Link, useLocation } from "react-router-dom";
-import { useState } from "react";
 
 const navItems = [
-  { icon: Home, label: "Home", path: "/" },
-  { icon: Layers, label: "Expertise", path: "/expertise" },
-  { icon: Package, label: "Products", path: "/products" },
-  { icon: Phone, label: "Contact", path: "/contact" },
+  { icon: Home, label: "HOME", path: "/" },
+  { icon: Layers, label: "SOLUTIONS", path: "/services" },
+  { icon: Package, label: "PRODUCTS", path: "/products" },
+  { icon: Phone, label: "CONTACT", path: "/contact" },
 ];
 
 export const MobileBottomNav = () => {
@@ -21,8 +20,7 @@ export const MobileBottomNav = () => {
       className="fixed bottom-0 left-0 right-0 z-[60] lg:hidden"
       aria-label="Mobile bottom navigation"
     >
-      {/* Safe area background */}
-      <div className="bg-background/95 backdrop-blur-xl border-t border-border shadow-[0_-4px_20px_rgba(0,0,0,0.08)]">
+      <div className="bg-ivory/95 dark:bg-charcoal/95 backdrop-blur-xl border-t border-concrete/40 dark:border-charcoal-border shadow-md">
         <div
           className="flex items-stretch"
           style={{ paddingBottom: "env(safe-area-inset-bottom, 0px)" }}
@@ -36,30 +34,30 @@ export const MobileBottomNav = () => {
               <Link
                 key={path}
                 to={path}
-                className={`flex flex-1 flex-col items-center justify-center gap-0.5 py-2.5 px-1 transition-all duration-200 relative group ${
-                  isActive ? "text-primary" : "text-muted-foreground"
+                className={`flex flex-1 flex-col items-center justify-center gap-1 py-2 px-1 transition-all duration-150 relative group ${
+                  isActive
+                    ? "text-charcoal dark:text-ivory"
+                    : "text-concrete-dark dark:text-concrete hover:text-charcoal"
                 }`}
                 aria-current={isActive ? "page" : undefined}
               >
-                {/* Active indicator pill */}
+                {/* Active indicator line */}
                 {isActive && (
-                  <span className="absolute top-0 left-1/2 -translate-x-1/2 w-8 h-0.5 rounded-full bg-primary" />
+                  <span className="absolute top-0 left-0 right-0 h-0.5 bg-sage-deep dark:bg-sage" />
                 )}
                 <span
-                  className={`flex items-center justify-center w-10 h-7 rounded-xl transition-all duration-200 ${
-                    isActive
-                      ? "bg-primary/10 scale-110"
-                      : "group-hover:bg-secondary/60"
+                  className={`flex items-center justify-center w-8 h-6 transition-all duration-150 ${
+                    isActive ? "text-sage-deep dark:text-sage" : "group-hover:text-burntamber"
                   }`}
                 >
                   <Icon
-                    size={isActive ? 21 : 20}
+                    size={18}
                     strokeWidth={isActive ? 2.2 : 1.8}
                   />
                 </span>
                 <span
-                  className={`text-[10px] font-medium leading-tight ${
-                    isActive ? "text-primary font-semibold" : ""
+                  className={`text-[9px] font-mono tracking-wider ${
+                    isActive ? "font-bold text-sage-deep dark:text-sage" : "group-hover:text-burntamber"
                   }`}
                 >
                   {label}
@@ -72,4 +70,3 @@ export const MobileBottomNav = () => {
     </nav>
   );
 };
-

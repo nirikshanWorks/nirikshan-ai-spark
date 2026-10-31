@@ -1,190 +1,207 @@
-import anshulImage from "@/assets/team/anshul.png";
-
-import vikramImage from "@/assets/team/vikram-biyani.jpg";
-import wwaTeamVideo from "@/assets/wwa-team.mp4";
-import { Footer } from "@/components/Footer";
-import { Navigation } from "@/components/Navigation";
-import { FadeUp, StaggerContainer, StaggerItem } from "@/components/ScrollAnimations";
+import React, { useState } from "react";
 import { SEO } from "@/components/SEO";
-import { motion } from "framer-motion";
+import { Navigation } from "@/components/Navigation";
+import { Footer } from "@/components/Footer";
 import { Button } from "@/components/ui/button";
-import { useScrollAnimation } from "@/hooks/use-scroll-animation";
+import { Link } from "react-router-dom";
+import { motion } from "framer-motion";
 import {
   ArrowRight,
-  ArrowUp,
-  Focus,
-  Globe2,
+  ShieldCheck,
+  Users2,
   GraduationCap,
+  Sparkles,
+  Globe2,
   Linkedin,
   Milestone,
-  Quote,
+  Target,
   Rocket,
-  ShieldCheck,
-  Sparkles,
-  Users2
+  CheckCircle2,
+  Quote,
+  Eye,
+  Cpu,
+  Layers,
+  Terminal,
+  Activity
 } from "lucide-react";
-import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+
+import anshulImage from "@/assets/team/anshul.png";
+import vikramImage from "@/assets/team/vikram-biyani.jpg";
+import wwaTeamVideo from "@/assets/wwa-team.mp4";
+import { timeline, testimonials } from "./whoWeAreContent";
 
 const values = [
   {
-    title: "Integrity & Transparency",
-    description: "We communicate clearly, act ethically, and honour every commitment.",
-    icon: ShieldCheck
+    num: "01",
+    title: "Deterministic Integrity",
+    description: "We communicate transparently, design deterministic systems, and eliminate probabilistic guesswork from mission-critical operations.",
+    icon: ShieldCheck,
+    tag: "ETHICS // ZERO_HALLUCINATION"
   },
   {
-    title: "Innovation through Collaboration",
-    description: "Cross-disciplinary teams co-create breakthrough AI experiences.",
-    icon: Users2
+    num: "02",
+    title: "Cross-Disciplinary R&D",
+    description: "Machine learning researchers, embedded hardware engineers, and domain specialists co-architect production platforms.",
+    icon: Users2,
+    tag: "COLLABORATION // FULL_STACK"
   },
   {
-    title: "Continuous Learning",
-    description: "We stay curious, experiment boldly, and translate research into practice.",
-    icon: GraduationCap
+    num: "03",
+    title: "Continuous Mathematical Rigor",
+    description: "We stay curious, experiment boldly on custom neural backbones, and translate academic papers into optimized TensorRT binaries.",
+    icon: GraduationCap,
+    tag: "RESEARCH // INT8_QUANT"
   },
   {
-    title: "Data Ethics & Responsibility",
-    description: "Every model we build respects privacy, fairness, and accountability.",
-    icon: Sparkles
+    num: "04",
+    title: "Data Sovereignty & Privacy",
+    description: "Every model we engineer guarantees 100% on-premise air-gap execution. Zero proprietary client telemetry leaves the local network.",
+    icon: Sparkles,
+    tag: "PRIVACY // AIR_GAPPED"
   },
   {
-    title: "Impact-Driven Research",
-    description: "We measure success by the real outcomes delivered to people and planet.",
-    icon: Globe2
+    num: "05",
+    title: "Physical-World Impact",
+    description: "We measure system success not by synthetic benchmarks, but by verified outcomes on assembly lines, farmlands, and clinical facilities.",
+    icon: Globe2,
+    tag: "REAL_WORLD // DEPLOYED"
   }
 ];
 
 const leadership = [
   {
+    id: "anshul",
     name: "Anshul",
-    role: "Founder & CEO",
-    bio: "Anshul spearheads technical strategy and system design, translating complex requirements into scalable, production-ready platforms.",
-    extendedBio: "Anshul leads the core vision of Nirikshan AI, blending hands-on deep tech expertise with business acumen. With a passion for building AI systems that work in the real world, he guides the engineering teams in deploying robust LLM pipelines, RAG systems, and real-time computer vision models. Under his leadership, Nirikshan AI has grown from a student research project into a trusted technology partner for global clients.",
-    message: "Operational excellence is more than executing playbooks — it is about designing environments where teams are empowered to experiment, iterate, and deliver. We invest deeply in research collaborations, mentorship, and tooling that help our people grow. When our teams thrive, the innovations they produce resonate far beyond our studio. I am proud of the ecosystem we continue to build — one where every project is handled with precision, and every partner sees us as an extension of their own mission.",
+    role: "Founder & Chief Executive Officer",
+    badge: "EXE_DIR // 01 · SYSTEM ARCHITECTURE",
+    specialization: "Edge Computer Vision, INT8 Quantization, Embedded CUDA Kernels",
+    bio: "Anshul spearheads the overarching vision and deep-tech engineering roadmap at Nirikshan AI. Blending rigorous computer vision research with production hardware instincts, he leads the team in developing high-throughput RTSP decoders, custom YOLO inference engines, and autonomous multi-agent state machines.",
+    extendedBio: "Under his leadership, Nirikshan AI has scaled from a university prototype incubator at Dev Bhoomi's IEC Lab into an enterprise-trusted technology company deploying air-gapped vision systems across India's industrial manufacturing and grassroots agritech sectors.",
+    quote: "Real-world AI cannot rely on cloud streaming latencies or external socket dependencies. We engineer deterministic vision pipelines that process every high-resolution frame directly on the edge in under 15ms.",
     image: anshulImage,
     linkedin: "https://www.linkedin.com/in/anshultech1"
   },
   {
+    id: "vikram",
     name: "CA Vikram Biyani",
-    role: "Director – Finance",
-    bio: "CA Vikram Biyani steers financial strategy and planning, enabling sustainable growth through disciplined fiscal management and strategic investments.",
-    extendedBio: "CA Vikram Biyani is a seasoned financial strategist who directs Nirikshan AI's fiscal policies, capital efficiency, and strategic partnerships. Combining mathematical precision with financial foresight, he ensures that the company's research-driven initiatives are backed by solid economic foundations. He advises on risk management, investment strategies, and maximizing ROI for both the company and its enterprise partners.",
-    message: "Sustainable growth requires a perfect balance of disciplined fiscal policy and bold investments in innovation. At Nirikshan AI, we approach finance not just as keeping books, but as a strategic tool to generate long-term value for our clients, team, and shareholders. By ensuring financial health and capital efficiency, we build a stable, trust-driven company that our partners can rely on for years to come.",
+    role: "Director – Finance & Corporate Strategy",
+    badge: "EXE_DIR // 02 · FISCAL GOVERNANCE",
+    specialization: "Capital Allocation, R&D Resource Optimization, Enterprise Governance",
+    bio: "CA Vikram Biyani directs Nirikshan AI's fiscal infrastructure, capital efficiency, and strategic enterprise alliances. Combining numerical precision with corporate governance foresight, he ensures that the company's research-heavy engineering initiatives are supported by sustainable financial foundations.",
+    extendedBio: "He advises on corporate risk management, strategic procurement of high-performance compute clusters, and maximizing tangible ROI for enterprise deployment partners.",
+    quote: "Sustainable deep-tech innovation requires disciplined capital allocation and transparent governance. We build long-term enterprise trust through mathematical fiscal rigor and proven operational value.",
     image: vikramImage,
     linkedin: "https://www.linkedin.com/in/viekram-biyaani-44810817b"
   }
 ];
 
-const WhoWeAre = () => {
-  const storyRef = useScrollAnimation(0.15);
-  const missionRef = useScrollAnimation(0.15);
-  const valuesRef = useScrollAnimation(0.15);
-  const leadershipRef = useScrollAnimation(0.2);
-  const cardsRef = useScrollAnimation(0.2);
-  const [showBackToTop, setShowBackToTop] = useState(false);
-  const [activeLeaderIndex, setActiveLeaderIndex] = useState(0);
-
-  useEffect(() => {
-    const handleScroll = () => {
-      setShowBackToTop(window.scrollY > 400);
-    };
-
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
+export const WhoWeAre = () => {
+  const [activeLeader, setActiveLeader] = useState<string>("anshul");
+  const currentLeader = leadership.find((l) => l.id === activeLeader) || leadership[0];
 
   return (
-    <div className="min-h-screen bg-background scroll-smooth">
+    <div className="min-h-screen bg-ivory dark:bg-charcoal text-charcoal dark:text-ivory selection:bg-sage selection:text-charcoal font-sans">
       <SEO
-        title="Who We Are — Meet the Nirikshan AI Team"
-        description="Meet the leadership team and culture behind Nirikshan AI. Discover our story, mission, and the people driving AI innovation."
+        title="Who We Are // Leadership, Genesis & Culture | Nirikshan AI"
+        description="Discover the team, academic origins, and engineering culture behind Nirikshan AI. From Dev Bhoomi IEC Innovation Lab to production edge AI systems."
         canonical="https://nirikshanai.com/who-we-are"
       />
       <Navigation />
 
-      <main className="pt-16">
-        <section
-          id="who-we-are"
-          className="relative h-[420px] md:h-[520px] overflow-hidden flex items-center"
-        >
-          <video
-            src={wwaTeamVideo}
-            autoPlay
-            muted
-            loop
-            playsInline
-            aria-hidden="true"
-            className="absolute inset-0 w-full h-full object-cover opacity-70"
-          />
-          <div className="absolute inset-0 bg-gradient-to-br from-slate-900/90 via-slate-900/40 to-indigo-900/70" aria-hidden="true" />
-          <div className="relative z-10 container mx-auto px-6">
-            <div className="max-w-3xl space-y-6">
-              <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/10 text-white text-xs md:text-sm uppercase tracking-[0.2em]">
-                <Sparkles size={16} /> Next-Gen AI Research Studio
-              </span>
-              <h1 className="text-4xl md:text-6xl font-bold text-white leading-tight">
-                We are Nirikshan AI — the innovation-driven research startup shaping intelligent futures.
-              </h1>
-              <p className="text-lg md:text-xl text-white/85">
-                We turn ideas into intelligent solutions that redefine industries.
-              </p>
-              <div className="flex flex-col sm:flex-row gap-4">
-                <Link to="/contact">
-                  <Button size="lg" className="gradient-primary shadow-lg shadow-indigo-500/30">
-                    Partner With Us
-                    <ArrowRight className="ml-2" size={20} />
-                  </Button>
-                </Link>
-                <Link to="#our-story">
-                  <Button size="lg" variant="outline" className="border-white/60 text-black hover:bg-white/10">
-                    Explore Our Journey
-                  </Button>
-                </Link>
-              </div>
-            </div>
+      <main className="relative pt-20">
+        {/* ══════════════════════════════════════════════════════
+            SECTION 01 — HERO (Technical Editorial Dossier)
+        ══════════════════════════════════════════════════════ */}
+        <section className="relative border-b border-concrete/40 dark:border-charcoal-border bg-charcoal text-ivory overflow-hidden">
+          {/* Subtle Video Background with Dark Technical Filter */}
+          <div className="absolute inset-0 pointer-events-none opacity-30 mix-blend-luminosity overflow-hidden">
+            <video
+              src={wwaTeamVideo}
+              autoPlay
+              muted
+              loop
+              playsInline
+              className="w-full h-full object-cover scale-105"
+            />
           </div>
-        </section>
+          <div className="absolute inset-0 tech-grid-bg opacity-20 pointer-events-none" />
 
-        <section
-          id="our-story"
-          className="py-20 bg-gradient-to-b from-background via-secondary/20 to-background relative"
-          ref={storyRef.ref}
-        >
-          <div className="container mx-auto px-6 grid gap-12 md:grid-cols-[1.2fr,0.8fr] items-center relative z-10">
-            <div className="space-y-6">
-              <h2 className="text-3xl md:text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-indigo-500 via-purple-500 to-blue-500">
-                Born from curiosity, built for impact
-              </h2>
-              <p className="text-lg text-muted-foreground leading-relaxed">
-                Nirikshan AI was conceived at Dev Bhoomi through the IEC Club, where passionate students experimented with
-                neural networks, computer vision, and automation. What began as late-night prototyping quickly evolved into
-                a research collective committed to turning experimental breakthroughs into usable, responsible AI products.
-              </p>
-              <p className="text-lg text-muted-foreground leading-relaxed">
-                Today, we bridge innovation and implementation by bringing researchers, designers, and engineers together
-                under one roof. Our mission is simple: take the spark of an idea and transform it into an intelligent system
-                that can scale in the real world.
-              </p>
-              <div>
-                <Link to="/case-studies">
-                  <Button variant="secondary" className="group">
-                    Read More
-                    <ArrowRight className="ml-2 group-hover:translate-x-1 transition-transform" size={18} />
-                  </Button>
-                </Link>
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 pt-16 pb-20 relative z-10">
+            {/* Top Monospace Telemetry Strip */}
+            <div className="flex items-center justify-between pb-4 mb-8 border-b border-charcoal-border text-[11px] font-mono tracking-widest text-concrete uppercase">
+              <div className="flex items-center gap-3">
+                <span className="w-2 h-2 bg-sage inline-block animate-pulse" />
+                <span>SEC_01 // INSTITUTIONAL IDENTITY &amp; PEOPLE</span>
+                <span className="hidden sm:inline">//</span>
+                <span className="hidden sm:inline">NIRIKSHAN_AI_PVT_LTD</span>
+              </div>
+              <div className="flex items-center gap-3">
+                <span>EST: 2024 · DEV BHOOMI</span>
+                <span>//</span>
+                <span className="text-sage font-bold">CIN: U72900UR2023PTC015792</span>
               </div>
             </div>
-            <div className="relative">
-              <div className="absolute inset-0 bg-gradient-to-br from-indigo-500/30 via-purple-500/20 to-blue-500/30 blur-3xl rounded-full" aria-hidden="true" />
-              <div className="relative p-[1px] rounded-3xl bg-gradient-to-br from-indigo-400 via-purple-400 to-blue-400">
-                <div className="rounded-3xl bg-background/95 p-8 space-y-4">
-                  <div className="flex items-center gap-3 text-indigo-500">
-                    <Milestone size={24} />
-                    <span className="font-semibold uppercase tracking-widest text-xs">Edge of Innovation</span>
-                  </div>
-                  <p className="text-muted-foreground">
-                    Every initiative at Nirikshan AI is powered by research-backed experimentation, rapid prototyping, and
-                    relentless iteration. We blend academic rigor with product instinct to deliver measurable outcomes for our partners.
+
+            <div className="grid lg:grid-cols-12 gap-8 items-center">
+              <div className="lg:col-span-8 space-y-6">
+                <div className="inline-block px-3 py-1 text-[10px] font-mono uppercase tracking-[0.2em] bg-charcoal-surface border border-charcoal-border text-sage">
+                  ORIGIN STORY <span className="text-burntamber">·</span> APPLIED DEEP TECH R&amp;D
+                </div>
+
+                <h1 className="text-4xl sm:text-6xl lg:text-7xl font-bold font-display tracking-tight leading-[1.02] text-ivory">
+                  Engineered by Curiosity.
+                  <br />
+                  <span className="font-serif italic font-normal text-concrete">
+                    Bound by <span className="text-burntamber">Technical Rigor</span>.
+                  </span>
+                </h1>
+
+                <p className="text-base sm:text-lg text-concrete max-w-2xl leading-relaxed font-sans">
+                  Nirikshan AI was founded to turn breakthrough neural network research into dependable, air-gapped software and hardware systems. We bring together researchers, system architects, and industrial engineers to solve high-stakes challenges across manufacturing, defense, and grassroots infrastructure.
+                </p>
+
+                <div className="flex flex-wrap gap-4 pt-2">
+                  <a href="#leadership">
+                    <Button className="bg-charcoal text-ivory border border-charcoal-border hover:bg-burntamber hover:border-burntamber hover:text-white text-xs font-mono uppercase tracking-wider px-7 h-12 rounded-none font-bold transition-all shadow-md">
+                      Executive Leadership <ArrowRight size={14} className="ml-2" />
+                    </Button>
+                  </a>
+                  <a href="#timeline">
+                    <Button variant="outline" className="border-charcoal-border text-ivory hover:border-burntamber hover:text-burntamber hover:bg-burntamber/5 text-xs font-mono uppercase tracking-wider px-7 h-12 rounded-none font-semibold transition-all">
+                      Institutional Timeline
+                    </Button>
+                  </a>
+                </div>
+              </div>
+
+              {/* Quick Telemetry Summary Tiles */}
+              <div className="lg:col-span-4 grid grid-cols-2 gap-3 text-xs font-mono">
+                <div className="p-4 border border-charcoal-border bg-charcoal-surface/90">
+                  <div className="text-2xl font-bold font-display text-sage mb-0.5">2024</div>
+                  <div className="text-[10px] text-concrete uppercase tracking-wider">GENESIS</div>
+                  <p className="mt-1 text-[10px] text-concrete/80 leading-tight">
+                    Dev Bhoomi IEC Innovation Lab roots.
+                  </p>
+                </div>
+                <div className="p-4 border border-charcoal-border bg-charcoal-surface/90">
+                  <div className="text-2xl font-bold font-display text-ivory mb-0.5">2 LABS</div>
+                  <div className="text-[10px] text-concrete uppercase tracking-wider">FACILITIES</div>
+                  <p className="mt-1 text-[10px] text-concrete/80 leading-tight">
+                    Haridwar Sensor Lab &amp; Dehradun Hub.
+                  </p>
+                </div>
+                <div className="p-4 border border-charcoal-border bg-charcoal-surface/90">
+                  <div className="text-2xl font-bold font-display text-burntamber mb-0.5">&lt;15ms</div>
+                  <div className="text-[10px] text-concrete uppercase tracking-wider">EDGE LATENCY</div>
+                  <p className="mt-1 text-[10px] text-concrete/80 leading-tight">
+                    Sub-20ms frame inference guarantee.
+                  </p>
+                </div>
+                <div className="p-4 border border-charcoal-border bg-charcoal-surface/90">
+                  <div className="text-2xl font-bold font-display text-sage mb-0.5">100%</div>
+                  <div className="text-[10px] text-concrete uppercase tracking-wider">AIR-GAPPED</div>
+                  <p className="mt-1 text-[10px] text-concrete/80 leading-tight">
+                    Zero public cloud dependency.
                   </p>
                 </div>
               </div>
@@ -192,229 +209,374 @@ const WhoWeAre = () => {
           </div>
         </section>
 
-        <section
-          className="py-16"
-          ref={missionRef.ref}
-        >
-          <div className="container mx-auto px-6 grid gap-10 md:grid-cols-2 items-center">
-            <div className="p-8 rounded-3xl bg-gradient-to-br from-indigo-600/10 via-purple-500/10 to-blue-500/10 border border-border">
-              <div className="flex items-center gap-4 mb-6">
-                <Focus className="text-indigo-500" size={32} />
-                <span className="text-xl font-semibold">Mission</span>
+        {/* ══════════════════════════════════════════════════════
+            SECTION 02 — THE INSTITUTIONAL TIMELINE
+        ══════════════════════════════════════════════════════ */}
+        <section id="timeline" className="py-16 md:py-24 border-b border-concrete/40 dark:border-charcoal-border bg-ivory dark:bg-charcoal">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6">
+            <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 pb-4 border-b border-concrete/30 dark:border-charcoal-border gap-4">
+              <div>
+                <span className="text-[11px] font-mono tracking-widest text-sage uppercase block mb-1">
+                  SEC_02 // SYSTEM GENESIS &amp; TIMELINE
+                </span>
+                <h2 className="text-3xl sm:text-5xl font-bold font-display tracking-tight text-charcoal dark:text-ivory">
+                  From Academic Lab
+                  <br />
+                  to Production Deployments.
+                </h2>
               </div>
-              <p className="text-lg text-muted-foreground leading-relaxed">
-                To empower innovation through AI-driven research and real-world implementation.
+              <p className="text-xs font-mono text-concrete-dark dark:text-concrete max-w-md">
+                CHRONOLOGICAL EVOLUTION OF OUR RESEARCH LAB INTO A LICENSED PRODUCT ENGINEERING FIRM.
               </p>
             </div>
-            <div className="p-8 rounded-3xl bg-gradient-to-br from-blue-600/10 via-indigo-500/10 to-purple-500/10 border border-border">
-              <div className="flex items-center gap-4 mb-6">
-                <Rocket className="text-purple-500" size={32} />
-                <span className="text-xl font-semibold">Vision</span>
-              </div>
-              <p className="text-lg text-muted-foreground leading-relaxed">
-                To build a future where every idea, researcher, and organization can harness the power of Artificial Intelligence
-                for meaningful impact.
-              </p>
-            </div>
-          </div>
-        </section>
 
-        <section className="py-20 bg-secondary/20" ref={valuesRef.ref}>
-          <div className="container mx-auto px-6">
-            <FadeUp className="text-center mb-14">
-              <h2 className="text-3xl md:text-4xl font-bold mb-4">Values that shape our culture</h2>
-              <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-                These principles keep our teams aligned, our research ethical, and our collaborations purposeful.
-              </p>
-            </FadeUp>
-            <StaggerContainer className="grid gap-6 md:grid-cols-2 lg:grid-cols-3" staggerDelay={0.12}>
-              {values.map((value) => (
-                <StaggerItem key={value.title}>
+            {/* 5-Stage Brutalist Timeline */}
+            <div className="grid md:grid-cols-2 lg:grid-cols-5 gap-4">
+              {timeline.map((item, idx) => (
                 <div
-                  className="group p-6 rounded-3xl border border-border bg-card backdrop-blur hover:border-primary/60 hover:-translate-y-1 transition-all duration-300 ai-glow-hover"
+                  key={item.year}
+                  className="p-5 border border-concrete/40 dark:border-charcoal-border bg-white dark:bg-charcoal-surface flex flex-col justify-between space-y-4 hover:border-sage transition-all group"
                 >
-                  <value.icon className="text-indigo-500 mb-4" size={28} />
-                  <h3 className="text-xl font-semibold mb-2">{value.title}</h3>
-                  <p className="text-muted-foreground text-sm">{value.description}</p>
+                  <div>
+                    <div className="flex items-center justify-between pb-3 mb-3 border-b border-concrete/20 dark:border-charcoal-border text-[10px] font-mono">
+                      <span className="text-sage font-bold">0{idx + 1} //</span>
+                      <span className="text-concrete uppercase">{item.year.split("—")[0]}</span>
+                    </div>
+                    <div className="text-[11px] font-mono text-sage uppercase tracking-wider mb-1">
+                      {item.year.split("—")[1] || item.year}
+                    </div>
+                    <h3 className="text-lg font-bold font-display text-charcoal dark:text-ivory group-hover:text-burntamber transition-colors mb-2">
+                      {item.title}
+                    </h3>
+                    <p className="text-xs font-sans text-concrete-dark dark:text-concrete leading-relaxed">
+                      {item.description}
+                    </p>
+                  </div>
+                  <div className="pt-3 border-t border-concrete/15 dark:border-charcoal-border text-[9px] font-mono text-concrete flex items-center gap-1.5">
+                    <span className="w-1.5 h-1.5 bg-sage inline-block" />
+                    <span>MILESTONE VERIFIED</span>
+                  </div>
                 </div>
-                </StaggerItem>
               ))}
-            </StaggerContainer>
+            </div>
           </div>
         </section>
 
-        <section className="py-20" ref={leadershipRef.ref}>
-          <div className="container mx-auto px-6">
-            <FadeUp className="text-center mb-14">
-              <h2 className="text-3xl md:text-4xl font-bold mb-4">Leadership that inspires</h2>
-              <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-                Meet the founders and leaders steering Nirikshan AI towards a future of responsible technological advancement.
+        {/* ══════════════════════════════════════════════════════
+            SECTION 03 — EXECUTIVE LEADERSHIP DOSSIER
+        ══════════════════════════════════════════════════════ */}
+        <section id="leadership" className="py-16 md:py-24 border-b border-concrete/40 dark:border-charcoal-border bg-techlight/30 dark:bg-charcoal-surface">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6">
+            <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 pb-4 border-b border-concrete/30 dark:border-charcoal-border gap-4">
+              <div>
+                <span className="text-[11px] font-mono tracking-widest text-sage uppercase block mb-1">
+                  SEC_03 // EXECUTIVE LEADERSHIP DOSSIER
+                </span>
+                <h2 className="text-3xl sm:text-5xl font-bold font-display tracking-tight text-charcoal dark:text-ivory">
+                  Leadership Anchored in
+                  <br />
+                  Engineering &amp; Governance.
+                </h2>
+              </div>
+              <p className="text-xs font-mono text-concrete-dark dark:text-concrete max-w-md">
+                DIRECTORS STEERING DEEP-TECH ALGORITHMIC ARCHITECTURE AND RESPONSIBLE FISCAL EXPANSION.
               </p>
-            </FadeUp>
-
-            {/* Interactive Tabs */}
-            <div className="flex flex-wrap justify-center gap-4 mb-12 max-w-4xl mx-auto">
-              {leadership.map((member, idx) => {
-                const isActive = activeLeaderIndex === idx;
-                return (
-                  <button
-                    key={member.name}
-                    onClick={() => setActiveLeaderIndex(idx)}
-                    className={`flex items-center gap-3 px-6 py-3 rounded-2xl border text-left transition-all duration-300 group cursor-pointer ${
-                      isActive
-                        ? "bg-primary text-primary-foreground border-primary shadow-lg shadow-primary/20 scale-[1.02]"
-                        : "bg-card border-border hover:bg-secondary hover:border-primary/30"
-                    }`}
-                  >
-                    <div className="w-10 h-10 rounded-full overflow-hidden border border-border flex-shrink-0">
-                      <img src={member.image} alt={member.name} className="w-full h-full object-cover" />
-                    </div>
-                    <div>
-                      <div className="text-sm font-semibold truncate">{member.name}</div>
-                      <div className={`text-[10px] font-mono uppercase tracking-wider mt-0.5 ${isActive ? "text-primary-foreground/80" : "text-muted-foreground"}`}>{member.role}</div>
-                    </div>
-                  </button>
-                );
-              })}
             </div>
 
-            {/* Selected Leader Spotlight Panel */}
-            <div className="max-w-5xl mx-auto relative min-h-[400px]">
-              <motion.div
-                key={activeLeaderIndex}
-                initial={{ opacity: 0, y: 15 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -15 }}
-                transition={{ duration: 0.4 }}
-                className="grid gap-10 lg:grid-cols-[0.8fr,1.2fr] items-center bg-card border border-border p-8 md:p-12 rounded-3xl ai-border-glow shadow-xl"
-              >
-                {/* Image side */}
-                <div className="relative flex justify-center order-last lg:order-first">
-                  <div className="relative w-full max-w-xs md:max-w-sm rounded-2xl overflow-hidden shadow-2xl border border-primary/20 aspect-[4/5]">
+            {/* Dossier Selector Switcher */}
+            <div className="flex gap-2 mb-8 border-b border-concrete/30 dark:border-charcoal-border pb-3">
+              {leadership.map((l) => (
+                <button
+                  key={l.id}
+                  onClick={() => setActiveLeader(l.id)}
+                  className={`px-4 py-2 text-xs font-mono uppercase tracking-wider border transition-all ${
+                    activeLeader === l.id
+                      ? "bg-sage text-charcoal border-sage font-bold shadow-sm"
+                      : "border-concrete/40 dark:border-charcoal-border text-concrete-dark dark:text-concrete hover:border-burntamber hover:text-burntamber"
+                  }`}
+                >
+                  {l.name} · {l.role.split("–")[0].split("&")[0].trim()}
+                </button>
+              ))}
+            </div>
+
+            {/* Active Leader Full Technical Dossier Card */}
+            <div className="border border-concrete/40 dark:border-charcoal-border bg-white dark:bg-charcoal p-6 sm:p-10 shadow-xl">
+              <div className="grid lg:grid-cols-12 gap-8 lg:gap-12 items-start">
+                {/* Photo Side */}
+                <div className="lg:col-span-4 space-y-4">
+                  <div className="aspect-[4/5] border border-charcoal/20 dark:border-charcoal-border overflow-hidden bg-charcoal relative">
                     <img
-                      src={leadership[activeLeaderIndex].image}
-                      alt={leadership[activeLeaderIndex].name}
-                      className="w-full h-full object-cover transition-transform duration-500 hover:scale-105"
+                      src={currentLeader.image}
+                      alt={currentLeader.name}
+                      className="w-full h-full object-cover grayscale contrast-125 hover:grayscale-0 transition-all duration-500"
                     />
-                    <div className="absolute inset-0 bg-gradient-to-t from-slate-950/40 via-transparent to-transparent pointer-events-none" />
+                    <div className="absolute bottom-2 left-2 bg-charcoal/90 px-2 py-1 text-[9px] font-mono text-sage border border-charcoal-border">
+                      {currentLeader.badge}
+                    </div>
                   </div>
-                  <div className="absolute inset-0 -z-10 rounded-full bg-gradient-to-br from-primary/20 via-accent/20 to-primary/20 blur-3xl" aria-hidden="true" />
+
+                  <div className="p-3 border border-concrete/30 dark:border-charcoal-border bg-techlight dark:bg-charcoal-surface text-xs font-mono">
+                    <div className="text-[10px] text-concrete uppercase mb-1">CORE SPECIALIZATION:</div>
+                    <div className="text-charcoal dark:text-ivory font-semibold">
+                      {currentLeader.specialization}
+                    </div>
+                  </div>
+
+                  {currentLeader.linkedin && (
+                    <a
+                      href={currentLeader.linkedin}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-2 text-xs font-mono uppercase tracking-wider text-charcoal dark:text-ivory hover:text-burntamber font-bold transition-colors pt-1"
+                    >
+                      <Linkedin size={14} />
+                      <span>Connect on LinkedIn →</span>
+                    </a>
+                  )}
                 </div>
 
-                {/* Content side */}
-                <div className="space-y-6 order-first lg:order-last">
-                  <div className="space-y-2">
-                    <h3 className="text-3xl font-bold text-gradient">{leadership[activeLeaderIndex].name}</h3>
-                    <p className="text-indigo-500 font-medium tracking-wide text-sm md:text-base font-mono uppercase">{leadership[activeLeaderIndex].role}</p>
+                {/* Content Side */}
+                <div className="lg:col-span-8 space-y-6">
+                  <div>
+                    <div className="text-xs font-mono text-sage tracking-widest uppercase mb-1">
+                      {currentLeader.role}
+                    </div>
+                    <h3 className="text-3xl sm:text-4xl font-bold font-display text-charcoal dark:text-ivory">
+                      {currentLeader.name}
+                    </h3>
                   </div>
 
-                  <div className="space-y-4">
-                    <p className="text-muted-foreground leading-relaxed text-sm md:text-base">
-                      {leadership[activeLeaderIndex].extendedBio}
+                  <div className="space-y-4 text-sm font-sans text-concrete-dark dark:text-concrete leading-relaxed">
+                    <p>{currentLeader.bio}</p>
+                    <p>{currentLeader.extendedBio}</p>
+                  </div>
+
+                  {/* Executive Directive Quote */}
+                  <div className="p-5 border-l-4 border-sage bg-techlight dark:bg-charcoal-surface border border-concrete/20 dark:border-charcoal-border">
+                    <div className="text-[10px] font-mono uppercase text-sage font-bold tracking-widest mb-1.5 flex items-center gap-2">
+                      <Quote size={12} />
+                      <span>EXECUTIVE DIRECTIVE</span>
+                    </div>
+                    <p className="font-serif italic text-base sm:text-lg text-charcoal dark:text-ivory leading-relaxed">
+                      "{currentLeader.quote}"
                     </p>
                   </div>
 
-                  <div className="p-6 rounded-2xl bg-secondary/50 border border-border/80 relative">
-                    <Quote className="absolute top-4 right-4 w-10 h-10 text-primary/10 pointer-events-none" />
-                    <p className="text-muted-foreground italic leading-relaxed text-xs md:text-sm font-medium">
-                      “{leadership[activeLeaderIndex].message}”
-                    </p>
-                  </div>
-
-                  <div className="flex items-center gap-4 pt-2">
-                    {leadership[activeLeaderIndex].linkedin && (
-                      <a
-                        href={leadership[activeLeaderIndex].linkedin}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="inline-flex items-center gap-2 text-sm text-indigo-600 hover:text-indigo-700 font-semibold"
-                      >
-                        <Linkedin size={18} /> Connect on LinkedIn
-                      </a>
-                    )}
+                  <div className="pt-2 flex items-center gap-4 text-xs font-mono text-concrete">
+                    <span>SECURITY CLEARANCE: VERIFIED</span>
+                    <span>//</span>
+                    <span className="text-sage">MCA GOVERNANCE ACTIVE</span>
                   </div>
                 </div>
-              </motion.div>
+              </div>
             </div>
           </div>
         </section>
 
-        <section className="py-20 bg-secondary/30" ref={cardsRef.ref}>
-          <div className="container mx-auto px-6">
-            <div className="text-center mb-14">
-              <h2 className="text-3xl md:text-4xl font-bold mb-4">Explore Our Impact</h2>
-              <p className="text-lg text-muted-foreground max-w-3xl mx-auto">
-                Dive deeper into the stories, milestones, and opportunities that define Nirikshan AI.
+        {/* ══════════════════════════════════════════════════════
+            SECTION 04 — PURPOSE & OPERATIONAL CHARTER
+        ══════════════════════════════════════════════════════ */}
+        <section className="py-16 md:py-24 border-b border-concrete/40 dark:border-charcoal-border bg-ivory dark:bg-charcoal">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6">
+            <div className="grid md:grid-cols-2 gap-8">
+              {/* Mission */}
+              <div className="p-8 border border-concrete/40 dark:border-charcoal-border bg-white dark:bg-charcoal-surface flex flex-col justify-between space-y-6 hover:border-sage transition-all">
+                <div className="space-y-4">
+                  <div className="flex items-center justify-between pb-4 border-b border-concrete/20 dark:border-charcoal-border text-xs font-mono">
+                    <span className="text-sage font-bold">CHARTER_01 // OUR MISSION</span>
+                    <Target size={18} className="text-sage" />
+                  </div>
+                  <h3 className="text-2xl sm:text-3xl font-bold font-display text-charcoal dark:text-ivory">
+                    Empowering Physical Operations Through Deterministic AI.
+                  </h3>
+                  <p className="text-sm font-sans text-concrete-dark dark:text-concrete leading-relaxed">
+                    To engineer high-precision, air-gapped computer vision and agentic systems that eliminate latency, guarantee complete data sovereignty, and empower critical industries to operate with continuous intelligence.
+                  </p>
+                </div>
+                <div className="pt-4 border-t border-concrete/15 dark:border-charcoal-border text-xs font-mono text-concrete-dark dark:text-concrete space-y-1.5">
+                  <div className="flex items-center gap-2">
+                    <CheckCircle2 size={13} className="text-sage" />
+                    <span>Zero cloud lock-in or recurring egress fees</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <CheckCircle2 size={13} className="text-sage" />
+                    <span>Sub-20ms edge hardware execution</span>
+                  </div>
+                </div>
+              </div>
+
+              {/* Vision */}
+              <div className="p-8 border border-concrete/40 dark:border-charcoal-border bg-white dark:bg-charcoal-surface flex flex-col justify-between space-y-6 hover:border-sage transition-all">
+                <div className="space-y-4">
+                  <div className="flex items-center justify-between pb-4 border-b border-concrete/20 dark:border-charcoal-border text-xs font-mono">
+                    <span className="text-burntamber font-bold">CHARTER_02 // OUR VISION</span>
+                    <Rocket size={18} className="text-burntamber" />
+                  </div>
+                  <h3 className="text-2xl sm:text-3xl font-bold font-display text-charcoal dark:text-ivory">
+                    Making India a Global Benchmark in Real-World AI Engineering.
+                  </h3>
+                  <p className="text-sm font-sans text-concrete-dark dark:text-concrete leading-relaxed">
+                    To establish a future where every researcher, enterprise, and frontline worker can deploy resilient, air-gapped artificial intelligence to solve concrete physical and economic challenges.
+                  </p>
+                </div>
+                <div className="pt-4 border-t border-concrete/15 dark:border-charcoal-border text-xs font-mono text-concrete-dark dark:text-concrete space-y-1.5">
+                  <div className="flex items-center gap-2">
+                    <CheckCircle2 size={13} className="text-burntamber" />
+                    <span>Academic rigor blended with industrial pragmatism</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <CheckCircle2 size={13} className="text-burntamber" />
+                    <span>Grassroots technologies scaled to national infrastructure</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* ══════════════════════════════════════════════════════
+            SECTION 05 — CORE OPERATING PRINCIPLES
+        ══════════════════════════════════════════════════════ */}
+        <section className="py-16 md:py-24 border-b border-concrete/40 dark:border-charcoal-border bg-techlight/30 dark:bg-charcoal">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6">
+            <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 pb-4 border-b border-concrete/30 dark:border-charcoal-border gap-4">
+              <div>
+                <span className="text-[11px] font-mono tracking-widest text-sage uppercase block mb-1">
+                  SEC_05 // CORE OPERATING PRINCIPLES
+                </span>
+                <h2 className="text-3xl sm:text-5xl font-bold font-display tracking-tight text-charcoal dark:text-ivory">
+                  Values That Shape Our Culture.
+                </h2>
+              </div>
+              <p className="text-xs font-mono text-concrete-dark dark:text-concrete max-w-md">
+                NON-NEGOTIABLE ENGINEERING STANDARDS ANCHORING EVERY LINE OF CODE AND HARDWARE HARNESS.
               </p>
             </div>
-            <div className="grid gap-6 md:grid-cols-3">
-              <Link
-                to="/testimonials"
-                className="group p-8 rounded-3xl border border-border bg-background/80 backdrop-blur hover:-translate-y-2 hover:border-indigo-500/50 hover:shadow-xl transition-all duration-300"
-              >
-                <div className="w-12 h-12 rounded-full bg-indigo-500/10 text-indigo-500 flex items-center justify-center mb-6">
-                  <Quote size={22} />
+
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {values.map((val) => (
+                <div
+                  key={val.num}
+                  className="p-6 border border-concrete/40 dark:border-charcoal-border bg-white dark:bg-charcoal-surface flex flex-col justify-between space-y-4 hover:border-sage transition-all group"
+                >
+                  <div>
+                    <div className="flex items-center justify-between pb-3 mb-3 border-b border-concrete/20 dark:border-charcoal-border text-xs font-mono">
+                      <span className="text-sage font-bold">{val.num} //</span>
+                      <span className="text-[10px] text-concrete">{val.tag}</span>
+                    </div>
+                    <h3 className="text-xl font-bold font-display text-charcoal dark:text-ivory group-hover:text-burntamber transition-colors mb-2">
+                      {val.title}
+                    </h3>
+                    <p className="text-xs font-sans text-concrete-dark dark:text-concrete leading-relaxed">
+                      {val.description}
+                    </p>
+                  </div>
+                  <div className="pt-3 border-t border-concrete/15 dark:border-charcoal-border text-[10px] font-mono text-sage flex items-center gap-1.5 font-bold">
+                    <span className="w-1.5 h-1.5 bg-sage inline-block" />
+                    <span>STANDARD VERIFIED</span>
+                  </div>
                 </div>
-                <h3 className="text-2xl font-semibold mb-3">Authentic Voices</h3>
-                <p className="text-muted-foreground text-sm leading-relaxed mb-6">
-                  Hear from partners, mentors, and innovators whose experiences reflect our commitment to excellence.
-                </p>
-                <Button variant="ghost" className="group-hover:text-indigo-500 p-0">
-                  View Testimonials
-                  <ArrowRight className="ml-2 group-hover:translate-x-1 transition-transform" size={18} />
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* ══════════════════════════════════════════════════════
+            SECTION 06 — INSTITUTIONAL ENDORSEMENTS (Testimonials)
+        ══════════════════════════════════════════════════════ */}
+        <section className="py-16 md:py-24 border-b border-concrete/40 dark:border-charcoal-border bg-ivory dark:bg-charcoal">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6">
+            <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 pb-4 border-b border-concrete/30 dark:border-charcoal-border gap-4">
+              <div>
+                <span className="text-[11px] font-mono tracking-widest text-sage uppercase block mb-1">
+                  SEC_06 // INSTITUTIONAL ENDORSEMENTS
+                </span>
+                <h2 className="text-3xl sm:text-5xl font-bold font-display tracking-tight text-charcoal dark:text-ivory">
+                  Verified by Research &amp;
+                  <br />
+                  Enterprise Partners.
+                </h2>
+              </div>
+              <p className="text-xs font-mono text-concrete-dark dark:text-concrete max-w-md">
+                FEEDBACK FROM LAB DIRECTORS, ENTERPRISE CTS, AND RESEARCH COLLABORATORS.
+              </p>
+            </div>
+
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {testimonials.map((t, idx) => (
+                <div
+                  key={idx}
+                  className="p-6 border border-concrete/40 dark:border-charcoal-border bg-white dark:bg-charcoal-surface flex flex-col justify-between space-y-4 hover:border-sage transition-all group"
+                >
+                  <div className="space-y-3">
+                    <Quote size={20} className="text-sage" />
+                    <p className="font-serif italic text-sm text-charcoal dark:text-ivory leading-relaxed">
+                      "{t.quote}"
+                    </p>
+                  </div>
+
+                  <div className="pt-4 border-t border-concrete/20 dark:border-charcoal-border flex items-center gap-3">
+                    <img
+                      src={t.image}
+                      alt={t.name}
+                      className="w-10 h-10 object-cover grayscale group-hover:grayscale-0 transition-all border border-concrete/40"
+                    />
+                    <div>
+                      <div className="text-xs font-mono font-bold text-charcoal dark:text-ivory group-hover:text-burntamber transition-colors">
+                        {t.name}
+                      </div>
+                      <div className="text-[10px] font-mono text-concrete">
+                        {t.role}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* ══════════════════════════════════════════════════════
+            SECTION 07 — TECHNICAL CTA
+        ══════════════════════════════════════════════════════ */}
+        <section className="py-20 md:py-28 bg-charcoal text-ivory relative overflow-hidden border-b border-charcoal-border">
+          <div className="absolute inset-0 tech-grid-bg opacity-15 pointer-events-none" />
+
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 relative z-10 text-center">
+            <div className="inline-block px-3 py-1 mb-6 text-[10px] font-mono uppercase tracking-[0.2em] bg-charcoal-surface border border-charcoal-border text-sage">
+              SEC_07 // RESEARCH PARTNERSHIP PROTOCOL
+            </div>
+
+            <h2 className="text-3xl sm:text-5xl font-bold font-display tracking-tight text-ivory leading-tight max-w-3xl mx-auto mb-6">
+              Partner With Our
+              <br />
+              <span className="font-serif italic font-normal text-concrete">
+                Research &amp; Engineering Lab.
+              </span>
+            </h2>
+
+            <p className="text-sm sm:text-base text-concrete max-w-xl mx-auto leading-relaxed mb-8 font-sans">
+              Whether you are an industrial manufacturer seeking automated inspection or an institution looking for research collaborations — our technical team is ready to analyze your requirements.
+            </p>
+
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+              <Link to="/contact">
+                <Button className="bg-charcoal text-ivory border border-charcoal-border hover:bg-burntamber hover:border-burntamber hover:text-white text-xs font-mono uppercase tracking-wider px-8 h-12 rounded-none font-bold transition-all shadow-lg">
+                  Start Technical Conversation <ArrowRight size={14} className="ml-2" />
                 </Button>
               </Link>
-              <Link
-                to="/journey"
-                className="group p-8 rounded-3xl border border-border bg-background/80 backdrop-blur hover:-translate-y-2 hover:border-indigo-500/50 hover:shadow-xl transition-all duration-300"
-              >
-                <div className="w-12 h-12 rounded-full bg-purple-500/10 text-purple-500 flex items-center justify-center mb-6">
-                  <Milestone size={22} />
-                </div>
-                <h3 className="text-2xl font-semibold mb-3">Innovation Journey</h3>
-                <p className="text-muted-foreground text-sm leading-relaxed mb-6">
-                  Explore the milestones that shaped us — from Dev Bhoomi origins to global research collaborations.
-                </p>
-                <Button variant="ghost" className="group-hover:text-purple-500 p-0">
-                  View Timeline
-                  <ArrowRight className="ml-2 group-hover:translate-x-1 transition-transform" size={18} />
-                </Button>
-              </Link>
-              <Link
-                to="/careers"
-                className="group p-8 rounded-3xl border border-border bg-background/80 backdrop-blur hover:-translate-y-2 hover:border-indigo-500/50 hover:shadow-xl transition-all duration-300"
-              >
-                <div className="w-12 h-12 rounded-full bg-blue-500/10 text-blue-500 flex items-center justify-center mb-6">
-                  <Users2 size={22} />
-                </div>
-                <h3 className="text-2xl font-semibold mb-3">Join Our Team</h3>
-                <p className="text-muted-foreground text-sm leading-relaxed mb-6">
-                  Discover roles, culture, and growth pathways for builders who want to shape intelligent futures with us.
-                </p>
-                <Button variant="ghost" className="group-hover:text-blue-500 p-0">
-                  Explore Careers
-                  <ArrowRight className="ml-2 group-hover:translate-x-1 transition-transform" size={18} />
+              <Link to="/case-studies">
+                <Button variant="outline" className="border-charcoal-border text-concrete hover:text-burntamber hover:border-burntamber text-xs font-mono uppercase tracking-wider px-8 h-12 rounded-none transition-all">
+                  Inspect Verified Case Studies
                 </Button>
               </Link>
             </div>
           </div>
         </section>
-
-
       </main>
 
       <Footer />
-
-      {showBackToTop && (
-        <button
-          type="button"
-          onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
-          className="fixed bottom-6 right-6 inline-flex items-center justify-center w-12 h-12 rounded-full bg-gradient-to-br from-indigo-500 to-purple-500 text-white shadow-lg hover:shadow-xl transition-transform duration-300 hover:-translate-y-1"
-          aria-label="Back to top"
-        >
-          <ArrowUp size={20} />
-        </button>
-      )}
     </div>
   );
 };

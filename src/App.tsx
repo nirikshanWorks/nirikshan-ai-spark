@@ -23,6 +23,7 @@ const ExpertisePage = lazy(() => import("./pages/expertise/index"));
 const ExpertiseCategoryPage = lazy(() => import("./pages/expertise/[categorySlug]"));
 const ExpertiseServicePage = lazy(() => import("./pages/expertise/[categorySlug]/[serviceSlug]"));
 const Products = lazy(() => import("./pages/Products"));
+const VisionSystems = lazy(() => import("./pages/VisionSystems"));
 const AstroNirikshanPage = lazy(() => import("./pages/AstroNirikshanPage"));
 const TenXProductivity = lazy(() => import("./pages/TenXProductivity"));
 const CaseStudies = lazy(() => import("./pages/CaseStudies"));
@@ -99,6 +100,9 @@ const AnimatedRoutes = () => {
         <Route path="/expertise/:categorySlug/:serviceSlug" element={<PageTransition><ExpertiseServicePage /></PageTransition>} />
         <Route path="/services" element={<PageTransition><Services /></PageTransition>} />
         <Route path="/products" element={<PageTransition><Products /></PageTransition>} />
+        <Route path="/products/vision-systems" element={<PageTransition><VisionSystems /></PageTransition>} />
+        <Route path="/products/10x-ai-productivity" element={<Navigate to="/10x-ai-productivity" replace />} />
+        <Route path="/products/manorama-krishi-rakshak" element={<Navigate to="/products" replace />} />
         <Route path="/products/astro-nirikshan" element={<PageTransition><AstroNirikshanPage /></PageTransition>} />
         <Route path="/astro" element={<Navigate to="/products/astro-nirikshan" replace />} />
         <Route path="/astro-nirikshan" element={<Navigate to="/products/astro-nirikshan" replace />} />

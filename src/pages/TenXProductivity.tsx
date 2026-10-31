@@ -12,7 +12,6 @@ import {
   DialogTitle,
   DialogDescription,
 } from "@/components/ui/dialog";
-import { motion } from "framer-motion";
 import {
   ArrowRight,
   Sparkles,
@@ -35,6 +34,10 @@ import {
   Cpu,
   BookOpen,
   ArrowUpRight,
+  Terminal,
+  Activity,
+  ShieldCheck,
+  Check,
 } from "lucide-react";
 
 /* ──────────────────────────────────────────────────────────────
@@ -45,42 +48,42 @@ const verticals = [
     number: "01",
     id: "schools",
     audienceLabel: "Schools & K-12",
-    badgeColor: "bg-amber-500/10 text-amber-600 dark:text-amber-400 border-amber-500/20",
+    code: "VER_01 // K12_CURRICULUM",
     heading: "Inspiring the Next Generation of AI Innovators.",
     shortDesc:
-      "Introducing young minds to Artificial Intelligence through creative, interactive, and responsible AI learning.",
-    tags: ["AI Awareness", "Creative AI Learning", "Student Workshops"],
-    cta: "Explore School Programmes",
+      "Introducing young minds to Artificial Intelligence through creative, interactive, and responsible AI learning. Tailored for CBSE, ICSE, and international school standards.",
+    tags: ["AI Awareness", "Creative AI Learning", "Student Workshops", "Digital Ethics"],
+    cta: "Configure School Programme",
     programmeName: "AI Explorer (Schools)",
     audienceType: "Schools",
     mainImage:
       "https://images.unsplash.com/photo-1509062522246-3755977927d7?auto=format&fit=crop&w=1200&q=85",
     accentImage:
       "https://images.unsplash.com/photo-1577896851231-70ef18881754?auto=format&fit=crop&w=600&q=80",
-    stats: "Hands-on projects & ethics-first curriculum",
+    stats: "Ages 10–18 // Hands-on projects & ethics-first curriculum",
     bulletPoints: [
       "Age-tailored interactive storytelling & prompt art workshops",
       "Demystifying AI, algorithms & safety guidelines for youth",
-      "Teacher enablement & classroom AI integration kits",
+      "Teacher enablement & classroom AI integration toolkits",
     ],
   },
   {
     number: "02",
     id: "universities",
     audienceLabel: "Universities & Colleges",
-    badgeColor: "bg-blue-500/10 text-blue-600 dark:text-blue-400 border-blue-500/20",
-    heading: "Bridging Education with AI Industry Skills.",
+    code: "VER_02 // HIGHER_ED_LABS",
+    heading: "Bridging Academic Theory with Production AI Skills.",
     shortDesc:
-      "Preparing students and faculty for an AI-powered future through hands-on training, projects, and practical applications.",
-    tags: ["Student Bootcamps", "Faculty Development", "AI Projects & Workshops"],
-    cta: "Explore University Training",
+      "Preparing engineering, BCA, MCA, and management students for high-demand AI industry roles through hands-on coding, live model training, and verified GitHub project portfolios.",
+    tags: ["Student Bootcamps", "Faculty Development (FDP)", "Computer Vision", "RAG Pipelines"],
+    cta: "Configure University MoU",
     programmeName: "AI Career Accelerator (Universities)",
     audienceType: "Universities & Colleges",
     mainImage:
       "https://images.unsplash.com/photo-1523240795612-9a054b0db644?auto=format&fit=crop&w=1200&q=85",
     accentImage:
       "https://images.unsplash.com/photo-1531403009284-440f080d1e12?auto=format&fit=crop&w=600&q=80",
-    stats: "Accredited modules & live hackathon bootcamps",
+    stats: "B.Tech & CS // Accredited modules & live hackathon bootcamps",
     bulletPoints: [
       "Credit-aligned AI modules in Computer Vision, LLMs & RAG",
       "Faculty Development Programmes (FDP) on contemporary toolstacks",
@@ -91,19 +94,19 @@ const verticals = [
     number: "03",
     id: "corporates",
     audienceLabel: "Corporate & Enterprises",
-    badgeColor: "bg-violet-500/10 text-violet-600 dark:text-violet-400 border-violet-500/20",
-    heading: "Transforming Workforces with AI Skills.",
+    code: "VER_03 // WORKFORCE_AUTOMATION",
+    heading: "Transforming Enterprise Workforces with Applied AI.",
     shortDesc:
-      "Helping professionals and leadership teams use AI to improve productivity, automate workflows, and make smarter decisions.",
-    tags: ["Corporate AI Workshops", "Executive AI Training", "Workforce Upskilling"],
-    cta: "Explore Corporate Training",
+      "Helping knowledge workers, managers, and CXOs deploy AI tools to eliminate administrative overhead, automate data extraction, and streamline multi-department operations.",
+    tags: ["Corporate AI Workshops", "Executive Masterclasses", "Workflow Automation", "Zero PII Leakage"],
+    cta: "Configure Corporate Sprint",
     programmeName: "10X Professional (Professionals)",
     audienceType: "Management & Leadership",
     mainImage:
       "https://images.unsplash.com/photo-1556761175-5973dc0f32e7?auto=format&fit=crop&w=1600&q=85",
     accentImage:
       "https://images.unsplash.com/photo-1542744173-8e7e53415bb0?auto=format&fit=crop&w=600&q=80",
-    stats: "Measurable work hour savings & executive alignment",
+    stats: "Enterprise // Measurable work hour savings & executive alignment",
     bulletPoints: [
       "Cross-departmental productivity automation sprints",
       "Executive governance, build-vs-buy models & zero data leakage",
@@ -114,19 +117,19 @@ const verticals = [
     number: "04",
     id: "industries",
     audienceLabel: "Industries & Manufacturing",
-    badgeColor: "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border-emerald-500/20",
-    heading: "Building AI-Ready Industrial Workforces.",
+    code: "VER_04 // INDUSTRIAL_EDGE",
+    heading: "Building AI-Ready Industrial & Shopfloor Operators.",
     shortDesc:
-      "Equipping industrial teams with practical AI knowledge, automation skills, and emerging technology capabilities.",
-    tags: ["Industrial AI Training", "Technical Upskilling", "AI & Automation Workshops"],
-    cta: "Explore Industrial Training",
+      "Equipping plant engineers, quality inspectors, and maintenance technicians with practical knowledge in computer vision, edge telemetry, and automated anomaly diagnostics.",
+    tags: ["Industrial AI Training", "Edge Vision", "Plant Floor Automation", "SCADA Integration"],
+    cta: "Configure Industrial Workshop",
     programmeName: "AI Workforce Transformation (Industries)",
     audienceType: "Industries & Enterprises",
     mainImage:
       "https://images.unsplash.com/photo-1581092160607-ee22621dd758?auto=format&fit=crop&w=1200&q=85",
     accentImage:
       "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?auto=format&fit=crop&w=600&q=80",
-    stats: "On-site factory floor & edge vision enablement",
+    stats: "Industrial // On-site factory floor & edge vision enablement",
     bulletPoints: [
       "Shopfloor defect inspection & computer vision operator workshops",
       "Predictive maintenance & sensor telemetry automation training",
@@ -136,56 +139,62 @@ const verticals = [
 ];
 
 /* ──────────────────────────────────────────────────────────────
-   2. WHAT WE TEACH (6 COMPACT VISUAL TILES)
+   2. WHAT WE TEACH (6 COMPACT TECHNICAL MODULES)
 ────────────────────────────────────────────────────────────── */
 const teachingDomains = [
   {
+    code: "MOD_01",
     title: "AI Productivity",
-    tagline: "Work Smarter.",
+    tagline: "Work Smarter",
+    desc: "Autonomous email synthesis, automated spreadsheet formulas, structured document triage, and calendar intelligence.",
     image:
       "https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&w=600&q=80",
     icon: Zap,
-    gradient: "from-blue-600 to-cyan-500",
   },
   {
+    code: "MOD_02",
     title: "Generative AI",
-    tagline: "Create with Intelligence.",
+    tagline: "Create with Intelligence",
+    desc: "Prompt engineering, token economics, context window management, multimodality, and synthetic dataset drafting.",
     image:
       "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=600&q=80",
     icon: Brain,
-    gradient: "from-violet-600 to-purple-500",
   },
   {
+    code: "MOD_03",
     title: "AI for Developers",
-    tagline: "Build Faster.",
+    tagline: "Build Faster",
+    desc: "AI coding copilots, automated unit testing, RAG vector pipelines, and full-stack AI application deployment.",
     image:
       "https://images.unsplash.com/photo-1555066931-4365d14bab8c?auto=format&fit=crop&w=600&q=80",
     icon: Code2,
-    gradient: "from-indigo-600 to-blue-500",
   },
   {
+    code: "MOD_04",
     title: "AI for Business",
-    tagline: "Make Better Decisions.",
+    tagline: "Make Better Decisions",
+    desc: "Executive decision frameworks, predictive forecasting, customer intelligence pipelines, and build-vs-buy ROI calculus.",
     image:
       "https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=600&q=80",
     icon: BarChart3,
-    gradient: "from-emerald-600 to-teal-500",
   },
   {
+    code: "MOD_05",
     title: "AI for Education",
-    tagline: "Teach and Learn Better.",
+    tagline: "Teach and Learn Better",
+    desc: "Curriculum co-design, automated grading assistants, adaptive personalized student tutoring, and research acceleration.",
     image:
       "https://images.unsplash.com/photo-1503676260728-1c00da094a0b?auto=format&fit=crop&w=600&q=80",
     icon: BookOpen,
-    gradient: "from-amber-600 to-orange-500",
   },
   {
+    code: "MOD_06",
     title: "Advanced AI",
-    tagline: "Explore What's Next.",
+    tagline: "Explore What's Next",
+    desc: "Edge computer vision (YOLO/TensorRT), autonomous agent workflows, local LLM quantization, and air-gapped deployments.",
     image:
       "https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=600&q=80",
     icon: Cpu,
-    gradient: "from-rose-600 to-pink-500",
   },
 ];
 
@@ -195,103 +204,111 @@ const teachingDomains = [
 const experienceGallery = [
   {
     title: "Expert-Led Classroom Sessions",
-    caption: "Deep conceptual clarity paired with live interactive walkthroughs.",
+    caption: "Deep conceptual clarity paired with live interactive walkthroughs and architectural breakdowns.",
     image:
       "https://images.unsplash.com/photo-1524178232363-1fb2b075b655?auto=format&fit=crop&w=800&q=80",
-    category: "Classroom",
+    category: "CLASSROOM",
+    code: "ENV_01",
   },
   {
     title: "Hands-On Computer Lab Training",
-    caption: "Every learner writes, tests, and validates AI tools at their own machine.",
+    caption: "Every learner writes, tests, and validates AI tools at their own terminal station.",
     image:
       "https://images.unsplash.com/photo-1577896851231-70ef18881754?auto=format&fit=crop&w=800&q=80",
-    category: "Labs",
+    category: "LABS",
+    code: "ENV_02",
   },
   {
     title: "Live AI Tool Demonstrations",
-    caption: "Real-time demonstration of prompt techniques, model inference, and RAG.",
+    caption: "Real-time demonstration of prompt techniques, model inference, and RAG retrieval pipelines.",
     image:
       "https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?auto=format&fit=crop&w=800&q=80",
-    category: "Workshops",
+    category: "WORKSHOPS",
+    code: "ENV_03",
   },
   {
     title: "Group Projects & Collaboration",
-    caption: "Cross-functional student and professional squads co-creating solutions.",
+    caption: "Cross-functional student and professional squads co-creating deployable solutions.",
     image:
       "https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=800&q=80",
-    category: "Collaboration",
+    category: "COLLABORATION",
+    code: "ENV_04",
   },
   {
-    title: "Student Presentations",
-    caption: "Learners present their AI prototypes and receive constructive practitioner feedback.",
+    title: "Student Capstone Presentations",
+    caption: "Learners present their AI prototypes to industry practitioners and receive structured engineering feedback.",
     image:
       "https://images.unsplash.com/photo-1475721027785-f74eccf877e2?auto=format&fit=crop&w=800&q=80",
-    category: "Showcase",
+    category: "SHOWCASE",
+    code: "ENV_05",
   },
   {
     title: "Corporate AI Workshops",
-    caption: "Empowering business analysts, managers, and operational teams to automate daily routines.",
+    caption: "Empowering business analysts, managers, and operational teams to automate friction.",
     image:
       "https://images.unsplash.com/photo-1552664730-d307ca884978?auto=format&fit=crop&w=800&q=80",
-    category: "Enterprise",
+    category: "ENTERPRISE",
+    code: "ENV_06",
   },
   {
-    title: "Faculty Development Sessions",
-    caption: "Upskilling educators and professors to deliver modern AI curriculums.",
+    title: "Faculty Development Sessions (FDP)",
+    caption: "Upskilling educators and professors to deliver modern, industry-aligned AI syllabi.",
     image:
       "https://images.unsplash.com/photo-1531497865144-0464ef8fb9a9?auto=format&fit=crop&w=800&q=80",
-    category: "Academic",
+    category: "ACADEMIC",
+    code: "ENV_07",
   },
   {
     title: "Industry Technical Demos",
-    caption: "Demonstrating edge hardware, smart vision, and plant floor intelligence.",
+    caption: "Demonstrating edge hardware, smart vision relays, and plant floor anomaly intelligence.",
     image:
       "https://images.unsplash.com/photo-1581092335397-9583fe92d232?auto=format&fit=crop&w=800&q=80",
-    category: "Industry",
+    category: "INDUSTRY",
+    code: "ENV_08",
   },
 ];
 
 /* ──────────────────────────────────────────────────────────────
-   4. SIGNATURE 10X 5-STAGE PROCESS
+   4. SIGNATURE 10X 5-STAGE PROGRESSION
 ────────────────────────────────────────────────────────────── */
 const fiveStages = [
   {
     step: "01",
     name: "DISCOVER",
-    headline: "Discover AI opportunities.",
-    desc: "Identify operational bottlenecks and pinpoint where AI tools will save significant effort.",
+    headline: "Identify High-Leverage AI Opportunities.",
+    desc: "Map operational friction points, audit repetitive workflows, and pinpoint where modern foundation models yield immediate 10X efficiency.",
     image:
       "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?auto=format&fit=crop&w=600&q=80",
   },
   {
     step: "02",
     name: "LEARN",
-    headline: "Learn practical AI skills.",
-    desc: "Master modern foundation models, prompt architecture, and hands-on tooling through guided labs.",
+    headline: "Master Production Toolchains & Foundations.",
+    desc: "Hands-on guided terminal labs covering token economics, prompt architectures, embedding spaces, and computer vision backbones.",
     image:
       "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=600&q=80",
   },
   {
     step: "03",
     name: "APPLY",
-    headline: "Apply AI in real tasks.",
-    desc: "Work on active assignments, reports, and code to test skills on authentic organizational tasks.",
+    headline: "Build Live Capstones on Real Data.",
+    desc: "Learners immediately execute active assignments — developing live RAG bots, vision inspection prototypes, or executive dashboards.",
     image:
       "https://images.unsplash.com/photo-1531403009284-440f080d1e12?auto=format&fit=crop&w=600&q=80",
   },
   {
     step: "04",
     name: "AUTOMATE",
-    headline: "Automate repetitive workflows.",
-    desc: "Build autonomous multi-step pipelines that connect AI directly to documents, databases, and emails.",
+    headline: "Deploy Autonomous Operational Pipelines.",
+    desc: "Connect models directly to document queues, ERP/CRM databases, and edge cameras with deterministic safety verification gates.",
     image:
       "https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=600&q=80",
   },
   {
     step: "05",
     name: "SCALE",
-    headline: "Scale successful solutions.",
-    desc: "Institutionalize best practices, share prompt libraries, and empower certified AI champions.",
+    headline: "Institutionalize Knowledge & Governance.",
+    desc: "Establish reusable prompt repositories, data privacy compliance guardrails, and certify internal champion practitioners.",
     image:
       "https://images.unsplash.com/photo-1552664730-d307ca884978?auto=format&fit=crop&w=600&q=80",
   },
@@ -305,8 +322,8 @@ const programmes = [
     id: "prog-schools",
     name: "AI Explorer",
     target: "School Students",
-    badge: "K-12 & High School",
-    badgeColor: "bg-amber-100 text-amber-800 dark:bg-amber-950/60 dark:text-amber-300",
+    badge: "K-12 & HIGH SCHOOL",
+    code: "PROG_01",
     image:
       "https://images.unsplash.com/photo-1509062522246-3755977927d7?auto=format&fit=crop&w=800&q=80",
     description:
@@ -319,8 +336,8 @@ const programmes = [
     id: "prog-university",
     name: "AI Career Accelerator",
     target: "University Students",
-    badge: "Higher Education",
-    badgeColor: "bg-blue-100 text-blue-800 dark:bg-blue-950/60 dark:text-blue-300",
+    badge: "HIGHER EDUCATION",
+    code: "PROG_02",
     image:
       "https://images.unsplash.com/photo-1523240795612-9a054b0db644?auto=format&fit=crop&w=800&q=80",
     description:
@@ -333,8 +350,8 @@ const programmes = [
     id: "prog-pro",
     name: "10X Professional",
     target: "Working Professionals",
-    badge: "Corporate Upskilling",
-    badgeColor: "bg-violet-100 text-violet-800 dark:bg-violet-950/60 dark:text-violet-300",
+    badge: "CORPORATE UPSKILLING",
+    code: "PROG_03",
     image:
       "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=800&q=80",
     description:
@@ -347,8 +364,8 @@ const programmes = [
     id: "prog-leadership",
     name: "AI Leadership",
     target: "Management Teams",
-    badge: "CXO & Directors",
-    badgeColor: "bg-emerald-100 text-emerald-800 dark:bg-emerald-950/60 dark:text-emerald-300",
+    badge: "CXO & DIRECTORS",
+    code: "PROG_04",
     image:
       "https://images.unsplash.com/photo-1556761175-5973dc0f32e7?auto=format&fit=crop&w=800&q=80",
     description:
@@ -360,9 +377,9 @@ const programmes = [
   {
     id: "prog-industry",
     name: "AI Workforce Transformation",
-    target: "Industries",
-    badge: "Technical & Manufacturing",
-    badgeColor: "bg-rose-100 text-rose-800 dark:bg-rose-950/60 dark:text-rose-300",
+    target: "Industries & Plants",
+    badge: "TECHNICAL & MANUFACTURING",
+    code: "PROG_05",
     image:
       "https://images.unsplash.com/photo-1581092160607-ee22621dd758?auto=format&fit=crop&w=800&q=80",
     description:
@@ -395,148 +412,213 @@ export const TenXProductivity: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-white dark:bg-slate-950 text-slate-900 dark:text-slate-100 font-sans antialiased selection:bg-blue-600 selection:text-white">
+    <div className="min-h-screen bg-ivory dark:bg-charcoal text-charcoal dark:text-ivory selection:bg-amber selection:text-white font-sans antialiased">
       <SEO
-        title="AI Training & Education — Schools, Universities, Corporates & Industries | Nirikshan AI"
-        description="Practical Artificial Intelligence training programs, workshops, and bootcamps for Schools, Universities, Corporate Professionals, and Industrial Workforces with Nirikshan AI."
-        keywords="AI Training, AI Education, Corporate AI Workshops, University AI Bootcamps, School AI Workshops, Nirikshan AI, Faculty Development"
+        title="10X AI Productivity & Workforce Enablement | Nirikshan AI"
+        description="Practical hands-on Artificial Intelligence training, university MoUs, faculty development, and enterprise workflow automation with Nirikshan AI."
+        keywords="AI Training India, 10X AI Productivity, Corporate AI Workshops, University AI Bootcamps, School AI Workshops, Nirikshan AI Enablement"
         canonicalUrl="https://nirikshanai.com/10x-ai-productivity"
       />
       <Navigation />
 
       <main className="relative">
         {/* ══════════════════════════════════════════════════════
-            1. HERO SECTION — AI TRAINING FOR EVERYONE
+            0. TOP TELEMETRY BAR
         ══════════════════════════════════════════════════════ */}
-        <section className="relative pt-28 pb-16 lg:pt-36 lg:pb-24 overflow-hidden bg-gradient-to-b from-slate-50 via-white to-blue-50/20 dark:from-slate-950 dark:via-slate-900 dark:to-slate-950 border-b border-slate-200 dark:border-slate-800">
-          {/* Subtle architectural background accents */}
-          <div className="absolute inset-0 pointer-events-none opacity-40">
-            <div className="absolute top-10 left-1/2 -translate-x-1/2 w-[800px] h-[350px] bg-gradient-to-tr from-blue-500/10 via-indigo-500/10 to-violet-500/10 blur-3xl rounded-full" />
+        <div className="bg-techlight/80 dark:bg-charcoal-surface border-b border-concrete/30 dark:border-charcoal-border py-2 text-[11px] font-mono tracking-widest text-charcoal/70 dark:text-ivory/70 pt-20">
+          <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl flex flex-wrap items-center justify-between gap-3">
+            <div className="flex items-center gap-2">
+              <span className="inline-block w-2 h-2 bg-sage rounded-full animate-pulse" />
+              <span className="font-bold text-charcoal dark:text-ivory">INITIATIVE // 10X AI PRODUCTIVITY</span>
+              <span className="text-concrete/40 dark:text-charcoal-border">|</span>
+              <span className="text-concrete">ACADEMIC &amp; WORKFORCE ENABLEMENT</span>
+            </div>
+            <div className="flex items-center gap-4 text-[10px] text-concrete">
+              <span>STATUS: 10,000+ LEARNERS</span>
+              <span>•</span>
+              <span>CURRICULUM: NEP 2020 &amp; INDUSTRY 4.0</span>
+              <span>•</span>
+              <span className="text-amber font-semibold">COHORTS OPEN</span>
+            </div>
           </div>
+        </div>
 
-          <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl relative z-10">
-            {/* Top eyebrow pill */}
-            <div className="flex justify-center mb-6">
-              <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-blue-50 dark:bg-blue-950/70 border border-blue-200 dark:border-blue-800 text-blue-700 dark:text-blue-300 text-xs sm:text-sm font-semibold tracking-wide shadow-sm">
-                <Sparkles className="w-3.5 h-3.5 text-blue-600 dark:text-blue-400" />
-                <span>NIRIKSHAN AI</span>
-                <span className="w-1 h-1 rounded-full bg-blue-400" />
-                <span>LEARN • BUILD • INNOVATE</span>
-              </div>
+        {/* ══════════════════════════════════════════════════════
+            1. HERO SECTION — EDITORIAL BRUTALIST
+        ══════════════════════════════════════════════════════ */}
+        <section className="relative py-16 lg:py-24 border-b border-concrete/30 dark:border-charcoal-border bg-ivory dark:bg-charcoal overflow-hidden">
+          <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl">
+            {/* Breadcrumb + Tag */}
+            <div className="flex items-center gap-2 font-mono text-xs text-concrete uppercase tracking-wider mb-6">
+              <span>NIRIKSHAN AI</span>
+              <span>/</span>
+              <span>INITIATIVES</span>
+              <span>/</span>
+              <span className="text-sage font-bold">10X_PRODUCTIVITY</span>
             </div>
 
-            {/* Main Heading */}
-            <div className="max-w-4xl mx-auto text-center">
-              <h1 className="text-3xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight text-slate-950 dark:text-white leading-[1.12] mb-6">
-                Making India AI-Ready,
-                <br />
-                <span className="bg-gradient-to-r from-blue-600 via-indigo-600 to-violet-600 bg-clip-text text-transparent">
-                  One Skill at a Time.
-                </span>
-              </h1>
+            {/* Split Screen Hero Layout */}
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14 items-center">
+              {/* Left Column: Editorial Headline & Actions */}
+              <div className="lg:col-span-7 space-y-6">
+                <div className="inline-flex items-center gap-2 px-3 py-1 border border-concrete/40 dark:border-charcoal-border bg-techlight/50 dark:bg-charcoal-surface font-mono text-[11px] uppercase tracking-wider text-charcoal dark:text-ivory">
+                  <span className="w-1.5 h-1.5 rounded-full bg-amber" />
+                  <span>NATIONAL AI READINESS MISSION</span>
+                </div>
 
-              {/* Supporting text */}
-              <p className="text-base sm:text-xl text-slate-600 dark:text-slate-300 font-normal leading-relaxed max-w-3xl mx-auto mb-8">
-                Practical AI training that empowers students, educators, professionals, and industries to understand, apply, and innovate with Artificial Intelligence.
-              </p>
+                <h1 className="font-serif text-4xl sm:text-6xl lg:text-7xl font-bold tracking-tight text-charcoal dark:text-ivory leading-[1.08]">
+                  Making India AI-Ready.
+                  <br />
+                  <span className="italic font-normal text-concrete dark:text-concrete-light">
+                    One Practical Skill
+                  </span>{" "}
+                  at a Time.
+                </h1>
 
-              {/* Four visual audience labels */}
-              <div className="flex flex-wrap items-center justify-center gap-2 sm:gap-3 mb-10">
-                {["SCHOOLS", "UNIVERSITIES", "CORPORATES", "INDUSTRIES"].map((aud, idx) => (
-                  <div
-                    key={aud}
-                    className="flex items-center gap-2 px-3.5 py-1.5 rounded-xl bg-slate-100 dark:bg-slate-800/80 border border-slate-200/80 dark:border-slate-700 text-slate-800 dark:text-slate-200 font-semibold text-xs tracking-wider"
+                <p className="text-base sm:text-lg text-charcoal/80 dark:text-ivory/80 font-sans leading-relaxed max-w-2xl">
+                  Moving beyond theoretical slide decks. Nirikshan AI engineers immersive, code-first learning environments for schools, engineering colleges, enterprise teams, and industrial plants — equipping participants with tangible AI capabilities from foundation models to edge computer vision.
+                </p>
+
+                {/* Four Audience Badges */}
+                <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 pt-2">
+                  {[
+                    { label: "01 SCHOOLS (K-12)", target: "schools" },
+                    { label: "02 UNIVERSITIES", target: "universities" },
+                    { label: "03 ENTERPRISES", target: "corporates" },
+                    { label: "04 INDUSTRIES", target: "industries" },
+                  ].map((aud) => (
+                    <button
+                      key={aud.label}
+                      onClick={() => scrollTo("training-verticals")}
+                      className="text-left p-2.5 border border-concrete/30 dark:border-charcoal-border bg-white/70 dark:bg-charcoal-surface font-mono text-[10px] tracking-wider text-charcoal/80 dark:text-ivory/80 hover:border-amber hover:text-amber transition-colors"
+                    >
+                      {aud.label}
+                    </button>
+                  ))}
+                </div>
+
+                {/* Action Buttons */}
+                <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 pt-4">
+                  <Button
+                    size="lg"
+                    onClick={() => scrollTo("programmes")}
+                    className="rounded-none bg-charcoal dark:bg-ivory text-ivory dark:text-charcoal hover:bg-amber dark:hover:bg-amber hover:text-white dark:hover:text-white font-mono text-xs uppercase tracking-wider px-8 py-6 transition-colors shadow-none flex items-center justify-center gap-2 group"
                   >
-                    <span className="w-1.5 h-1.5 rounded-full bg-blue-600 dark:bg-blue-400" />
-                    <span>{aud}</span>
-                  </div>
-                ))}
+                    <span>EXPLORE PROGRAMMES</span>
+                    <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                  </Button>
+                  <Button
+                    size="lg"
+                    variant="outline"
+                    onClick={() => scrollTo("contact-inquiry")}
+                    className="rounded-none border-concrete/40 dark:border-charcoal-border text-charcoal dark:text-ivory hover:bg-concrete/20 dark:hover:bg-charcoal-surface font-mono text-xs uppercase tracking-wider px-8 py-6 transition-colors"
+                  >
+                    CONFIGURE COHORT
+                  </Button>
+                </div>
               </div>
 
-              {/* Hero CTA buttons */}
-              <div className="flex flex-col sm:flex-row items-center justify-center gap-3.5 mb-14">
-                <Button
-                  size="lg"
-                  onClick={() => scrollTo("training-verticals")}
-                  className="w-full sm:w-auto bg-blue-600 hover:bg-blue-700 text-white font-semibold px-8 py-6 text-base rounded-2xl shadow-xl shadow-blue-500/20 group"
-                >
-                  <span>Explore Training Programmes</span>
-                  <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" />
-                </Button>
-                <Button
-                  size="lg"
-                  variant="outline"
-                  onClick={() => scrollTo("contact-inquiry")}
-                  className="w-full sm:w-auto border-slate-300 dark:border-slate-700 hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-800 dark:text-slate-200 font-semibold px-8 py-6 text-base rounded-2xl"
-                >
-                  Partner With Us
-                </Button>
+              {/* Right Column: Technical Photo Showcase with HUD Telemetry */}
+              <div className="lg:col-span-5 relative">
+                <div className="border border-concrete/40 dark:border-charcoal-border bg-charcoal p-1 relative">
+                  <div className="relative aspect-[4/3] sm:aspect-[16/11] overflow-hidden bg-charcoal">
+                    <img
+                      src="https://images.unsplash.com/photo-1531482615713-2afd69097998?auto=format&fit=crop&w=1200&q=85"
+                      alt="Nirikshan AI Enablement Lab"
+                      className="w-full h-full object-cover grayscale contrast-125 opacity-85 hover:grayscale-0 hover:opacity-100 transition-all duration-700"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-charcoal via-transparent to-transparent opacity-80" />
+
+                    {/* Reticle Brackets */}
+                    <div className="absolute top-3 left-3 w-4 h-4 border-t-2 border-l-2 border-sage" />
+                    <div className="absolute top-3 right-3 w-4 h-4 border-t-2 border-r-2 border-sage" />
+                    <div className="absolute bottom-3 left-3 w-4 h-4 border-b-2 border-l-2 border-sage" />
+                    <div className="absolute bottom-3 right-3 w-4 h-4 border-b-2 border-r-2 border-sage" />
+
+                    {/* Telemetry Header */}
+                    <div className="absolute top-3 left-8 right-8 flex items-center justify-between font-mono text-[9px] text-ivory/80 uppercase tracking-widest bg-charcoal/80 px-2 py-1 border border-concrete/20 backdrop-blur-sm">
+                      <span className="flex items-center gap-1.5 text-sage">
+                        <span className="w-1.5 h-1.5 rounded-full bg-sage animate-ping" />
+                        SESSION // 084_ACTIVE
+                      </span>
+                      <span>IN-PERSON WORKSHOP</span>
+                    </div>
+
+                    {/* Bottom Telemetry HUD */}
+                    <div className="absolute bottom-4 left-4 right-4 text-ivory space-y-1">
+                      <div className="font-mono text-[10px] text-sage font-bold tracking-wider uppercase">
+                        HANDS-ON COMPUTER LAB COHORT
+                      </div>
+                      <div className="font-serif text-lg font-bold leading-tight">
+                        Real learners, live terminals, production problem-solving.
+                      </div>
+                      <div className="flex items-center justify-between font-mono text-[9px] text-concrete pt-1 border-t border-concrete/20">
+                        <span>DEPT: CS / IT / MANAGEMENT</span>
+                        <span>CAPSTONE: VERIFIED GITHUB REPO</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Sub-Card: Institutional Accreditation */}
+                <div className="mt-3 grid grid-cols-2 gap-3">
+                  <div className="border border-concrete/30 dark:border-charcoal-border p-3 bg-white/70 dark:bg-charcoal-surface">
+                    <div className="font-mono text-[10px] text-concrete uppercase tracking-wider">ALIGNMENT</div>
+                    <div className="font-mono text-xs font-bold text-charcoal dark:text-ivory mt-0.5">NEP 2020 &amp; UGC</div>
+                  </div>
+                  <div className="border border-concrete/30 dark:border-charcoal-border p-3 bg-white/70 dark:bg-charcoal-surface">
+                    <div className="font-mono text-[10px] text-concrete uppercase tracking-wider">LAB TOPOLOGY</div>
+                    <div className="font-mono text-xs font-bold text-charcoal dark:text-ivory mt-0.5">1:1 Terminal Stations</div>
+                  </div>
+                </div>
               </div>
             </div>
 
-            {/* Asymmetrical High-Impact Hero Photo Collage */}
-            <div className="grid grid-cols-1 md:grid-cols-12 gap-4 max-w-6xl mx-auto items-stretch">
-              {/* Large Main Feature Photo */}
-              <div className="md:col-span-7 relative rounded-3xl overflow-hidden border border-slate-200 dark:border-slate-800 shadow-2xl group min-h-[300px] sm:min-h-[400px]">
-                <img
-                  src="https://images.unsplash.com/photo-1531482615713-2afd69097998?auto=format&fit=crop&w=1200&q=85"
-                  alt="Nirikshan AI Training Workshop"
-                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
-                  loading="eager"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-slate-950/85 via-slate-950/25 to-transparent" />
-                <div className="absolute bottom-6 left-6 right-6 text-white">
-                  <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-blue-600/90 text-white text-xs font-semibold uppercase tracking-wider backdrop-blur-sm mb-2">
-                    <Laptop className="w-3.5 h-3.5" /> Hands-On AI Workshops
-                  </span>
-                  <h3 className="text-xl sm:text-2xl font-bold leading-tight">
-                    Real students, actual code, practical problem solving.
-                  </h3>
-                  <p className="text-xs sm:text-sm text-slate-200 mt-1 line-clamp-2">
-                    Classrooms transformed into applied AI innovation labs across institutions and enterprise teams.
-                  </p>
+            {/* Brutalist 3-Column Metrics Strip */}
+            <div className="mt-14 pt-10 border-t border-concrete/30 dark:border-charcoal-border grid grid-cols-1 md:grid-cols-3 gap-6">
+              <div className="border border-concrete/30 dark:border-charcoal-border p-6 bg-white/50 dark:bg-charcoal-surface">
+                <div className="font-mono text-[10px] uppercase tracking-widest text-concrete mb-1">
+                  METRIC_01 // REACH
                 </div>
+                <div className="font-mono text-3xl sm:text-4xl font-bold text-charcoal dark:text-ivory">
+                  10,000+
+                </div>
+                <div className="font-serif text-sm font-semibold text-charcoal dark:text-ivory mt-2">
+                  Learners Upskilled Pan-India
+                </div>
+                <p className="text-xs text-concrete mt-1">
+                  School students, university engineering graduates, and corporate professionals trained in modern AI workflows.
+                </p>
               </div>
 
-              {/* Right Stack of 2 Real Environment Photos */}
-              <div className="md:col-span-5 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-1 gap-4">
-                {/* Photo 1: University Lab / Lecture */}
-                <div className="relative rounded-3xl overflow-hidden border border-slate-200 dark:border-slate-800 shadow-lg group min-h-[190px]">
-                  <img
-                    src="https://images.unsplash.com/photo-1524178232363-1fb2b075b655?auto=format&fit=crop&w=800&q=80"
-                    alt="University Campus AI Lecture"
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
-                    loading="lazy"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-transparent to-transparent" />
-                  <div className="absolute bottom-4 left-4 right-4 text-white">
-                    <span className="text-[11px] font-bold uppercase tracking-wider text-blue-300">
-                      Higher Education
-                    </span>
-                    <h4 className="text-sm sm:text-base font-bold">
-                      University Computer Labs &amp; Faculty Enablement
-                    </h4>
-                  </div>
+              <div className="border border-concrete/30 dark:border-charcoal-border p-6 bg-white/50 dark:bg-charcoal-surface">
+                <div className="font-mono text-[10px] uppercase tracking-widest text-concrete mb-1">
+                  METRIC_02 // ADOPTION
                 </div>
+                <div className="font-mono text-3xl sm:text-4xl font-bold text-charcoal dark:text-ivory">
+                  50+
+                </div>
+                <div className="font-serif text-sm font-semibold text-charcoal dark:text-ivory mt-2">
+                  Institutions &amp; Enterprises
+                </div>
+                <p className="text-xs text-concrete mt-1">
+                  Partner schools, universities, and industrial enterprises conducting structured hackathons &amp; MoUs.
+                </p>
+              </div>
 
-                {/* Photo 2: Corporate Workforce Training */}
-                <div className="relative rounded-3xl overflow-hidden border border-slate-200 dark:border-slate-800 shadow-lg group min-h-[190px]">
-                  <img
-                    src="https://images.unsplash.com/photo-1552664730-d307ca884978?auto=format&fit=crop&w=800&q=80"
-                    alt="Corporate AI Workforce Training"
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
-                    loading="lazy"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-transparent to-transparent" />
-                  <div className="absolute bottom-4 left-4 right-4 text-white">
-                    <span className="text-[11px] font-bold uppercase tracking-wider text-indigo-300">
-                      Workforce Transformation
-                    </span>
-                    <h4 className="text-sm sm:text-base font-bold">
-                      Corporate Teams Automating Daily Workflows
-                    </h4>
-                  </div>
+              <div className="border border-concrete/30 dark:border-charcoal-border p-6 bg-white/50 dark:bg-charcoal-surface">
+                <div className="font-mono text-[10px] uppercase tracking-widest text-concrete mb-1">
+                  METRIC_03 // RIGOR
                 </div>
+                <div className="font-mono text-3xl sm:text-4xl font-bold text-sage">
+                  100%
+                </div>
+                <div className="font-serif text-sm font-semibold text-charcoal dark:text-ivory mt-2">
+                  Hands-On Capstone Portfolios
+                </div>
+                <p className="text-xs text-concrete mt-1">
+                  Every participant builds, runs, and demonstrates live AI applications rather than passively viewing lectures.
+                </p>
               </div>
             </div>
           </div>
@@ -545,377 +627,195 @@ export const TenXProductivity: React.FC = () => {
         {/* ══════════════════════════════════════════════════════
             2. FOUR MAJOR TRAINING VERTICALS (THE CORE SECTION)
         ══════════════════════════════════════════════════════ */}
-        <section id="training-verticals" className="py-20 lg:py-28 bg-white dark:bg-slate-950 border-b border-slate-200 dark:border-slate-800">
+        <section id="training-verticals" className="py-20 lg:py-28 bg-techlight/30 dark:bg-charcoal-surface border-b border-concrete/30 dark:border-charcoal-border">
           <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl">
             {/* Section Header */}
-            <div className="text-center max-w-3xl mx-auto mb-16 lg:mb-24">
-              <span className="inline-block px-4 py-1.5 rounded-full bg-blue-50 dark:bg-blue-950/60 text-blue-600 dark:text-blue-400 text-xs font-bold uppercase tracking-widest mb-3">
-                Targeted Training Ecosystem
-              </span>
-              <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-slate-950 dark:text-white tracking-tight mb-4">
-                Four Major Training Verticals
-              </h2>
-              <p className="text-slate-600 dark:text-slate-300 text-base sm:text-lg leading-relaxed">
-                We craft tailored, immersive learning environments designed specifically for the unique goals of schools, universities, corporate teams, and manufacturing facilities.
+            <div className="border-b border-concrete/30 dark:border-charcoal-border pb-8 mb-16 flex flex-col md:flex-row md:items-end justify-between gap-4">
+              <div>
+                <div className="flex items-center gap-2 mb-2">
+                  <span className="font-mono text-xs tracking-widest text-sage font-semibold uppercase">
+                    SEC_02 // TARGETED ENABLEMENT VERTICALS
+                  </span>
+                  <span className="text-concrete/40 dark:text-charcoal-border font-mono">/</span>
+                  <span className="font-mono text-xs text-concrete">FOUR DEDICATED TRACKS</span>
+                </div>
+                <h2 className="font-serif text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-charcoal dark:text-ivory">
+                  Tailored AI Learning Ecosystems.
+                </h2>
+              </div>
+              <p className="font-sans text-sm text-concrete max-w-md">
+                Customized curricula engineered specifically for the distinct operational goals of schools, universities, enterprise teams, and industrial shopfloors.
               </p>
             </div>
 
             {/* Verticals List with Staggered Editorial Layout */}
-            <div className="space-y-20 lg:space-y-32">
-              {/* ── VERTICAL 01: SCHOOLS (Image Left, Text Right) ── */}
-              <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
-                <div className="lg:col-span-7 relative group">
-                  <div className="relative rounded-3xl overflow-hidden shadow-2xl border border-slate-200 dark:border-slate-800 bg-slate-900 aspect-[16/10]">
-                    <img
-                      src={verticals[0].mainImage}
-                      alt="AI Training for Schools"
-                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
-                      loading="lazy"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-slate-950/70 via-transparent to-transparent" />
-                    <div className="absolute top-4 left-4">
-                      <span className="font-mono text-4xl sm:text-5xl font-black text-white/30">
-                        01
-                      </span>
-                    </div>
-                  </div>
-                  {/* Floating badge */}
-                  <div className="absolute -bottom-5 right-6 hidden sm:flex items-center gap-3 p-3.5 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-xl">
-                    <div className="w-10 h-10 rounded-xl bg-amber-500/10 flex items-center justify-center text-amber-600">
-                      <Compass className="w-5 h-5" />
-                    </div>
-                    <div>
-                      <div className="text-xs font-bold text-slate-900 dark:text-white">Ages 10–18</div>
-                      <div className="text-[11px] text-slate-500">Curiosity, Ethics &amp; Projects</div>
-                    </div>
-                  </div>
-                </div>
+            <div className="space-y-16 lg:space-y-24">
+              {verticals.map((vert, idx) => {
+                const isEven = idx % 2 === 1;
+                return (
+                  <div
+                    key={vert.id}
+                    className="border border-concrete/40 dark:border-charcoal-border bg-white dark:bg-charcoal p-6 sm:p-10"
+                  >
+                    <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
+                      {/* Photo Container */}
+                      <div className={`lg:col-span-6 relative ${isEven ? "lg:order-2" : "lg:order-1"}`}>
+                        <div className="relative border border-concrete/40 dark:border-charcoal-border bg-charcoal aspect-[16/10] overflow-hidden group">
+                          <img
+                            src={vert.mainImage}
+                            alt={vert.heading}
+                            className="w-full h-full object-cover grayscale contrast-125 group-hover:grayscale-0 transition-all duration-700"
+                            loading="lazy"
+                          />
+                          <div className="absolute inset-0 bg-gradient-to-t from-charcoal/80 via-transparent to-transparent" />
+                          
+                          {/* Corner Reticles */}
+                          <div className="absolute top-3 left-3 w-3 h-3 border-t border-l border-sage" />
+                          <div className="absolute bottom-3 right-3 w-3 h-3 border-b border-r border-sage" />
 
-                <div className="lg:col-span-5 space-y-5">
-                  <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider border bg-amber-500/10 text-amber-600 dark:text-amber-400 border-amber-500/20">
-                    <Compass className="w-3.5 h-3.5" />
-                    <span>{verticals[0].audienceLabel}</span>
-                  </div>
-                  <h3 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-slate-950 dark:text-white leading-tight">
-                    {verticals[0].heading}
-                  </h3>
-                  <p className="text-base text-slate-600 dark:text-slate-300 leading-relaxed">
-                    {verticals[0].shortDesc}
-                  </p>
-
-                  {/* Bullet points */}
-                  <ul className="space-y-2.5 pt-2">
-                    {verticals[0].bulletPoints.map((pt) => (
-                      <li key={pt} className="flex items-start gap-2.5 text-xs sm:text-sm text-slate-700 dark:text-slate-300">
-                        <CheckCircle2 className="w-4 h-4 text-amber-500 shrink-0 mt-0.5" />
-                        <span>{pt}</span>
-                      </li>
-                    ))}
-                  </ul>
-
-                  {/* Tags */}
-                  <div className="flex flex-wrap gap-2 pt-3">
-                    {verticals[0].tags.map((tag) => (
-                      <span
-                        key={tag}
-                        className="text-xs font-semibold px-3 py-1.5 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-700"
-                      >
-                        {tag}
-                      </span>
-                    ))}
-                  </div>
-
-                  {/* CTA */}
-                  <div className="pt-4">
-                    <Button
-                      onClick={() => handleSelectVertical(verticals[0].programmeName, verticals[0].audienceType)}
-                      className="bg-amber-600 hover:bg-amber-700 text-white font-semibold px-6 py-5 rounded-xl shadow-lg shadow-amber-500/20 group"
-                    >
-                      <span>{verticals[0].cta}</span>
-                      <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" />
-                    </Button>
-                  </div>
-                </div>
-              </div>
-
-              {/* ── VERTICAL 02: UNIVERSITIES & COLLEGES (Text Left, Image Right) ── */}
-              <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
-                <div className="lg:col-span-5 space-y-5 order-2 lg:order-1">
-                  <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider border bg-blue-500/10 text-blue-600 dark:text-blue-400 border-blue-500/20">
-                    <GraduationCap className="w-3.5 h-3.5" />
-                    <span>{verticals[1].audienceLabel}</span>
-                  </div>
-                  <h3 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-slate-950 dark:text-white leading-tight">
-                    {verticals[1].heading}
-                  </h3>
-                  <p className="text-base text-slate-600 dark:text-slate-300 leading-relaxed">
-                    {verticals[1].shortDesc}
-                  </p>
-
-                  {/* Bullet points */}
-                  <ul className="space-y-2.5 pt-2">
-                    {verticals[1].bulletPoints.map((pt) => (
-                      <li key={pt} className="flex items-start gap-2.5 text-xs sm:text-sm text-slate-700 dark:text-slate-300">
-                        <CheckCircle2 className="w-4 h-4 text-blue-500 shrink-0 mt-0.5" />
-                        <span>{pt}</span>
-                      </li>
-                    ))}
-                  </ul>
-
-                  {/* Tags */}
-                  <div className="flex flex-wrap gap-2 pt-3">
-                    {verticals[1].tags.map((tag) => (
-                      <span
-                        key={tag}
-                        className="text-xs font-semibold px-3 py-1.5 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-700"
-                      >
-                        {tag}
-                      </span>
-                    ))}
-                  </div>
-
-                  {/* CTA */}
-                  <div className="pt-4">
-                    <Button
-                      onClick={() => handleSelectVertical(verticals[1].programmeName, verticals[1].audienceType)}
-                      className="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-6 py-5 rounded-xl shadow-lg shadow-blue-500/20 group"
-                    >
-                      <span>{verticals[1].cta}</span>
-                      <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" />
-                    </Button>
-                  </div>
-                </div>
-
-                <div className="lg:col-span-7 relative group order-1 lg:order-2">
-                  <div className="relative rounded-3xl overflow-hidden shadow-2xl border border-slate-200 dark:border-slate-800 bg-slate-900 aspect-[16/10]">
-                    <img
-                      src={verticals[1].mainImage}
-                      alt="AI Training for Universities"
-                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
-                      loading="lazy"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-slate-950/70 via-transparent to-transparent" />
-                    <div className="absolute top-4 right-4">
-                      <span className="font-mono text-4xl sm:text-5xl font-black text-white/30">
-                        02
-                      </span>
-                    </div>
-                  </div>
-                  {/* Floating badge */}
-                  <div className="absolute -bottom-5 left-6 hidden sm:flex items-center gap-3 p-3.5 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-xl">
-                    <div className="w-10 h-10 rounded-xl bg-blue-500/10 flex items-center justify-center text-blue-600">
-                      <GraduationCap className="w-5 h-5" />
-                    </div>
-                    <div>
-                      <div className="text-xs font-bold text-slate-900 dark:text-white">Engineering &amp; Science</div>
-                      <div className="text-[11px] text-slate-500">Student &amp; Faculty Enablement</div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              {/* ── VERTICAL 03: CORPORATES (Full-Width High-Impact Card) ── */}
-              <div className="relative rounded-3xl overflow-hidden border border-slate-200 dark:border-slate-800 shadow-2xl group">
-                <div className="relative h-[480px] lg:h-[540px]">
-                  <img
-                    src={verticals[2].mainImage}
-                    alt="Corporate AI Training"
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
-                    loading="lazy"
-                  />
-                  {/* Gradient overlays */}
-                  <div className="absolute inset-0 bg-gradient-to-r from-slate-950/95 via-slate-950/75 to-slate-950/40" />
-                  <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-transparent to-transparent" />
-
-                  {/* Card Content Overlay */}
-                  <div className="absolute inset-0 p-6 sm:p-10 lg:p-14 flex flex-col justify-between text-white z-10">
-                    <div className="flex items-center justify-between">
-                      <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-violet-600/90 text-white shadow-sm backdrop-blur-sm">
-                        <Briefcase className="w-3.5 h-3.5" />
-                        <span>{verticals[2].audienceLabel}</span>
-                      </div>
-                      <span className="font-mono text-4xl sm:text-5xl font-black text-white/30">
-                        03
-                      </span>
-                    </div>
-
-                    <div className="max-w-2xl space-y-4">
-                      <h3 className="text-2xl sm:text-4xl lg:text-5xl font-extrabold leading-tight">
-                        {verticals[2].heading}
-                      </h3>
-                      <p className="text-slate-200 text-sm sm:text-base leading-relaxed">
-                        {verticals[2].shortDesc}
-                      </p>
-
-                      <div className="grid sm:grid-cols-2 gap-2.5 pt-2">
-                        {verticals[2].bulletPoints.map((pt) => (
-                          <div key={pt} className="flex items-start gap-2 text-xs sm:text-sm text-slate-200">
-                            <CheckCircle2 className="w-4 h-4 text-violet-400 shrink-0 mt-0.5" />
-                            <span>{pt}</span>
+                          <div className="absolute top-4 left-4">
+                            <span className="font-mono text-3xl sm:text-4xl font-bold text-white/30">
+                              {vert.number}
+                            </span>
                           </div>
-                        ))}
+
+                          <div className="absolute bottom-3 left-4 right-4 text-white font-mono text-[10px] tracking-wider uppercase flex items-center justify-between">
+                            <span className="text-sage">{vert.audienceLabel}</span>
+                            <span className="text-concrete">{vert.stats}</span>
+                          </div>
+                        </div>
                       </div>
 
-                      <div className="flex flex-wrap gap-2 pt-2">
-                        {verticals[2].tags.map((tag) => (
-                          <span
-                            key={tag}
-                            className="text-xs font-semibold px-3 py-1 rounded-xl bg-white/10 backdrop-blur-sm text-white border border-white/20"
-                          >
-                            {tag}
+                      {/* Content Container */}
+                      <div className={`lg:col-span-6 space-y-5 ${isEven ? "lg:order-1" : "lg:order-2"}`}>
+                        <div className="flex items-center gap-3">
+                          <span className="font-mono text-xs font-bold text-amber">
+                            {vert.code}
                           </span>
-                        ))}
-                      </div>
+                          <span className="text-concrete/40 dark:text-charcoal-border font-mono">•</span>
+                          <span className="font-mono text-[10px] text-concrete uppercase tracking-widest">
+                            {vert.audienceLabel}
+                          </span>
+                        </div>
 
-                      <div className="pt-3">
-                        <Button
-                          onClick={() => handleSelectVertical(verticals[2].programmeName, verticals[2].audienceType)}
-                          className="bg-violet-600 hover:bg-violet-700 text-white font-semibold px-7 py-5 rounded-xl shadow-xl shadow-violet-500/30 group"
-                        >
-                          <span>{verticals[2].cta}</span>
-                          <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" />
-                        </Button>
+                        <h3 className="font-serif text-2xl sm:text-3xl lg:text-4xl font-bold text-charcoal dark:text-ivory leading-tight">
+                          {vert.heading}
+                        </h3>
+
+                        <p className="text-sm sm:text-base text-charcoal/80 dark:text-ivory/80 leading-relaxed font-sans">
+                          {vert.shortDesc}
+                        </p>
+
+                        {/* Bullet Points */}
+                        <div className="space-y-2 pt-1 border-t border-concrete/20 dark:border-charcoal-border">
+                          {vert.bulletPoints.map((pt) => (
+                            <div key={pt} className="flex items-start gap-2.5 text-xs text-charcoal/80 dark:text-ivory/80">
+                              <CheckCircle2 className="w-4 h-4 text-sage shrink-0 mt-0.5" />
+                              <span>{pt}</span>
+                            </div>
+                          ))}
+                        </div>
+
+                        {/* Tags */}
+                        <div className="flex flex-wrap gap-1.5 pt-2">
+                          {vert.tags.map((tag) => (
+                            <span
+                              key={tag}
+                              className="font-mono text-[10px] uppercase tracking-wider px-2.5 py-1 border border-concrete/30 dark:border-charcoal-border bg-techlight/30 dark:bg-charcoal-surface text-charcoal/70 dark:text-ivory/70"
+                            >
+                              {tag}
+                            </span>
+                          ))}
+                        </div>
+
+                        {/* CTA */}
+                        <div className="pt-3">
+                          <Button
+                            onClick={() => handleSelectVertical(vert.programmeName, vert.audienceType)}
+                            className="rounded-none bg-charcoal dark:bg-ivory text-ivory dark:text-charcoal hover:bg-amber dark:hover:bg-amber hover:text-white dark:hover:text-white font-mono text-xs uppercase tracking-wider px-6 py-5 transition-colors shadow-none flex items-center gap-2 group"
+                          >
+                            <span>{vert.cta}</span>
+                            <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
+                          </Button>
+                        </div>
                       </div>
                     </div>
                   </div>
-                </div>
-              </div>
-
-              {/* ── VERTICAL 04: INDUSTRIES (Split Industrial Photography & Content) ── */}
-              <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
-                <div className="lg:col-span-7 relative group">
-                  <div className="grid grid-cols-2 gap-3.5">
-                    <div className="relative rounded-3xl overflow-hidden shadow-xl border border-slate-200 dark:border-slate-800 bg-slate-900 aspect-[4/5]">
-                      <img
-                        src={verticals[3].mainImage}
-                        alt="Industrial AI Technical Training"
-                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
-                        loading="lazy"
-                      />
-                      <div className="absolute inset-0 bg-gradient-to-t from-slate-950/70 via-transparent to-transparent" />
-                      <div className="absolute bottom-3 left-3 text-xs text-white font-semibold">
-                        Technical Plant Floor
-                      </div>
-                    </div>
-                    <div className="relative rounded-3xl overflow-hidden shadow-xl border border-slate-200 dark:border-slate-800 bg-slate-900 aspect-[4/5] mt-6">
-                      <img
-                        src={verticals[3].accentImage}
-                        alt="Factory Automation Training"
-                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
-                        loading="lazy"
-                      />
-                      <div className="absolute inset-0 bg-gradient-to-t from-slate-950/70 via-transparent to-transparent" />
-                      <div className="absolute bottom-3 left-3 text-xs text-white font-semibold">
-                        Automated Vision Quality
-                      </div>
-                    </div>
-                  </div>
-                  <div className="absolute top-2 left-2">
-                    <span className="font-mono text-4xl sm:text-5xl font-black text-slate-400/20">
-                      04
-                    </span>
-                  </div>
-                </div>
-
-                <div className="lg:col-span-5 space-y-5">
-                  <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider border bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border-emerald-500/20">
-                    <Building2 className="w-3.5 h-3.5" />
-                    <span>{verticals[3].audienceLabel}</span>
-                  </div>
-                  <h3 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-slate-950 dark:text-white leading-tight">
-                    {verticals[3].heading}
-                  </h3>
-                  <p className="text-base text-slate-600 dark:text-slate-300 leading-relaxed">
-                    {verticals[3].shortDesc}
-                  </p>
-
-                  {/* Bullet points */}
-                  <ul className="space-y-2.5 pt-2">
-                    {verticals[3].bulletPoints.map((pt) => (
-                      <li key={pt} className="flex items-start gap-2.5 text-xs sm:text-sm text-slate-700 dark:text-slate-300">
-                        <CheckCircle2 className="w-4 h-4 text-emerald-500 shrink-0 mt-0.5" />
-                        <span>{pt}</span>
-                      </li>
-                    ))}
-                  </ul>
-
-                  {/* Tags */}
-                  <div className="flex flex-wrap gap-2 pt-3">
-                    {verticals[3].tags.map((tag) => (
-                      <span
-                        key={tag}
-                        className="text-xs font-semibold px-3 py-1.5 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-700"
-                      >
-                        {tag}
-                      </span>
-                    ))}
-                  </div>
-
-                  {/* CTA */}
-                  <div className="pt-4">
-                    <Button
-                      onClick={() => handleSelectVertical(verticals[3].programmeName, verticals[3].audienceType)}
-                      className="bg-emerald-600 hover:bg-emerald-700 text-white font-semibold px-6 py-5 rounded-xl shadow-lg shadow-emerald-500/20 group"
-                    >
-                      <span>{verticals[3].cta}</span>
-                      <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" />
-                    </Button>
-                  </div>
-                </div>
-              </div>
+                );
+              })}
             </div>
           </div>
         </section>
 
         {/* ══════════════════════════════════════════════════════
-            3. WHAT WE TEACH (COMPACT VISUAL GALLERY)
+            3. WHAT WE TEACH (6 COMPACT TECHNICAL MODULES)
         ══════════════════════════════════════════════════════ */}
-        <section className="py-20 lg:py-28 bg-slate-50 dark:bg-slate-900/60 border-b border-slate-200 dark:border-slate-800">
+        <section className="py-20 lg:py-28 bg-ivory dark:bg-charcoal border-b border-concrete/30 dark:border-charcoal-border">
           <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl">
-            <div className="text-center max-w-3xl mx-auto mb-14">
-              <span className="inline-block px-4 py-1.5 rounded-full bg-blue-50 dark:bg-blue-950/60 text-blue-600 dark:text-blue-400 text-xs font-bold uppercase tracking-widest mb-3">
-                Curriculum Focus
-              </span>
-              <h2 className="text-3xl sm:text-4xl font-extrabold text-slate-950 dark:text-white tracking-tight mb-3">
-                What We Teach
-              </h2>
-              <p className="text-slate-600 dark:text-slate-300 text-base">
-                Core AI skill domains taught with hands-on practice, real tools, and zero filler.
+            {/* Header */}
+            <div className="border-b border-concrete/30 dark:border-charcoal-border pb-8 mb-14 flex flex-col md:flex-row md:items-end justify-between gap-4">
+              <div>
+                <div className="flex items-center gap-2 mb-2">
+                  <span className="font-mono text-xs tracking-widest text-sage font-semibold uppercase">
+                    SEC_03 // CORE CURRICULUM ARCHITECTURE
+                  </span>
+                  <span className="text-concrete/40 dark:text-charcoal-border font-mono">/</span>
+                  <span className="font-mono text-xs text-concrete">SIX PEDAGOGICAL DOMAINS</span>
+                </div>
+                <h2 className="font-serif text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-charcoal dark:text-ivory">
+                  What We Teach.
+                </h2>
+              </div>
+              <p className="font-sans text-sm text-concrete max-w-md">
+                Production AI engineering skills taught with hands-on practice, real toolchains, zero marketing filler, and verified technical outcomes.
               </p>
             </div>
 
-            {/* 6 Visual Tiles with Photographic Thumbnails */}
-            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3.5 sm:gap-4">
-              {teachingDomains.map((domain, idx) => {
+            {/* 6 Modular Brutalist Cards */}
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {teachingDomains.map((domain) => {
                 const Icon = domain.icon;
                 return (
                   <div
-                    key={domain.title}
-                    className="group rounded-2xl overflow-hidden border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 shadow-sm hover:shadow-xl transition-all duration-300 hover:-translate-y-1 flex flex-col justify-between"
+                    key={domain.code}
+                    className="border border-concrete/40 dark:border-charcoal-border bg-white dark:bg-charcoal-surface p-6 flex flex-col justify-between group hover:border-amber transition-colors"
                   >
-                    <div className="relative h-28 sm:h-32 overflow-hidden bg-slate-900">
-                      <img
-                        src={domain.image}
-                        alt={domain.title}
-                        className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
-                        loading="lazy"
-                      />
-                      <div className="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-slate-950/20 to-transparent" />
-                      <div className="absolute top-2.5 left-2.5 w-7 h-7 rounded-lg bg-white/90 dark:bg-slate-900/90 backdrop-blur-sm flex items-center justify-center text-blue-600 dark:text-blue-400 shadow-xs">
-                        <Icon className="w-3.5 h-3.5" />
+                    <div>
+                      {/* Photo Thumbnail */}
+                      <div className="relative h-40 border border-concrete/30 dark:border-charcoal-border overflow-hidden bg-charcoal mb-5">
+                        <img
+                          src={domain.image}
+                          alt={domain.title}
+                          className="w-full h-full object-cover grayscale contrast-125 group-hover:scale-105 group-hover:grayscale-0 transition-all duration-500"
+                          loading="lazy"
+                        />
+                        <div className="absolute inset-0 bg-gradient-to-t from-charcoal/80 via-transparent to-transparent" />
+                        
+                        <div className="absolute top-2.5 left-2.5 px-2 py-1 bg-charcoal/90 border border-concrete/20 font-mono text-[9px] text-sage font-bold uppercase tracking-wider">
+                          {domain.code}
+                        </div>
+                        
+                        <div className="absolute bottom-2.5 right-2.5 w-7 h-7 bg-white dark:bg-charcoal border border-concrete/30 flex items-center justify-center text-charcoal dark:text-ivory">
+                          <Icon className="w-3.5 h-3.5" />
+                        </div>
                       </div>
-                      <span className="absolute bottom-2 right-2.5 font-mono text-xs text-white/40 font-bold">
-                        0{idx + 1}
-                      </span>
-                    </div>
 
-                    <div className="p-3.5">
-                      <h4 className="font-bold text-xs sm:text-sm text-slate-900 dark:text-white group-hover:text-blue-600 transition-colors">
+                      <div className="font-mono text-[10px] text-amber font-semibold uppercase tracking-wider mb-1">
+                        {domain.tagline}
+                      </div>
+                      <h4 className="font-serif text-xl font-bold text-charcoal dark:text-ivory mb-2">
                         {domain.title}
                       </h4>
-                      <p className="text-[11px] font-medium text-slate-500 dark:text-slate-400 mt-0.5">
-                        {domain.tagline}
+                      <p className="text-xs text-charcoal/70 dark:text-ivory/70 leading-relaxed font-sans">
+                        {domain.desc}
                       </p>
+                    </div>
+
+                    <div className="mt-6 pt-3 border-t border-concrete/20 dark:border-charcoal-border flex items-center justify-between font-mono text-[10px] text-concrete">
+                      <span>MODULE: ACCREDITED</span>
+                      <span className="text-sage flex items-center gap-1">
+                        PRACTICAL LAB <ArrowRight className="w-2.5 h-2.5" />
+                      </span>
                     </div>
                   </div>
                 );
@@ -927,48 +827,54 @@ export const TenXProductivity: React.FC = () => {
         {/* ══════════════════════════════════════════════════════
             4. OUR TRAINING EXPERIENCE (IMAGE-LED GALLERY)
         ══════════════════════════════════════════════════════ */}
-        <section className="py-20 lg:py-28 bg-white dark:bg-slate-950 border-b border-slate-200 dark:border-slate-800">
+        <section className="py-20 lg:py-28 bg-techlight/30 dark:bg-charcoal-surface border-b border-concrete/30 dark:border-charcoal-border">
           <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl">
-            <div className="text-center max-w-3xl mx-auto mb-14">
-              <span className="inline-block px-4 py-1.5 rounded-full bg-blue-50 dark:bg-blue-950/60 text-blue-600 dark:text-blue-400 text-xs font-bold uppercase tracking-widest mb-3">
-                Learning Environments
-              </span>
-              <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-slate-950 dark:text-white tracking-tight mb-4">
-                More Than Learning. It's Hands-On Experience.
-              </h2>
-              <p className="text-slate-600 dark:text-slate-300 text-base sm:text-lg leading-relaxed">
-                Learn AI by exploring tools, solving problems, building projects, and applying knowledge to real-world challenges.
+            {/* Header */}
+            <div className="border-b border-concrete/30 dark:border-charcoal-border pb-8 mb-14 flex flex-col md:flex-row md:items-end justify-between gap-4">
+              <div>
+                <div className="flex items-center gap-2 mb-2">
+                  <span className="font-mono text-xs tracking-widest text-sage font-semibold uppercase">
+                    SEC_04 // PHYSICAL &amp; VIRTUAL ENVIRONMENTS
+                  </span>
+                  <span className="text-concrete/40 dark:text-charcoal-border font-mono">/</span>
+                  <span className="font-mono text-xs text-concrete">FIELD EVIDENCE</span>
+                </div>
+                <h2 className="font-serif text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-charcoal dark:text-ivory">
+                  Hands-On Learning In Action.
+                </h2>
+              </div>
+              <p className="font-sans text-sm text-concrete max-w-md">
+                Classroom lectures, dedicated 1:1 hardware terminal stations, executive sprints, and industrial floor testing.
               </p>
             </div>
 
-            {/* Masonry / Responsive Asymmetric Image Grid */}
+            {/* Asymmetrical Gallery Grid */}
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
               {experienceGallery.map((exp, idx) => (
                 <div
                   key={exp.title}
-                  className={`group relative rounded-3xl overflow-hidden border border-slate-200 dark:border-slate-800 bg-slate-900 shadow-md hover:shadow-2xl transition-all duration-300 hover:-translate-y-1 ${
+                  className={`group relative border border-concrete/40 dark:border-charcoal-border bg-charcoal overflow-hidden ${
                     idx === 0 || idx === 7 ? "sm:col-span-2 aspect-[16/9]" : "aspect-[4/3] sm:aspect-square"
                   }`}
                 >
                   <img
                     src={exp.image}
                     alt={exp.title}
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+                    className="w-full h-full object-cover grayscale contrast-125 group-hover:scale-105 group-hover:grayscale-0 transition-all duration-700 opacity-85 group-hover:opacity-100"
                     loading="lazy"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-slate-950/90 via-slate-950/30 to-transparent" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-charcoal via-charcoal/30 to-transparent" />
                   
-                  <div className="absolute top-3.5 left-3.5">
-                    <Badge className="bg-white/20 hover:bg-white/30 text-white backdrop-blur-md border-white/20 text-[10px] font-semibold">
-                      {exp.category}
-                    </Badge>
+                  {/* Reticle Marker */}
+                  <div className="absolute top-3 left-3 px-2 py-0.5 bg-charcoal/90 border border-concrete/30 font-mono text-[9px] text-ivory font-bold uppercase tracking-wider">
+                    {exp.code} // {exp.category}
                   </div>
 
-                  <div className="absolute bottom-4 left-4 right-4 text-white">
-                    <h4 className="font-bold text-sm sm:text-base leading-snug">
+                  <div className="absolute bottom-4 left-4 right-4 text-ivory">
+                    <h4 className="font-serif text-sm sm:text-base font-bold leading-snug">
                       {exp.title}
                     </h4>
-                    <p className="text-xs text-slate-300 mt-1 line-clamp-2">
+                    <p className="font-sans text-[11px] text-concrete-light mt-1 line-clamp-2">
                       {exp.caption}
                     </p>
                   </div>
@@ -981,17 +887,24 @@ export const TenXProductivity: React.FC = () => {
         {/* ══════════════════════════════════════════════════════
             5. SIGNATURE 10X INITIATIVE (5 STAGES)
         ══════════════════════════════════════════════════════ */}
-        <section className="py-20 lg:py-28 bg-slate-50 dark:bg-slate-900/50 border-b border-slate-200 dark:border-slate-800">
+        <section className="py-20 lg:py-28 bg-ivory dark:bg-charcoal border-b border-concrete/30 dark:border-charcoal-border">
           <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl">
-            <div className="text-center max-w-3xl mx-auto mb-16">
-              <span className="inline-block px-4 py-1.5 rounded-full bg-blue-50 dark:bg-blue-950/60 text-blue-600 dark:text-blue-400 text-xs font-bold uppercase tracking-widest mb-3">
-                Signature Framework
-              </span>
-              <h2 className="text-3xl sm:text-4xl font-extrabold text-slate-950 dark:text-white tracking-tight mb-4">
-                From AI Awareness to AI Productivity.
-              </h2>
-              <p className="text-slate-600 dark:text-slate-300 text-base">
-                Our proven five-stage learning progression takes participants from basic discovery to scalable real-world output.
+            {/* Header */}
+            <div className="border-b border-concrete/30 dark:border-charcoal-border pb-8 mb-16 flex flex-col md:flex-row md:items-end justify-between gap-4">
+              <div>
+                <div className="flex items-center gap-2 mb-2">
+                  <span className="font-mono text-xs tracking-widest text-sage font-semibold uppercase">
+                    SEC_05 // METHODOLOGICAL ROADMAP
+                  </span>
+                  <span className="text-concrete/40 dark:text-charcoal-border font-mono">/</span>
+                  <span className="font-mono text-xs text-concrete">FIVE REPEATABLE STAGES</span>
+                </div>
+                <h2 className="font-serif text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-charcoal dark:text-ivory">
+                  From Awareness to 10X Output.
+                </h2>
+              </div>
+              <p className="font-sans text-sm text-concrete max-w-md">
+                Our proven engineering progression takes participants from basic discovery to automated production pipelines.
               </p>
             </div>
 
@@ -1000,36 +913,40 @@ export const TenXProductivity: React.FC = () => {
               {fiveStages.map((stg, idx) => (
                 <div
                   key={stg.step}
-                  className="rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-5 shadow-sm hover:shadow-lg transition-all flex flex-col justify-between group"
+                  className="border border-concrete/40 dark:border-charcoal-border bg-white dark:bg-charcoal-surface p-5 flex flex-col justify-between group hover:border-amber transition-colors"
                 >
                   <div>
-                    <div className="flex items-center justify-between mb-3">
-                      <span className="font-mono text-xs font-extrabold px-2.5 py-1 rounded-md bg-blue-50 dark:bg-blue-950/60 text-blue-600 dark:text-blue-400">
-                        STAGE {stg.step}
+                    <div className="flex items-center justify-between border-b border-concrete/20 dark:border-charcoal-border pb-3 mb-4">
+                      <span className="font-mono text-xs font-bold text-amber">
+                        STAGE // {stg.step}
                       </span>
                       {idx < 4 && (
-                        <ChevronRight className="w-4 h-4 text-slate-300 dark:text-slate-700 hidden lg:block" />
+                        <ArrowRight className="w-3.5 h-3.5 text-concrete hidden lg:block" />
                       )}
                     </div>
 
-                    <div className="relative h-28 rounded-xl overflow-hidden mb-4 border border-slate-200 dark:border-slate-800">
+                    <div className="relative h-28 border border-concrete/30 dark:border-charcoal-border overflow-hidden mb-4 bg-charcoal">
                       <img
                         src={stg.image}
                         alt={stg.name}
-                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                        className="w-full h-full object-cover grayscale group-hover:scale-105 group-hover:grayscale-0 transition-all duration-500"
                         loading="lazy"
                       />
                     </div>
 
-                    <h4 className="font-bold text-base text-slate-900 dark:text-white mb-1">
+                    <div className="font-mono text-[10px] text-sage font-bold tracking-wider uppercase mb-1">
                       {stg.name}
-                    </h4>
-                    <div className="text-xs font-semibold text-blue-600 dark:text-blue-400 mb-2">
-                      {stg.headline}
                     </div>
-                    <p className="text-xs text-slate-500 dark:text-slate-400 leading-relaxed">
+                    <h4 className="font-serif text-base font-bold text-charcoal dark:text-ivory mb-2">
+                      {stg.headline}
+                    </h4>
+                    <p className="text-xs text-charcoal/70 dark:text-ivory/70 leading-relaxed font-sans">
                       {stg.desc}
                     </p>
+                  </div>
+
+                  <div className="mt-4 pt-3 border-t border-concrete/20 dark:border-charcoal-border font-mono text-[9px] text-concrete">
+                    PHASE COMPLETE CRITERIA VERIFIED
                   </div>
                 </div>
               ))}
@@ -1040,66 +957,71 @@ export const TenXProductivity: React.FC = () => {
         {/* ══════════════════════════════════════════════════════
             6. OUR TRAINING PROGRAMMES (5 TILES)
         ══════════════════════════════════════════════════════ */}
-        <section id="programmes" className="py-20 lg:py-28 bg-white dark:bg-slate-950 border-b border-slate-200 dark:border-slate-800">
+        <section id="programmes" className="py-20 lg:py-28 bg-techlight/30 dark:bg-charcoal-surface border-b border-concrete/30 dark:border-charcoal-border">
           <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl">
-            <div className="text-center max-w-3xl mx-auto mb-16">
-              <span className="inline-block px-4 py-1.5 rounded-full bg-blue-50 dark:bg-blue-950/60 text-blue-600 dark:text-blue-400 text-xs font-bold uppercase tracking-widest mb-3">
-                Curated Tracks
-              </span>
-              <h2 className="text-3xl sm:text-4xl font-extrabold text-slate-950 dark:text-white tracking-tight mb-4">
-                Our Training Programmes
-              </h2>
-              <p className="text-slate-600 dark:text-slate-300 text-base">
-                Explore structured curricula designed for every stage of your educational or professional journey.
+            {/* Header */}
+            <div className="border-b border-concrete/30 dark:border-charcoal-border pb-8 mb-16 flex flex-col md:flex-row md:items-end justify-between gap-4">
+              <div>
+                <div className="flex items-center gap-2 mb-2">
+                  <span className="font-mono text-xs tracking-widest text-sage font-semibold uppercase">
+                    SEC_06 // STANDARDIZED PROGRAMME CATALOGUE
+                  </span>
+                  <span className="text-concrete/40 dark:text-charcoal-border font-mono">/</span>
+                  <span className="font-mono text-xs text-concrete">FIVE STRUCTURED TRACKS</span>
+                </div>
+                <h2 className="font-serif text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-charcoal dark:text-ivory">
+                  Explore Structured Programmes.
+                </h2>
+              </div>
+              <p className="font-sans text-sm text-concrete max-w-md">
+                Select a flagship programme to view detailed syllabus deliverables, prerequisites, and cohort scheduling options.
               </p>
             </div>
 
-            {/* 5 Attractive Programme Tiles */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
+            {/* 5 Programme Tiles */}
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {programmes.map((prog, idx) => (
                 <div
                   key={prog.id}
-                  className={`group rounded-3xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 shadow-md hover:shadow-2xl transition-all duration-300 flex flex-col justify-between overflow-hidden hover:-translate-y-1 ${
+                  className={`border border-concrete/40 dark:border-charcoal-border bg-white dark:bg-charcoal flex flex-col justify-between group hover:border-amber transition-colors ${
                     idx === 4 ? "md:col-span-2 lg:col-span-1" : ""
                   }`}
                 >
                   <div>
-                    {/* Visual Photo Header */}
-                    <div className="relative h-48 overflow-hidden bg-slate-900">
+                    {/* Visual Header */}
+                    <div className="relative h-48 border-b border-concrete/30 dark:border-charcoal-border overflow-hidden bg-charcoal">
                       <img
                         src={prog.image}
                         alt={prog.name}
-                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+                        className="w-full h-full object-cover grayscale contrast-125 group-hover:scale-105 group-hover:grayscale-0 transition-all duration-700"
                         loading="lazy"
                       />
-                      <div className="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-slate-950/20 to-transparent" />
+                      <div className="absolute inset-0 bg-gradient-to-t from-charcoal via-charcoal/40 to-transparent" />
                       
-                      <div className="absolute top-3.5 left-3.5">
-                        <Badge className={`${prog.badgeColor} border font-bold text-xs shadow-xs backdrop-blur-sm`}>
-                          {prog.badge}
-                        </Badge>
+                      <div className="absolute top-3 left-3 px-2 py-0.5 bg-charcoal/90 border border-concrete/30 font-mono text-[9px] text-sage font-bold uppercase tracking-wider">
+                        {prog.code} // {prog.badge}
                       </div>
 
                       <div className="absolute bottom-3 left-4 right-4 text-white">
-                        <div className="text-xs uppercase tracking-wider text-slate-300 font-medium">
-                          {prog.target}
+                        <div className="font-mono text-[10px] text-concrete-light uppercase tracking-wider">
+                          TARGET: {prog.target}
                         </div>
-                        <h3 className="text-xl font-bold leading-tight">
+                        <h3 className="font-serif text-xl font-bold leading-tight">
                           {prog.name}
                         </h3>
                       </div>
                     </div>
 
                     {/* Content */}
-                    <div className="p-6">
-                      <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-300 leading-relaxed mb-4">
+                    <div className="p-6 space-y-4">
+                      <p className="text-xs sm:text-sm text-charcoal/80 dark:text-ivory/80 leading-relaxed font-sans">
                         {prog.description}
                       </p>
 
-                      <div className="space-y-2 mb-6">
+                      <div className="space-y-2 pt-2 border-t border-concrete/20 dark:border-charcoal-border">
                         {prog.highlights.map((h) => (
-                          <div key={h} className="flex items-center gap-2 text-xs text-slate-700 dark:text-slate-300 font-medium">
-                            <CheckCircle2 className="w-3.5 h-3.5 text-blue-600 dark:text-blue-400 shrink-0" />
+                          <div key={h} className="flex items-center gap-2 text-xs text-charcoal/80 dark:text-ivory/80">
+                            <CheckCircle2 className="w-3.5 h-3.5 text-sage shrink-0" />
                             <span>{h}</span>
                           </div>
                         ))}
@@ -1110,12 +1032,10 @@ export const TenXProductivity: React.FC = () => {
                   {/* Tile CTA */}
                   <div className="p-6 pt-0">
                     <Button
-                      onClick={() => {
-                        setActiveModalProgramme(prog);
-                      }}
-                      className="w-full bg-slate-100 hover:bg-blue-600 dark:bg-slate-800 dark:hover:bg-blue-600 text-slate-900 hover:text-white dark:text-slate-100 dark:hover:text-white font-semibold text-xs py-2.5 rounded-xl border border-slate-200 dark:border-slate-700 transition-all flex items-center justify-between"
+                      onClick={() => setActiveModalProgramme(prog)}
+                      className="w-full rounded-none border border-concrete/40 dark:border-charcoal-border bg-techlight/50 dark:bg-charcoal-surface text-charcoal dark:text-ivory hover:bg-amber dark:hover:bg-amber hover:text-white dark:hover:text-white font-mono text-xs uppercase tracking-wider py-5 transition-colors shadow-none flex items-center justify-between"
                     >
-                      <span>Explore Programme</span>
+                      <span>INSPECT PROGRAMME SPEC</span>
                       <ArrowRight className="w-3.5 h-3.5" />
                     </Button>
                   </div>
@@ -1126,42 +1046,34 @@ export const TenXProductivity: React.FC = () => {
         </section>
 
         {/* ══════════════════════════════════════════════════════
-            7. FINAL CTA — BRING AI TRAINING TO YOUR ORGANISATION
+            7. DARK TECHNICAL SECTION — ACCELERATION CALL
         ══════════════════════════════════════════════════════ */}
-        <section className="relative py-24 lg:py-32 overflow-hidden bg-slate-950 text-white">
-          {/* Real Training Environment Background Photo */}
-          <div className="absolute inset-0">
-            <img
-              src="https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?auto=format&fit=crop&w=1800&q=85"
-              alt="Collaborative AI Training Environment"
-              className="w-full h-full object-cover opacity-20"
-              loading="lazy"
-            />
-            <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/80 to-slate-950/60" />
-          </div>
+        <section className="py-24 lg:py-32 bg-charcoal text-ivory border-b border-concrete/30 dark:border-charcoal-border relative overflow-hidden">
+          <div className="container relative z-10 mx-auto px-4 sm:px-6 lg:px-8 max-w-4xl text-center space-y-6">
+            <div className="inline-flex items-center gap-2 px-3 py-1 border border-concrete/30 bg-charcoal-surface font-mono text-[11px] text-sage uppercase tracking-wider">
+              <span className="w-1.5 h-1.5 rounded-full bg-amber" />
+              <span>COHORT ONBOARDING // 2025–2026</span>
+            </div>
 
-          <div className="container relative z-10 mx-auto px-4 sm:px-6 lg:px-8 max-w-4xl text-center">
-            <span className="inline-block px-4 py-1.5 rounded-full bg-blue-500/20 text-blue-300 text-xs font-bold uppercase tracking-widest border border-blue-400/30 mb-4">
-              Get Started
-            </span>
-            <h2 className="text-3xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight mb-6 leading-tight">
-              Let's Make Your People AI-Ready.
+            <h2 className="font-serif text-3xl sm:text-5xl lg:text-6xl font-bold tracking-tight leading-tight">
+              Ready to Upgrade Your Institution's AI Capabilities?
             </h2>
-            <p className="text-base sm:text-xl text-slate-300 max-w-2xl mx-auto mb-10 leading-relaxed font-normal">
-              Whether you're a school, university, corporate organisation, or industry, let's build an AI learning experience that creates real impact.
+
+            <p className="font-sans text-base sm:text-lg text-concrete-light max-w-2xl mx-auto leading-relaxed">
+              Whether you are a university dean looking for credit-aligned AI bootcamps, a school principal introducing ethical technology, or an enterprise executive automating workflow overhead.
             </p>
 
-            <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-4">
               <Button
                 size="lg"
                 onClick={() => {
                   setPrefilledProgramme("AI Workshop & Training Enquiry");
                   scrollTo("contact-inquiry");
                 }}
-                className="w-full sm:w-auto bg-blue-600 hover:bg-blue-700 text-white font-semibold px-8 py-6 text-base rounded-2xl shadow-xl shadow-blue-500/30 group"
+                className="w-full sm:w-auto rounded-none bg-amber hover:bg-amber-hover text-white font-mono text-xs uppercase tracking-wider px-8 py-6 transition-colors shadow-none flex items-center justify-center gap-2"
               >
-                <span>Organise an AI Workshop</span>
-                <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" />
+                <span>COMMENCE COHORT ENGAGEMENT</span>
+                <ArrowRight className="w-4 h-4" />
               </Button>
               <Button
                 size="lg"
@@ -1170,9 +1082,9 @@ export const TenXProductivity: React.FC = () => {
                   setPrefilledProgramme("Institutional Academic / Corporate Partnership");
                   scrollTo("contact-inquiry");
                 }}
-                className="w-full sm:w-auto bg-white/10 hover:bg-white/20 text-white border-white/20 font-semibold px-8 py-6 text-base rounded-2xl backdrop-blur-sm"
+                className="w-full sm:w-auto rounded-none border border-concrete/40 text-ivory hover:bg-charcoal-surface font-mono text-xs uppercase tracking-wider px-8 py-6 transition-colors"
               >
-                Partner With Nirikshan AI
+                REQUEST ACADEMIC MOU BRIEF
               </Button>
             </div>
           </div>
@@ -1188,43 +1100,40 @@ export const TenXProductivity: React.FC = () => {
 
         {/* Programme Detail Dialog Modal */}
         <Dialog open={!!activeModalProgramme} onOpenChange={(open) => !open && setActiveModalProgramme(null)}>
-          <DialogContent className="max-w-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-slate-900 dark:text-slate-100 p-6 sm:p-8 rounded-3xl">
+          <DialogContent className="max-w-xl rounded-none bg-ivory dark:bg-charcoal border border-concrete/40 dark:border-charcoal-border text-charcoal dark:text-ivory p-6 sm:p-8">
             {activeModalProgramme && (
               <>
-                <DialogHeader>
-                  <div className="flex items-center gap-2 mb-2">
-                    <Badge className={activeModalProgramme.badgeColor}>
-                      {activeModalProgramme.badge}
-                    </Badge>
-                    <span className="text-xs font-semibold text-slate-500">
-                      Target: {activeModalProgramme.target}
-                    </span>
+                <DialogHeader className="border-b border-concrete/20 dark:border-charcoal-border pb-4">
+                  <div className="flex items-center gap-2 mb-2 font-mono text-[10px] text-sage uppercase tracking-wider">
+                    <span>{activeModalProgramme.code}</span>
+                    <span>•</span>
+                    <span>{activeModalProgramme.badge}</span>
                   </div>
-                  <DialogTitle className="text-2xl font-bold">
+                  <DialogTitle className="font-serif text-2xl font-bold text-charcoal dark:text-ivory">
                     {activeModalProgramme.name}
                   </DialogTitle>
-                  <DialogDescription className="text-sm text-slate-600 dark:text-slate-300 pt-1 leading-relaxed">
+                  <DialogDescription className="text-xs text-charcoal/70 dark:text-ivory/70 pt-1 leading-relaxed font-sans">
                     {activeModalProgramme.description}
                   </DialogDescription>
                 </DialogHeader>
 
                 <div className="mt-4 space-y-4">
-                  <div className="rounded-2xl overflow-hidden h-44 bg-slate-900 border border-slate-200 dark:border-slate-800">
+                  <div className="border border-concrete/30 dark:border-charcoal-border overflow-hidden h-44 bg-charcoal">
                     <img
                       src={activeModalProgramme.image}
                       alt={activeModalProgramme.name}
-                      className="w-full h-full object-cover"
+                      className="w-full h-full object-cover grayscale contrast-125"
                     />
                   </div>
 
                   <div>
-                    <h5 className="text-xs font-bold uppercase tracking-wider text-slate-500 mb-2">
-                      Key Highlights &amp; Practice Focus:
+                    <h5 className="font-mono text-[10px] font-bold uppercase tracking-wider text-concrete mb-2">
+                      CURRICULUM DELIVERABLES &amp; PRACTICE FOCUS:
                     </h5>
-                    <div className="grid grid-cols-1 gap-2">
+                    <div className="space-y-2">
                       {activeModalProgramme.highlights.map((item) => (
-                        <div key={item} className="flex items-center gap-2 text-xs sm:text-sm text-slate-800 dark:text-slate-200">
-                          <CheckCircle2 className="w-4 h-4 text-blue-600 shrink-0" />
+                        <div key={item} className="flex items-center gap-2 text-xs text-charcoal/80 dark:text-ivory/80 font-mono">
+                          <CheckCircle2 className="w-3.5 h-3.5 text-sage shrink-0" />
                           <span>{item}</span>
                         </div>
                       ))}
@@ -1232,13 +1141,13 @@ export const TenXProductivity: React.FC = () => {
                   </div>
                 </div>
 
-                <div className="mt-6 pt-4 border-t border-slate-200 dark:border-slate-800 flex items-center justify-between">
+                <div className="mt-6 pt-4 border-t border-concrete/20 dark:border-charcoal-border flex items-center justify-between">
                   <Button
                     variant="ghost"
                     onClick={() => setActiveModalProgramme(null)}
-                    className="text-xs"
+                    className="rounded-none font-mono text-xs uppercase tracking-wider text-concrete hover:text-charcoal dark:hover:text-ivory"
                   >
-                    Close
+                    CLOSE
                   </Button>
                   <Button
                     onClick={() => {
@@ -1247,9 +1156,9 @@ export const TenXProductivity: React.FC = () => {
                       setActiveModalProgramme(null);
                       scrollTo("contact-inquiry");
                     }}
-                    className="bg-blue-600 hover:bg-blue-700 text-white font-semibold text-xs rounded-xl px-5"
+                    className="rounded-none bg-charcoal dark:bg-ivory text-ivory dark:text-charcoal hover:bg-amber dark:hover:bg-amber hover:text-white dark:hover:text-white font-mono text-xs uppercase tracking-wider px-5 py-2.5 transition-colors"
                   >
-                    Enquire for this Programme
+                    ENQUIRE FOR THIS TRACK
                     <ArrowRight className="w-3.5 h-3.5 ml-1.5" />
                   </Button>
                 </div>

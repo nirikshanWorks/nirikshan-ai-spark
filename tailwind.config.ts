@@ -14,12 +14,50 @@ export default {
     },
     extend: {
       fontFamily: {
-        sans: ['Oxanium', 'sans-serif'],
+        sans: ['Inter', 'system-ui', 'sans-serif'],
+        serif: ['Newsreader', 'Georgia', 'serif'],
         heading: ['Space Grotesk', 'sans-serif'],
         display: ['Space Grotesk', 'sans-serif'],
-        mono: ['JetBrains Mono', 'monospace'],
+        mono: ['IBM Plex Mono', 'monospace'],
       },
       colors: {
+        sage: {
+          DEFAULT: "#9CAF88",
+          hover: "#8A9D76",
+          light: "#C1CFB5",
+          dark: "#6F825C",
+          deep: "#536B45",
+        },
+        concrete: {
+          DEFAULT: "#A7A7A7",
+          light: "#D3D3D0",
+          dark: "#70706C",
+        },
+        amber: {
+          DEFAULT: "#CC5500",
+          hover: "#B84D00",
+          bright: "#E66000",
+          glow: "rgba(204, 85, 0, 0.15)",
+        },
+        burntamber: {
+          DEFAULT: "#CC5500",
+          hover: "#B84D00",
+          bright: "#E66000",
+          glow: "rgba(204, 85, 0, 0.15)",
+        },
+        charcoal: {
+          DEFAULT: "#171A18",
+          surface: "#1F2320",
+          border: "#2A302B",
+          light: "#2D342E",
+          muted: "#3E4640",
+        },
+        ivory: {
+          DEFAULT: "#F5F5F0",
+          light: "#FAF9F5",
+          dark: "#EBEBE5",
+        },
+        techlight: "#E9E9E5",
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",

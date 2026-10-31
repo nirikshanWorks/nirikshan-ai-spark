@@ -1,654 +1,1298 @@
+import React, { useState } from "react";
 import { SEO } from "@/components/SEO";
-import { useState } from "react";
+import { Navigation } from "@/components/Navigation";
+import { Footer } from "@/components/Footer";
+import { Button } from "@/components/ui/button";
+import { Link } from "react-router-dom";
+import { motion, AnimatePresence } from "framer-motion";
+import { SplineScene } from "@/components/ui/splite";
+import {
+  Eye,
+  Brain,
+  Bot,
+  Factory,
+  ShieldCheck,
+  Cpu,
+  Layers,
+  ArrowRight,
+  ArrowUpRight,
+  Activity,
+  Server,
+  Crosshair,
+  Lock,
+  Sparkles,
+  Zap,
+  Building2,
+  Stethoscope,
+  GraduationCap,
+  Check,
+  Terminal,
+  Database,
+  GitBranch,
+  Sliders,
+  Linkedin
+} from "lucide-react";
 
+// Asset imports
+import anshulImage from "@/assets/team/anshul.png";
+import vikramImage from "@/assets/team/vikram-biyani.jpg";
+import cvPpeImg from "@/assets/cv-ppe.png";
+import cvFireImg from "@/assets/cv-fire.png";
+import cvPhoneImg from "@/assets/cv-phone.png";
+import cvDemoImg from "@/assets/computer-vision-demo.png";
+import mockupDashboardImg from "@/assets/mockup-ai-dashboard.jpg";
 import partnerMadapet from "@/assets/partners/madapet.png";
 import partnerMDJKS from "@/assets/partners/mdjks.png";
 import partnerVB from "@/assets/partners/vb.png";
-import { AIServicesStrip } from "@/components/AIServicesStrip";
-import { Footer } from "@/components/Footer";
-import { InteractiveCVShowcase } from "@/components/InteractiveCVShowcase";
-import { Navigation } from "@/components/Navigation";
-import { RotatingKeywords } from "@/components/RotatingKeywords";
-import { FadeUp } from "@/components/ScrollAnimations";
-import { TypingText } from "@/components/TypingText";
-import { Button } from "@/components/ui/button";
-import { InfiniteTextMarquee } from "@/components/ui/infinite-text-marquee";
-import { SplineScene } from "@/components/ui/splite";
-import { Spotlight } from "@/components/ui/spotlight";
-import { AnimatePresence, motion } from "framer-motion";
-import {
-  Activity,
-  ArrowRight,
-  Bot,
-  Brain,
-  Building2,
-  Check,
-  ChevronRight,
-  Code2,
-  Cpu,
-  Eye,
-  Factory,
-  Lightbulb,
-  Rocket,
-  ShieldCheck,
-  Sparkles,
-  Stethoscope,
-  TrendingUp,
-  Zap
-} from "lucide-react";
-import { Link } from "react-router-dom";
 
-/* ─── Data ─── */
-const capabilities = [
-  {
-    icon: Eye,
-    title: "Computer Vision",
-    highlight: "OpenCV · YOLO · Deep Learning",
-    desc: "Real-time object detection, visual inspection, and pattern recognition — from factory floors to surveillance systems.",
-    accent: "from-violet-500 to-fuchsia-600",
-    iconBg: "bg-violet-500",
-    stat: "99.8%", statLabel: "Accuracy",
-  },
-  {
-    icon: Brain,
-    title: "Generative AI",
-    highlight: "LLMs · RAG · Content Synthesis",
-    desc: "Custom AI models that generate insights, automate content creation, and power intelligent document understanding.",
-    accent: "from-blue-500 to-cyan-600",
-    iconBg: "bg-blue-500",
-    stat: "10×", statLabel: "Faster insights",
-  },
-  {
-    icon: Bot,
-    title: "AI Agents",
-    highlight: "Multi-Step · Autonomous · Agentic",
-    desc: "Autonomous workflows that reason, plan, and execute complex multi-step tasks across your business systems 24/7.",
-    accent: "from-emerald-500 to-teal-600",
-    iconBg: "bg-emerald-500",
-    stat: "24/7", statLabel: "Autonomous ops",
-  },
-  {
-    icon: Activity,
-    title: "Machine Learning",
-    highlight: "Predictive · Adaptive · Scalable",
-    desc: "Advanced ML models that uncover hidden patterns, forecast outcomes, and continuously improve from new data.",
-    accent: "from-amber-500 to-orange-600",
-    iconBg: "bg-amber-500",
-    stat: "3×", statLabel: "ROI avg.",
-  },
-  {
-    icon: Cpu,
-    title: "AI Automation",
-    highlight: "Pipelines · Integration · MLOps",
-    desc: "End-to-end automation of data pipelines, model deployment, and operational workflows with production-grade reliability.",
-    accent: "from-rose-500 to-pink-600",
-    iconBg: "bg-rose-500",
-    stat: "60%", statLabel: "Cost reduction",
-  },
-  {
-    icon: Lightbulb,
-    title: "AI Consulting",
-    highlight: "Strategy · Roadmaps · Audits",
-    desc: "Expert strategic guidance on AI readiness, implementation planning, and digital transformation tailored to your industry.",
-    accent: "from-indigo-500 to-purple-600",
-    iconBg: "bg-indigo-500",
-    stat: "∞", statLabel: "Possibilities",
-  },
-];
-
-const problems = [
-  {
-    icon: Eye,
-    title: "Visual Intelligence",
-    problem: "Manual quality checks miss defects and slow production.",
-    solution: "Computer Vision detects, classifies, and inspects in real-time with 99%+ accuracy.",
-    color: "violet",
-    link: "/expertise/artificial-intelligence/computer-vision",
-  },
-  {
-    icon: Brain,
-    title: "Generative AI",
-    problem: "Teams waste hours extracting insights from unstructured data.",
-    solution: "LLMs synthesize reports, answer queries, and generate actionable intelligence instantly.",
-    color: "blue",
-    link: "/expertise/artificial-intelligence/generative-ai",
-  },
-  {
-    icon: Bot,
-    title: "AI Agents",
-    problem: "Repetitive multi-step workflows drain skilled human resources.",
-    solution: "Autonomous agents reason, plan, and execute complex tasks across your systems 24/7.",
-    color: "emerald",
-    link: "/expertise/artificial-intelligence/ai-agent-development",
-  },
-  {
-    icon: TrendingUp,
-    title: "Predictive Analytics",
-    problem: "Decisions rely on lagging indicators and gut instinct.",
-    solution: "ML models forecast demand, detect anomalies, and surface risks before they escalate.",
-    color: "amber",
-    link: "/expertise/artificial-intelligence/machine-learning",
-  },
-];
-
-const colorMap: Record<string, { bg: string; text: string; border: string; pill: string }> = {
-  violet: { bg: "bg-violet-500/10", text: "text-violet-600 dark:text-violet-400", border: "border-violet-500/30", pill: "bg-violet-500" },
-  blue: { bg: "bg-blue-500/10", text: "text-blue-600 dark:text-blue-400", border: "border-blue-500/30", pill: "bg-blue-500" },
-  emerald: { bg: "bg-emerald-500/10", text: "text-emerald-600 dark:text-emerald-400", border: "border-emerald-500/30", pill: "bg-emerald-500" },
-  amber: { bg: "bg-amber-500/10", text: "text-amber-600 dark:text-amber-400", border: "border-amber-500/30", pill: "bg-amber-500" },
-};
-
-const processSteps = [
-  { icon: Lightbulb, step: "01", title: "Define Problem", desc: "We analyze your business challenges and identify where AI creates the highest impact.", color: "text-violet-500" },
-  { icon: Building2, step: "02", title: "Prepare Data", desc: "Clean, structure, and enrich your data to fuel accurate, reliable AI models.", color: "text-blue-500" },
-  { icon: Code2, step: "03", title: "Build Solution", desc: "Develop, train, and validate custom AI systems tailored to your domain.", color: "text-emerald-500" },
-  { icon: Rocket, step: "04", title: "Deliver & Support", desc: "Deploy to production with monitoring, optimization, and ongoing support.", color: "text-amber-500" },
-];
-
+// Partner list
 const partners = [
-  { name: "Madapet", src: partnerMadapet },
-  { name: "Mangosorange Agritech", src: "https://mangosorange.co.in/assets/img/MOLogo.png", url: "https://mangosorange.co.in/" },
-  { name: "Motherson", src: "https://apn-portal.my.salesforce.com/servlet/servlet.ImageServer?id=0150h0000055wCcAAI&oid=00DE0000000c48tMAA" },
-  { name: "Ranayara Pvt Ltd", src: "https://5.imimg.com/data5/NSDMERP/Board/2023/5/308937129/NE/QI/NP/155783236/155783236-board-1684400723760.jpg" },
-  { name: "YMCA University", src: "https://upload.wikimedia.org/wikipedia/en/a/ae/J.C._Bose_University_of_Science_and_Technology%2C_YMCA_logo.png", url: "https://jcboseust.ac.in/" },
-  { name: "VB Group", src: partnerVB },
-  { name: "Manorama Dabral Jan Kalyan Samiti", src: partnerMDJKS, url: "https://mdjks.org/" },
-  { name: "AVR AI Technologies", src: "https://avraitechnologies.com/favicon.png", url: "https://avraitechnologies.com/" },
+  { name: "Motherson Group", label: "Motherson", meta: "AUTOMOTIVE & COMPONENT MFG" },
+  { name: "J.C. Bose University (YMCA)", label: "YMCA University", url: "https://jcboseust.ac.in/", meta: "ACADEMIC R&D PARTNER" },
+  { name: "Madapet", src: partnerMadapet, meta: "INDUSTRIAL PACKAGING" },
+  { name: "Mangosorange Agritech", label: "Mangosorange", url: "https://mangosorange.co.in/", meta: "AGRITECH & AUTOMATION" },
+  { name: "Ranayara Pvt Ltd", label: "Ranayara", meta: "PRECISION ENGINEERING" },
+  { name: "VB Group", src: partnerVB, meta: "ENTERPRISE INFRASTRUCTURE" },
+  { name: "Manorama Dabral Trust", src: partnerMDJKS, url: "https://mdjks.org/", meta: "GRASSROOTS RURAL R&D" },
+  { name: "AVR AI Technologies", label: "AVR AI", url: "https://avraitechnologies.com/", meta: "AI RESEARCH CONSORTIUM" },
 ];
 
-/* ─── Interactive "Problem → Solution" tabs ─── */
-const ProblemSolutionTabs = () => {
-  const [active, setActive] = useState(0);
-  const item = problems[active];
-  const c = colorMap[item.color];
+export const Index = () => {
+  // Hero console interactive state - 3D Robot default
+  const [heroMode, setHeroMode] = useState<"robot" | "vision" | "telemetry">("robot");
+  const [heroVisionFeed, setHeroVisionFeed] = useState<number>(0);
+
+  // Industry tab state
+  const [activeIndustry, setActiveIndustry] = useState<number>(0);
+
+  // Approach step state
+  const [activeStep, setActiveStep] = useState<number>(0);
+
+  const heroFeeds = [
+    {
+      id: "ppe",
+      title: "FACTORY_CAM_01 // PPE COMPLIANCE",
+      image: cvPpeImg,
+      tags: ["[HELMET: 0.994]", "[VEST: 0.988]", "[STATUS: COMPLIANT]"],
+      status: "NOMINAL",
+      statusVariant: "sage" as const,
+      fps: "60.0 FPS",
+      latency: "14.2ms",
+      scanLine: "sage" as const,
+      boxes: [
+        {
+          id: "b1",
+          label: "HELMET: 0.994",
+          status: "PASS",
+          top: "16%",
+          left: "40%",
+          width: "22%",
+          height: "22%",
+          variant: "sage" as const,
+        },
+        {
+          id: "b2",
+          label: "HI-VIS VEST: 0.988",
+          status: "PASS",
+          top: "39%",
+          left: "34%",
+          width: "34%",
+          height: "36%",
+          variant: "sage" as const,
+        },
+      ],
+      streamDetails: "RTSP // 1920x1080@60Hz // TENSORRT_INT8",
+      alertStatus: "ZONE_03: ALL WORKERS COMPLIANT",
+    },
+    {
+      id: "defect",
+      title: "CONVEYOR_CAM_04 // AOI SURFACE DEFECT",
+      image: cvDemoImg,
+      tags: ["[MICRO_DEFECT: 0.991]", "[TOLERANCE: ±0.02mm]", "[FLAGGED]"],
+      status: "INSPECTING",
+      statusVariant: "amber" as const,
+      fps: "120.0 FPS",
+      latency: "11.6ms",
+      scanLine: "amber" as const,
+      boxes: [
+        {
+          id: "b1",
+          label: "ROI_SCAN_GRID // ±0.02mm",
+          status: "MONITOR",
+          top: "14%",
+          left: "18%",
+          width: "64%",
+          height: "68%",
+          variant: "concrete" as const,
+        },
+        {
+          id: "b2",
+          label: "MICRO_CRACK: 0.991",
+          status: "DEFECT",
+          top: "36%",
+          left: "46%",
+          width: "22%",
+          height: "24%",
+          variant: "amber" as const,
+          pulse: true,
+        },
+      ],
+      streamDetails: "GIGE_VISION // 2048x1536@120Hz // INT8_QUANT",
+      alertStatus: "SURFACE BLEMISH EXCEEDS TOLERANCE // RELAY ARMED",
+    },
+    {
+      id: "fire",
+      title: "PERIMETER_CAM_09 // THERMAL / FIRE",
+      image: cvFireImg,
+      tags: ["[HAZARD: FLAME/SMOKE]", "[CONF: 0.982]", "[ALARM_RELAY]"],
+      status: "CRITICAL",
+      statusVariant: "amber" as const,
+      fps: "30.0 FPS",
+      latency: "9.4ms",
+      scanLine: "amber" as const,
+      boxes: [
+        {
+          id: "b1",
+          label: "HOTSPOT: 84.6°C",
+          status: "CRITICAL",
+          top: "22%",
+          left: "32%",
+          width: "36%",
+          height: "38%",
+          variant: "amber" as const,
+          pulse: true,
+        },
+        {
+          id: "b2",
+          label: "SMOKE_PLUME: 0.982",
+          status: "HAZARD",
+          top: "10%",
+          left: "24%",
+          width: "48%",
+          height: "26%",
+          variant: "amber" as const,
+        },
+      ],
+      streamDetails: "FLIR_THERMAL // 640x512@30Hz // LOCAL_FIFO",
+      alertStatus: "CRITICAL THERMAL DELTA DETECTED // RELAY TRIGGERED",
+    },
+  ];
+
+  const currentHeroFeed = heroFeeds[heroVisionFeed];
+
+  const industries = [
+    {
+      num: "01",
+      name: "Manufacturing",
+      tagline: "Automated Optical Inspection & Safety",
+      desc: "Sub-15ms edge computer vision detecting micro-cracks, surface blemishes, assembly misalignments, and worker PPE compliance directly on high-speed conveyor lines.",
+      specs: ["±0.02mm tolerance", "99.8% precision", "Zero cloud dependence"],
+      code: "INSP_PIPELINE // AOI-v4.2",
+    },
+    {
+      num: "02",
+      name: "Infrastructure & Defense",
+      tagline: "Perimeter Security & Automated ANPR",
+      desc: "High-security vehicle classification, automatic number plate recognition at speed, and perimeter fence intrusion detection for high-compliance facilities.",
+      specs: ["100% on-premise airgap", "<50ms gate trigger", "Night-vision IR support"],
+      code: "SECURITY_GRID // PERIMETER-SYS",
+    },
+    {
+      num: "03",
+      name: "Healthcare & BioTech",
+      tagline: "Clinical Image Analysis & Procedural Protocol",
+      desc: "Computer vision and multimodal AI systems assisting laboratory sample verification, operating room protocol compliance, and patient movement safety.",
+      specs: ["HIPAA-grade privacy", "Local GPU clustering", "Deterministic logs"],
+      code: "BIO_INFERENCE // CLINICAL-01",
+    },
+    {
+      num: "04",
+      name: "Smart Environments",
+      tagline: "Spatial Analytics & Flow Optimization",
+      desc: "Real-time occupancy tracking, directional density heatmaps, and automated environmental HVAC triggers across large enterprise campuses.",
+      specs: ["Multi-camera re-ID", "Zero PII stored", "RTSP stream mesh"],
+      code: "SPATIAL_FLOW // URBAN-EDGE",
+    },
+    {
+      num: "05",
+      name: "Education & Academia",
+      tagline: "AI Training & Autonomous Proctoring",
+      desc: "Institutional AI infrastructure powering the 10X AI Productivity training curriculum, student research laboratories, and AI-enabled assessment tools.",
+      specs: ["10,000+ students upskilled", "Curriculum aligned", "Lab deployment"],
+      code: "ACAD_LAB // 10X-PRODUCTIVITY",
+    },
+    {
+      num: "06",
+      name: "Agriculture & Rural Tech",
+      tagline: "Crop Health & Wildlife Intrusion AI",
+      desc: "Edge-based solar-powered vision stations detecting nocturnal wildlife crop intrusion and multi-spectral disease detection in rural agricultural clusters.",
+      specs: ["Solar & 4G/Edge", "Bio-acoustic deterrence", "Grassroots tested"],
+      code: "AGRI_SHIELD // CROP-INTELLIGENCE",
+    },
+  ];
+
+  const approachSteps = [
+    {
+      num: "01",
+      title: "Discover",
+      label: "SYSTEM ANALYSIS & CONSTRAINTS",
+      desc: "Deep inspection of operational environment, camera topologies, lighting variances, throughput rates, and security boundaries.",
+      deliverable: "Technical Feasibility Spec & Hardware Topology",
+    },
+    {
+      num: "02",
+      title: "Research",
+      label: "MODEL ARCHITECTURE & BENCHMARK",
+      desc: "Selection of neural backbones (quantized YOLO, Vision Transformers, custom embeddings) and domain-specific dataset curation.",
+      deliverable: "Baseline Model Weights & Inference Metrics",
+    },
+    {
+      num: "03",
+      title: "Architect",
+      label: "EDGE INFRASTRUCTURE DESIGN",
+      desc: "Designing zero-leakage RTSP ingestion pipelines, local IPC message buses, and deterministic PLC/SCADA relay interfaces.",
+      deliverable: "Low-Level System Architecture Diagram",
+    },
+    {
+      num: "04",
+      title: "Engineer",
+      label: "TENSORRT OPTIMIZATION & INT8 QUANTIZATION",
+      desc: "Hardware-level model quantization, CUDA kernel acceleration, frame batching, and local operator dashboard buildout.",
+      deliverable: "Production Binary & Dashboard Interface",
+    },
+    {
+      num: "05",
+      title: "Deploy",
+      label: "SHADOW STAGING & ON-SITE RELAY",
+      desc: "Air-gapped deployment onto industrial edge servers (Jetson / RTX). Parallel shadow execution against manual inspection baseline.",
+      deliverable: "Validation Report & Live Cutover",
+    },
+    {
+      num: "06",
+      title: "Evolve",
+      label: "ACTIVE LEARNING & DRIFT DETECTION",
+      desc: "Automated edge anomaly harvesting to continuously fine-tune models against rare edge cases without human intervention.",
+      deliverable: "Continuous Telemetry & OTA Model Updates",
+    },
+  ];
 
   return (
-    <div className="max-w-5xl mx-auto">
-      {/* Tab buttons */}
-      <div className="flex flex-wrap gap-2 justify-center mb-8 sm:mb-10">
-        {problems.map((p, i) => (
-          <button
-            key={p.title}
-            onClick={() => setActive(i)}
-            className={`inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm font-semibold transition-all duration-200 border ${active === i
-              ? `${colorMap[p.color].pill} text-white border-transparent shadow-lg scale-105`
-              : "bg-background border-border text-muted-foreground hover:text-foreground hover:border-primary/30"
-              }`}
-          >
-            <p.icon className="w-3.5 h-3.5" />
-            {p.title}
-          </button>
-        ))}
-      </div>
-
-      {/* Content panel */}
-      <AnimatePresence mode="wait">
-        <motion.div
-          key={active}
-          initial={{ opacity: 0, y: 12 }}
-          animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0, y: -8 }}
-          transition={{ duration: 0.25 }}
-          className={`rounded-2xl border ${c.border} bg-gradient-to-br from-background to-secondary/30 overflow-hidden`}
-        >
-          <div className="grid md:grid-cols-2 divide-y md:divide-y-0 md:divide-x divide-border">
-            {/* Problem */}
-            <div className="p-6 sm:p-8">
-              <div className="flex items-center gap-2 mb-4">
-                <span className="w-2 h-2 rounded-full bg-destructive/70" />
-                <span className="text-xs font-bold uppercase tracking-wider text-destructive/70">The Challenge</span>
-              </div>
-              <p className="text-lg sm:text-xl font-medium leading-relaxed text-foreground">
-                {item.problem}
-              </p>
-            </div>
-            {/* Solution */}
-            <div className={`p-6 sm:p-8 ${c.bg}`}>
-              <div className="flex items-center gap-2 mb-4">
-                <span className={`w-2 h-2 rounded-full ${c.pill}`} />
-                <span className={`text-xs font-bold uppercase tracking-wider ${c.text}`}>AI Solution</span>
-              </div>
-              <p className="text-lg sm:text-xl font-medium leading-relaxed text-foreground">
-                {item.solution}
-              </p>
-              <Link
-                to={item.link}
-                className={`inline-flex items-center gap-1.5 mt-5 text-sm font-semibold ${c.text} hover:gap-3 transition-all duration-200`}
-              >
-                Learn more <ArrowRight className="w-4 h-4" />
-              </Link>
-            </div>
-          </div>
-        </motion.div>
-      </AnimatePresence>
-    </div>
-  );
-};
-
-/* ─── Capabilities horizontal scroll on mobile ─── */
-const CapabilitiesSection = () => (
-  <div className="relative">
-    {/* Horizontal scroll on mobile, grid on desktop */}
-    <div className="flex gap-4 overflow-x-auto pb-4 sm:grid sm:grid-cols-2 lg:grid-cols-3 sm:gap-5 sm:overflow-visible sm:pb-0 snap-x snap-mandatory sm:snap-none scrollbar-none max-w-6xl mx-auto">
-      {capabilities.map((cap, i) => (
-        <motion.div
-          key={cap.title}
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ delay: i * 0.07, duration: 0.4 }}
-          className="min-w-[260px] sm:min-w-0 snap-start flex-shrink-0 sm:flex-shrink group relative rounded-2xl overflow-hidden border border-border bg-card cursor-pointer"
-        >
-          {/* Gradient top bar */}
-          <div className={`h-1 w-full bg-gradient-to-r ${cap.accent}`} />
-          <div className="p-5 sm:p-6">
-            {/* Header row */}
-            <div className="flex items-start justify-between mb-4">
-              <div className={`w-10 h-10 rounded-xl ${cap.iconBg} flex items-center justify-center`}>
-                <cap.icon className="w-5 h-5 text-white" />
-              </div>
-              {/* Stat pill */}
-              <div className="text-right">
-                <div className={`text-xl font-bold bg-gradient-to-r ${cap.accent} bg-clip-text text-transparent`}>{cap.stat}</div>
-                <div className="text-[10px] text-muted-foreground">{cap.statLabel}</div>
-              </div>
-            </div>
-            <h3 className="text-base font-bold mb-1">{cap.title}</h3>
-            <p className="text-[11px] font-mono text-primary/60 mb-3">{cap.highlight}</p>
-            <p className="text-sm text-muted-foreground leading-relaxed">{cap.desc}</p>
-          </div>
-        </motion.div>
-      ))}
-    </div>
-    {/* Scroll hint on mobile */}
-    <p className="text-center text-xs text-muted-foreground mt-3 sm:hidden">← Swipe to see all →</p>
-  </div>
-);
-
-/* ─── Process — horizontal timeline ─── */
-const ProcessSection = () => (
-  <div className="max-w-5xl mx-auto">
-    {/* Desktop: connected steps */}
-    <div className="hidden md:grid grid-cols-4 gap-0 relative">
-      {/* connecting line */}
-      <div className="absolute top-8 left-[12.5%] right-[12.5%] h-px bg-gradient-to-r from-violet-500 via-blue-500 via-emerald-500 to-amber-500 opacity-40" />
-      {processSteps.map((step, i) => (
-        <motion.div
-          key={step.step}
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ delay: i * 0.12, duration: 0.4 }}
-          className="flex flex-col items-center text-center px-4"
-        >
-          {/* Circle */}
-          <div className="relative mb-5 z-10">
-            <div className="w-16 h-16 rounded-2xl gradient-primary flex items-center justify-center shadow-lg">
-              <step.icon className="w-7 h-7 text-white" />
-            </div>
-            <span className="absolute -top-2 -right-2 w-6 h-6 rounded-full bg-background border-2 border-border text-[10px] font-bold text-muted-foreground flex items-center justify-center">
-              {i + 1}
-            </span>
-          </div>
-          <h3 className="font-bold text-base mb-2">{step.title}</h3>
-          <p className="text-sm text-muted-foreground leading-relaxed">{step.desc}</p>
-        </motion.div>
-      ))}
-    </div>
-
-    {/* Mobile: vertical list */}
-    <div className="md:hidden space-y-4">
-      {processSteps.map((step, i) => (
-        <motion.div
-          key={step.step}
-          initial={{ opacity: 0, x: -20 }}
-          whileInView={{ opacity: 1, x: 0 }}
-          viewport={{ once: true }}
-          transition={{ delay: i * 0.1, duration: 0.35 }}
-          className="flex gap-4 items-start p-4 rounded-xl border border-border bg-card"
-        >
-          <div className="w-11 h-11 rounded-xl gradient-primary flex items-center justify-center flex-shrink-0 shadow">
-            <step.icon className="w-5 h-5 text-white" />
-          </div>
-          <div>
-            <div className="flex items-center gap-2 mb-1">
-              <span className="text-xs font-bold text-muted-foreground">{step.step}</span>
-              <h3 className="font-bold text-sm">{step.title}</h3>
-            </div>
-            <p className="text-sm text-muted-foreground leading-relaxed">{step.desc}</p>
-          </div>
-        </motion.div>
-      ))}
-    </div>
-  </div>
-);
-
-const Index = () => {
-  return (
-    <div className="min-h-screen bg-background relative">
+    <div className="min-h-screen bg-ivory dark:bg-charcoal text-charcoal dark:text-ivory selection:bg-sage selection:text-charcoal font-sans">
       <SEO
-        title="Nirikshan AI | AI & Machine Learning Solutions for Business Innovation"
-        description="Nirikshan AI delivers advanced Generative AI, Computer Vision, and Agentic AI solutions. Accelerate business innovation through intelligent automation and data-driven insights."
+        title="Nirikshan AI | Advanced AI Technology & Product Engineering"
+        description="Nirikshan AI develops intelligent systems through computer vision, generative AI and autonomous technologies — transforming complex challenges into scalable real-world solutions."
         canonical="https://nirikshanai.com/"
-        jsonLd={{
-          "@context": "https://schema.org",
-          "@graph": [
-            {
-              "@type": "Organization",
-              name: "Nirikshan AI Private Limited",
-              alternateName: "Nirikshan AI",
-              url: "https://nirikshanai.com",
-              logo: "https://nirikshanai.com/nirikshan-ai-logo.png",
-              sameAs: [
-                "https://www.linkedin.com/company/nirikshan-ai/",
-                "https://www.instagram.com/nirikshan.ai/"
-              ],
-              contactPoint: {
-                "@type": "ContactPoint",
-                telephone: "+91-9410-992204",
-                contactType: "sales",
-                email: "info@nirikshanai.com"
-              }
-            },
-            { "@type": "WebSite", name: "Nirikshan AI", url: "https://nirikshanai.com" }
-          ]
-        }}
       />
       <Navigation />
 
-      <main className="relative z-10">
+      <main className="relative pt-20">
+        {/* ══════════════════════════════════════════════════════
+            SECTION 02 — HERO (Editorial Split-Screen)
+        ══════════════════════════════════════════════════════ */}
+        <section className="border-b border-concrete/40 dark:border-charcoal-border relative overflow-hidden bg-ivory dark:bg-charcoal">
+          {/* Subtle Technical Grid Background */}
+          <div className="absolute inset-0 tech-grid-bg opacity-40 pointer-events-none" />
+
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 pt-12 pb-16 md:py-24 relative z-10">
+            {/* Top Monospace Section Label */}
+            <div className="flex items-center justify-between pb-4 mb-8 border-b border-concrete/30 dark:border-charcoal-border text-[11px] font-mono tracking-widest text-concrete-dark dark:text-concrete uppercase">
+              <div className="flex items-center gap-3">
+                <span className="w-2 h-2 bg-sage inline-block animate-pulse" />
+                <span>SEC_01 // SYSTEM INITIALIZATION</span>
+                <span className="hidden sm:inline">//</span>
+                <span className="hidden sm:inline">AUTONOMOUS_VISION_CORE</span>
+              </div>
+              <div className="flex items-center gap-3">
+                <span>COORD: 28.6139°N 77.2090°E</span>
+                <span>//</span>
+                <span className="text-sage font-bold">STATUS: DEPLOYED</span>
+              </div>
+            </div>
+
+            {/* Split Screen Layout */}
+            <div className="grid lg:grid-cols-12 gap-8 lg:gap-12 items-stretch">
+              {/* Left Column: Editorial Headline & Narrative (7 cols) */}
+              <div className="lg:col-span-7 flex flex-col justify-between space-y-6">
+                <div>
+                  <div className="inline-block px-2.5 py-1 mb-6 text-[10px] font-mono uppercase tracking-[0.2em] bg-techlight dark:bg-charcoal-surface border border-concrete/40 dark:border-charcoal-border text-charcoal dark:text-ivory">
+                    NIRIKSHAN AI PRIVATE LIMITED <span className="text-burntamber font-bold">·</span> ADVANCED RESEARCH &amp; PRODUCT LAB
+                  </div>
+
+                  <h1 className="text-4xl sm:text-6xl lg:text-7xl font-bold font-display tracking-tight leading-[1.02] text-charcoal dark:text-ivory">
+                    Engineering
+                    <br />
+                    Intelligence.
+                    <br />
+                    <span className="font-serif italic font-normal text-concrete-dark dark:text-concrete">
+                      Building <span className="text-burntamber">What's Next</span>.
+                    </span>
+                  </h1>
+
+                  <p className="mt-6 text-base sm:text-lg text-concrete-dark dark:text-concrete max-w-xl leading-relaxed font-sans">
+                    Nirikshan AI develops intelligent systems through computer vision, generative AI and autonomous technologies — transforming complex industrial and operational challenges into scalable, real-world solutions.
+                  </p>
+                </div>
+
+                {/* CTAs & Architecture Specs */}
+                <div className="pt-4 space-y-6">
+                  <div className="flex flex-wrap gap-4">
+                    <Link to="/services">
+                      <Button className="bg-charcoal text-ivory border border-charcoal hover:bg-burntamber hover:border-burntamber hover:text-white text-xs font-mono uppercase tracking-wider px-7 h-12 rounded-none font-bold transition-all">
+                        Explore Our Solutions <ArrowRight size={14} className="ml-2" />
+                      </Button>
+                    </Link>
+                    <Link to="/products">
+                      <Button variant="outline" className="border-concrete/60 dark:border-charcoal-border text-charcoal dark:text-ivory hover:border-burntamber hover:text-burntamber hover:bg-burntamber/5 text-xs font-mono uppercase tracking-wider px-7 h-12 rounded-none font-semibold transition-all">
+                        Discover Our Products
+                      </Button>
+                    </Link>
+                  </div>
+
+                  {/* 3 Modular Architectural Hero Metrics */}
+                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-6 border-t border-concrete/30 dark:border-charcoal-border">
+                    <div className="p-3.5 border border-concrete/40 dark:border-charcoal-border bg-white dark:bg-charcoal-surface hover:border-sage transition-all group">
+                      <div className="flex items-center justify-between text-[10px] font-mono text-concrete uppercase tracking-wider mb-1.5">
+                        <span>LATENCY // [EDGE]</span>
+                        <span className="w-1.5 h-1.5 bg-sage inline-block animate-pulse" />
+                      </div>
+                      <div className="text-2xl sm:text-3xl font-bold font-display text-charcoal dark:text-ivory">
+                        &lt;15ms
+                      </div>
+                      <p className="mt-1 text-[11px] font-mono text-concrete-dark dark:text-concrete leading-snug">
+                        Sub-20ms edge inference without cloud round-trip delay.
+                      </p>
+                    </div>
+
+                    <div className="p-3.5 border border-concrete/40 dark:border-charcoal-border bg-white dark:bg-charcoal-surface hover:border-sage transition-all group">
+                      <div className="flex items-center justify-between text-[10px] font-mono text-concrete uppercase tracking-wider mb-1.5">
+                        <span>PRECISION // [AOI]</span>
+                        <span className="text-[9px] font-bold text-sage px-1 border border-sage/40">VERIFIED</span>
+                      </div>
+                      <div className="text-2xl sm:text-3xl font-bold font-display text-sage">
+                        99.8%
+                      </div>
+                      <p className="mt-1 text-[11px] font-mono text-concrete-dark dark:text-concrete leading-snug">
+                        Optical surface defect &amp; safety compliance rate.
+                      </p>
+                    </div>
+
+                    <div className="p-3.5 border border-concrete/40 dark:border-charcoal-border bg-white dark:bg-charcoal-surface hover:border-sage transition-all group">
+                      <div className="flex items-center justify-between text-[10px] font-mono text-concrete uppercase tracking-wider mb-1.5">
+                        <span>PRIVACY // [AIR-GAP]</span>
+                        <span className="text-[9px] font-bold text-burntamber px-1 border border-burntamber/40">AIR-GAPPED</span>
+                      </div>
+                      <div className="text-2xl sm:text-3xl font-bold font-display text-charcoal dark:text-ivory">
+                        100%
+                      </div>
+                      <p className="mt-1 text-[11px] font-mono text-concrete-dark dark:text-concrete leading-snug">
+                        Zero cloud data exfiltration. On-premise execution.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Right Column: Large Technical Composition & Live Detection Overlay (5 cols) */}
+              <div className="lg:col-span-5 flex flex-col justify-between border border-charcoal/30 dark:border-charcoal-border bg-charcoal text-ivory p-4 sm:p-5 shadow-2xl">
+                {/* Console Bar */}
+                <div className="flex items-center justify-between pb-3 mb-3 border-b border-charcoal-border text-[10px] font-mono text-concrete">
+                  <div className="flex items-center gap-2">
+                    <span className="w-2 h-2 bg-sage inline-block animate-pulse" />
+                    <span className="tracking-wider">
+                      {heroMode === "robot"
+                        ? "3D_SPATIAL_AGENT // INTERACTIVE_CORE"
+                        : heroMode === "vision"
+                        ? `INFERENCE_STREAM // 0${heroVisionFeed + 1}`
+                        : "SYSTEM_DIAGNOSTICS // EDGE_NODE"}
+                    </span>
+                  </div>
+                  <div className="flex items-center gap-1">
+                    {[
+                      { id: "robot", label: "3D ROBOT" },
+                      { id: "vision", label: "VISION FEED" },
+                      { id: "telemetry", label: "TELEMETRY" },
+                    ].map((tab) => (
+                      <button
+                        key={tab.id}
+                        onClick={() => setHeroMode(tab.id as any)}
+                        className={`px-2.5 py-1 text-[9px] uppercase tracking-wider border transition-all ${
+                          heroMode === tab.id
+                            ? "bg-sage text-charcoal border-sage font-bold shadow-sm"
+                            : "border-charcoal-border text-concrete hover:text-burntamber hover:border-burntamber/50"
+                        }`}
+                      >
+                        {tab.label}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Display Area */}
+                {heroMode === "robot" ? (
+                  <div className="relative aspect-[4/3] sm:h-[400px] md:h-[460px] w-full bg-black/95 overflow-hidden border border-charcoal-border">
+                    <SplineScene
+                      scene="https://prod.spline.design/kZDDjO5HuC9GJUM2/scene.splinecode"
+                      className="w-full h-full"
+                    />
+
+                    {/* Technical HUD Overlay (pointer-events-none so mouse passes through to 3D canvas) */}
+                    <div className="absolute inset-0 pointer-events-none p-3 flex flex-col justify-between">
+                      {/* Top HUD Readouts */}
+                      <div className="flex justify-between items-start text-[9px] font-mono">
+                        <div className="bg-charcoal/90 border border-charcoal-border px-2 py-1 space-y-0.5">
+                          <div className="text-sage font-bold flex items-center gap-1.5">
+                            <span className="w-1.5 h-1.5 bg-sage inline-block animate-pulse" />
+                            TARGET_LOCK: NEURAL_AGENT_v2.4
+                          </div>
+                          <div className="text-concrete text-[8px]">
+                            COORDS: X: 0.00 | Y: +1.42 | Z: -0.85
+                          </div>
+                        </div>
+                        <div className="bg-charcoal/90 border border-charcoal-border px-2 py-1 text-right space-y-0.5">
+                          <div className="text-ivory font-bold">60.0 FPS · GL_ES3</div>
+                          <div className="text-sage text-[8px]">SUB-PIXEL MESH TRACKING</div>
+                        </div>
+                      </div>
+
+                      {/* Center Reticle Corner Accents */}
+                      <div className="absolute inset-0 flex items-center justify-center pointer-events-none opacity-30">
+                        <div className="w-32 h-32 border border-dashed border-concrete/30 relative flex items-center justify-center">
+                          <div className="w-2 h-2 border border-sage" />
+                          <div className="absolute top-0 left-0 w-2.5 h-2.5 border-t-2 border-l-2 border-sage" />
+                          <div className="absolute top-0 right-0 w-2.5 h-2.5 border-t-2 border-r-2 border-sage" />
+                          <div className="absolute bottom-0 left-0 w-2.5 h-2.5 border-b-2 border-l-2 border-sage" />
+                          <div className="absolute bottom-0 right-0 w-2.5 h-2.5 border-b-2 border-r-2 border-sage" />
+                        </div>
+                      </div>
+
+                      {/* Bottom HUD Bar */}
+                      <div className="flex items-center justify-between text-[10px] font-mono bg-charcoal/90 px-3 py-1.5 border border-charcoal-border text-concrete">
+                        <span className="flex items-center gap-1.5 text-sage font-bold">
+                          <span className="w-1.5 h-1.5 bg-sage inline-block animate-pulse" />
+                          SPATIAL_CORE // ONLINE
+                        </span>
+                        <span className="text-[9px] text-concrete">
+                          [CLICK &amp; DRAG TO ROTATE · WHEEL TO ZOOM]
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                ) : heroMode === "vision" ? (
+                  <div className="relative aspect-[4/3] sm:h-[400px] md:h-[460px] bg-black overflow-hidden border border-charcoal-border group">
+                    <img
+                      src={currentHeroFeed.image}
+                      alt={currentHeroFeed.title}
+                      className="w-full h-full object-cover opacity-90 transition-opacity"
+                    />
+
+                    {/* Animated Scanning Laser Beam */}
+                    <motion.div
+                      className={`absolute left-0 right-0 h-0.5 z-20 pointer-events-none ${
+                        currentHeroFeed.scanLine === "amber"
+                          ? "bg-gradient-to-r from-transparent via-burntamber to-transparent shadow-[0_0_10px_#CC5500]"
+                          : "bg-gradient-to-r from-transparent via-sage to-transparent shadow-[0_0_10px_#9CAF88]"
+                      }`}
+                      animate={{ top: ["2%", "96%", "2%"] }}
+                      transition={{ duration: 4.5, repeat: Infinity, ease: "linear" }}
+                    />
+
+                    {/* Technical Bounding Box Overlays */}
+                    <div className="absolute inset-0 p-3 flex flex-col justify-between pointer-events-none z-10">
+                      {/* Top Stream Telemetry */}
+                      <div className="flex justify-between items-start">
+                        <div className="bg-charcoal/95 border border-charcoal-border p-2 space-y-1 text-[9px] font-mono">
+                          <div className="text-sage font-bold flex items-center gap-1.5">
+                            <span className="w-1.5 h-1.5 bg-sage inline-block animate-pulse" />
+                            {currentHeroFeed.title}
+                          </div>
+                          <div className="text-concrete text-[8px]">
+                            {currentHeroFeed.streamDetails}
+                          </div>
+                        </div>
+                        <div className="bg-charcoal/90 border border-charcoal-border px-2 py-1 text-[9px] font-mono text-concrete text-right">
+                          <div className="text-ivory font-bold">{currentHeroFeed.fps}</div>
+                          <div className="text-sage text-[8px]">{currentHeroFeed.latency} INFERENCE</div>
+                        </div>
+                      </div>
+
+                      {/* Precise Corner-Bracket Bounding Boxes */}
+                      {currentHeroFeed.boxes.map((box) => (
+                        <div
+                          key={box.id}
+                          style={{
+                            top: box.top,
+                            left: box.left,
+                            width: box.width,
+                            height: box.height,
+                          }}
+                          className={`absolute pointer-events-none transition-all ${
+                            box.variant === "amber"
+                              ? `border border-burntamber bg-burntamber/15 ${box.pulse ? "animate-pulse" : ""}`
+                              : box.variant === "sage"
+                              ? "border border-sage bg-sage/10"
+                              : "border border-concrete/50 bg-charcoal/20"
+                          }`}
+                        >
+                          {/* Corner brackets */}
+                          <span className={`absolute -top-1 -left-1 w-2 h-2 border-t-2 border-l-2 ${box.variant === "amber" ? "border-burntamber" : box.variant === "sage" ? "border-sage" : "border-concrete"}`} />
+                          <span className={`absolute -top-1 -right-1 w-2 h-2 border-t-2 border-r-2 ${box.variant === "amber" ? "border-burntamber" : box.variant === "sage" ? "border-sage" : "border-concrete"}`} />
+                          <span className={`absolute -bottom-1 -left-1 w-2 h-2 border-b-2 border-l-2 ${box.variant === "amber" ? "border-burntamber" : box.variant === "sage" ? "border-sage" : "border-concrete"}`} />
+                          <span className={`absolute -bottom-1 -right-1 w-2 h-2 border-b-2 border-r-2 ${box.variant === "amber" ? "border-burntamber" : box.variant === "sage" ? "border-sage" : "border-concrete"}`} />
+
+                          {/* Label badge */}
+                          <div className={`absolute -top-4 left-0 text-[8px] font-mono px-1 py-0.5 border font-bold uppercase tracking-wider flex items-center gap-1 shadow-md whitespace-nowrap ${
+                            box.variant === "amber"
+                              ? "bg-charcoal text-burntamber border-burntamber"
+                              : box.variant === "sage"
+                              ? "bg-charcoal text-sage border-sage"
+                              : "bg-charcoal text-concrete border-concrete/60"
+                          }`}>
+                            <span className={`w-1 h-1 inline-block ${box.variant === "amber" ? "bg-burntamber" : box.variant === "sage" ? "bg-sage" : "bg-concrete"}`} />
+                            <span>{box.label}</span>
+                            <span className="opacity-80">[{box.status}]</span>
+                          </div>
+                        </div>
+                      ))}
+
+                      {/* Bottom Status & Alert Readout */}
+                      <div className="flex justify-between items-end text-[9px] font-mono">
+                        <div className="bg-charcoal/90 border border-charcoal-border px-2 py-1 text-concrete">
+                          <span>FEED_STATUS: </span>
+                          <span className={currentHeroFeed.statusVariant === "amber" ? "text-burntamber font-bold" : "text-sage font-bold"}>
+                            {currentHeroFeed.alertStatus}
+                          </span>
+                        </div>
+                        <span
+                          className={`px-2 py-1 font-bold border ${
+                            currentHeroFeed.statusVariant === "amber"
+                              ? "bg-burntamber/90 border-burntamber text-ivory animate-pulse"
+                              : "bg-sage/90 border-sage text-charcoal"
+                          }`}
+                        >
+                          STATUS: {currentHeroFeed.status}
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                ) : (
+                  /* Telemetry Mode: Industrial Edge Diagnostics */
+                  <div className="aspect-[4/3] sm:h-[400px] md:h-[460px] bg-black p-4 font-mono text-xs border border-charcoal-border overflow-y-auto space-y-3 text-concrete">
+                    <div className="flex items-center justify-between pb-2 border-b border-charcoal-border">
+                      <div className="text-sage font-bold">
+                        // EDGE_NODE_DIAGNOSTICS // NVIDIA_JETSON_ORIN_64GB
+                      </div>
+                      <div className="text-[10px] text-concrete">
+                        TEMP: <span className="text-sage">43.8°C</span> · FAN: <span className="text-ivory">AUTO</span>
+                      </div>
+                    </div>
+
+                    {/* CUDA Memory Allocation Bar */}
+                    <div className="p-2.5 bg-charcoal/60 border border-charcoal-border space-y-1.5">
+                      <div className="flex justify-between text-[10px]">
+                        <span>CUDA VRAM ALLOCATION:</span>
+                        <span className="text-ivory font-bold">2,140 MB / 8,192 MB (26.1%)</span>
+                      </div>
+                      <div className="w-full bg-charcoal-border h-2 border border-concrete/30 overflow-hidden">
+                        <div className="bg-sage h-full w-[26.1%] transition-all duration-500" />
+                      </div>
+                      <div className="flex justify-between text-[9px] text-concrete/70">
+                        <span>UNIFIED MEMORY ARCHITECTURE</span>
+                        <span className="text-sage">6,052 MB AVAILABLE</span>
+                      </div>
+                    </div>
+
+                    {/* Subsystem Matrix */}
+                    <div className="space-y-1.5 text-[11px]">
+                      <div className="flex justify-between py-1 border-b border-charcoal-border/60">
+                        <span>01 // RTSP INGESTION PIPELINE:</span>
+                        <span className="text-sage font-bold">ONLINE [0.00% DROP]</span>
+                      </div>
+                      <div className="flex justify-between py-1 border-b border-charcoal-border/60">
+                        <span>02 // TENSORRT INT8 KERNEL:</span>
+                        <span className="text-sage font-bold">COMPILED [14.2ms MEAN]</span>
+                      </div>
+                      <div className="flex justify-between py-1 border-b border-charcoal-border/60">
+                        <span>03 // PLC RELAY / SCADA GATE:</span>
+                        <span className="text-sage font-bold">ARMED [&lt;18ms CUTOVER]</span>
+                      </div>
+                      <div className="flex justify-between py-1 border-b border-charcoal-border/60">
+                        <span>04 // AIR-GAP SECURITY ISOLATION:</span>
+                        <span className="text-burntamber font-bold">100% AIR-GAPPED [0 EXT SOCKETS]</span>
+                      </div>
+                      <div className="flex justify-between py-1 border-b border-charcoal-border/60">
+                        <span>05 // ON-PREMISE FIFO BUFFER:</span>
+                        <span className="text-sage font-bold">ACTIVE [500 FRAME RING]</span>
+                      </div>
+                    </div>
+
+                    {/* Diagnostic Event Log */}
+                    <div className="pt-2 text-[10px] text-concrete/70 border-t border-charcoal-border space-y-1">
+                      <div className="text-sage font-bold">// RECENT SYSTEM EVENTS:</div>
+                      <div>[12:04:19.482] INT8 Batch tensor inferred in 14.18ms.</div>
+                      <div>[12:04:19.496] SCADA digital I/O heartbeat ack verified.</div>
+                      <div>[12:04:19.510] Zero network packets transmitted outside local area network.</div>
+                    </div>
+                  </div>
+                )}
+
+                {/* Bottom Switcher Controls */}
+                <div className="mt-3 pt-3 border-t border-charcoal-border flex items-center justify-between text-[10px] font-mono">
+                  {heroMode === "vision" ? (
+                    <>
+                      <div className="text-concrete">SWITCH CAMERA STREAM:</div>
+                      <div className="flex gap-1.5">
+                        {heroFeeds.map((feed, idx) => (
+                          <button
+                            key={feed.id}
+                            onClick={() => setHeroVisionFeed(idx)}
+                            className={`px-2.5 py-1 border transition-all ${
+                              heroVisionFeed === idx
+                                ? "bg-sage text-charcoal border-sage font-bold"
+                                : "border-charcoal-border text-concrete hover:text-burntamber hover:border-burntamber/50"
+                            }`}
+                          >
+                            0{idx + 1}
+                          </button>
+                        ))}
+                      </div>
+                    </>
+                  ) : heroMode === "robot" ? (
+                    <div className="w-full flex justify-between text-concrete">
+                      <span>CORE: THREE.JS / SPLINE 3D AGENT</span>
+                      <span className="text-sage font-bold">ONLINE · REAL-TIME 3D</span>
+                    </div>
+                  ) : (
+                    <div className="w-full flex justify-between text-concrete">
+                      <span>DIAGNOSTICS: LOCAL FIFO STACK</span>
+                      <span className="text-sage font-bold">ALL PARAMETERS NOMINAL</span>
+                    </div>
+                  )}
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
 
         {/* ══════════════════════════════════════════════════════
-            1. HERO — full-bleed with spotlight
+            ENTERPRISE REPUTATION & PARTNER LOGOS
         ══════════════════════════════════════════════════════ */}
-        <section className="relative overflow-hidden pt-24 pb-8 md:pt-32 md:pb-14">
-          <div className="container mx-auto px-4 sm:px-6">
-            <div className="relative w-full rounded-2xl border border-border bg-card/80 backdrop-blur overflow-hidden shadow-xl">
-              <Spotlight className="-top-40 left-0 md:left-60 md:-top-20" size={300} />
+        <section className="border-b border-concrete/30 dark:border-charcoal-border bg-techlight dark:bg-charcoal-surface py-6">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 mb-4 border-b border-concrete/20 dark:border-charcoal-border text-[10px] font-mono tracking-widest text-concrete-dark dark:text-concrete uppercase">
+              <span>// DEPLOYED WITH INDUSTRY LEADERS &amp; RESEARCH INSTITUTIONS</span>
+              <span className="text-sage font-bold">VERIFIED PRODUCTION ENGAGEMENTS</span>
+            </div>
 
-              <div className="flex flex-col md:flex-row">
-                {/* Left content */}
-                <div className="flex-1 p-6 sm:p-10 md:p-14 relative z-10 flex flex-col justify-center">
-                  <motion.div
-                    initial={{ opacity: 0, y: 10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.5, delay: 0.1 }}
-                    className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-primary/10 border border-primary/20 text-xs sm:text-sm font-medium text-primary w-fit mb-5"
-                  >
-                    <Zap className="w-3.5 h-3.5" />
-                    Computer Vision · Generative AI · AI Automation
-                  </motion.div>
+            <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-8 gap-3 items-center">
+              {partners.map((p) => {
+                const content = (
+                  <div className="p-3 border border-concrete/30 dark:border-charcoal-border bg-white dark:bg-charcoal flex flex-col items-center justify-center text-center h-20 hover:border-sage transition-all group">
+                    {p.src ? (
+                      <img
+                        src={p.src}
+                        alt={p.name}
+                        className="max-h-8 w-auto object-contain opacity-70 group-hover:opacity-100 transition-opacity dark:invert"
+                      />
+                    ) : (
+                      <span className="text-xs font-mono font-bold tracking-tight text-charcoal dark:text-ivory group-hover:text-sage transition-colors">
+                        {p.label}
+                      </span>
+                    )}
+                    <span className="text-[8px] font-mono text-concrete mt-1 tracking-tighter truncate max-w-full">
+                      {p.meta}
+                    </span>
+                  </div>
+                );
 
-                  <motion.h1
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.6, delay: 0.2 }}
-                    className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold leading-[1.1] tracking-tight"
-                  >
-                    We Build AI That
-                    <br />
-                    <RotatingKeywords
-                      keywords={[
-                        "Sees & Detects",
-                        "Thinks & Creates",
-                        "Automates & Scales",
-                        "Predicts & Decides",
-                      ]}
-                      interval={3000}
-                    />
-                  </motion.h1>
+                return p.url ? (
+                  <a key={p.name} href={p.url} target="_blank" rel="noopener noreferrer" title={p.name}>
+                    {content}
+                  </a>
+                ) : (
+                  <div key={p.name}>{content}</div>
+                );
+              })}
+            </div>
+          </div>
+        </section>
 
-                  <motion.p
-                    initial={{ opacity: 0, y: 15 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.5, delay: 0.4 }}
-                    className="mt-5 text-muted-foreground max-w-xl text-sm sm:text-base md:text-lg leading-relaxed"
-                  >
-                    From <strong className="text-foreground">computer vision</strong> that inspects at scale, to{" "}
-                    <strong className="text-foreground">generative AI</strong> that creates insights, and{" "}
-                    <strong className="text-foreground">autonomous agents</strong> that execute — end-to-end AI for enterprises.
-                  </motion.p>
+        {/* ══════════════════════════════════════════════════════
+            SECTION 03 — TECHNOLOGY (Across Three Dimensions)
+        ══════════════════════════════════════════════════════ */}
+        <section className="py-16 md:py-24 border-b border-concrete/40 dark:border-charcoal-border bg-ivory dark:bg-charcoal">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6">
+            {/* Section Header */}
+            <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 pb-4 border-b border-concrete/30 dark:border-charcoal-border gap-4">
+              <div>
+                <span className="text-[11px] font-mono tracking-widest text-sage uppercase block mb-1">
+                  SEC_02 // CORE TECHNOLOGY STACK
+                </span>
+                <h2 className="text-3xl sm:text-5xl font-bold font-display tracking-tight text-charcoal dark:text-ivory">
+                  Intelligence Across
+                  <br />
+                  Three Dimensions.
+                </h2>
+              </div>
+              <p className="text-xs font-mono text-concrete-dark dark:text-concrete max-w-md">
+                MODULAR, PRODUCTION-GRADE ARTIFICIAL INTELLIGENCE ENGINEERED FOR DETERMINISTIC INDUSTRIAL DEPLOYMENT.
+              </p>
+            </div>
 
-                  <motion.div
-                    initial={{ opacity: 0, y: 15 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.5, delay: 0.55 }}
-                    className="flex flex-col sm:flex-row gap-3 pt-6"
-                  >
-                    <Link to="/contact">
-                      <Button size="lg" className="gradient-primary text-primary-foreground px-7 h-12 text-sm sm:text-base font-semibold border-0 w-full sm:w-auto">
-                        Get AI Consultation
-                        <ArrowRight className="ml-2 w-4 h-4" />
-                      </Button>
-                    </Link>
-                    <Link to="/expertise">
-                      <Button size="lg" variant="outline" className="h-12 px-7 text-sm sm:text-base border-border hover:bg-secondary w-full sm:w-auto">
-                        Explore Expertise
-                      </Button>
-                    </Link>
-                  </motion.div>
+            {/* 3 Technology Pillars */}
+            <div className="grid md:grid-cols-3 gap-6">
+              {/* Pillar 01: Computer Vision */}
+              <div className="p-6 sm:p-8 border border-concrete/40 dark:border-charcoal-border bg-white dark:bg-charcoal-surface flex flex-col justify-between space-y-6 hover:border-sage transition-all group">
+                <div>
+                  <div className="flex items-center justify-between pb-4 mb-4 border-b border-concrete/20 dark:border-charcoal-border">
+                    <span className="text-xl font-mono font-bold text-sage">01 //</span>
+                    <Eye size={20} className="text-charcoal dark:text-ivory group-hover:text-sage transition-colors" />
+                  </div>
+                  <h3 className="text-2xl font-bold font-display mb-3 text-charcoal dark:text-ivory">
+                    Computer Vision
+                  </h3>
+                  <p className="text-xs font-mono text-concrete-dark dark:text-concrete leading-relaxed mb-6">
+                    Edge-quantized neural networks performing real-time object tracking, spatial geometry calculation, surface defect inspection, and safety compliance at sub-20ms frame latencies.
+                  </p>
+                  <ul className="space-y-2 text-xs font-mono border-t border-concrete/15 dark:border-charcoal-border pt-4">
+                    <li className="flex items-center gap-2">
+                      <span className="w-1.5 h-1.5 bg-sage inline-block" />
+                      <span>YOLOv8/v10 &amp; Vision Transformers</span>
+                    </li>
+                    <li className="flex items-center gap-2">
+                      <span className="w-1.5 h-1.5 bg-sage inline-block" />
+                      <span>On-Premise RTSP Stream Decoders</span>
+                    </li>
+                    <li className="flex items-center gap-2">
+                      <span className="w-1.5 h-1.5 bg-sage inline-block" />
+                      <span>TensorRT / OpenVINO INT8 Pipeline</span>
+                    </li>
+                  </ul>
+                </div>
+                <Link
+                  to="/expertise/artificial-intelligence/computer-vision"
+                  className="text-xs font-mono font-bold uppercase tracking-wider text-charcoal dark:text-ivory group-hover:text-burntamber flex items-center gap-1.5 pt-4 border-t border-concrete/20 dark:border-charcoal-border transition-colors"
+                >
+                  <span>Explore Vision Research</span>
+                  <ArrowRight size={13} className="group-hover:translate-x-1 transition-transform" />
+                </Link>
+              </div>
 
-                  {/* Trust row with authentic industry badges */}
-                  <motion.div
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    transition={{ duration: 0.5, delay: 0.75 }}
-                    className="flex items-center gap-3 mt-6"
-                  >
-                    <div className="flex -space-x-1.5">
-                      {[
-                        { icon: Factory, label: "Manufacturing" },
-                        { icon: Stethoscope, label: "Healthcare" },
-                        { icon: Building2, label: "Infrastructure" },
-                        { icon: ShieldCheck, label: "Security" },
-                      ].map((item, i) => (
-                        <span key={i} title={item.label} className="w-7 h-7 rounded-full bg-secondary border border-border flex items-center justify-center text-primary/80">
-                          <item.icon size={13} />
+              {/* Pillar 02: Generative AI */}
+              <div className="p-6 sm:p-8 border border-concrete/40 dark:border-charcoal-border bg-white dark:bg-charcoal-surface flex flex-col justify-between space-y-6 hover:border-sage transition-all group">
+                <div>
+                  <div className="flex items-center justify-between pb-4 mb-4 border-b border-concrete/20 dark:border-charcoal-border">
+                    <span className="text-xl font-mono font-bold text-sage">02 //</span>
+                    <Brain size={20} className="text-charcoal dark:text-ivory group-hover:text-sage transition-colors" />
+                  </div>
+                  <h3 className="text-2xl font-bold font-display mb-3 text-charcoal dark:text-ivory">
+                    Generative AI
+                  </h3>
+                  <p className="text-xs font-mono text-concrete-dark dark:text-concrete leading-relaxed mb-6">
+                    Private, domain-adapted language models and multimodal synthesis engines. Eliminates data leakage while extracting structured intelligence from massive unstructured enterprise documents.
+                  </p>
+                  <ul className="space-y-2 text-xs font-mono border-t border-concrete/15 dark:border-charcoal-border pt-4">
+                    <li className="flex items-center gap-2">
+                      <span className="w-1.5 h-1.5 bg-sage inline-block" />
+                      <span>Private RAG &amp; Vector Embeddings</span>
+                    </li>
+                    <li className="flex items-center gap-2">
+                      <span className="w-1.5 h-1.5 bg-sage inline-block" />
+                      <span>Synthetic Industrial Dataset Gen</span>
+                    </li>
+                    <li className="flex items-center gap-2">
+                      <span className="w-1.5 h-1.5 bg-sage inline-block" />
+                      <span>Zero Public Cloud Data Transmission</span>
+                    </li>
+                  </ul>
+                </div>
+                <Link
+                  to="/expertise/artificial-intelligence/generative-ai"
+                  className="text-xs font-mono font-bold uppercase tracking-wider text-charcoal dark:text-ivory group-hover:text-burntamber flex items-center gap-1.5 pt-4 border-t border-concrete/20 dark:border-charcoal-border transition-colors"
+                >
+                  <span>Explore Generative Systems</span>
+                  <ArrowRight size={13} className="group-hover:translate-x-1 transition-transform" />
+                </Link>
+              </div>
+
+              {/* Pillar 03: Agentic AI */}
+              <div className="p-6 sm:p-8 border border-concrete/40 dark:border-charcoal-border bg-white dark:bg-charcoal-surface flex flex-col justify-between space-y-6 hover:border-sage transition-all group">
+                <div>
+                  <div className="flex items-center justify-between pb-4 mb-4 border-b border-concrete/20 dark:border-charcoal-border">
+                    <span className="text-xl font-mono font-bold text-sage">03 //</span>
+                    <Bot size={20} className="text-charcoal dark:text-ivory group-hover:text-sage transition-colors" />
+                  </div>
+                  <h3 className="text-2xl font-bold font-display mb-3 text-charcoal dark:text-ivory">
+                    Agentic AI
+                  </h3>
+                  <p className="text-xs font-mono text-concrete-dark dark:text-concrete leading-relaxed mb-6">
+                    Autonomous multi-step execution agents that reason, validate, and execute complex workflows across enterprise databases, SCADA controllers, and external APIs with deterministic guardrails.
+                  </p>
+                  <ul className="space-y-2 text-xs font-mono border-t border-concrete/15 dark:border-charcoal-border pt-4">
+                    <li className="flex items-center gap-2">
+                      <span className="w-1.5 h-1.5 bg-sage inline-block" />
+                      <span>Deterministic State Machine Guardrails</span>
+                    </li>
+                    <li className="flex items-center gap-2">
+                      <span className="w-1.5 h-1.5 bg-sage inline-block" />
+                      <span>Autonomous Tool Synthesis &amp; API Relays</span>
+                    </li>
+                    <li className="flex items-center gap-2">
+                      <span className="w-1.5 h-1.5 bg-sage inline-block" />
+                      <span>24/7 Self-Healing Execution Loops</span>
+                    </li>
+                  </ul>
+                </div>
+                <Link
+                  to="/expertise/artificial-intelligence/ai-agent-development"
+                  className="text-xs font-mono font-bold uppercase tracking-wider text-charcoal dark:text-ivory group-hover:text-burntamber flex items-center gap-1.5 pt-4 border-t border-concrete/20 dark:border-charcoal-border transition-colors"
+                >
+                  <span>Explore Autonomous Agents</span>
+                  <ArrowRight size={13} className="group-hover:translate-x-1 transition-transform" />
+                </Link>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* ══════════════════════════════════════════════════════
+            SECTION 04 — PRODUCTS (Real-World Applications)
+        ══════════════════════════════════════════════════════ */}
+        <section className="py-16 md:py-24 border-b border-concrete/40 dark:border-charcoal-border bg-techlight/40 dark:bg-charcoal-surface">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6">
+            <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 pb-4 border-b border-concrete/30 dark:border-charcoal-border gap-4">
+              <div>
+                <span className="text-[11px] font-mono tracking-widest text-sage uppercase block mb-1">
+                  SEC_03 // PRODUCTION SYSTEMS
+                </span>
+                <h2 className="text-3xl sm:text-5xl font-bold font-display tracking-tight text-charcoal dark:text-ivory">
+                  AI Products.
+                  <br />
+                  Real-World Applications.
+                </h2>
+              </div>
+              <p className="text-xs font-mono text-concrete-dark dark:text-concrete max-w-md">
+                BREADTH OF DEPLOYED HARDWARE-INTEGRATED SOFTWARE SYSTEMS SERVING INDUSTRIAL, HOLISTIC AND EDUCATIONAL SECTORS.
+              </p>
+            </div>
+
+            {/* 3 Products Showcase */}
+            <div className="space-y-8">
+              {/* Product 01: Nirikshan Vision Systems */}
+              <div className="border border-concrete/40 dark:border-charcoal-border bg-white dark:bg-charcoal p-6 sm:p-10">
+                <div className="grid lg:grid-cols-12 gap-8 items-center">
+                  <div className="lg:col-span-7 space-y-4">
+                    <div className="flex items-center gap-2 text-[10px] font-mono text-sage tracking-widest uppercase">
+                      <span>SYSTEM_01</span>
+                      <span>//</span>
+                      <span>ENTERPRISE INDUSTRIAL VISION</span>
+                    </div>
+                    <h3 className="text-3xl sm:text-4xl font-bold font-display text-charcoal dark:text-ivory">
+                      Nirikshan Vision Systems
+                    </h3>
+                    <p className="text-sm font-sans text-concrete-dark dark:text-concrete leading-relaxed max-w-xl">
+                      Turnkey computer vision suite integrating directly with industrial RTSP/IP cameras. Performs sub-20ms PPE compliance checks, high-speed optical defect detection, fire/smoke hazard alerting, and automated number plate recognition (ANPR).
+                    </p>
+                    <div className="flex flex-wrap gap-2 pt-2 text-xs font-mono">
+                      {["PPE Safety", "Micro-Defect AOI", "Early Fire Alerts", "ANPR Gates"].map((feat) => (
+                        <span key={feat} className="px-2.5 py-1 border border-concrete/30 dark:border-charcoal-border bg-techlight dark:bg-charcoal-surface">
+                          {feat}
                         </span>
                       ))}
                     </div>
-                    <p className="text-xs text-muted-foreground">Trusted by <strong className="text-foreground">5+ enterprises</strong> across industries</p>
-                  </motion.div>
+                    <div className="pt-4">
+                      <Link to="/products/vision-systems">
+                        <Button className="bg-charcoal text-ivory border border-charcoal hover:bg-burntamber hover:border-burntamber hover:text-white text-xs font-mono uppercase tracking-wider px-6 h-11 rounded-none font-bold transition-all shadow-sm">
+                          Explore Vision Systems Platform →
+                        </Button>
+                      </Link>
+                    </div>
+                  </div>
+                  <div className="lg:col-span-5 border border-charcoal/30 dark:border-charcoal-border bg-black aspect-[16/10] overflow-hidden relative">
+                    <img
+                      src={cvPpeImg}
+                      alt="Nirikshan Vision Systems"
+                      className="w-full h-full object-cover opacity-90"
+                    />
+                    <div className="absolute bottom-2 left-2 bg-charcoal/90 px-2 py-1 text-[9px] font-mono text-sage border border-charcoal-border">
+                      FEED: INFERENCE_ENGAGED [99.8%]
+                    </div>
+                  </div>
                 </div>
+              </div>
 
-                {/* Right — 3D scene */}
-                <div className="flex-1 relative h-[220px] sm:h-[280px] md:h-auto md:min-h-[460px]">
-                  <SplineScene
-                    scene="https://prod.spline.design/kZDDjO5HuC9GJUM2/scene.splinecode"
-                    className="w-full h-full"
-                  />
-                  <div className="absolute bottom-5 left-1/2 -translate-x-1/2 px-4 py-2 rounded-full bg-primary/90 backdrop-blur-sm border border-primary-foreground/20 shadow-lg">
-                    <p className="text-primary-foreground text-xs sm:text-sm font-semibold tracking-wide whitespace-nowrap">
-                      <TypingText text="Enterprise Intelligence Deployed in Production" />
+              {/* Product 02: Astro Nirikshan */}
+              <div className="border border-concrete/40 dark:border-charcoal-border bg-white dark:bg-charcoal p-6 sm:p-10">
+                <div className="grid lg:grid-cols-12 gap-8 items-center">
+                  <div className="lg:col-span-7 space-y-4">
+                    <div className="flex items-center gap-2 text-[10px] font-mono text-burntamber tracking-widest uppercase">
+                      <span>SYSTEM_02</span>
+                      <span>//</span>
+                      <span>COSMIC SCIENCES &amp; COMPUTATIONAL JYOTISH</span>
+                    </div>
+                    <h3 className="text-3xl sm:text-4xl font-bold font-display text-charcoal dark:text-ivory">
+                      Astro Nirikshan
+                    </h3>
+                    <p className="text-sm font-sans text-concrete-dark dark:text-concrete leading-relaxed max-w-xl">
+                      A specialized digital astrology and holistic guidance platform combining traditional Vedic Jyotish, Chaldean numerology, Vastu Shastra, and Janam Kundli with 100% client-side calculation privacy.
                     </p>
+                    <div className="flex flex-wrap gap-2 pt-2 text-xs font-mono">
+                      {["Vedic Astrology", "Chaldean Numerology", "Vastu Shastra", "100% Client Privacy"].map((feat) => (
+                        <span key={feat} className="px-2.5 py-1 border border-burntamber/30 bg-burntamber/5 text-charcoal dark:text-ivory">
+                          {feat}
+                        </span>
+                      ))}
+                    </div>
+                    <div className="pt-4">
+                      <Link to="/products/astro-nirikshan">
+                        <Button className="bg-charcoal text-ivory border border-charcoal hover:bg-burntamber hover:border-burntamber hover:text-white text-xs font-mono uppercase tracking-wider px-6 h-11 rounded-none font-bold transition-all shadow-sm">
+                          Explore Astro Nirikshan →
+                        </Button>
+                      </Link>
+                    </div>
+                  </div>
+                  <div className="lg:col-span-5 border border-concrete/30 dark:border-charcoal-border bg-charcoal p-6 text-ivory aspect-[16/10] flex flex-col justify-between">
+                    <div className="text-[10px] font-mono text-burntamber tracking-widest uppercase">
+                      ARCHIVE // VEDIC &amp; NUMERICAL ALGORITHMS
+                    </div>
+                    <div>
+                      <h4 className="text-xl font-bold font-display text-ivory mb-2">
+                        Ancient Wisdom. Modern Precision.
+                      </h4>
+                      <p className="text-xs font-mono text-concrete leading-relaxed">
+                        Deterministic mathematical ephemeris calculations without cloud storage of birth data.
+                      </p>
+                    </div>
+                    <div className="text-[10px] font-mono text-concrete/70 border-t border-charcoal-border pt-2 flex justify-between">
+                      <span>PRIVACY: LOCAL_BROWSER</span>
+                      <span className="text-burntamber">VERIFIED</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Product 03: 10X AI Productivity */}
+              <div className="border border-concrete/40 dark:border-charcoal-border bg-white dark:bg-charcoal p-6 sm:p-10">
+                <div className="grid lg:grid-cols-12 gap-8 items-center">
+                  <div className="lg:col-span-7 space-y-4">
+                    <div className="flex items-center gap-2 text-[10px] font-mono text-sage tracking-widest uppercase">
+                      <span>SYSTEM_03</span>
+                      <span>//</span>
+                      <span>WORKFORCE &amp; ACADEMIC ENABLEMENT</span>
+                    </div>
+                    <h3 className="text-3xl sm:text-4xl font-bold font-display text-charcoal dark:text-ivory">
+                      10X AI Productivity Training
+                    </h3>
+                    <p className="text-sm font-sans text-concrete-dark dark:text-concrete leading-relaxed max-w-xl">
+                      Practical hands-on AI training ecosystems for schools, engineering colleges, and enterprise teams. Covers foundation models, prompt architecture, edge computer vision, and workflow automation.
+                    </p>
+                    <div className="flex flex-wrap gap-2 pt-2 text-xs font-mono">
+                      {["10,000+ Learners Trained", "NEP 2020 Aligned", "Hands-On Capstones", "Zero PII Leakage"].map((feat) => (
+                        <span key={feat} className="px-2.5 py-1 border border-concrete/30 dark:border-charcoal-border bg-techlight dark:bg-charcoal-surface">
+                          {feat}
+                        </span>
+                      ))}
+                    </div>
+                    <div className="pt-4 flex gap-3">
+                      <Link to="/products/10x-ai-productivity">
+                        <Button className="bg-charcoal text-ivory border border-charcoal hover:bg-burntamber hover:border-burntamber hover:text-white text-xs font-mono uppercase tracking-wider px-6 h-11 rounded-none font-bold transition-all shadow-sm">
+                          Explore 10X Programmes →
+                        </Button>
+                      </Link>
+                    </div>
+                  </div>
+                  <div className="lg:col-span-5 border border-concrete/30 dark:border-charcoal-border bg-charcoal p-6 text-ivory aspect-[16/10] flex flex-col justify-between">
+                    <div className="text-[10px] font-mono text-sage tracking-widest uppercase">
+                      TELEMETRY // PAN-INDIA ENABLEMENT
+                    </div>
+                    <div>
+                      <h4 className="text-xl font-bold font-display text-ivory mb-2">
+                        Making India AI-Ready.
+                      </h4>
+                      <p className="text-xs font-mono text-concrete leading-relaxed">
+                        Accredited bootcamps and enterprise transformation cohorts across universities and industries.
+                      </p>
+                    </div>
+                    <div className="text-[10px] font-mono text-concrete/70 border-t border-charcoal-border pt-2 flex justify-between">
+                      <span>PORTFOLIO: CODE-FIRST</span>
+                      <span className="text-sage font-bold">100% PRACTICAL</span>
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
+          </div>
+        </section>
 
-            {/* Stats bar — 4 tiles */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.85 }}
-              className="mt-5 grid grid-cols-2 md:grid-cols-4 gap-3"
-            >
-              {[
-                { value: "20+", label: "AI Projects", icon: Rocket, color: "text-violet-500" },
-                { value: "99.9%", label: "Model Uptime", icon: Activity, color: "text-blue-500" },
-                { value: "5+", label: "Enterprises", icon: Building2, color: "text-emerald-500" },
-                { value: "3×", label: "Avg. ROI", icon: TrendingUp, color: "text-amber-500" },
-              ].map((stat) => (
-                <div key={stat.label} className="flex items-center gap-3 px-4 py-3 rounded-xl border border-border bg-card/70 backdrop-blur-sm hover:border-primary/30 transition-colors">
-                  <div className={`w-8 h-8 rounded-lg flex items-center justify-center bg-current/10 flex-shrink-0 ${stat.color}`}>
-                    <stat.icon className="w-4 h-4" />
-                  </div>
+        {/* ══════════════════════════════════════════════════════
+            SECTION 05 — INDUSTRIES (Sector Deployments)
+        ══════════════════════════════════════════════════════ */}
+        <section className="py-16 md:py-24 border-b border-concrete/40 dark:border-charcoal-border bg-ivory dark:bg-charcoal">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6">
+            <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 pb-4 border-b border-concrete/30 dark:border-charcoal-border gap-4">
+              <div>
+                <span className="text-[11px] font-mono tracking-widest text-sage uppercase block mb-1">
+                  SEC_04 // SECTOR DEPLOYMENTS
+                </span>
+                <h2 className="text-3xl sm:text-5xl font-bold font-display tracking-tight text-charcoal dark:text-ivory">
+                  Engineered for High-Stakes
+                  <br />
+                  Operational Environments.
+                </h2>
+              </div>
+              <p className="text-xs font-mono text-concrete-dark dark:text-concrete max-w-md">
+                TECHNICAL CAPABILITIES ADAPTED FOR COMPLIANCE, SAFETY AND PRECISION ACROSS CORE INFRASTRUCTURE.
+              </p>
+            </div>
+
+            {/* 6 Industry Panels Grid */}
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {industries.map((ind, idx) => (
+                <div
+                  key={ind.name}
+                  className="p-6 border border-concrete/40 dark:border-charcoal-border bg-white dark:bg-charcoal-surface flex flex-col justify-between space-y-4 hover:border-sage transition-all group"
+                >
                   <div>
-                    <div className="text-lg font-bold text-gradient leading-none">{stat.value}</div>
-                    <div className="text-[10px] text-muted-foreground">{stat.label}</div>
+                    <div className="flex items-center justify-between pb-3 mb-3 border-b border-concrete/20 dark:border-charcoal-border text-xs font-mono text-concrete">
+                      <span>{ind.num} //</span>
+                      <span className="text-[10px] font-bold text-sage">{ind.code}</span>
+                    </div>
+                    <h3 className="text-xl font-bold font-display mb-1 text-charcoal dark:text-ivory group-hover:text-burntamber transition-colors">
+                      {ind.name}
+                    </h3>
+                    <div className="text-[11px] font-mono text-sage mb-3">
+                      {ind.tagline}
+                    </div>
+                    <p className="text-xs font-sans text-concrete-dark dark:text-concrete leading-relaxed mb-4">
+                      {ind.desc}
+                    </p>
+                  </div>
+
+                  <div className="border-t border-concrete/20 dark:border-charcoal-border pt-3 space-y-1 text-[11px] font-mono text-concrete-dark dark:text-concrete">
+                    {ind.specs.map((sp, i) => (
+                      <div key={i} className="flex items-center gap-2">
+                        <span className="w-1 h-1 bg-sage inline-block" />
+                        <span>{sp}</span>
+                      </div>
+                    ))}
                   </div>
                 </div>
               ))}
-            </motion.div>
-          </div>
-        </section>
-
-        {/* Services marquee strip */}
-        <AIServicesStrip />
-
-        {/* ══════════════════════════════════════════════════════
-            2. PROBLEM → SOLUTION (interactive tabs)
-        ══════════════════════════════════════════════════════ */}
-        <section className="py-16 sm:py-24 bg-secondary/30">
-          <div className="container mx-auto px-4 sm:px-6">
-            <FadeUp className="text-center mb-10 sm:mb-12">
-              <p className="text-xs sm:text-sm font-bold uppercase tracking-widest text-primary mb-3">What We Solve</p>
-              <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-4">
-                Every Challenge Has an <span className="text-gradient">AI Answer</span>
-              </h2>
-              <p className="text-muted-foreground max-w-xl mx-auto text-sm sm:text-base">
-                Pick a challenge your team faces — see exactly how we solve it.
-              </p>
-            </FadeUp>
-            <ProblemSolutionTabs />
+            </div>
           </div>
         </section>
 
         {/* ══════════════════════════════════════════════════════
-            3. COMPUTER VISION SHOWCASE
+            SECTION 06 — RESEARCH & ENGINEERING
         ══════════════════════════════════════════════════════ */}
-        <section className="py-16 sm:py-24 relative overflow-hidden">
-          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(120,119,198,0.12),transparent_70%)] pointer-events-none" />
-          <div className="container mx-auto px-4 sm:px-6 relative z-10">
-            <FadeUp className="text-center mb-10 sm:mb-14 max-w-3xl mx-auto">
-              <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-violet-500/10 text-violet-600 dark:text-violet-400 font-medium text-xs sm:text-sm mb-5 border border-violet-500/20">
-                <Eye className="w-3.5 h-3.5" />
-                Live Computer Vision Demo
+        <section className="py-16 md:py-24 border-b border-concrete/40 dark:border-charcoal-border bg-techlight/30 dark:bg-charcoal">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6">
+            <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 pb-4 border-b border-concrete/30 dark:border-charcoal-border gap-4">
+              <div>
+                <span className="text-[11px] font-mono tracking-widest text-sage uppercase block mb-1">
+                  SEC_05 // APPLIED RESEARCH &amp; LABS
+                </span>
+                <h2 className="text-3xl sm:text-5xl font-bold font-display tracking-tight text-charcoal dark:text-ivory">
+                  Beyond Algorithms.
+                  <br />
+                  Into Engineering.
+                </h2>
               </div>
-              <h2 className="text-2xl sm:text-3xl md:text-5xl font-bold leading-tight mb-4">
-                See AI <span className="text-gradient">See</span> in Real-Time
-              </h2>
-              <p className="text-muted-foreground text-sm sm:text-base leading-relaxed">
-                Experience our deep learning systems detecting, tracking, and analyzing objects instantly.
+              <p className="text-xs font-mono text-concrete-dark dark:text-concrete max-w-md">
+                CONTINUOUS INVESTMENTS IN APPLIED RESEARCH, QUANTIZATION KERNELS, AND SYSTEM ARCHITECTURES.
               </p>
-            </FadeUp>
-            <FadeUp delay={0.2} className="w-full max-w-5xl mx-auto">
-              <InteractiveCVShowcase />
-            </FadeUp>
-          </div>
-        </section>
+            </div>
 
-        {/* ══════════════════════════════════════════════════════
-            4. CAPABILITIES — horizontal scroll mobile / grid desktop
-        ══════════════════════════════════════════════════════ */}
-        <section className="py-16 sm:py-24 bg-secondary/20">
-          <div className="container mx-auto px-4 sm:px-6">
-            <FadeUp className="text-center mb-10 sm:mb-12">
-              <p className="text-xs sm:text-sm font-bold uppercase tracking-widest text-primary mb-3">Core Capabilities</p>
-              <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-4">
-                Full-Stack <span className="text-gradient">AI Expertise</span>
-              </h2>
-              <p className="text-muted-foreground max-w-xl mx-auto text-sm sm:text-base">
-                Everything from idea to production-grade AI — under one roof.
-              </p>
-            </FadeUp>
-            <CapabilitiesSection />
-            <FadeUp className="text-center mt-8 sm:mt-10">
-              <Link to="/expertise">
-                <Button variant="outline" className="border-primary/30 hover:bg-primary/5">
-                  View All AI Capabilities
-                  <ChevronRight className="ml-1.5 w-4 h-4" />
-                </Button>
-              </Link>
-            </FadeUp>
-          </div>
-        </section>
-
-        {/* ══════════════════════════════════════════════════════
-            5. HOW WE WORK — process timeline
-        ══════════════════════════════════════════════════════ */}
-        <section className="py-16 sm:py-24">
-          <div className="container mx-auto px-4 sm:px-6">
-            <FadeUp className="text-center mb-10 sm:mb-14">
-              <p className="text-xs sm:text-sm font-bold uppercase tracking-widest text-primary mb-3">Our Process</p>
-              <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-4">
-                How We <span className="text-gradient">Work</span>
-              </h2>
-              <p className="text-muted-foreground max-w-xl mx-auto text-sm sm:text-base">
-                A proven 4-step methodology from problem definition to production deployment.
-              </p>
-            </FadeUp>
-            <ProcessSection />
-          </div>
-        </section>
-
-        {/* ══════════════════════════════════════════════════════
-            5.5. AI TRAINING & EDUCATION SPOTLIGHT
-        ══════════════════════════════════════════════════════ */}
-        <section className="py-16 sm:py-24 relative overflow-hidden bg-gradient-to-b from-card via-background to-secondary/20 border-y border-border">
-          <div className="container mx-auto px-4 sm:px-6 relative z-10 max-w-6xl">
-            <div className="rounded-3xl border border-slate-200 dark:border-slate-800 bg-white/95 dark:bg-slate-900/90 p-8 sm:p-12 shadow-2xl">
-              <div className="grid lg:grid-cols-12 gap-8 items-center">
-                {/* Left side: Context & Value */}
-                <div className="lg:col-span-7 space-y-4">
-                  <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-50 dark:bg-blue-950/70 border border-blue-200 dark:border-blue-800 text-blue-700 dark:text-blue-300 text-xs font-semibold tracking-wider uppercase">
-                    <Sparkles className="w-3.5 h-3.5 text-blue-600 dark:text-blue-400" />
-                    <span>AI TRAINING &amp; WORKFORCE ENABLEMENT</span>
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {[
+                {
+                  code: "RES_CV_01",
+                  title: "Computer Vision Research",
+                  focus: "Edge-Quantized YOLO & ViT Models",
+                  detail: "Optimizing neural weights for sub-byte memory layouts. Reducing model footprint by 68% while maintaining 99.8% precision on industrial defects."
+                },
+                {
+                  code: "RES_ML_02",
+                  title: "Machine Learning",
+                  focus: "Adaptive Reinforcement & Transfer Policies",
+                  detail: "Training robust perception models on small-sample industrial datasets where defect samples are extremely rare in production."
+                },
+                {
+                  code: "RES_GEN_03",
+                  title: "Generative AI",
+                  focus: "Domain-Adapted SLMs & Private RAG",
+                  detail: "Engineering small language models (SLMs) fine-tuned for high-speed deterministic extraction from technical engineering drawings and manuals."
+                },
+                {
+                  code: "RES_AGT_04",
+                  title: "Agentic Systems",
+                  focus: "Deterministic Guardrails & State Machines",
+                  detail: "Creating multi-step agent orchestration architectures where probabilistic outputs are bounded by deterministic verification gates."
+                },
+                {
+                  code: "RES_AUT_05",
+                  title: "Intelligent Automation",
+                  focus: "Air-Gapped Edge Inference Servers",
+                  detail: "Hardware-level integration connecting RTSP camera decoders with legacy PLC/SCADA industrial controllers in under 15ms."
+                },
+                {
+                  code: "RES_SOC_06",
+                  title: "Applied AI Research",
+                  focus: "Grassroots AgriTech & Ecological Vision",
+                  detail: "Developing ultra-low-power edge vision algorithms optimized for solar-powered microcontrollers deployed in rural terrains."
+                }
+              ].map((res) => (
+                <div
+                  key={res.code}
+                  className="p-6 border border-concrete/40 dark:border-charcoal-border bg-white dark:bg-charcoal-surface space-y-3 hover:border-sage transition-all"
+                >
+                  <div className="flex items-center justify-between text-[10px] font-mono text-sage pb-2 border-b border-concrete/20 dark:border-charcoal-border">
+                    <span>{res.code}</span>
+                    <span className="text-concrete">ACTIVE LAB</span>
                   </div>
-                  <h2 className="text-2xl sm:text-4xl font-extrabold text-slate-950 dark:text-white tracking-tight leading-tight">
-                    Making India AI-Ready,
-                    <br />
-                    <span className="bg-gradient-to-r from-blue-600 via-indigo-600 to-violet-600 bg-clip-text text-transparent">
-                      One Skill at a Time.
-                    </span>
-                  </h2>
-                  <p className="text-slate-600 dark:text-slate-300 text-sm sm:text-base leading-relaxed max-w-xl">
-                    Practical AI training that empowers students, educators, professionals, and industries to understand, apply, and innovate with Artificial Intelligence.
+                  <h3 className="text-lg font-bold font-display text-charcoal dark:text-ivory group-hover:text-burntamber transition-colors">
+                    {res.title}
+                  </h3>
+                  <div className="text-xs font-mono text-concrete-dark dark:text-concrete font-semibold">
+                    {res.focus}
+                  </div>
+                  <p className="text-xs font-sans text-concrete-dark dark:text-concrete leading-relaxed">
+                    {res.detail}
                   </p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
 
-                  {/* Four Audience Labels */}
-                  <div className="flex flex-wrap gap-2 pt-2">
-                    {["Schools (K-12)", "Universities & Colleges", "Corporate Teams", "Industries"].map((aud) => (
-                      <span key={aud} className="text-xs font-semibold px-3 py-1.5 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-800 dark:text-slate-200 border border-slate-200 dark:border-slate-700">
-                        {aud}
+        {/* ══════════════════════════════════════════════════════
+            SECTION 07 — DEVELOPMENT APPROACH (Timeline)
+        ══════════════════════════════════════════════════════ */}
+        <section className="py-16 md:py-24 border-b border-concrete/40 dark:border-charcoal-border bg-ivory dark:bg-charcoal">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6">
+            <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 pb-4 border-b border-concrete/30 dark:border-charcoal-border gap-4">
+              <div>
+                <span className="text-[11px] font-mono tracking-widest text-sage uppercase block mb-1">
+                  SEC_06 // METHODOLOGY &amp; EXECUTION
+                </span>
+                <h2 className="text-3xl sm:text-5xl font-bold font-display tracking-tight text-charcoal dark:text-ivory">
+                  From Problem Definition
+                  <br />
+                  to Production Deployment.
+                </h2>
+              </div>
+              <p className="text-xs font-mono text-concrete-dark dark:text-concrete max-w-md">
+                SIX-STAGE RIGOROUS ENGINEERING CYCLE ENSURING DETERMINISTIC RELIABILITY IN MISSION-CRITICAL SYSTEMS.
+              </p>
+            </div>
+
+            {/* 6 Steps Grid */}
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {approachSteps.map((st) => (
+                <div
+                  key={st.num}
+                  className="p-6 border border-concrete/40 dark:border-charcoal-border bg-white dark:bg-charcoal-surface flex flex-col justify-between space-y-4 hover:border-sage transition-all group"
+                >
+                  <div>
+                    <div className="flex items-center justify-between pb-3 mb-3 border-b border-concrete/20 dark:border-charcoal-border">
+                      <span className="text-xl font-mono font-bold text-sage">{st.num} //</span>
+                      <span className="text-[10px] font-mono text-concrete uppercase tracking-widest">
+                        PHASE_{st.num}
                       </span>
-                    ))}
+                    </div>
+                    <h3 className="text-2xl font-bold font-display mb-1 text-charcoal dark:text-ivory group-hover:text-burntamber transition-colors">
+                      {st.title}
+                    </h3>
+                    <div className="text-[10px] font-mono text-sage uppercase tracking-wider mb-3">
+                      {st.label}
+                    </div>
+                    <p className="text-xs font-sans text-concrete-dark dark:text-concrete leading-relaxed">
+                      {st.desc}
+                    </p>
                   </div>
 
-                  <div className="pt-4 flex flex-col sm:flex-row gap-3">
-                    <Link to="/10x-ai-productivity">
-                      <Button size="lg" className="bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-2xl h-12 px-7 shadow-lg shadow-blue-500/20">
-                        Explore Training Programmes
-                        <ArrowRight className="w-4 h-4 ml-2" />
-                      </Button>
-                    </Link>
-                    <Link to="/contact">
-                      <Button size="lg" variant="outline" className="rounded-2xl h-12 px-7 border-slate-300 dark:border-slate-700 hover:bg-slate-100 dark:hover:bg-slate-800">
-                        Partner With Us
-                      </Button>
-                    </Link>
+                  <div className="border-t border-concrete/20 dark:border-charcoal-border pt-3 text-[10px] font-mono text-concrete">
+                    <span className="text-sage font-bold">DELIVERABLE: </span>
+                    <span>{st.deliverable}</span>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* ══════════════════════════════════════════════════════
+            SECTION 08 — CASE STUDIES (Verified Outcomes)
+        ══════════════════════════════════════════════════════ */}
+        <section className="py-16 md:py-24 border-b border-concrete/40 dark:border-charcoal-border bg-techlight/30 dark:bg-charcoal-surface">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6">
+            <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 pb-4 border-b border-concrete/30 dark:border-charcoal-border gap-4">
+              <div>
+                <span className="text-[11px] font-mono tracking-widest text-sage uppercase block mb-1">
+                  SEC_07 // DEPLOYMENT VERIFICATION
+                </span>
+                <h2 className="text-3xl sm:text-5xl font-bold font-display tracking-tight text-charcoal dark:text-ivory">
+                  Engineered Outcomes.
+                </h2>
+              </div>
+              <p className="text-xs font-mono text-concrete-dark dark:text-concrete max-w-md">
+                QUANTIFIABLE SYSTEM IMPROVEMENTS MEASURED ACROSS ACTIVE ENTERPRISE PARTNER ENVIRONMENTS.
+              </p>
+            </div>
+
+            {/* Case Study Feature Card */}
+            <div className="border border-concrete/40 dark:border-charcoal-border bg-white dark:bg-charcoal p-6 sm:p-10 space-y-8">
+              <div className="grid lg:grid-cols-12 gap-8 items-start">
+                <div className="lg:col-span-8 space-y-4">
+                  <div className="text-[10px] font-mono text-sage tracking-widest uppercase">
+                    DEPLOYMENT CASE // AUTOMOTIVE COMPONENT QUALITY AOI
+                  </div>
+                  <h3 className="text-2xl sm:text-4xl font-bold font-display text-charcoal dark:text-ivory">
+                    Automating Visual Inspection at Assembly Speeds
+                  </h3>
+
+                  <div className="grid sm:grid-cols-2 gap-4 pt-4 border-t border-concrete/20 dark:border-charcoal-border text-xs font-mono">
+                    <div className="p-3 bg-techlight dark:bg-charcoal-surface border border-concrete/20 dark:border-charcoal-border">
+                      <div className="text-concrete text-[10px] uppercase mb-1">THE CHALLENGE</div>
+                      <p className="text-charcoal dark:text-ivory leading-relaxed">
+                        Manual optical inspection missed micro-cracks on precision stamped components during rapid assembly line cycles.
+                      </p>
+                    </div>
+                    <div className="p-3 bg-techlight dark:bg-charcoal-surface border border-concrete/20 dark:border-charcoal-border">
+                      <div className="text-sage text-[10px] uppercase mb-1">THE ENGINEERING SOLUTION</div>
+                      <p className="text-charcoal dark:text-ivory leading-relaxed">
+                        Deployed dual-camera Jetson edge station with customized INT8 classification model relaying to pneumatic reject arm in &lt;18ms.
+                      </p>
+                    </div>
                   </div>
                 </div>
 
-                {/* Right side: Real Workshop Photography Card */}
-                <div className="lg:col-span-5">
-                  <div className="relative rounded-2xl overflow-hidden border border-slate-200 dark:border-slate-800 shadow-xl group aspect-[4/3] bg-slate-900">
-                    <img
-                      src="https://images.unsplash.com/photo-1531482615713-2afd69097998?auto=format&fit=crop&w=900&q=80"
-                      alt="Nirikshan AI Workshop Session"
-                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
-                      loading="lazy"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-slate-950/85 via-slate-950/20 to-transparent" />
-                    <div className="absolute bottom-4 left-4 right-4 text-white">
-                      <span className="text-[11px] font-bold uppercase tracking-wider text-blue-300 block mb-1">
-                        Interactive Training Sessions
-                      </span>
-                      <h4 className="text-sm sm:text-base font-bold leading-snug">
-                        Hands-on Labs, Real Projects &amp; Live AI Tooling
-                      </h4>
+                {/* Quantitative Results */}
+                <div className="lg:col-span-4 p-6 border border-charcoal/30 dark:border-charcoal-border bg-charcoal text-ivory space-y-4">
+                  <div className="text-[10px] font-mono text-sage uppercase tracking-widest">
+                    VERIFIED METRICS
+                  </div>
+                  <div className="space-y-4">
+                    <div>
+                      <div className="text-3xl font-bold font-display text-sage">94%</div>
+                      <div className="text-[11px] font-mono text-concrete">REDUCTION IN DEFECT ESCAPES</div>
+                    </div>
+                    <div>
+                      <div className="text-3xl font-bold font-display text-ivory">14.8ms</div>
+                      <div className="text-[11px] font-mono text-concrete">EDGE INFERENCE TIME</div>
+                    </div>
+                    <div>
+                      <div className="text-3xl font-bold font-display text-sage">100%</div>
+                      <div className="text-[11px] font-mono text-concrete">AUDIT TRAIL LOGGING</div>
                     </div>
                   </div>
+                </div>
+              </div>
+
+              {/* Case Study Quote */}
+              <div className="p-6 border-t border-concrete/30 dark:border-charcoal-border font-serif italic text-base sm:text-lg text-charcoal dark:text-ivory">
+                "Nirikshan AI's edge vision system transformed our quality inspection process. Defect detection that previously created assembly bottlenecks now happens at full line conveyor speeds with zero cloud latency."
+                <div className="mt-3 font-sans not-italic text-xs font-mono text-concrete">
+                  — Operations Director, Enterprise Manufacturing Client
                 </div>
               </div>
             </div>
@@ -656,116 +1300,259 @@ const Index = () => {
         </section>
 
         {/* ══════════════════════════════════════════════════════
-            6. SOCIAL PROOF — testimonial + clients
+            SECTION 09 — WHO WE ARE & COMPANY LEADERSHIP
         ══════════════════════════════════════════════════════ */}
-        <section className="py-16 sm:py-24 bg-secondary/20">
-          <div className="container mx-auto px-4 sm:px-6">
+        <section className="py-16 md:py-24 border-b border-concrete/40 dark:border-charcoal-border bg-ivory dark:bg-charcoal">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6">
+            {/* Header */}
+            <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 pb-4 border-b border-concrete/30 dark:border-charcoal-border gap-4">
+              <div>
+                <span className="text-[11px] font-mono tracking-widest text-sage uppercase block mb-1">
+                  SEC_08 // WHO WE ARE &amp; EXECUTIVE LEADERSHIP
+                </span>
+                <h2 className="text-3xl sm:text-5xl font-bold font-display tracking-tight text-charcoal dark:text-ivory">
+                  Architects of Edge Intelligence.
+                  <br />
+                  <span className="font-serif italic font-normal text-concrete-dark dark:text-concrete">
+                    Built for Industrial Reality.
+                  </span>
+                </h2>
+              </div>
+              <div className="text-xs font-mono text-concrete-dark dark:text-concrete max-w-md">
+                FOUNDED AT DEV BHOOMI'S IEC INNOVATION LAB · EVOLVED INTO A REGISTERED DEEP-TECH RESEARCH &amp; PRODUCT ENGINEERING COMPANY.
+              </div>
+            </div>
 
-            {/* Big testimonial pull quote */}
-            <FadeUp className="max-w-3xl mx-auto text-center mb-14">
-              <div className="relative p-8 sm:p-12 rounded-2xl border border-border bg-card overflow-hidden">
-                {/* Decorative quotes */}
-                <div className="absolute top-4 left-6 text-6xl text-primary/10 font-serif leading-none select-none">"</div>
-                <div className="absolute bottom-4 right-6 text-6xl text-primary/10 font-serif leading-none select-none rotate-180">"</div>
-                <p className="relative text-lg sm:text-xl md:text-2xl font-medium leading-relaxed text-foreground italic mb-6">
-                  Nirikshan AI transformed our quality inspection process — what used to take hours of manual review now happens in real-time with greater accuracy.
+            {/* Narrative & Institutional Lineage */}
+            <div className="grid lg:grid-cols-12 gap-8 mb-12">
+              <div className="lg:col-span-7 space-y-4 text-sm font-sans text-concrete-dark dark:text-concrete leading-relaxed">
+                <p>
+                  Nirikshan AI was conceived at <span className="font-semibold text-charcoal dark:text-ivory">Dev Bhoomi</span> through the student research collective in the IEC Innovation Lab. What began as experimental late-night work on neural backbones, CUDA kernels, and real-time computer vision rapidly matured into an enterprise-grade technology company.
                 </p>
-                <div className="flex items-center justify-center gap-3">
-                  <div className="w-10 h-10 rounded-full gradient-primary flex items-center justify-center text-white font-bold text-sm">OD</div>
-                  <div className="text-left">
-                    <p className="font-semibold text-sm">Operations Director</p>
-                    <p className="text-xs text-muted-foreground">Enterprise Manufacturing Client</p>
+                <p>
+                  Today, <span className="font-semibold text-charcoal dark:text-ivory">Nirikshan AI Private Limited</span> engineers end-to-end autonomous perception systems for high-stakes operational environments — from automated optical inspection on high-speed industrial assembly lines to solar-powered wildlife deterrence stations in rural Uttarakhand.
+                </p>
+                <div className="flex flex-wrap gap-4 pt-2">
+                  <Link to="/who-we-are">
+                    <Button className="bg-charcoal text-ivory border border-charcoal hover:bg-burntamber hover:border-burntamber hover:text-white text-xs font-mono uppercase tracking-wider px-6 h-11 rounded-none font-bold transition-all shadow-sm">
+                      Explore Who We Are &amp; Culture →
+                    </Button>
+                  </Link>
+                  <Link to="/about">
+                    <Button variant="outline" className="border-concrete/60 dark:border-charcoal-border text-charcoal dark:text-ivory text-xs font-mono uppercase tracking-wider px-6 h-11 rounded-none font-bold hover:border-burntamber hover:text-burntamber hover:bg-burntamber/5 transition-all">
+                      Read Company Profile
+                    </Button>
+                  </Link>
+                </div>
+              </div>
+
+              {/* R&D Coordinates Card */}
+              <div className="lg:col-span-5 p-6 border border-charcoal/30 dark:border-charcoal-border bg-charcoal text-ivory space-y-4">
+                <div className="text-[10px] font-mono tracking-widest text-sage uppercase pb-2 border-b border-charcoal-border flex justify-between">
+                  <span>FACILITY TOPOLOGY</span>
+                  <span className="text-sage">MCA CIN: U72900UR2023PTC015792</span>
+                </div>
+                <div className="space-y-3 font-mono text-xs text-concrete">
+                  <div>
+                    <span className="text-ivory font-bold block mb-0.5">R&amp;D HARDWARE LAB — HARIDWAR</span>
+                    <span>Uttarakhand 249401, India</span>
+                    <span className="block text-[10px] text-sage mt-0.5">SENSOR PROTOTYPING &amp; EDGE EMBEDDED KERNELS</span>
+                  </div>
+                  <div>
+                    <span className="text-ivory font-bold block mb-0.5">SOFTWARE ENGINEERING — DEHRADUN</span>
+                    <span>Dehradun IT Corridor, Uttarakhand, India</span>
+                    <span className="block text-[10px] text-sage mt-0.5">VISION MODEL TRAINING, RTSP &amp; WEB PLATFORMS</span>
+                  </div>
+                  <div className="pt-2 border-t border-charcoal-border flex justify-between text-[10px]">
+                    <span>INCORPORATION: MCA INDIA</span>
+                    <span className="text-sage font-bold">ACTIVE &amp; AUDITED</span>
                   </div>
                 </div>
               </div>
-            </FadeUp>
+            </div>
 
-            {/* Partner logos */}
-            <FadeUp>
-              <p className="text-center text-xs font-bold uppercase tracking-widest text-muted-foreground mb-6">Clients &amp; Partners</p>
-              <div className="grid grid-cols-4 sm:grid-cols-4 md:grid-cols-8 gap-3 sm:gap-4 max-w-4xl mx-auto items-center">
-                {partners.map((partner) => {
-                  const card = (
-                    <div className="flex items-center justify-center p-3 sm:p-4 rounded-xl border border-border bg-card/80 aspect-square hover:border-primary/30 hover:shadow-md transition-all duration-300 group">
-                      <img
-                        src={partner.src}
-                        alt={partner.name}
-                        loading="lazy"
-                        className="w-full h-full object-contain opacity-60 group-hover:opacity-100 transition-opacity duration-300 dark:brightness-90"
-                      />
-                    </div>
-                  );
-                  return partner.url ? (
-                    <a key={partner.name} href={partner.url} target="_blank" rel="noopener noreferrer" title={partner.name}>{card}</a>
-                  ) : (
-                    <div key={partner.name} title={partner.name}>{card}</div>
-                  );
-                })}
+            {/* Leadership Spotlight (Anshul & CA Vikram Biyani) */}
+            <div className="border-t border-concrete/30 dark:border-charcoal-border pt-10">
+              <div className="flex items-center justify-between mb-8 pb-3 border-b border-concrete/20 dark:border-charcoal-border">
+                <div className="flex items-center gap-2 text-[10px] font-mono tracking-widest text-sage uppercase">
+                  <span className="w-1.5 h-1.5 bg-sage inline-block animate-pulse" />
+                  <span>// EXECUTIVE LEADERSHIP DOSSIER</span>
+                </div>
+                <span className="text-[10px] font-mono text-concrete">
+                  STEERING APPLIED AI &amp; FISCAL RESILIENCE
+                </span>
               </div>
-            </FadeUp>
+
+              <div className="grid md:grid-cols-2 gap-8">
+                {/* Leader 01: Anshul */}
+                <div className="p-6 sm:p-8 border border-concrete/40 dark:border-charcoal-border bg-white dark:bg-charcoal-surface space-y-6 hover:border-sage transition-all group">
+                  <div className="grid sm:grid-cols-12 gap-6 items-start">
+                    <div className="sm:col-span-5 aspect-[4/5] border border-charcoal/20 dark:border-charcoal-border overflow-hidden bg-charcoal relative">
+                      <img
+                        src={anshulImage}
+                        alt="Anshul — Founder & CEO"
+                        className="w-full h-full object-cover grayscale contrast-125 group-hover:grayscale-0 transition-all duration-500"
+                      />
+                      <div className="absolute bottom-1 left-1 bg-charcoal/90 px-1.5 py-0.5 text-[8px] font-mono text-sage border border-charcoal-border">
+                        EXE_01 // CEO
+                      </div>
+                    </div>
+                    <div className="sm:col-span-7 space-y-2">
+                      <div className="text-[10px] font-mono text-sage tracking-widest uppercase">
+                        FOUNDER &amp; CHIEF EXECUTIVE OFFICER
+                      </div>
+                      <h3 className="text-2xl font-bold font-display text-charcoal dark:text-ivory group-hover:text-burntamber transition-colors">
+                        Anshul
+                      </h3>
+                      <div className="text-xs font-mono text-concrete-dark dark:text-concrete">
+                        SYSTEM ARCHITECTURE &amp; DEEP-TECH R&amp;D
+                      </div>
+                      <p className="text-xs font-sans text-concrete-dark dark:text-concrete leading-relaxed pt-1">
+                        Spearheads technical strategy, neural network quantization, and embedded CUDA kernel optimization. Translates complex computer vision breakthroughs into dependable industrial systems.
+                      </p>
+                      <div className="pt-2">
+                        <a
+                          href="https://www.linkedin.com/in/anshultech1"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="inline-flex items-center gap-1.5 text-xs font-mono text-charcoal dark:text-ivory hover:text-burntamber font-semibold transition-colors"
+                        >
+                          <Linkedin size={13} />
+                          <span>LinkedIn Dossier →</span>
+                        </a>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="p-4 bg-techlight dark:bg-charcoal border-l-2 border-sage text-xs font-mono text-concrete-dark dark:text-concrete italic leading-relaxed">
+                    "Operational excellence is about designing environments where AI models operate deterministically on the edge in under 15ms without cloud dependencies."
+                  </div>
+                </div>
+
+                {/* Leader 02: CA Vikram Biyani */}
+                <div className="p-6 sm:p-8 border border-concrete/40 dark:border-charcoal-border bg-white dark:bg-charcoal-surface space-y-6 hover:border-sage transition-all group">
+                  <div className="grid sm:grid-cols-12 gap-6 items-start">
+                    <div className="sm:col-span-5 aspect-[4/5] border border-charcoal/20 dark:border-charcoal-border overflow-hidden bg-charcoal relative">
+                      <img
+                        src={vikramImage}
+                        alt="CA Vikram Biyani — Director – Finance"
+                        className="w-full h-full object-cover grayscale contrast-125 group-hover:grayscale-0 transition-all duration-500"
+                      />
+                      <div className="absolute bottom-1 left-1 bg-charcoal/90 px-1.5 py-0.5 text-[8px] font-mono text-sage border border-charcoal-border">
+                        EXE_02 // FINANCE
+                      </div>
+                    </div>
+                    <div className="sm:col-span-7 space-y-2">
+                      <div className="text-[10px] font-mono text-sage tracking-widest uppercase">
+                        DIRECTOR – FINANCE &amp; STRATEGY
+                      </div>
+                      <h3 className="text-2xl font-bold font-display text-charcoal dark:text-ivory group-hover:text-burntamber transition-colors">
+                        CA Vikram Biyani
+                      </h3>
+                      <div className="text-xs font-mono text-concrete-dark dark:text-concrete">
+                        CAPITAL EFFICIENCY &amp; GOVERNANCE
+                      </div>
+                      <p className="text-xs font-sans text-concrete-dark dark:text-concrete leading-relaxed pt-1">
+                        Directs fiscal policy, capital efficiency, and strategic enterprise alliances. Ensures deep-tech research initiatives are backed by solid, transparent economic structures.
+                      </p>
+                      <div className="pt-2">
+                        <a
+                          href="https://www.linkedin.com/in/viekram-biyaani-44810817b"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="inline-flex items-center gap-1.5 text-xs font-mono text-charcoal dark:text-ivory hover:text-burntamber font-semibold transition-colors"
+                        >
+                          <Linkedin size={13} />
+                          <span>LinkedIn Dossier →</span>
+                        </a>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="p-4 bg-techlight dark:bg-charcoal border-l-2 border-sage text-xs font-mono text-concrete-dark dark:text-concrete italic leading-relaxed">
+                    "Sustainable deep-tech innovation requires disciplined capital allocation and transparent governance that build lasting institutional trust."
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Core Values 4-Grid */}
+            <div className="mt-10 pt-8 border-t border-concrete/30 dark:border-charcoal-border grid sm:grid-cols-2 lg:grid-cols-4 gap-4 text-xs font-mono">
+              <div className="p-4 border border-concrete/30 dark:border-charcoal-border bg-white dark:bg-charcoal-surface hover:border-sage transition-all">
+                <div className="text-sage font-bold uppercase mb-1">01 // RIGOROUS ACCURACY</div>
+                <p className="text-concrete-dark dark:text-concrete leading-snug">
+                  Zero probabilistic guesswork. Tested against real industrial tolerances of ±0.02mm.
+                </p>
+              </div>
+              <div className="p-4 border border-concrete/30 dark:border-charcoal-border bg-white dark:bg-charcoal-surface hover:border-sage transition-all">
+                <div className="text-sage font-bold uppercase mb-1">02 // DATA SOVEREIGNTY</div>
+                <p className="text-concrete-dark dark:text-concrete leading-snug">
+                  100% on-premise execution with zero streaming or recurrent storage on public cloud servers.
+                </p>
+              </div>
+              <div className="p-4 border border-concrete/30 dark:border-charcoal-border bg-white dark:bg-charcoal-surface hover:border-sage transition-all">
+                <div className="text-sage font-bold uppercase mb-1">03 // FIELD INTEGRATION</div>
+                <p className="text-concrete-dark dark:text-concrete leading-snug">
+                  Full embedded stack: camera selection, mounting, SCADA/PLC relay, and edge processing.
+                </p>
+              </div>
+              <div className="p-4 border border-concrete/30 dark:border-charcoal-border bg-white dark:bg-charcoal-surface hover:border-sage transition-all">
+                <div className="text-sage font-bold uppercase mb-1">04 // OPEN TELEMETRY</div>
+                <p className="text-concrete-dark dark:text-concrete leading-snug">
+                  Complete audit trails, determinism logs, and transparent real-time inference diagnostics.
+                </p>
+              </div>
+            </div>
           </div>
         </section>
 
         {/* ══════════════════════════════════════════════════════
-            7. CTA — bold, minimal
+            SECTION 10 — TECHNICAL CTA (Dark Charcoal Section)
         ══════════════════════════════════════════════════════ */}
-        <section className="py-16 sm:py-24">
-          <div className="container mx-auto px-4 sm:px-6">
-            <motion.div
-              initial={{ opacity: 0, scale: 0.97 }}
-              whileInView={{ opacity: 1, scale: 1 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5 }}
-              className="max-w-4xl mx-auto rounded-2xl border border-primary/20 relative overflow-hidden"
-            >
-              {/* Background glows */}
-              <div className="absolute inset-0 pointer-events-none">
-                <div className="absolute top-0 left-1/4 w-64 h-64 rounded-full bg-primary/8 blur-[80px] animate-pulse" />
-                <div className="absolute bottom-0 right-1/4 w-56 h-56 rounded-full bg-violet-500/8 blur-[80px] animate-pulse" style={{ animationDelay: "1.5s" }} />
-              </div>
-              <div className="relative p-8 sm:p-14 text-center">
-                <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-primary/10 border border-primary/20 text-primary text-xs sm:text-sm font-semibold mb-5">
-                  <Sparkles className="w-3.5 h-3.5" />
-                  Start your AI journey today
-                </div>
-                <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold leading-tight mb-4">
-                  Ready to Transform Your<br className="hidden sm:block" /> Business with{" "}
-                  <span className="text-gradient">Intelligent AI?</span>
-                </h2>
-                <p className="text-muted-foreground text-sm sm:text-base md:text-lg max-w-xl mx-auto mb-8">
-                  Join forward-thinking enterprises already using Nirikshan AI to build faster, smarter, and at scale.
-                </p>
-                {/* Checklist */}
-                <div className="flex flex-wrap justify-center gap-x-6 gap-y-2 mb-8">
-                  {["Free AI Readiness Assessment", "No long-term contracts", "Results in 4–6 weeks"].map((item) => (
-                    <span key={item} className="flex items-center gap-1.5 text-sm text-muted-foreground">
-                      <Check className="w-3.5 h-3.5 text-emerald-500 flex-shrink-0" />
-                      {item}
-                    </span>
-                  ))}
-                </div>
-                <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
-                  <Link to="/contact">
-                    <Button size="lg" className="gradient-primary text-primary-foreground px-8 h-12 text-base font-semibold border-0 w-full sm:w-auto">
-                      Request a Demo
-                      <ArrowRight className="ml-2 w-5 h-5" />
-                    </Button>
-                  </Link>
-                  <Link to="/contact" className="text-muted-foreground hover:text-foreground transition-colors text-sm font-medium">
-                    Talk to our AI experts →
-                  </Link>
-                </div>
-              </div>
-            </motion.div>
+        <section className="py-20 md:py-28 bg-charcoal text-ivory relative overflow-hidden border-b border-charcoal-border">
+          {/* Technical Grid Overlay */}
+          <div className="absolute inset-0 tech-grid-bg opacity-15 pointer-events-none" />
+
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 relative z-10 text-center">
+            <div className="inline-block px-3 py-1 mb-6 text-[10px] font-mono uppercase tracking-[0.2em] bg-charcoal-surface border border-charcoal-border text-sage">
+              SEC_09 // COLLABORATION PROTOCOL
+            </div>
+
+            <h2 className="text-3xl sm:text-5xl md:text-6xl font-bold font-display tracking-tight text-ivory leading-tight max-w-3xl mx-auto mb-6">
+              Have a Complex Problem?
+              <br />
+              <span className="font-serif italic font-normal text-concrete">
+                Let's Engineer the Solution.
+              </span>
+            </h2>
+
+            <p className="text-sm sm:text-base text-concrete max-w-xl mx-auto leading-relaxed mb-8 font-sans">
+              From on-premise industrial computer vision pipelines to custom autonomous agent architectures — our engineering team is ready to analyze your technical requirements.
+            </p>
+
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+              <Link to="/contact">
+                <Button className="bg-charcoal text-ivory border border-charcoal-border hover:bg-burntamber hover:border-burntamber hover:text-white text-xs font-mono uppercase tracking-wider px-8 h-12 rounded-none font-bold transition-all shadow-lg">
+                  Start a Conversation <ArrowRight size={14} className="ml-2" />
+                </Button>
+              </Link>
+              <a
+                href="mailto:info@nirikshanai.com"
+                className="text-xs font-mono uppercase tracking-wider text-concrete hover:text-burntamber hover:border-burntamber px-6 py-3 border border-charcoal-border transition-all"
+              >
+                Direct: info@nirikshanai.com
+              </a>
+            </div>
+
+            {/* Direct Phone Telemetry */}
+            <div className="mt-10 pt-6 border-t border-charcoal-border/50 max-w-md mx-auto flex items-center justify-between text-[11px] font-mono text-concrete">
+              <span>TELEPHONE: +91 9410 992204</span>
+              <span>//</span>
+              <span className="text-sage">RESPONSE SLA: &lt; 24H</span>
+            </div>
           </div>
         </section>
-
       </main>
 
-      <section className="py-6 sm:py-8 overflow-hidden">
-        <InfiniteTextMarquee text="Nirikshan AI" link="/contact" speed={25} tooltipText="Enterprise AI Solutions" fontSize="6rem" />
-      </section>
-
+      {/* SECTION 11 — FOOTER */}
       <Footer />
     </div>
   );
