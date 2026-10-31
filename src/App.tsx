@@ -23,8 +23,8 @@ const ExpertisePage = lazy(() => import("./pages/expertise/index"));
 const ExpertiseCategoryPage = lazy(() => import("./pages/expertise/[categorySlug]"));
 const ExpertiseServicePage = lazy(() => import("./pages/expertise/[categorySlug]/[serviceSlug]"));
 const Products = lazy(() => import("./pages/Products"));
+const AstroNirikshanPage = lazy(() => import("./pages/AstroNirikshanPage"));
 const TenXProductivity = lazy(() => import("./pages/TenXProductivity"));
-const Projects = lazy(() => import("./pages/Projects"));
 const CaseStudies = lazy(() => import("./pages/CaseStudies"));
 const Careers = lazy(() => import("./pages/Careers"));
 const Contact = lazy(() => import("./pages/Contact"));
@@ -99,10 +99,13 @@ const AnimatedRoutes = () => {
         <Route path="/expertise/:categorySlug/:serviceSlug" element={<PageTransition><ExpertiseServicePage /></PageTransition>} />
         <Route path="/services" element={<PageTransition><Services /></PageTransition>} />
         <Route path="/products" element={<PageTransition><Products /></PageTransition>} />
+        <Route path="/products/astro-nirikshan" element={<PageTransition><AstroNirikshanPage /></PageTransition>} />
+        <Route path="/astro" element={<Navigate to="/products/astro-nirikshan" replace />} />
+        <Route path="/astro-nirikshan" element={<Navigate to="/products/astro-nirikshan" replace />} />
         <Route path="/10x-ai-productivity" element={<PageTransition><TenXProductivity /></PageTransition>} />
         <Route path="/10x" element={<Navigate to="/10x-ai-productivity" replace />} />
         <Route path="/productivity" element={<Navigate to="/10x-ai-productivity" replace />} />
-        <Route path="/projects" element={<PageTransition><Projects /></PageTransition>} />
+        <Route path="/projects" element={<Navigate to="/products" replace />} />
         <Route path="/case-studies" element={<PageTransition><CaseStudies /></PageTransition>} />
         <Route path="/careers" element={<PageTransition><Careers /></PageTransition>} />
         <Route path="/contact" element={<PageTransition><Contact /></PageTransition>} />

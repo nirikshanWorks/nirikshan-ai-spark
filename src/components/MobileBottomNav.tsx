@@ -1,11 +1,11 @@
-import { Home, Briefcase, Layers, Phone, Menu } from "lucide-react";
+import { Home, Package, Layers, Phone, Menu } from "lucide-react";
 import { Link, useLocation } from "react-router-dom";
 import { useState } from "react";
 
 const navItems = [
   { icon: Home, label: "Home", path: "/" },
   { icon: Layers, label: "Expertise", path: "/expertise" },
-  { icon: Briefcase, label: "Projects", path: "/projects" },
+  { icon: Package, label: "Products", path: "/products" },
   { icon: Phone, label: "Contact", path: "/contact" },
 ];
 

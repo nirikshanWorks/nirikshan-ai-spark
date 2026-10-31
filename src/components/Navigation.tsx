@@ -8,7 +8,7 @@ import {
   NavigationMenuList,
   NavigationMenuTrigger,
 } from "@/components/ui/navigation-menu";
-import { Menu, X } from "lucide-react";
+import { Menu, X, Camera, Sparkles, GraduationCap } from "lucide-react";
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 
@@ -26,9 +26,6 @@ const navigationCategories = expertiseCategories.map((category) => ({
 
 const navLinks = [
   { label: "About", path: "/about" },
-  { label: "Products", path: "/products" },
-  { label: "10X AI Initiative", path: "/10x-ai-productivity" },
-  { label: "Projects", path: "/projects" },
   { label: "Case Studies", path: "/case-studies" },
   { label: "Blog", path: "/blog" },
   { label: "Careers", path: "/careers" },
@@ -41,6 +38,7 @@ const BOTTOM_NAV_HEIGHT = 64; // px — roughly 4rem (icon + label + padding)
 export const Navigation = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [mobileExpertiseOpen, setMobileExpertiseOpen] = useState(false);
+  const [mobileProductsOpen, setMobileProductsOpen] = useState(false);
   const [desktopMenuValue, setDesktopMenuValue] = useState<string | undefined>(undefined);
   const [scrolled, setScrolled] = useState(false);
   const desktopMenuOpen = Boolean(desktopMenuValue);
@@ -51,7 +49,10 @@ export const Navigation = () => {
   const toggleMobileMenu = () => {
     setMobileMenuOpen((prev) => {
       const next = !prev;
-      if (!next) setMobileExpertiseOpen(false);
+      if (!next) {
+        setMobileExpertiseOpen(false);
+        setMobileProductsOpen(false);
+      }
       return next;
     });
   };
@@ -59,6 +60,7 @@ export const Navigation = () => {
   const closeMobileMenu = () => {
     setMobileMenuOpen(false);
     setMobileExpertiseOpen(false);
+    setMobileProductsOpen(false);
   };
 
   // Close menu on route change
@@ -135,6 +137,91 @@ export const Navigation = () => {
             <div className="hidden lg:flex items-center gap-1">
               <NavigationMenu value={desktopMenuValue} onValueChange={setDesktopMenuValue}>
                 <NavigationMenuList>
+                  {/* Products Dropdown */}
+                  <NavigationMenuItem value="products">
+                    <NavigationMenuTrigger className="bg-transparent text-sm font-medium text-muted-foreground hover:text-foreground h-9 px-3">
+                      Products
+                    </NavigationMenuTrigger>
+                    <NavigationMenuContent className="animate-in slide-in-from-top-4 fade-in duration-300">
+                      <div className="w-[340px] md:w-[480px] p-4">
+                        <div className="mb-2 px-2 flex items-center justify-between">
+                          <h4 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+                            Nirikshan AI Platforms
+                          </h4>
+                          <Link
+                            to="/products"
+                            className="text-xs text-primary hover:underline"
+                            onClick={() => setDesktopMenuValue(undefined)}
+                          >
+                            All Platforms →
+                          </Link>
+                        </div>
+                        <div className="space-y-1.5">
+                          {/* 1. Computer Vision AI */}
+                          <Link
+                            to="/products?suite=vision"
+                            onClick={() => setDesktopMenuValue(undefined)}
+                            className="flex items-start gap-3 p-2.5 rounded-xl hover:bg-accent hover:text-accent-foreground transition-colors group"
+                          >
+                            <div className="w-9 h-9 rounded-xl bg-blue-500/10 text-blue-600 dark:text-blue-400 flex items-center justify-center shrink-0 mt-0.5">
+                              <Camera className="w-4 h-4" />
+                            </div>
+                            <div className="min-w-0">
+                              <div className="text-sm font-bold text-foreground group-hover:text-primary transition-colors flex items-center gap-1.5">
+                                <span>Computer Vision AI</span>
+                                <span className="text-[10px] font-mono px-1.5 py-0.2 rounded bg-primary/10 text-primary">Enterprise</span>
+                              </div>
+                              <p className="line-clamp-2 text-xs leading-snug text-muted-foreground mt-0.5">
+                                Real-time workplace safety, PPE compliance, perimeter security, ANPR &amp; quality defect detection.
+                              </p>
+                            </div>
+                          </Link>
+
+                          {/* 2. Astro Nirikshan */}
+                          <Link
+                            to="/products/astro-nirikshan"
+                            onClick={() => setDesktopMenuValue(undefined)}
+                            className="flex items-start gap-3 p-2.5 rounded-xl hover:bg-accent hover:text-accent-foreground transition-colors group"
+                          >
+                            <div className="w-9 h-9 rounded-xl bg-amber-500/10 text-amber-600 dark:text-amber-400 flex items-center justify-center shrink-0 mt-0.5">
+                              <Sparkles className="w-4 h-4 text-amber-500" />
+                            </div>
+                            <div className="min-w-0">
+                              <div className="text-sm font-bold text-foreground group-hover:text-amber-500 transition-colors flex items-center gap-1.5">
+                                <span>Astro Nirikshan</span>
+                                <span className="text-[10px] font-mono px-1.5 py-0.2 rounded bg-amber-500/15 text-amber-500">Holistic AI</span>
+                              </div>
+                              <p className="line-clamp-2 text-xs leading-snug text-muted-foreground mt-0.5">
+                                Vedic Jyotish, Chaldean numerology, Vastu Shastra &amp; Janam Kundli with 100% client-side privacy.
+                              </p>
+                            </div>
+                          </Link>
+
+                          {/* 3. 10X AI Productivity */}
+                          <Link
+                            to="/10x-ai-productivity"
+                            onClick={() => setDesktopMenuValue(undefined)}
+                            className="flex items-start gap-3 p-2.5 rounded-xl hover:bg-accent hover:text-accent-foreground transition-colors group"
+                          >
+                            <div className="w-9 h-9 rounded-xl bg-violet-500/10 text-violet-600 dark:text-violet-400 flex items-center justify-center shrink-0 mt-0.5">
+                              <GraduationCap className="w-4 h-4 text-violet-500" />
+                            </div>
+                            <div className="min-w-0">
+                              <div className="text-sm font-bold text-foreground group-hover:text-violet-500 transition-colors flex items-center gap-1.5">
+                                <span>10X AI Productivity</span>
+                                <span className="text-[10px] font-mono px-1.5 py-0.2 rounded bg-violet-500/15 text-violet-500">Education</span>
+                              </div>
+                              <p className="line-clamp-2 text-xs leading-snug text-muted-foreground mt-0.5">
+                                Practical AI training for schools, universities, corporate teams, and manufacturing workforces.
+                              </p>
+                            </div>
+                          </Link>
+                        </div>
+                      </div>
+                    </NavigationMenuContent>
+                  </NavigationMenuItem>
+
+                  {/* Expertise Dropdown */}
                   <NavigationMenuItem value="expertise">
                     <NavigationMenuTrigger className="bg-transparent text-sm font-medium text-muted-foreground hover:text-foreground h-9 px-3">
                       Expertise
@@ -256,6 +343,64 @@ export const Navigation = () => {
               </div>
 
               <div className="border-t border-border/60" />
+
+              {/* Products accordion */}
+              <button
+                className="flex w-full items-center justify-between gap-2 rounded-xl px-4 py-3.5 text-sm font-semibold hover:bg-secondary transition-colors text-left"
+                onClick={() => setMobileProductsOpen((prev) => !prev)}
+              >
+                <div className="flex items-center gap-2">
+                  <span>Products &amp; Platforms</span>
+                  <span className="text-[10px] font-mono px-1.5 py-0.5 rounded bg-primary/10 text-primary">3</span>
+                </div>
+                <span
+                  className={`text-muted-foreground transition-transform duration-200 ${
+                    mobileProductsOpen ? "rotate-180" : ""
+                  }`}
+                >
+                  ▾
+                </span>
+              </button>
+
+              {mobileProductsOpen && (
+                <div className="space-y-1 bg-secondary/40 rounded-xl p-2 mx-1 animate-in fade-in slide-in-from-top-2 duration-150">
+                  <Link
+                    to="/products?suite=vision"
+                    className="flex items-center justify-between px-3 py-2.5 text-sm text-foreground hover:text-primary hover:bg-background/70 rounded-lg transition-colors"
+                    onClick={closeMobileMenu}
+                  >
+                    <div className="flex items-center gap-2">
+                      <Camera className="w-4 h-4 text-primary" />
+                      <span>Computer Vision AI</span>
+                    </div>
+                    <span className="text-[10px] font-mono text-muted-foreground">Enterprise</span>
+                  </Link>
+
+                  <Link
+                    to="/products/astro-nirikshan"
+                    className="flex items-center justify-between px-3 py-2.5 text-sm text-foreground hover:text-amber-500 hover:bg-background/70 rounded-lg transition-colors"
+                    onClick={closeMobileMenu}
+                  >
+                    <div className="flex items-center gap-2">
+                      <Sparkles className="w-4 h-4 text-amber-500" />
+                      <span>Astro Nirikshan</span>
+                    </div>
+                    <span className="text-[10px] font-mono text-amber-500 font-semibold">Holistic AI</span>
+                  </Link>
+
+                  <Link
+                    to="/10x-ai-productivity"
+                    className="flex items-center justify-between px-3 py-2.5 text-sm text-foreground hover:text-violet-500 hover:bg-background/70 rounded-lg transition-colors"
+                    onClick={closeMobileMenu}
+                  >
+                    <div className="flex items-center gap-2">
+                      <GraduationCap className="w-4 h-4 text-violet-500" />
+                      <span>10X AI Productivity</span>
+                    </div>
+                    <span className="text-[10px] font-mono text-violet-500">Training</span>
+                  </Link>
+                </div>
+              )}
 
               {/* Expertise accordion */}
               <button

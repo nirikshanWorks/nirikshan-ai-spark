@@ -1,26 +1,40 @@
 import { SEO } from "@/components/SEO";
-import React, { useState } from "react";
+import { useState } from "react";
 
 import partnerMadapet from "@/assets/partners/madapet.png";
-import partnerVB from "@/assets/partners/vb.png";
 import partnerMDJKS from "@/assets/partners/mdjks.png";
-import { Navigation } from "@/components/Navigation";
+import partnerVB from "@/assets/partners/vb.png";
+import { AIServicesStrip } from "@/components/AIServicesStrip";
 import { Footer } from "@/components/Footer";
+import { InteractiveCVShowcase } from "@/components/InteractiveCVShowcase";
+import { Navigation } from "@/components/Navigation";
+import { RotatingKeywords } from "@/components/RotatingKeywords";
+import { FadeUp } from "@/components/ScrollAnimations";
+import { TypingText } from "@/components/TypingText";
 import { Button } from "@/components/ui/button";
+import { InfiniteTextMarquee } from "@/components/ui/infinite-text-marquee";
 import { SplineScene } from "@/components/ui/splite";
 import { Spotlight } from "@/components/ui/spotlight";
-import { TypingText } from "@/components/TypingText";
-import { RotatingKeywords } from "@/components/RotatingKeywords";
-import { AIServicesStrip } from "@/components/AIServicesStrip";
-import { FadeUp, StaggerContainer, StaggerItem } from "@/components/ScrollAnimations";
-import { motion, AnimatePresence } from "framer-motion";
-import { InfiniteTextMarquee } from "@/components/ui/infinite-text-marquee";
-import { InteractiveCVShowcase } from "@/components/InteractiveCVShowcase";
+import { AnimatePresence, motion } from "framer-motion";
 import {
-  ArrowRight, Brain, Eye, Bot, Building2, Activity,
-  TrendingUp, FileText, Lightbulb, Code2, Rocket,
-  Quote, Cpu, Sparkles, Zap, ChevronRight, Check,
-  Factory, Stethoscope, ShieldCheck,
+  Activity,
+  ArrowRight,
+  Bot,
+  Brain,
+  Building2,
+  Check,
+  ChevronRight,
+  Code2,
+  Cpu,
+  Eye,
+  Factory,
+  Lightbulb,
+  Rocket,
+  ShieldCheck,
+  Sparkles,
+  Stethoscope,
+  TrendingUp,
+  Zap
 } from "lucide-react";
 import { Link } from "react-router-dom";
 
@@ -119,16 +133,16 @@ const problems = [
 
 const colorMap: Record<string, { bg: string; text: string; border: string; pill: string }> = {
   violet: { bg: "bg-violet-500/10", text: "text-violet-600 dark:text-violet-400", border: "border-violet-500/30", pill: "bg-violet-500" },
-  blue:   { bg: "bg-blue-500/10",   text: "text-blue-600 dark:text-blue-400",     border: "border-blue-500/30",   pill: "bg-blue-500" },
-  emerald:{ bg: "bg-emerald-500/10",text: "text-emerald-600 dark:text-emerald-400",border: "border-emerald-500/30",pill: "bg-emerald-500" },
-  amber:  { bg: "bg-amber-500/10",  text: "text-amber-600 dark:text-amber-400",   border: "border-amber-500/30",  pill: "bg-amber-500" },
+  blue: { bg: "bg-blue-500/10", text: "text-blue-600 dark:text-blue-400", border: "border-blue-500/30", pill: "bg-blue-500" },
+  emerald: { bg: "bg-emerald-500/10", text: "text-emerald-600 dark:text-emerald-400", border: "border-emerald-500/30", pill: "bg-emerald-500" },
+  amber: { bg: "bg-amber-500/10", text: "text-amber-600 dark:text-amber-400", border: "border-amber-500/30", pill: "bg-amber-500" },
 };
 
 const processSteps = [
   { icon: Lightbulb, step: "01", title: "Define Problem", desc: "We analyze your business challenges and identify where AI creates the highest impact.", color: "text-violet-500" },
-  { icon: Building2, step: "02", title: "Prepare Data",   desc: "Clean, structure, and enrich your data to fuel accurate, reliable AI models.", color: "text-blue-500" },
-  { icon: Code2,     step: "03", title: "Build Solution", desc: "Develop, train, and validate custom AI systems tailored to your domain.", color: "text-emerald-500" },
-  { icon: Rocket,    step: "04", title: "Deliver & Support", desc: "Deploy to production with monitoring, optimization, and ongoing support.", color: "text-amber-500" },
+  { icon: Building2, step: "02", title: "Prepare Data", desc: "Clean, structure, and enrich your data to fuel accurate, reliable AI models.", color: "text-blue-500" },
+  { icon: Code2, step: "03", title: "Build Solution", desc: "Develop, train, and validate custom AI systems tailored to your domain.", color: "text-emerald-500" },
+  { icon: Rocket, step: "04", title: "Deliver & Support", desc: "Deploy to production with monitoring, optimization, and ongoing support.", color: "text-amber-500" },
 ];
 
 const partners = [
@@ -156,11 +170,10 @@ const ProblemSolutionTabs = () => {
           <button
             key={p.title}
             onClick={() => setActive(i)}
-            className={`inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm font-semibold transition-all duration-200 border ${
-              active === i
-                ? `${colorMap[p.color].pill} text-white border-transparent shadow-lg scale-105`
-                : "bg-background border-border text-muted-foreground hover:text-foreground hover:border-primary/30"
-            }`}
+            className={`inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm font-semibold transition-all duration-200 border ${active === i
+              ? `${colorMap[p.color].pill} text-white border-transparent shadow-lg scale-105`
+              : "bg-background border-border text-muted-foreground hover:text-foreground hover:border-primary/30"
+              }`}
           >
             <p.icon className="w-3.5 h-3.5" />
             {p.title}
@@ -592,7 +605,7 @@ const Index = () => {
                   <p className="text-slate-600 dark:text-slate-300 text-sm sm:text-base leading-relaxed max-w-xl">
                     Practical AI training that empowers students, educators, professionals, and industries to understand, apply, and innovate with Artificial Intelligence.
                   </p>
-                  
+
                   {/* Four Audience Labels */}
                   <div className="flex flex-wrap gap-2 pt-2">
                     {["Schools (K-12)", "Universities & Colleges", "Corporate Teams", "Industries"].map((aud) => (

@@ -299,7 +299,7 @@ const Services = () => {
                             <ArrowRight className="ml-2 w-4 h-4" />
                           </Button>
                         </Link>
-                        <Link to="/projects" className="flex-1 sm:flex-none">
+                        <Link to="/case-studies" className="flex-1 sm:flex-none">
                           <Button variant="outline" className="w-full sm:w-auto">
                             View Case Studies
                           </Button>
@@ -363,9 +363,9 @@ const Services = () => {
                     <ArrowRight className="ml-2 w-4 h-4" />
                   </Button>
                 </Link>
-                <Link to="/projects">
+                <Link to="/case-studies">
                   <Button size="lg" variant="outline" className="w-full sm:w-auto">
-                    See Our Work
+                    View Case Studies
                   </Button>
                 </Link>
               </div>

@@ -362,9 +362,9 @@ const Careers = () => {
                   Join product thinkers, researchers, and engineers crafting human-centered AI. We ship fast, learn constantly, and care deeply about the people we build for.
                 </p>
                 <div className="mt-8 flex flex-col sm:flex-row gap-4 justify-center">
-                  <Link to="/projects">
+                  <Link to="/products">
                     <Button size="lg" variant="outline" className="bg-white/5 text-white border-white/20 hover:bg-white/15">
-                      Browse Our Work
+                      Explore Our Products
                       <ArrowRight className="ml-2" size={20} />
                     </Button>
                   </Link>

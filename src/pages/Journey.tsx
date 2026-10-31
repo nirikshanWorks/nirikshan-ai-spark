@@ -368,9 +368,9 @@ const Journey = () => {
           </div>
 
           <div className="mt-32 flex flex-col justify-center gap-4 sm:flex-row lg:mt-48">
-            <Link to="/projects">
+            <Link to="/products">
               <Button variant="secondary" className="gap-2 text-base hover:scale-105 transition-transform">
-                View Projects
+                Explore Products
                 <ArrowRight size={20} />
               </Button>
             </Link>

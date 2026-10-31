@@ -1,5 +1,5 @@
 import React, { useState, useMemo } from "react";
-import { Link } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 import { SEO } from "@/components/SEO";
 import { Navigation } from "@/components/Navigation";
 import { Footer } from "@/components/Footer";
@@ -23,6 +23,8 @@ import { ProductsHero } from "@/components/products/ProductsHero";
 import { SolutionDetailSheet } from "@/components/products/SolutionDetailSheet";
 import { CVDashboardDemo } from "@/components/products/CVDashboardDemo";
 import { CustomSolutionForm } from "@/components/products/CustomSolutionForm";
+import { AstroNirikshanProductCard } from "@/components/products/AstroNirikshanProductCard";
+import { AstroNirikshanShowcase } from "@/components/products/AstroNirikshanShowcase";
 import {
   FadeUp,
   StaggerContainer,
@@ -54,6 +56,21 @@ import {
 } from "lucide-react";
 
 export const Products = () => {
+  // Product Platform Suite Switcher: "vision" | "astro"
+  const [searchParams, setSearchParams] = useSearchParams();
+  const rawSuite = searchParams.get("suite") || searchParams.get("tab");
+  const activeSuite: "vision" | "astro" =
+    rawSuite === "astro" ? "astro" : "vision";
+
+  const handleSuiteChange = (suite: "vision" | "astro") => {
+    if (suite === "astro") {
+      setSearchParams({ suite: "astro" });
+    } else {
+      setSearchParams({});
+    }
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
+
   // State for Directory filtering and search
   const [selectedCategory, setSelectedCategory] = useState<
     "all" | SolutionCategoryId
@@ -87,6 +104,27 @@ export const Products = () => {
     });
   }, [selectedCategory, searchQuery]);
 
+  const queryIsAstroRelated = useMemo(() => {
+    const q = searchQuery.toLowerCase().trim();
+    if (!q) return false;
+    const astroKeywords = [
+      "astro",
+      "astrology",
+      "kundli",
+      "vastu",
+      "numerology",
+      "tarot",
+      "horoscope",
+      "rashi",
+      "graha",
+      "zodiac",
+      "jyotish",
+      "aditya",
+      "nitin",
+    ];
+    return astroKeywords.some((kw) => kw.includes(q) || q.includes(kw));
+  }, [searchQuery]);
+
   const handleOpenSolution = (solutionId: string) => {
     setActiveSolutionId(solutionId);
   };
@@ -111,19 +149,91 @@ export const Products = () => {
   return (
     <div className="min-h-screen bg-background text-foreground flex flex-col">
       <SEO
-        title="Computer Vision Solutions & Products — Nirikshan AI"
-        description="Explore Nirikshan AI's enterprise computer vision products for residential security, industrial safety, workplace PPE compliance, manufacturing quality control, and vehicle intelligence."
-        canonical="https://nirikshanai.com/products"
+        title={
+          activeSuite === "astro"
+            ? "Astro Nirikshan — Ancient Cosmic Sciences with AI Precision | Nirikshan AI"
+            : "Computer Vision Solutions & Products — Nirikshan AI"
+        }
+        description={
+          activeSuite === "astro"
+            ? "Explore Vedic astrology, Chaldean numerology, Vastu Shastra, Janam Kundli, and Tarot with 100% client-side privacy on Astro Nirikshan by Nirikshan AI Pvt. Ltd."
+            : "Explore Nirikshan AI's enterprise computer vision products for residential security, industrial safety, workplace PPE compliance, manufacturing quality control, and vehicle intelligence."
+        }
+        canonical={
+          activeSuite === "astro"
+            ? "https://nirikshanai.com/products/astro-nirikshan"
+            : "https://nirikshanai.com/products"
+        }
       />
 
       <Navigation />
 
       <main className="flex-1">
-        {/* ─── SECTION A: PRODUCTS HERO ─── */}
-        <ProductsHero />
+        {/* ─── STICKY PRODUCT SUITE SELECTOR (KEEPS VISION & ASTRO CLEARLY SEPARATED) ─── */}
+        <div className="sticky top-14 sm:top-16 z-40 bg-background/95 backdrop-blur-md border-b border-border shadow-xs">
+          <div className="container mx-auto px-4 sm:px-6 py-2.5 flex flex-wrap items-center justify-between gap-3">
+            <div className="flex items-center gap-1.5 sm:gap-2">
+              <span className="text-xs font-mono uppercase tracking-wider text-muted-foreground mr-1 hidden sm:inline">
+                Select Platform:
+              </span>
 
-        {/* ─── SECTION B: PRODUCT CATEGORIES (6 PRIMARY PILLARS) ─── */}
-        <section id="categories" className="py-20 md:py-28 container mx-auto px-6">
+              {/* Vision Platform Tab */}
+              <button
+                onClick={() => handleSuiteChange("vision")}
+                className={`px-3.5 py-1.5 rounded-xl text-xs sm:text-sm font-semibold transition-all flex items-center gap-2 cursor-pointer ${
+                  activeSuite === "vision"
+                    ? "bg-primary text-primary-foreground shadow-sm"
+                    : "bg-muted/60 text-muted-foreground hover:text-foreground hover:bg-muted"
+                }`}
+              >
+                <Camera className="w-3.5 h-3.5" />
+                <span>Computer Vision AI</span>
+                <span className="text-[10px] font-mono opacity-80">(20 Models)</span>
+              </button>
+
+              {/* Astro Platform Tab */}
+              <button
+                onClick={() => handleSuiteChange("astro")}
+                className={`px-3.5 py-1.5 rounded-xl text-xs sm:text-sm font-semibold transition-all flex items-center gap-2 cursor-pointer ${
+                  activeSuite === "astro"
+                    ? "bg-amber-500 text-slate-950 font-bold shadow-sm shadow-amber-500/20"
+                    : "bg-muted/60 text-muted-foreground hover:text-foreground hover:bg-muted"
+                }`}
+              >
+                <Sparkles className="w-3.5 h-3.5 text-amber-500" />
+                <span>Astro Nirikshan</span>
+                <Badge
+                  variant="outline"
+                  className="text-[10px] py-0 px-1.5 border-amber-500/40 text-amber-600 dark:text-amber-400 font-mono"
+                >
+                  Holistic AI
+                </Badge>
+              </button>
+            </div>
+
+            <div className="flex items-center gap-3 text-xs">
+              <Link
+                to="/10x-ai-productivity"
+                className="text-muted-foreground hover:text-primary transition-colors flex items-center gap-1 font-medium"
+              >
+                <span>10X AI Training</span>
+                <ArrowRight className="w-3.5 h-3.5" />
+              </Link>
+            </div>
+          </div>
+        </div>
+
+        {activeSuite === "astro" ? (
+          /* ─── PURE ASTRO NIRIKSHAN PLATFORM (100% ISOLATED & DEDICATED) ─── */
+          <AstroNirikshanShowcase />
+        ) : (
+          /* ─── PURE COMPUTER VISION PLATFORM (100% ISOLATED & DEDICATED) ─── */
+          <>
+            {/* ─── SECTION A: PRODUCTS HERO ─── */}
+            <ProductsHero />
+
+            {/* ─── SECTION B: PRODUCT CATEGORIES (6 PRIMARY PILLARS) ─── */}
+            <section id="categories" className="py-20 md:py-28 container mx-auto px-6">
           <div className="max-w-3xl mx-auto text-center mb-16">
             <FadeUp>
               <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-primary/10 border border-primary/20 text-xs font-semibold text-primary uppercase tracking-[0.2em] mb-4">
@@ -308,6 +418,32 @@ export const Products = () => {
               )}
             </div>
 
+            {/* If search query matches astrology / astro nirikshan keywords */}
+            {queryIsAstroRelated && (
+              <div className="max-w-5xl mx-auto mb-8 p-6 rounded-3xl border border-amber-500/40 bg-gradient-to-r from-slate-950 via-[#0d1530] to-slate-950 text-white shadow-xl flex flex-col sm:flex-row items-center justify-between gap-4">
+                <div className="flex items-center gap-3.5">
+                  <div className="w-10 h-10 rounded-2xl bg-amber-500/20 border border-amber-500/30 flex items-center justify-center text-amber-400 shrink-0">
+                    <Sparkles className="w-5 h-5" />
+                  </div>
+                  <div>
+                    <h4 className="font-bold text-sm text-white">
+                      Looking for Astro Nirikshan?
+                    </h4>
+                    <p className="text-xs text-slate-300">
+                      Explore our digital astrology, Chaldean numerology, Janam Kundli &amp; Vastu Shastra platform.
+                    </p>
+                  </div>
+                </div>
+                <button
+                  onClick={() => handleSuiteChange("astro")}
+                  className="shrink-0 px-4 py-2 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold text-xs transition-colors flex items-center gap-1.5 cursor-pointer"
+                >
+                  <span>Switch to Astro Nirikshan Platform</span>
+                  <ArrowRight className="w-3.5 h-3.5" />
+                </button>
+              </div>
+            )}
+
             {/* Solutions Grid */}
             {filteredSolutions.length > 0 ? (
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto">
@@ -399,7 +535,7 @@ export const Products = () => {
           </div>
         </section>
 
-        {/* ─── SECTION E: HOW NIRIKSHAN AI VISION PLATFORM WORKS ─── */}
+        {/* ─── SECTION D: HOW NIRIKSHAN AI VISION PLATFORM WORKS ─── */}
         <section className="py-20 md:py-28 container mx-auto px-6">
           <div className="max-w-3xl mx-auto text-center mb-16">
             <FadeUp>
@@ -857,6 +993,44 @@ export const Products = () => {
           </div>
         </section>
 
+        {/* ─── DISCOVERY: ASTRO NIRIKSHAN PLATFORM (CLEARLY SEPARATE PRODUCT) ─── */}
+        <section className="py-16 md:py-20 bg-muted/40 border-t border-border/80">
+          <div className="container mx-auto px-6 max-w-5xl">
+            <FadeUp>
+              <div className="rounded-3xl border border-amber-500/30 bg-gradient-to-r from-slate-950 via-[#0d1633] to-[#161233] p-8 sm:p-12 text-white shadow-xl flex flex-col md:flex-row items-center justify-between gap-8">
+                <div className="space-y-3 max-w-xl">
+                  <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-500/15 border border-amber-500/30 text-amber-300 text-xs font-mono uppercase tracking-wider">
+                    <Sparkles className="w-3.5 h-3.5" />
+                    Separate Digital Platform
+                  </div>
+                  <h3 className="text-2xl sm:text-3xl font-extrabold text-white">
+                    Explore Astro Nirikshan
+                  </h3>
+                  <p className="text-xs sm:text-sm text-slate-300 leading-relaxed">
+                    Our digital astrology and holistic guidance platform combines classical Vedic Jyotish, Chaldean numerology, Vastu Shastra &amp; Janam Kundli with 100% client-side calculation and revered lineage masters.
+                  </p>
+                </div>
+
+                <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 shrink-0">
+                  <button
+                    onClick={() => handleSuiteChange("astro")}
+                    className="px-6 py-3.5 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold text-xs transition-colors flex items-center justify-center gap-2 shadow-lg shadow-amber-500/20 cursor-pointer"
+                  >
+                    <span>Switch to Astro Platform</span>
+                    <ArrowRight className="w-4 h-4" />
+                  </button>
+                  <Link
+                    to="/products/astro-nirikshan"
+                    className="px-5 py-3.5 rounded-xl border border-amber-500/40 text-amber-200 hover:bg-white/5 text-xs font-semibold flex items-center justify-center"
+                  >
+                    Full Details
+                  </Link>
+                </div>
+              </div>
+            </FadeUp>
+          </div>
+        </section>
+
         {/* ─── SECTION L: FINAL CTA ─── */}
         <section className="py-20 md:py-28 bg-gradient-to-b from-card/30 to-background border-t border-border/60 relative overflow-hidden">
           <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[350px] bg-primary/10 rounded-full blur-[140px] pointer-events-none" />
@@ -909,7 +1083,9 @@ export const Products = () => {
             </FadeUp>
           </div>
         </section>
-      </main>
+      </>
+    )}
+  </main>
 
       {/* Solution Detail Drawer */}
       <SolutionDetailSheet
