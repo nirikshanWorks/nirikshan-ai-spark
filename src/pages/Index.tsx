@@ -570,38 +570,33 @@ const Index = () => {
         </section>
 
         {/* ══════════════════════════════════════════════════════
-            5.5. 10X AI PRODUCTIVITY & ENABLEMENT BENCH
+            5.5. AI TRAINING & EDUCATION SPOTLIGHT
         ══════════════════════════════════════════════════════ */}
         <section className="py-16 sm:py-24 relative overflow-hidden bg-gradient-to-b from-card via-background to-secondary/20 border-y border-border">
           <div className="container mx-auto px-4 sm:px-6 relative z-10 max-w-6xl">
-            <div className="rounded-3xl border border-border bg-card/90 p-8 sm:p-12 shadow-xl">
+            <div className="rounded-3xl border border-slate-200 dark:border-slate-800 bg-white/95 dark:bg-slate-900/90 p-8 sm:p-12 shadow-2xl">
               <div className="grid lg:grid-cols-12 gap-8 items-center">
                 {/* Left side: Context & Value */}
                 <div className="lg:col-span-7 space-y-4">
-                  <div className="flex items-center gap-2">
-                    <span className="font-mono text-xs font-semibold px-2.5 py-1 rounded bg-secondary text-primary border border-border">
-                      10X AI ENABLEMENT
-                    </span>
-                    <span className="text-xs font-mono text-muted-foreground hidden sm:inline-block">
-                      WORKFORCE &amp; DEV COHORTS
-                    </span>
+                  <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-50 dark:bg-blue-950/70 border border-blue-200 dark:border-blue-800 text-blue-700 dark:text-blue-300 text-xs font-semibold tracking-wider uppercase">
+                    <Sparkles className="w-3.5 h-3.5 text-blue-600 dark:text-blue-400" />
+                    <span>AI TRAINING &amp; WORKFORCE ENABLEMENT</span>
                   </div>
-                  <h2 className="text-2xl sm:text-4xl font-bold tracking-tight leading-tight">
-                    Hands-On AI Training for Teams That Build &amp; Operate.
+                  <h2 className="text-2xl sm:text-4xl font-extrabold text-slate-950 dark:text-white tracking-tight leading-tight">
+                    Making India AI-Ready,
+                    <br />
+                    <span className="bg-gradient-to-r from-blue-600 via-indigo-600 to-violet-600 bg-clip-text text-transparent">
+                      One Skill at a Time.
+                    </span>
                   </h2>
-                  <p className="text-muted-foreground text-sm sm:text-base leading-relaxed max-w-xl">
-                    Don't just subscribe to AI tools. We run intensive cohorts that teach engineers to write RAG pipelines and pair-program with Cursor, while training operational teams to automate daily bottlenecks.
+                  <p className="text-slate-600 dark:text-slate-300 text-sm sm:text-base leading-relaxed max-w-xl">
+                    Practical AI training that empowers students, educators, professionals, and industries to understand, apply, and innovate with Artificial Intelligence.
                   </p>
                   
-                  {/* Track pills */}
-                  <div className="flex flex-wrap gap-1.5 pt-2">
-                    {[
-                      "Software Engineers",
-                      "Operations & ERP",
-                      "CXO & Strategy",
-                      "Universities & Labs"
-                    ].map((aud) => (
-                      <span key={aud} className="font-mono text-xs bg-secondary/80 border border-border px-2.5 py-1 rounded text-foreground font-medium">
+                  {/* Four Audience Labels */}
+                  <div className="flex flex-wrap gap-2 pt-2">
+                    {["Schools (K-12)", "Universities & Colleges", "Corporate Teams", "Industries"].map((aud) => (
+                      <span key={aud} className="text-xs font-semibold px-3 py-1.5 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-800 dark:text-slate-200 border border-slate-200 dark:border-slate-700">
                         {aud}
                       </span>
                     ))}
@@ -609,44 +604,36 @@ const Index = () => {
 
                   <div className="pt-4 flex flex-col sm:flex-row gap-3">
                     <Link to="/10x-ai-productivity">
-                      <Button size="lg" className="gradient-primary text-primary-foreground font-semibold rounded-xl h-11 px-6">
-                        Inspect Syllabus &amp; Tracks
+                      <Button size="lg" className="bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-2xl h-12 px-7 shadow-lg shadow-blue-500/20">
+                        Explore Training Programmes
                         <ArrowRight className="w-4 h-4 ml-2" />
                       </Button>
                     </Link>
                     <Link to="/contact">
-                      <Button size="lg" variant="outline" className="rounded-xl h-11 px-6 border-border hover:bg-secondary">
-                        Schedule Team Briefing
+                      <Button size="lg" variant="outline" className="rounded-2xl h-12 px-7 border-slate-300 dark:border-slate-700 hover:bg-slate-100 dark:hover:bg-slate-800">
+                        Partner With Us
                       </Button>
                     </Link>
                   </div>
                 </div>
 
-                {/* Right side: Real Interactive Terminal Preview (No fake emojis / stat cards) */}
+                {/* Right side: Real Workshop Photography Card */}
                 <div className="lg:col-span-5">
-                  <div className="rounded-2xl border border-slate-800 bg-slate-950 p-5 shadow-2xl text-slate-200 font-mono text-xs overflow-hidden">
-                    <div className="flex items-center justify-between pb-3 border-b border-slate-800 text-[11px] text-slate-400">
-                      <div className="flex items-center gap-1.5">
-                        <span className="w-2.5 h-2.5 rounded-full bg-rose-500/80" />
-                        <span className="w-2.5 h-2.5 rounded-full bg-amber-500/80" />
-                        <span className="w-2.5 h-2.5 rounded-full bg-emerald-500/80" />
-                        <span className="ml-2 font-mono text-slate-400">nirikshan-10x-pipeline.sh</span>
-                      </div>
-                      <span className="text-emerald-400 font-semibold">LIVE LAB</span>
-                    </div>
-                    <div className="pt-4 space-y-2.5 text-[11px] leading-relaxed">
-                      <div className="text-slate-500"># 1. Audit repetitive operational friction</div>
-                      <div className="text-cyan-300">$ nirikshan audit --team "Engineering &amp; Ops"</div>
-                      <div className="text-slate-400">&gt; Detected 14.5 hrs/week manual testing &amp; ERP sync.</div>
-                      
-                      <div className="text-slate-500 pt-1.5"># 2. Deploy autonomous agent scaffolding</div>
-                      <div className="text-emerald-400">$ nirikshan deploy --pipeline rag-triage --air-gapped</div>
-                      <div className="text-slate-400">&gt; Container live on local Docker. P95 latency: 220ms.</div>
-                      <div className="text-blue-400 font-medium pt-1">✓ Benchmarked output: 92% manual hours saved.</div>
-                    </div>
-                    <div className="mt-4 pt-3 border-t border-slate-800 flex items-center justify-between text-[10px] text-slate-500">
-                      <span>Stack: Cursor · Claude 3.5 · LangChain · Docker</span>
-                      <span className="text-slate-400 font-semibold">100% Functional Code</span>
+                  <div className="relative rounded-2xl overflow-hidden border border-slate-200 dark:border-slate-800 shadow-xl group aspect-[4/3] bg-slate-900">
+                    <img
+                      src="https://images.unsplash.com/photo-1531482615713-2afd69097998?auto=format&fit=crop&w=900&q=80"
+                      alt="Nirikshan AI Workshop Session"
+                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+                      loading="lazy"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-slate-950/85 via-slate-950/20 to-transparent" />
+                    <div className="absolute bottom-4 left-4 right-4 text-white">
+                      <span className="text-[11px] font-bold uppercase tracking-wider text-blue-300 block mb-1">
+                        Interactive Training Sessions
+                      </span>
+                      <h4 className="text-sm sm:text-base font-bold leading-snug">
+                        Hands-on Labs, Real Projects &amp; Live AI Tooling
+                      </h4>
                     </div>
                   </div>
                 </div>
